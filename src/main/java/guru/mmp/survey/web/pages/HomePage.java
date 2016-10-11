@@ -11,8 +11,15 @@
 
 package guru.mmp.survey.web.pages;
 
+import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.pages.AnonymousOnlyWebPage;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
+import guru.mmp.survey.model.ISurveyService;
+import guru.mmp.survey.model.SurveyTemplate;
+import org.apache.wicket.markup.html.form.Button;
+
+import javax.inject.Inject;
+import java.util.UUID;
 
 /**
  * The <code>HomePage</code> class implements the "Home"
@@ -25,10 +32,50 @@ public class HomePage
   private static final long serialVersionUID = 1000000;
 
   /**
+   * The Survey Service.
+   */
+  @Inject
+  private ISurveyService surveyService;
+
+  /**
    * Constructs a new <code>HomePage</code>.
    */
   public HomePage()
   {
     super("Home");
+
+    add(new Button("testButton") {
+
+      private static final long serialVersionUID = 1000000;
+
+      @Override
+      public void onSubmit()
+      {
+        String surveyTemplateId = "706fb4a4-8ba8-11e6-ae22-56b6b6499611";
+
+        try
+        {
+          //SurveyTemplate surveyTemplate = surveyService.getSurveyTemplate(surveyTemplateId);
+
+
+
+
+
+
+
+
+          //System.out.println(surveyTemplate.toString());
+
+
+        }
+        catch (Throwable e)
+        {
+          throw new WebApplicationException("Failed to retrieve the survey template (" + surveyTemplateId + ")", e);
+        }
+
+        System.out.println("Hello World!!!");
+      }
+    });
   }
+
 }

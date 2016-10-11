@@ -24,6 +24,8 @@ import org.apache.wicket.request.resource.CssResourceReference;
 /**
  * The <code>SurveyApplication</code> provides the implementation of the Wicket Web
  * Application class for the web application.
+ *
+ * @author Marcus Portmann
  */
 public class SurveyApplication
   extends TemplateWebApplication

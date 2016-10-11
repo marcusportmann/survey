@@ -15,6 +15,8 @@ package guru.mmp.survey.web;
  * The <code>SurveySecurity</code> class provides access to the security-related information
  * and functionality for the web application. This includes a list of the authorized
  * function codes.
+ *
+ * @author Marcus Portmann
  */
 public class SurveySecurity
 {
