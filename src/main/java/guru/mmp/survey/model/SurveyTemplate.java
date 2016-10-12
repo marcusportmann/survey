@@ -14,8 +14,8 @@ package guru.mmp.survey.model;
 //~--- JDK imports ------------------------------------------------------------
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -52,7 +52,19 @@ public class SurveyTemplate
    */
   @OneToMany(mappedBy = "template", cascade = CascadeType.ALL, orphanRemoval = true,
       fetch = FetchType.EAGER)
-  private List<SurveyTemplateGroup> groups;
+  private Set<SurveyTemplateGroup> groups;
+
+  /**
+   * The group rating items that are associated with a survey template.
+   */
+  @OneToMany(mappedBy = "template", cascade = CascadeType.ALL, orphanRemoval = true,
+      fetch = FetchType.EAGER)
+  private Set<SurveyTemplateGroupRatingItem> groupRatingItems;
+
+  /**
+   * Constructs a new <code>SurveyTemplate</code>.
+   */
+  SurveyTemplate() {}
 
   /**
    * Constructs a new <code>SurveyTemplate</code>.
@@ -67,7 +79,63 @@ public class SurveyTemplate
     this.id = id;
     this.name = name;
     this.description = description;
-    this.groups = new ArrayList<>();
+    this.groups = new LinkedHashSet<>();
+    this.groupRatingItems = new LinkedHashSet<>();
+  }
+
+  /**
+   * Add the survey template group to the survey template.
+   *
+   * @param group the survey template group
+   */
+  public void addGroup(SurveyTemplateGroup group)
+  {
+    group.setTemplate(this);
+
+    groups.add(group);
+  }
+
+  /**
+   * Add the survey template group rating item to the survey template.
+   *
+   * @param groupRatingItem the survey template group rating item
+   */
+  public void addGroupRatingItem(SurveyTemplateGroupRatingItem groupRatingItem)
+  {
+    groupRatingItem.setTemplate(this);
+
+    groupRatingItems.add(groupRatingItem);
+  }
+
+  /**
+   * Indicates whether some other object is "equal to" this one.
+   *
+   * @param obj the reference object with which to compare
+   *
+   * @return <code>true</code> if this object is the same as the obj argument otherwise
+   *         <code>false</code>
+   */
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (this == obj)
+    {
+      return true;
+    }
+
+    if (obj == null)
+    {
+      return false;
+    }
+
+    if (getClass() != obj.getClass())
+    {
+      return false;
+    }
+
+    SurveyTemplate other = (SurveyTemplate) obj;
+
+    return id.equals(other.id);
   }
 
   /**
@@ -81,11 +149,65 @@ public class SurveyTemplate
   }
 
   /**
+   * Retrieve the survey template group.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           template group
+   *
+   * @return the survey template group or <code>null</code> if the survey template group could not
+   *         be found
+   */
+  public SurveyTemplateGroup getGroup(UUID id)
+  {
+    for (SurveyTemplateGroup group : groups)
+    {
+      if (group.getId().equals(id))
+      {
+        return group;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Retrieve the survey template group rating item.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           template group rating item
+   *
+   * @return the survey template group rating item or <code>null</code> if the survey template
+   *         group rating item could not be found
+   */
+  public SurveyTemplateGroupRatingItem getGroupRatingItem(UUID id)
+  {
+    for (SurveyTemplateGroupRatingItem groupRatingItem : groupRatingItems)
+    {
+      if (groupRatingItem.getId().equals(id))
+      {
+        return groupRatingItem;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Returns the group rating items that are associated with a survey template.
+   *
+   * @return the group rating items that are associated with a survey template
+   */
+  public Set<SurveyTemplateGroupRatingItem> getGroupRatingItems()
+  {
+    return groupRatingItems;
+  }
+
+  /**
    * Returns the groups of entities that are associated with a survey template.
    *
    * @return the groups of entities that are associated with a survey template
    */
-  public List<SurveyTemplateGroup> getGroups()
+  public Set<SurveyTemplateGroup> getGroups()
   {
     return groups;
   }
@@ -149,6 +271,8 @@ public class SurveyTemplate
   @Override
   public String toString()
   {
+    int count = 0;
+
     StringBuilder buffer = new StringBuilder();
 
     buffer.append("SurveyTemplate {");
@@ -158,14 +282,36 @@ public class SurveyTemplate
 
     buffer.append("groups={");
 
-    for (int i = 0; i < groups.size(); i++)
+    count = 0;
+
+    for (SurveyTemplateGroup group : groups)
     {
-      if (i > 0)
+      if (count > 0)
       {
         buffer.append(", ");
       }
 
-      buffer.append(groups.get(i));
+      buffer.append(group);
+
+      count++;
+    }
+
+    buffer.append("}, ");
+
+    buffer.append("groupRatingItems={");
+
+    count = 0;
+
+    for (SurveyTemplateGroupRatingItem groupRatingItem : groupRatingItems)
+    {
+      if (count > 0)
+      {
+        buffer.append(", ");
+      }
+
+      buffer.append(groupRatingItem);
+
+      count++;
     }
 
     buffer.append("}");

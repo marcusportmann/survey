@@ -23,6 +23,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.UUID;
 
 //~--- JDK imports ------------------------------------------------------------
 
@@ -58,7 +59,7 @@ public class SurveyService
    * @return the survey template identified by the specified ID or <code>null</code> if the
    *         survey template could not be found
    */
-  public SurveyTemplate getSurveyTemplate(String id)
+  public SurveyTemplate getSurveyTemplate(UUID id)
     throws SurveyServiceException
   {
     try

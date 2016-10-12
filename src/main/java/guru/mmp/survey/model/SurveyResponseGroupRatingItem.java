@@ -65,6 +65,42 @@ public class SurveyResponseGroupRatingItem
   private int rating;
 
   /**
+   * Constructs a new <code>SurveyResponseGroupRatingItem</code>.
+   */
+  SurveyResponseGroupRatingItem() {}
+
+  /**
+   * Indicates whether some other object is "equal to" this one.
+   *
+   * @param obj the reference object with which to compare
+   *
+   * @return <code>true</code> if this object is the same as the obj argument otherwise
+   *         <code>false</code>
+   */
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (this == obj)
+    {
+      return true;
+    }
+
+    if (obj == null)
+    {
+      return false;
+    }
+
+    if (getClass() != obj.getClass())
+    {
+      return false;
+    }
+
+    SurveyResponseGroupRatingItem other = (SurveyResponseGroupRatingItem) obj;
+
+    return id.equals(other.id);
+  }
+
+  /**
    * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey response
    * group rating item.
    *

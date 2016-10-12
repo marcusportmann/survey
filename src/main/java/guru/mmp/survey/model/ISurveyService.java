@@ -11,6 +11,10 @@
 
 package guru.mmp.survey.model;
 
+//~--- JDK imports ------------------------------------------------------------
+
+import java.util.UUID;
+
 /**
  * The <code>ISurveyService</code> interface defines the functionality that must be
  * provided by a Survey Service implementation.
@@ -28,7 +32,7 @@ public interface ISurveyService
    * @return the survey template identified by the specified ID or <code>null</code> if the
    *         survey template could not be found
    */
-  SurveyTemplate getSurveyTemplate(String id)
+  SurveyTemplate getSurveyTemplate(UUID id)
     throws SurveyServiceException;
 
   /**

@@ -39,14 +39,14 @@ public class SurveyTemplateGroupMember
    * The Universally Unique Identifier (UUID) used to uniquely  identify the survey template group
    * this survey template group member is associated with.
    */
-  @Column(name = "TEMPLATE_GROUP_ID", nullable = false, insertable = false, updatable = false)
-  private UUID templateGroupId;
+  @Column(name = "SURVEY_TEMPLATE_GROUP_ID", nullable = false, insertable = false, updatable = false)
+  private UUID surveyTemplateGroupId;
 
   /**
    * The survey template group this survey template group member is associated with.
    */
   @ManyToOne
-  @JoinColumn(name = "TEMPLATE_GROUP_ID", referencedColumnName = "ID")
+  @JoinColumn(name = "SURVEY_TEMPLATE_GROUP_ID", referencedColumnName = "ID")
   private SurveyTemplateGroup group;
 
   /**
@@ -54,6 +54,55 @@ public class SurveyTemplateGroupMember
    */
   @Column(name = "NAME", nullable = false)
   private String name;
+
+  /**
+   * Constructs a new <code>SurveyTemplateGroupMember</code>.
+   */
+  SurveyTemplateGroupMember() {}
+
+  /**
+   * Constructs a new <code>SurveyTemplateGroupMember</code>.
+   *
+   * @param id   the Universally Unique Identifier (UUID) used  to uniquely identify the survey
+   *             template group member
+   * @param name the name of the survey template group member
+   */
+  public SurveyTemplateGroupMember(UUID id, String name)
+  {
+    this.id = id;
+    this.name = name;
+  }
+
+  /**
+   * Indicates whether some other object is "equal to" this one.
+   *
+   * @param obj the reference object with which to compare
+   *
+   * @return <code>true</code> if this object is the same as the obj argument otherwise
+   *         <code>false</code>
+   */
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (this == obj)
+    {
+      return true;
+    }
+
+    if (obj == null)
+    {
+      return false;
+    }
+
+    if (getClass() != obj.getClass())
+    {
+      return false;
+    }
+
+    SurveyTemplateGroupMember other = (SurveyTemplateGroupMember) obj;
+
+    return id.equals(other.id);
+  }
 
   /**
    * Returns the survey template group this survey template group member is associated with.
@@ -94,9 +143,9 @@ public class SurveyTemplateGroupMember
    * @return the Universally Unique Identifier (UUID) used to uniquely  identify the survey template
    *         group this survey template group member is associated with
    */
-  public UUID getTemplateGroupId()
+  public UUID getSurveyTemplateGroupId()
   {
-    return templateGroupId;
+    return surveyTemplateGroupId;
   }
 
   /**
@@ -125,12 +174,50 @@ public class SurveyTemplateGroupMember
    * Set the Universally Unique Identifier (UUID) used to uniquely  identify the survey template
    * group this survey template group member is associated with.
    *
-   * @param templateGroupId the Universally Unique Identifier (UUID) used to uniquely  identify the
+   * @param surveyTemplateGroupId the Universally Unique Identifier (UUID) used to uniquely  identify the
    *                        survey template group this survey template group member is associated
    *                        with
    */
-  public void setTemplateGroupId(UUID templateGroupId)
+  public void setSurveyTemplateGroupId(UUID surveyTemplateGroupId)
   {
-    this.templateGroupId = templateGroupId;
+    this.surveyTemplateGroupId = surveyTemplateGroupId;
+  }
+
+  /**
+   * Returns the String representation of the survey template group member.
+   *
+   * @return the String representation of the survey template group member
+   */
+  @Override
+  public String toString()
+  {
+    StringBuilder buffer = new StringBuilder();
+
+    buffer.append("SurveyTemplateGroupMember {");
+    buffer.append("id=\"").append(getId()).append("\", ");
+    buffer.append("surveyTemplateGroupId=\"").append(getSurveyTemplateGroupId()).append("\", ");
+    buffer.append("name=\"").append(getName()).append("\"");
+    buffer.append("}");
+
+    return buffer.toString();
+  }
+
+  /**
+   * Set the survey template group the survey template group member is associated with.
+   *
+   * @param group the survey template group
+   */
+  protected void setTemplateGroup(SurveyTemplateGroup group)
+  {
+    this.group = group;
+
+    if (group != null)
+    {
+      this.surveyTemplateGroupId = group.getId();
+    }
+    else
+    {
+      this.surveyTemplateGroupId = null;
+    }
   }
 }

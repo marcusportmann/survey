@@ -44,6 +44,11 @@ public class SurveyRequest
   private UUID templateId;
 
   /**
+   * Constructs a new <code>SurveyRequest</code>.
+   */
+  SurveyRequest() {}
+
+  /**
    * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey request.
    *
    * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey request

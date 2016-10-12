@@ -14,6 +14,7 @@ package guru.mmp.survey.model;
 //~--- JDK imports ------------------------------------------------------------
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,8 +39,8 @@ public class SurveyTemplateGroup
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey template this
    * survey template group is associated with.
    */
-  @Column(name = "TEMPLATE_ID", nullable = false, insertable = false, updatable = false)
-  private UUID templateId;
+  @Column(name = "SURVEY_TEMPLATE_ID", nullable = false, insertable = false, updatable = false)
+  private UUID surveyTemplateId;
 
   /**
    * The name of the survey template group.
@@ -57,7 +58,7 @@ public class SurveyTemplateGroup
    * The survey template this survey template group is associated with.
    */
   @ManyToOne
-  @JoinColumn(name = "TEMPLATE_ID", referencedColumnName = "ID")
+  @JoinColumn(name = "SURVEY_TEMPLATE_ID", referencedColumnName = "ID")
   private SurveyTemplate template;
 
   /**
@@ -69,20 +70,66 @@ public class SurveyTemplateGroup
 
   /**
    * Constructs a new <code>SurveyTemplateGroup</code>.
+   */
+  SurveyTemplateGroup() {}
+
+  /**
+   * Constructs a new <code>SurveyTemplateGroup</code>.
    *
    * @param id          the Universally Unique Identifier (UUID) used to uniquely identify the
    *                    survey template group
-   * @param templateId  the Universally Unique Identifier (UUID) used to uniquely identify the
-   *                    survey template this survey template group is associated with
    * @param name        the name of the survey template group
    * @param description the description for the survey template group
    */
-  public SurveyTemplateGroup(UUID id, UUID templateId, String name, String description)
+  public SurveyTemplateGroup(UUID id, String name, String description)
   {
     this.id = id;
-    this.templateId = templateId;
     this.name = name;
     this.description = description;
+    this.members = new ArrayList<>();
+  }
+
+  /**
+   * Add the survey template group member to the survey template group.
+   *
+   * @param member the survey template group member
+   */
+  public void addMember(SurveyTemplateGroupMember member)
+  {
+    member.setTemplateGroup(this);
+
+    members.add(member);
+  }
+
+  /**
+   * Indicates whether some other object is "equal to" this one.
+   *
+   * @param obj the reference object with which to compare
+   *
+   * @return <code>true</code> if this object is the same as the obj argument otherwise
+   *         <code>false</code>
+   */
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (this == obj)
+    {
+      return true;
+    }
+
+    if (obj == null)
+    {
+      return false;
+    }
+
+    if (getClass() != obj.getClass())
+    {
+      return false;
+    }
+
+    SurveyTemplateGroup other = (SurveyTemplateGroup) obj;
+
+    return id.equals(other.id);
   }
 
   /**
@@ -144,9 +191,9 @@ public class SurveyTemplateGroup
    * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey template
    *         this survey template group is associated with
    */
-  public UUID getTemplateId()
+  public UUID getSurveyTemplateId()
   {
-    return templateId;
+    return surveyTemplateId;
   }
 
   /**
@@ -170,9 +217,9 @@ public class SurveyTemplateGroup
   }
 
   /**
-   * Returns the String representation of the survey template.
+   * Returns the String representation of the survey template group.
    *
-   * @return the String representation of the survey template
+   * @return the String representation of the survey template group
    */
   @Override
   public String toString()
@@ -181,7 +228,7 @@ public class SurveyTemplateGroup
 
     buffer.append("SurveyTemplateGroup {");
     buffer.append("id=\"").append(getId()).append("\", ");
-    buffer.append("templateId=\"").append(getTemplateId()).append("\", ");
+    buffer.append("surveyTemplateId=\"").append(getSurveyTemplateId()).append("\", ");
     buffer.append("name=\"").append(getName()).append("\", ");
     buffer.append("description=\"").append(getDescription()).append("\", ");
 
@@ -202,5 +249,24 @@ public class SurveyTemplateGroup
     buffer.append("}");
 
     return buffer.toString();
+  }
+
+  /**
+   * Set the survey template the survey template group is associated with.
+   *
+   * @param template the survey template
+   */
+  protected void setTemplate(SurveyTemplate template)
+  {
+    this.template = template;
+
+    if (template != null)
+    {
+      this.surveyTemplateId = template.getId();
+    }
+    else
+    {
+      this.surveyTemplateId = null;
+    }
   }
 }

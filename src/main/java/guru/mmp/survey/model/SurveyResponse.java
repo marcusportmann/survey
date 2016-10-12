@@ -51,6 +51,11 @@ public class SurveyResponse
   private UUID requestId;
 
   /**
+   * Constructs a new <code>SurveyResponse</code>.
+   */
+  SurveyResponse() {}
+
+  /**
    * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey response.
    *
    * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey response
