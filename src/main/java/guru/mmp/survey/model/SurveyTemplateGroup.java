@@ -36,13 +36,6 @@ public class SurveyTemplateGroup
   private UUID id;
 
   /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the survey template this
-   * survey template group is associated with.
-   */
-  @Column(name = "SURVEY_TEMPLATE_ID", nullable = false, insertable = false, updatable = false)
-  private UUID surveyTemplateId;
-
-  /**
    * The name of the survey template group.
    */
   @Column(name = "NAME", nullable = false)
@@ -58,15 +51,24 @@ public class SurveyTemplateGroup
    * The survey template this survey template group is associated with.
    */
   @ManyToOne
-  @JoinColumn(name = "SURVEY_TEMPLATE_ID", referencedColumnName = "ID")
+  @JoinColumn(name = "SURVEY_TEMPLATE_ID")
   private SurveyTemplate template;
 
   /**
    * The survey template group members associated with the survey template group.
    */
-  @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true,
-      fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.EAGER,
+      orphanRemoval = true)
+  @OrderBy("NAME ASC")
   private List<SurveyTemplateGroupMember> members;
+
+///**
+// * The group rating items that are associated with a survey template group.
+// */
+//@OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.EAGER,
+//  orphanRemoval = true)
+//@OrderBy("NAME ASC")
+//private Set<SurveyTemplateGroupRatingItem> groupRatingItems;
 
   /**
    * Constructs a new <code>SurveyTemplateGroup</code>.
@@ -96,7 +98,7 @@ public class SurveyTemplateGroup
    */
   public void addMember(SurveyTemplateGroupMember member)
   {
-    member.setTemplateGroup(this);
+    member.setGroup(this);
 
     members.add(member);
   }
@@ -155,6 +157,28 @@ public class SurveyTemplateGroup
   }
 
   /**
+   * Retrieve the survey template group member.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           template group member
+   *
+   * @return the survey template group member or <code>null</code> if the survey template group
+   *         member could not be found
+   */
+  public SurveyTemplateGroupMember getMember(UUID id)
+  {
+    for (SurveyTemplateGroupMember member : members)
+    {
+      if (member.getId().equals(id))
+      {
+        return member;
+      }
+    }
+
+    return null;
+  }
+
+  /**
    * Returns the survey template group members associated with the survey template group.
    *
    * @return the survey template group members associated with the survey template group
@@ -175,25 +199,22 @@ public class SurveyTemplateGroup
   }
 
   /**
-   * Returns the survey template this survey template group is associated with.
+   * Remove the survey template group member from the survey template group.
    *
-   * @return the survey template this survey template group is associated with
+   * @param id the Universally Unique Identifier (UUID) used  to uniquely identify the survey
+   *           template group member
    */
-  public SurveyTemplate getTemplate()
+  public void removeMember(UUID id)
   {
-    return template;
-  }
+    for (SurveyTemplateGroupMember member : members)
+    {
+      if (member.getId().equals(id))
+      {
+        members.remove(member);
 
-  /**
-   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey template
-   * this survey template group is associated with.
-   *
-   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey template
-   *         this survey template group is associated with
-   */
-  public UUID getSurveyTemplateId()
-  {
-    return surveyTemplateId;
+        return;
+      }
+    }
   }
 
   /**
@@ -217,6 +238,16 @@ public class SurveyTemplateGroup
   }
 
   /**
+   * Set the survey template this survey template group is associated with.
+   *
+   * @param template the survey template this survey template group is associated with
+   */
+  public void setTemplate(SurveyTemplate template)
+  {
+    this.template = template;
+  }
+
+  /**
    * Returns the String representation of the survey template group.
    *
    * @return the String representation of the survey template group
@@ -228,7 +259,6 @@ public class SurveyTemplateGroup
 
     buffer.append("SurveyTemplateGroup {");
     buffer.append("id=\"").append(getId()).append("\", ");
-    buffer.append("surveyTemplateId=\"").append(getSurveyTemplateId()).append("\", ");
     buffer.append("name=\"").append(getName()).append("\", ");
     buffer.append("description=\"").append(getDescription()).append("\", ");
 
@@ -249,24 +279,5 @@ public class SurveyTemplateGroup
     buffer.append("}");
 
     return buffer.toString();
-  }
-
-  /**
-   * Set the survey template the survey template group is associated with.
-   *
-   * @param template the survey template
-   */
-  protected void setTemplate(SurveyTemplate template)
-  {
-    this.template = template;
-
-    if (template != null)
-    {
-      this.surveyTemplateId = template.getId();
-    }
-    else
-    {
-      this.surveyTemplateId = null;
-    }
   }
 }

@@ -41,6 +41,60 @@ public class SurveyServiceTest
   private ISurveyService surveyService;
 
   /**
+   * Test the remove survey template group member functionality.
+   *
+   * @throws Exception
+   */
+  @Test
+  public void removeSurveyTemplateGroupMemberTest()
+    throws Exception
+  {
+    SurveyTemplate surveyTemplate = getTestSurveyTemplate();
+
+    surveyService.saveSurveyTemplate(surveyTemplate);
+
+    surveyTemplate = surveyService.getSurveyTemplate(surveyTemplate.getId());
+
+    SurveyTemplateGroup firstSurveyTemplateGroup = surveyTemplate.getGroups().iterator().next();
+
+    firstSurveyTemplateGroup.removeMember(firstSurveyTemplateGroup.getMembers().get(0).getId());
+
+    surveyService.saveSurveyTemplate(surveyTemplate);
+
+    SurveyTemplate retrievedSurveyTemplate = surveyService.getSurveyTemplate(
+        surveyTemplate.getId());
+
+    compareSurveyTemplates(surveyTemplate, retrievedSurveyTemplate);
+  }
+
+  /**
+   * Test the remove survey template group functionality.
+   *
+   * @throws Exception
+   */
+  @Test
+  public void removeSurveyTemplateGroupTest()
+    throws Exception
+  {
+    SurveyTemplate surveyTemplate = getTestSurveyTemplate();
+
+    surveyService.saveSurveyTemplate(surveyTemplate);
+
+    surveyTemplate = surveyService.getSurveyTemplate(surveyTemplate.getId());
+
+    SurveyTemplateGroup firstSurveyTemplateGroup = surveyTemplate.getGroups().iterator().next();
+
+    surveyTemplate.removeGroup(firstSurveyTemplateGroup.getId());
+
+    surveyService.saveSurveyTemplate(surveyTemplate);
+
+    SurveyTemplate retrievedSurveyTemplate = surveyService.getSurveyTemplate(
+        surveyTemplate.getId());
+
+    compareSurveyTemplates(surveyTemplate, retrievedSurveyTemplate);
+  }
+
+  /**
    * Test the save new survey template functionality.
    *
    * @throws Exception
@@ -53,7 +107,31 @@ public class SurveyServiceTest
 
     surveyService.saveSurveyTemplate(surveyTemplate);
 
-    System.out.println(surveyTemplate.toString());
+    SurveyTemplate retrievedSurveyTemplate = surveyService.getSurveyTemplate(
+        surveyTemplate.getId());
+
+    compareSurveyTemplates(surveyTemplate, retrievedSurveyTemplate);
+  }
+
+  /**
+   * Test the save updated survey template functionality.
+   *
+   * @throws Exception
+   */
+  @Test
+  public void saveUpdatedSurveyTemplateTest()
+    throws Exception
+  {
+    SurveyTemplate surveyTemplate = getTestSurveyTemplate();
+
+    surveyService.saveSurveyTemplate(surveyTemplate);
+
+    surveyTemplate = surveyService.getSurveyTemplate(surveyTemplate.getId());
+
+    surveyTemplate.setName(surveyTemplate.getName() + " Updated");
+    surveyTemplate.setDescription(surveyTemplate.getDescription() + " Updated");
+
+    surveyService.saveSurveyTemplate(surveyTemplate);
 
     SurveyTemplate retrievedSurveyTemplate = surveyService.getSurveyTemplate(
         surveyTemplate.getId());
@@ -74,56 +152,75 @@ public class SurveyServiceTest
     surveyTemplateGroup.addMember(new SurveyTemplateGroupMember(UUID.randomUUID(),
         "Test Survey Template Group Member 2"));
     surveyTemplateGroup.addMember(new SurveyTemplateGroupMember(UUID.randomUUID(),
-        "Test Survey Template Group Member 3"));
-    surveyTemplateGroup.addMember(new SurveyTemplateGroupMember(UUID.randomUUID(),
         "Test Survey Template Group Member 4"));
+    surveyTemplateGroup.addMember(new SurveyTemplateGroupMember(UUID.randomUUID(),
+        "Test Survey Template Group Member 3"));
 
     surveyTemplate.addGroup(surveyTemplateGroup);
 
+    surveyTemplate.addGroupRatingItem(new SurveyTemplateGroupRatingItem(UUID.randomUUID(),
+        "Test Survey Template Group Rating Item 1", surveyTemplateGroup,
+        SurveyTemplateGroupRatingType.YES_NO_NA));
+    surveyTemplate.addGroupRatingItem(new SurveyTemplateGroupRatingItem(UUID.randomUUID(),
+        "Test Survey Template Group Rating Item 2", surveyTemplateGroup,
+        SurveyTemplateGroupRatingType.YES_NO_NA));
 
-
-//    surveyTemplate.addGroupRatingItem(new SurveyTemplateGroupRatingItem(UUID.randomUUID(), "Test Survey Template Group Rating Item 1", surveyTemplateGroup, SurveyTemplateGroupRatingType.YES_NO_NA));
-//    surveyTemplate.addGroupRatingItem(new SurveyTemplateGroupRatingItem(UUID.randomUUID(), "Test Survey Template Group Rating Item 2", surveyTemplateGroup, SurveyTemplateGroupRatingType.YES_NO_NA));
-//    surveyTemplate.addGroupRatingItem(new SurveyTemplateGroupRatingItem(UUID.randomUUID(), "Test Survey Template Group Rating Item 3", surveyTemplateGroup, SurveyTemplateGroupRatingType.YES_NO_NA));
-//    surveyTemplate.addGroupRatingItem(new SurveyTemplateGroupRatingItem(UUID.randomUUID(), "Test Survey Template Group Rating Item 4", surveyTemplateGroup, SurveyTemplateGroupRatingType.YES_NO_NA));
-//    surveyTemplate.addGroupRatingItem(new SurveyTemplateGroupRatingItem(UUID.randomUUID(), "Test Survey Template Group Rating Item 5", surveyTemplateGroup, SurveyTemplateGroupRatingType.YES_NO_NA));
-
-
+//  surveyTemplate.addGroupRatingItem(new SurveyTemplateGroupRatingItem(UUID.randomUUID(), "Test Survey Template Group Rating Item 3", surveyTemplateGroup, SurveyTemplateGroupRatingType.YES_NO_NA));
+//  surveyTemplate.addGroupRatingItem(new SurveyTemplateGroupRatingItem(UUID.randomUUID(), "Test Survey Template Group Rating Item 4", surveyTemplateGroup, SurveyTemplateGroupRatingType.YES_NO_NA));
+//  surveyTemplate.addGroupRatingItem(new SurveyTemplateGroupRatingItem(UUID.randomUUID(), "Test Survey Template Group Rating Item 5", surveyTemplateGroup, SurveyTemplateGroupRatingType.YES_NO_NA));
 
     return surveyTemplate;
   }
 
-  private void compareSurveyTemplateGroups(SurveyTemplateGroup surveyTemplateGroup1,
-    SurveyTemplateGroup surveyTemplateGroup2)
+  private void compareSurveyTemplateGroupMembers(
+      SurveyTemplateGroupMember surveyTemplateGroupMember1,
+      SurveyTemplateGroupMember surveyTemplateGroupMember2)
   {
-    assertEquals("The ID values for the two survey template groups do not match",
-      surveyTemplateGroup1.getId(), surveyTemplateGroup2.getId());
-    assertEquals("The name values for the two survey template groups do not match",
-      surveyTemplateGroup1.getName(), surveyTemplateGroup2.getName());
-    assertEquals("The description values for the two survey template groups do not match",
-      surveyTemplateGroup1.getDescription(), surveyTemplateGroup2.getDescription());
-    assertEquals("The survey template ID values for the two survey template groups do not match",
-      surveyTemplateGroup1.getSurveyTemplateId(), surveyTemplateGroup2.getSurveyTemplateId());
+    assertEquals("The ID values for the two survey template group members do not match",
+        surveyTemplateGroupMember1.getId(), surveyTemplateGroupMember2.getId());
+    assertEquals("The name values for the two survey template group members do not match",
+        surveyTemplateGroupMember1.getName(), surveyTemplateGroupMember2.getName());
   }
 
-  private void compareSurveyTemplateGroupRatingItems(SurveyTemplateGroupRatingItem surveyTemplateGroupRatingItem1,
-    SurveyTemplateGroupRatingItem surveyTemplateGroupRatingItem2)
+  private void compareSurveyTemplateGroupRatingItems(
+      SurveyTemplateGroupRatingItem surveyTemplateGroupRatingItem1,
+      SurveyTemplateGroupRatingItem surveyTemplateGroupRatingItem2)
   {
     assertEquals("The ID values for the two survey template group rating items do not match",
-      surveyTemplateGroupRatingItem1.getId(), surveyTemplateGroupRatingItem2.getId());
+        surveyTemplateGroupRatingItem1.getId(), surveyTemplateGroupRatingItem2.getId());
     assertEquals("The name values for the two survey template group rating items do not match",
-      surveyTemplateGroupRatingItem1.getName(), surveyTemplateGroupRatingItem2.getName());
-    assertEquals("The survey template ID values for the two survey template group rating items do not match",
-      surveyTemplateGroupRatingItem1.getSurveyTemplateId(), surveyTemplateGroupRatingItem2.getSurveyTemplateId());
-    assertEquals("The survey template group ID values for the two survey template groups do not match",
-      surveyTemplateGroupRatingItem1.getSurveyTemplateGroupId(), surveyTemplateGroupRatingItem2.getSurveyTemplateGroupId());
-    assertEquals("The rating type values for the two survey template group rating items do not match",
-      surveyTemplateGroupRatingItem1.getRatingType(), surveyTemplateGroupRatingItem2.getRatingType());
+        surveyTemplateGroupRatingItem1.getName(), surveyTemplateGroupRatingItem2.getName());
+    assertEquals(
+        "The rating type values for the two survey template group rating items do not match",
+        surveyTemplateGroupRatingItem1.getRatingType(),
+        surveyTemplateGroupRatingItem2.getRatingType());
 
   }
 
+  private void compareSurveyTemplateGroups(SurveyTemplateGroup surveyTemplateGroup1,
+      SurveyTemplateGroup surveyTemplateGroup2)
+  {
+    assertEquals("The ID values for the two survey template groups do not match",
+        surveyTemplateGroup1.getId(), surveyTemplateGroup2.getId());
+    assertEquals("The name values for the two survey template groups do not match",
+        surveyTemplateGroup1.getName(), surveyTemplateGroup2.getName());
+    assertEquals("The description values for the two survey template groups do not match",
+        surveyTemplateGroup1.getDescription(), surveyTemplateGroup2.getDescription());
+    assertEquals(
+        "The survey template group members for the two survey template groups do not match",
+        surveyTemplateGroup1.getMembers().size(), surveyTemplateGroup2.getMembers().size());
 
-    private void compareSurveyTemplates(SurveyTemplate surveyTemplate1,
+    for (SurveyTemplateGroupMember member1 : surveyTemplateGroup1.getMembers())
+    {
+      SurveyTemplateGroupMember member2 = surveyTemplateGroup2.getMember(member1.getId());
+
+      assertNotNull("The survey template group member could not be found", member2);
+
+      compareSurveyTemplateGroupMembers(member1, member2);
+    }
+  }
+
+  private void compareSurveyTemplates(SurveyTemplate surveyTemplate1,
       SurveyTemplate surveyTemplate2)
   {
     assertEquals("The ID values for the two survey templates do not match",
@@ -132,8 +229,8 @@ public class SurveyServiceTest
         surveyTemplate1.getName(), surveyTemplate2.getName());
     assertEquals("The description values for the two survey templates do not match",
         surveyTemplate1.getDescription(), surveyTemplate2.getDescription());
-    assertEquals("The survey template groups for the two survey templates do not match", surveyTemplate1.getGroups()
-        .size(), surveyTemplate2.getGroups().size());
+    assertEquals("The survey template groups for the two survey templates do not match",
+        surveyTemplate1.getGroups().size(), surveyTemplate2.getGroups().size());
 
     for (SurveyTemplateGroup group1 : surveyTemplate1.getGroups())
     {
@@ -144,14 +241,18 @@ public class SurveyServiceTest
       compareSurveyTemplateGroups(group1, group2);
     }
 
+    assertEquals(
+        "The survey template group rating items for the two survey templates do not match",
+        surveyTemplate1.getGroupRatingItems().size(), surveyTemplate2.getGroupRatingItems().size());
+
     for (SurveyTemplateGroupRatingItem groupRatingItem1 : surveyTemplate1.getGroupRatingItems())
     {
-      SurveyTemplateGroupRatingItem groupRatingItem2 = surveyTemplate2.getGroupRatingItem(groupRatingItem1.getId());
+      SurveyTemplateGroupRatingItem groupRatingItem2 = surveyTemplate2.getGroupRatingItem(
+          groupRatingItem1.getId());
 
       assertNotNull("The survey template group rating item could not be found", groupRatingItem2);
 
       compareSurveyTemplateGroupRatingItems(groupRatingItem1, groupRatingItem2);
     }
-
   }
 }

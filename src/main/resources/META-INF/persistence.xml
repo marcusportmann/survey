@@ -10,14 +10,16 @@
     <class>guru.mmp.survey.model.SurveyResponse</class>
     <class>guru.mmp.survey.model.SurveyResponseGroupRatingItem</class>
     <class>guru.mmp.survey.model.SurveyTemplate</class>
+    <!--
     <class>guru.mmp.survey.model.SurveyTemplateGroup</class>
     <class>guru.mmp.survey.model.SurveyTemplateGroupMember</class>
+    -->
     <class>guru.mmp.survey.model.SurveyTemplateGroupRatingItem</class>
     <class>guru.mmp.survey.model.SurveyTemplateGroupRatingType</class>
     <class>guru.mmp.survey.model.SurveyTemplateGroupRatingTypeConverter</class>
 
     <properties>
-      <property name="hibernate.show_sql" value="no" />
+      <property name="hibernate.show_sql" value="true" />
       <property name="openjpa.jdbc.SynchronizeMappings" value="validate"/>
     </properties>
   </persistence-unit>

@@ -17,6 +17,7 @@ import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 /**
  * The <code>SurveyTemplate</code> class implements the Survey Template entity, which represents
@@ -50,20 +51,25 @@ public class SurveyTemplate
   /**
    * The groups of entities that are associated with a survey template.
    */
-  @OneToMany(mappedBy = "template", cascade = CascadeType.ALL, orphanRemoval = true,
-      fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "template", cascade = CascadeType.ALL, fetch = FetchType.EAGER,
+      orphanRemoval = true)
+  @OrderBy("NAME ASC")
   private Set<SurveyTemplateGroup> groups;
 
   /**
    * The group rating items that are associated with a survey template.
    */
-  @OneToMany(mappedBy = "template", cascade = CascadeType.ALL, orphanRemoval = true,
-      fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "template", cascade = CascadeType.ALL, fetch = FetchType.EAGER,
+      orphanRemoval = true)
+  @OrderBy("NAME ASC")
   private Set<SurveyTemplateGroupRatingItem> groupRatingItems;
 
   /**
    * Constructs a new <code>SurveyTemplate</code>.
+   *
+   * Default constructor required for JPA.
    */
+  @SuppressWarnings("unused")
   SurveyTemplate() {}
 
   /**
@@ -233,6 +239,29 @@ public class SurveyTemplate
   }
 
   /**
+   * Remove the survey template group from the survey template.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           template group
+   */
+  public void removeGroup(UUID id)
+  {
+    for (SurveyTemplateGroup group : groups)
+    {
+      if (group.getId().equals(id))
+      {
+        groups.remove(group);
+
+        Predicate<SurveyTemplateGroupRatingItem> groupRatingItemPredicate = p-> p.getGroup() == group;
+
+        groupRatingItems.removeIf(groupRatingItemPredicate);
+
+        return;
+      }
+    }
+  }
+
+  /**
    * Set the description for the survey template.
    *
    * @param description the description for the survey template
@@ -271,7 +300,7 @@ public class SurveyTemplate
   @Override
   public String toString()
   {
-    int count = 0;
+    int count;
 
     StringBuilder buffer = new StringBuilder();
 

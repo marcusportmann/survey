@@ -36,24 +36,17 @@ public class SurveyTemplateGroupMember
   private UUID id;
 
   /**
-   * The Universally Unique Identifier (UUID) used to uniquely  identify the survey template group
-   * this survey template group member is associated with.
+   * The name of the survey template group member.
    */
-  @Column(name = "SURVEY_TEMPLATE_GROUP_ID", nullable = false, insertable = false, updatable = false)
-  private UUID surveyTemplateGroupId;
+  @Column(name = "NAME", nullable = false)
+  private String name;
 
   /**
    * The survey template group this survey template group member is associated with.
    */
   @ManyToOne
-  @JoinColumn(name = "SURVEY_TEMPLATE_GROUP_ID", referencedColumnName = "ID")
+  @JoinColumn(name = "SURVEY_TEMPLATE_GROUP_ID", nullable = false, updatable = false)
   private SurveyTemplateGroup group;
-
-  /**
-   * The name of the survey template group member.
-   */
-  @Column(name = "NAME", nullable = false)
-  private String name;
 
   /**
    * Constructs a new <code>SurveyTemplateGroupMember</code>.
@@ -105,16 +98,6 @@ public class SurveyTemplateGroupMember
   }
 
   /**
-   * Returns the survey template group this survey template group member is associated with.
-   *
-   * @return the survey template group this survey template group member is associated with
-   */
-  public SurveyTemplateGroup getGroup()
-  {
-    return group;
-  }
-
-  /**
    * Returns the Universally Unique Identifier (UUID) used  to uniquely identify the survey
    * template group member.
    *
@@ -134,18 +117,6 @@ public class SurveyTemplateGroupMember
   public String getName()
   {
     return name;
-  }
-
-  /**
-   * Returns the Universally Unique Identifier (UUID) used to uniquely  identify the survey template
-   * group this survey template group member is associated with.
-   *
-   * @return the Universally Unique Identifier (UUID) used to uniquely  identify the survey template
-   *         group this survey template group member is associated with
-   */
-  public UUID getSurveyTemplateGroupId()
-  {
-    return surveyTemplateGroupId;
   }
 
   /**
@@ -171,19 +142,6 @@ public class SurveyTemplateGroupMember
   }
 
   /**
-   * Set the Universally Unique Identifier (UUID) used to uniquely  identify the survey template
-   * group this survey template group member is associated with.
-   *
-   * @param surveyTemplateGroupId the Universally Unique Identifier (UUID) used to uniquely  identify the
-   *                        survey template group this survey template group member is associated
-   *                        with
-   */
-  public void setSurveyTemplateGroupId(UUID surveyTemplateGroupId)
-  {
-    this.surveyTemplateGroupId = surveyTemplateGroupId;
-  }
-
-  /**
    * Returns the String representation of the survey template group member.
    *
    * @return the String representation of the survey template group member
@@ -195,7 +153,6 @@ public class SurveyTemplateGroupMember
 
     buffer.append("SurveyTemplateGroupMember {");
     buffer.append("id=\"").append(getId()).append("\", ");
-    buffer.append("surveyTemplateGroupId=\"").append(getSurveyTemplateGroupId()).append("\", ");
     buffer.append("name=\"").append(getName()).append("\"");
     buffer.append("}");
 
@@ -203,21 +160,12 @@ public class SurveyTemplateGroupMember
   }
 
   /**
-   * Set the survey template group the survey template group member is associated with.
+   * Set the survey template group this survey template group member is associated with.
    *
-   * @param group the survey template group
+   * @param group the survey template group this survey template group member is associated with
    */
-  protected void setTemplateGroup(SurveyTemplateGroup group)
+  protected void setGroup(SurveyTemplateGroup group)
   {
     this.group = group;
-
-    if (group != null)
-    {
-      this.surveyTemplateGroupId = group.getId();
-    }
-    else
-    {
-      this.surveyTemplateGroupId = null;
-    }
   }
 }

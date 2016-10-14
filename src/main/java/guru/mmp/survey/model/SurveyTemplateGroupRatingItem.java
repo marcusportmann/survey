@@ -36,38 +36,23 @@ public class SurveyTemplateGroupRatingItem
   private UUID id;
 
   /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the survey template this
-   * survey template group rating item is associated with.
-   */
-  @Column(name = "SURVEY_TEMPLATE_ID", nullable = false, insertable = false, updatable = false)
-  private UUID surveyTemplateId;
-
-  /**
-   * The survey template this survey template group rating item is associated with.
-   */
-  @ManyToOne
-  @JoinColumn(name = "SURVEY_TEMPLATE_ID", referencedColumnName = "ID")
-  private SurveyTemplate template;
-
-  /**
    * The name of the survey template group rating item.
    */
   @Column(name = "NAME", nullable = false)
   private String name;
 
   /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the survey template group
-   * this survey template group rating item is associated with.
+   * The survey template this survey template group rating item is associated with.
    */
-  @Column(name = "SURVEY_TEMPLATE_GROUP_ID", nullable = false, insertable = false,
-      updatable = false)
-  private UUID surveyTemplateGroupId;
+  @ManyToOne
+  @JoinColumn(name = "SURVEY_TEMPLATE_ID")
+  private SurveyTemplate template;
 
   /**
    * The survey template group this survey template group rating item is associated with.
    */
-  @ManyToOne
-  @JoinColumn(name = "SURVEY_TEMPLATE_GROUP_ID", referencedColumnName = "ID")
+  @ManyToOne(cascade = { CascadeType.MERGE })
+  @JoinColumn(name = "SURVEY_TEMPLATE_GROUP_ID")
   private SurveyTemplateGroup group;
 
   /**
@@ -99,18 +84,31 @@ public class SurveyTemplateGroupRatingItem
   {
     this.id = id;
     this.name = name;
-    this.ratingType = ratingType;
     this.group = group;
 
-    if (group != null)
-    {
-      this.surveyTemplateGroupId = group.getId();
-    }
-    else
-    {
-      this.surveyTemplateGroupId = null;
-    }
+    // this.groupId = group.getId();
+    this.ratingType = ratingType;
   }
+
+///**
+// * Constructs a new <code>SurveyTemplateGroupRatingItem</code>.
+// *
+// * @param id         the Universally Unique Identifier (UUID) used to uniquely identify the survey
+// *                   template group rating item
+// * @param name       the name of the survey template group rating item
+// * @param groupId    the Universally Unique Identifier (UUID) used to uniquely identify the survey
+// *                   template group this survey template group rating item is associated with
+// * @param ratingType the numeric code giving the type of survey template group rating
+// *                   e.g. 1 = Percentage, 2 = Yes/No/NA, etc
+// */
+//public SurveyTemplateGroupRatingItem(UUID id, String name, UUID groupId,
+//    SurveyTemplateGroupRatingType ratingType)
+//{
+//  this.id = id;
+//  this.name = name;
+//  this.groupId = groupId;
+//  this.ratingType = ratingType;
+//}
 
   /**
    * Indicates whether some other object is "equal to" this one.
@@ -153,6 +151,18 @@ public class SurveyTemplateGroupRatingItem
     return group;
   }
 
+///**
+// * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey template
+// * group this survey template group rating item is associated with.
+// *
+// * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey template
+// *         group this survey template group rating item is associated with
+// */
+//public UUID getGroupId()
+//{
+//  return groupId;
+//}
+
   /**
    * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey template
    * group rating item.
@@ -188,40 +198,6 @@ public class SurveyTemplateGroupRatingItem
   }
 
   /**
-   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey template
-   * group this survey template group rating item is associated with.
-   *
-   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey template
-   *         group this survey template group rating item is associated with
-   */
-  public UUID getSurveyTemplateGroupId()
-  {
-    return surveyTemplateGroupId;
-  }
-
-  /**
-   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey template
-   * this survey template group rating item is associated with.
-   *
-   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey template
-   *         this survey template group rating item is associated with
-   */
-  public UUID getSurveyTemplateId()
-  {
-    return surveyTemplateId;
-  }
-
-  /**
-   * Returns the survey template this survey template group rating item is associated with.
-   *
-   * @return the survey template this survey template group rating item is associated with
-   */
-  public SurveyTemplate getTemplate()
-  {
-    return template;
-  }
-
-  /**
    * Set the survey template group this survey template group rating item is associated with.
    *
    * @param group the survey template group this survey template group rating item is associated with
@@ -229,16 +205,19 @@ public class SurveyTemplateGroupRatingItem
   public void setGroup(SurveyTemplateGroup group)
   {
     this.group = group;
-
-    if (group != null)
-    {
-      this.surveyTemplateGroupId = group.getId();
-    }
-    else
-    {
-      this.surveyTemplateGroupId = null;
-    }
   }
+
+///**
+// * Set the Universally Unique Identifier (UUID) used to uniquely identify the survey template
+// * group this survey template group rating item is associated with
+// *
+// * @param groupId the Universally Unique Identifier (UUID) used to uniquely identify the survey
+// *                template group this survey template group rating item is associated with
+// */
+//public void setGroupId(UUID groupId)
+//{
+//  this.groupId = groupId;
+//}
 
   /**
    * Set the Universally Unique Identifier (UUID) used to uniquely identify the survey template
@@ -275,28 +254,13 @@ public class SurveyTemplateGroupRatingItem
   }
 
   /**
-   * Set the Universally Unique Identifier (UUID) used to uniquely identify the survey template
-   * group this survey template group rating item is associated with.
+   * Set the survey template this survey template group rating item is associated with.
    *
-   * @param surveyTemplateGroupId the Universally Unique Identifier (UUID) used to uniquely identify the
-   *                        survey template group this survey template group rating item is
-   *                        associated with
+   * @param template the survey template this survey template group rating item is associated with
    */
-  public void setSurveyTemplateGroupId(UUID surveyTemplateGroupId)
+  public void setTemplate(SurveyTemplate template)
   {
-    this.surveyTemplateGroupId = surveyTemplateGroupId;
-  }
-
-  /**
-   * Set the Universally Unique Identifier (UUID) used to uniquely identify the survey template
-   * this survey template group rating item is associated with.
-   *
-   * @param surveyTemplateId the Universally Unique Identifier (UUID) used to uniquely identify the survey
-   *                   template this survey template group rating item is associated with
-   */
-  public void setSurveyTemplateId(UUID surveyTemplateId)
-  {
-    this.surveyTemplateId = surveyTemplateId;
+    this.template = template;
   }
 
   /**
@@ -311,31 +275,10 @@ public class SurveyTemplateGroupRatingItem
 
     buffer.append("SurveyTemplateGroupRatingItem {");
     buffer.append("id=\"").append(getId()).append("\", ");
-    buffer.append("surveyTemplateId=\"").append(getSurveyTemplateId()).append("\", ");
     buffer.append("name=\"").append(getName()).append("\", ");
-    buffer.append("surveyTemplateGroupId=\"").append(getSurveyTemplateGroupId()).append("\", ");
     buffer.append("ratingType=\"").append(getRatingType().description()).append("\"");
     buffer.append("}");
 
     return buffer.toString();
-  }
-
-  /**
-   * Set the survey template the survey template group rating item is associated with.
-   *
-   * @param template the survey template
-   */
-  protected void setTemplate(SurveyTemplate template)
-  {
-    this.template = template;
-
-    if (template != null)
-    {
-      this.surveyTemplateId = template.getId();
-    }
-    else
-    {
-      this.surveyTemplateId = null;
-    }
   }
 }
