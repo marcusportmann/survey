@@ -42,8 +42,6 @@ public class SurveyServiceTest
 
   /**
    * Test the remove survey template group member functionality.
-   *
-   * @throws Exception
    */
   @Test
   public void removeSurveyTemplateGroupMemberTest()
@@ -68,9 +66,31 @@ public class SurveyServiceTest
   }
 
   /**
+   * Test the remove survey template group rating item functionality.
+   */
+  @Test
+  public void removeSurveyTemplateGroupRatingItem()
+    throws Exception
+  {
+    SurveyTemplate surveyTemplate = getTestSurveyTemplate();
+
+    surveyService.saveSurveyTemplate(surveyTemplate);
+
+    surveyTemplate = surveyService.getSurveyTemplate(surveyTemplate.getId());
+
+    surveyTemplate.getGroupRatingItems().remove(surveyTemplate.getGroupRatingItems().iterator()
+        .next());
+
+    surveyService.saveSurveyTemplate(surveyTemplate);
+
+    SurveyTemplate retrievedSurveyTemplate = surveyService.getSurveyTemplate(
+        surveyTemplate.getId());
+
+    compareSurveyTemplates(surveyTemplate, retrievedSurveyTemplate);
+  }
+
+  /**
    * Test the remove survey template group functionality.
-   *
-   * @throws Exception
    */
   @Test
   public void removeSurveyTemplateGroupTest()
@@ -96,8 +116,6 @@ public class SurveyServiceTest
 
   /**
    * Test the save new survey template functionality.
-   *
-   * @throws Exception
    */
   @Test
   public void saveNewSurveyTemplateTest()
@@ -115,8 +133,6 @@ public class SurveyServiceTest
 
   /**
    * Test the save updated survey template functionality.
-   *
-   * @throws Exception
    */
   @Test
   public void saveUpdatedSurveyTemplateTest()
@@ -165,9 +181,9 @@ public class SurveyServiceTest
         "Test Survey Template Group Rating Item 2", surveyTemplateGroup,
         SurveyTemplateGroupRatingType.YES_NO_NA));
 
-//  surveyTemplate.addGroupRatingItem(new SurveyTemplateGroupRatingItem(UUID.randomUUID(), "Test Survey Template Group Rating Item 3", surveyTemplateGroup, SurveyTemplateGroupRatingType.YES_NO_NA));
-//  surveyTemplate.addGroupRatingItem(new SurveyTemplateGroupRatingItem(UUID.randomUUID(), "Test Survey Template Group Rating Item 4", surveyTemplateGroup, SurveyTemplateGroupRatingType.YES_NO_NA));
-//  surveyTemplate.addGroupRatingItem(new SurveyTemplateGroupRatingItem(UUID.randomUUID(), "Test Survey Template Group Rating Item 5", surveyTemplateGroup, SurveyTemplateGroupRatingType.YES_NO_NA));
+    surveyTemplate.addGroupRatingItem(new SurveyTemplateGroupRatingItem(UUID.randomUUID(),
+        "Test Survey Template Group Rating Item 3", surveyTemplateGroup,
+        SurveyTemplateGroupRatingType.YES_NO_NA));
 
     return surveyTemplate;
   }
