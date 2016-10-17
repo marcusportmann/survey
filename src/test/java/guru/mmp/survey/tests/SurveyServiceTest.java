@@ -308,12 +308,14 @@ public class SurveyServiceTest
   {
     assertEquals("The ID values for the two survey group definitions do not match",
         surveyGroupDefinition1.getId(), surveyGroupDefinition2.getId());
+    assertEquals("The version values for the two survey group definitions do not match",
+      surveyGroupDefinition1.getVersion(), surveyGroupDefinition2.getVersion());
     assertEquals("The name values for the two survey group definitions do not match",
         surveyGroupDefinition1.getName(), surveyGroupDefinition2.getName());
     assertEquals("The description values for the two survey group definitions do not match",
         surveyGroupDefinition1.getDescription(), surveyGroupDefinition2.getDescription());
     assertEquals(
-        "The survey group definition members for the two survey group definitions do not match",
+        "The survey group member definitions for the two survey group definitions do not match",
         surveyGroupDefinition1.getSurveyGroupMemberDefinitions().size(),
         surveyGroupDefinition2.getSurveyGroupMemberDefinitions().size());
 
@@ -333,9 +335,11 @@ public class SurveyServiceTest
       SurveyGroupMemberDefinition surveyGroupMemberDefinition1,
       SurveyGroupMemberDefinition surveyGroupMemberDefinition2)
   {
-    assertEquals("The ID values for the two survey group definition members do not match",
+    assertEquals("The ID values for the two survey group member definitions do not match",
         surveyGroupMemberDefinition1.getId(), surveyGroupMemberDefinition2.getId());
-    assertEquals("The name values for the two survey group definition members do not match",
+    assertEquals("The version values for the two survey group member definitions do not match",
+      surveyGroupMemberDefinition1.getVersion(), surveyGroupMemberDefinition2.getVersion());
+    assertEquals("The name values for the two survey group member definitions do not match",
         surveyGroupMemberDefinition1.getName(), surveyGroupMemberDefinition2.getName());
   }
 
@@ -345,12 +349,16 @@ public class SurveyServiceTest
   {
     assertEquals("The ID values for the two survey group rating item definitions do not match",
         surveyGroupDefinitionRatingItem1.getId(), surveyGroupDefinitionRatingItem2.getId());
+    assertEquals("The version values for the two survey group rating item definitions do not match",
+      surveyGroupDefinitionRatingItem1.getVersion(), surveyGroupDefinitionRatingItem2.getVersion());
     assertEquals("The name values for the two survey group rating item definitions do not match",
         surveyGroupDefinitionRatingItem1.getName(), surveyGroupDefinitionRatingItem2.getName());
     assertEquals(
         "The rating type values for the two survey group rating item definitions do not match",
         surveyGroupDefinitionRatingItem1.getRatingType(),
         surveyGroupDefinitionRatingItem2.getRatingType());
+    assertEquals("The index values for the two survey group rating item definitions do not match",
+      surveyGroupDefinitionRatingItem1.getIndex(), surveyGroupDefinitionRatingItem2.getIndex());
 
   }
 
@@ -359,6 +367,8 @@ public class SurveyServiceTest
   {
     assertEquals("The ID values for the two survey section definitions do not match",
         surveySectionDefinition1.getId(), surveySectionDefinition2.getId());
+    assertEquals("The version values for the two survey section definitions do not match",
+      surveySectionDefinition1.getVersion(), surveySectionDefinition2.getVersion());
     assertEquals("The name values for the two survey section definitions do not match",
         surveySectionDefinition1.getName(), surveySectionDefinition2.getName());
     assertEquals("The description values for the two survey section definitions do not match",

@@ -227,7 +227,8 @@ public class SurveySectionDefinition
 
     buffer.append("SurveySectionDefinition {");
     buffer.append("id=\"").append(getId()).append("\", ");
-    buffer.append("version=\"").append(getVersion()).append("\"");
+    buffer.append("version=\"").append(getVersion()).append("\", ");
+    buffer.append("index=\"").append(getIndex()).append("\"");
     buffer.append("}");
 
     return buffer.toString();

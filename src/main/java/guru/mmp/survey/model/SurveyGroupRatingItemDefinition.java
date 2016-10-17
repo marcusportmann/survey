@@ -50,6 +50,13 @@ public class SurveyGroupRatingItemDefinition
   private String name;
 
   /**
+   * The index used to define the order of the items under the survey definition or survey section
+   * definition this survey group rating item definition is associated with.
+   */
+  @Column(name = "INDEX", nullable = false)
+  private int index;
+
+  /**
    * The survey definition this survey group rating item definition is associated with.
    */
   @SuppressWarnings("unused")
@@ -187,6 +194,18 @@ public class SurveyGroupRatingItemDefinition
   }
 
   /**
+   * Returns the index used to define the order of the items under the survey definition or survey
+   * section definition this survey group rating item definition is associated with.
+   *
+   * @return the index used to define the order of the items under the survey definition or survey
+   *         section definition this survey group rating item definition is associated with
+   */
+  public int getIndex()
+  {
+    return index;
+  }
+
+  /**
    * Returns the name of the survey group rating item definition.
    *
    * @return the name of the survey group rating item definition
@@ -216,6 +235,18 @@ public class SurveyGroupRatingItemDefinition
   public int getVersion()
   {
     return version;
+  }
+
+  /**
+   * Set the index used to define the order of the items under the survey definition or survey
+   * section definition this survey group rating item definition is associated with.
+   *
+   * @param index the index used to define the order of the items under the survey definition or
+   *              survey section definition this survey group rating item definition is associated with
+   */
+  public void setIndex(int index)
+  {
+    index = this.index;
   }
 
   /**
@@ -261,7 +292,7 @@ public class SurveyGroupRatingItemDefinition
   {
     return "SurveyDefinitionGroupRatingItem {" + "id=\"" + getId() + "\", " + "version=\""
         + getVersion() + "\", " + "name=\"" + getName() + "\", " + "ratingType=\""
-        + getRatingType().description() + "\"" + "}";
+        + getRatingType().description() + "\", " + "index=\"" + getIndex() + "\"" + "}";
   }
 
   /**
