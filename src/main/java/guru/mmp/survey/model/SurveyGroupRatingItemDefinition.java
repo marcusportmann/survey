@@ -131,7 +131,8 @@ public class SurveyGroupRatingItemDefinition
    *                                item definition is associated
    */
   public SurveyGroupRatingItemDefinition(UUID id, int version, String name,
-    SurveyGroupDefinition surveyGroupDefinition, SurveyGroupRatingItemType ratingType, SurveySectionDefinition surveySectionDefinition)
+      SurveyGroupDefinition surveyGroupDefinition, SurveyGroupRatingItemType ratingType,
+      SurveySectionDefinition surveySectionDefinition)
   {
     this.id = id;
     this.version = version;

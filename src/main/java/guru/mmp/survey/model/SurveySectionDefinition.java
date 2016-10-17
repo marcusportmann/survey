@@ -30,7 +30,8 @@ public class SurveySectionDefinition
   implements Serializable
 {
   /**
-   * The Universally Unique Identifier (UUID) used, along with the version of the survey section definition, to uniquely identify the survey section definition.
+   * The Universally Unique Identifier (UUID) used, along with the version of the survey section
+   * definition, to uniquely identify the survey section definition.
    */
   @Id
   private UUID id;
@@ -139,9 +140,11 @@ public class SurveySectionDefinition
   }
 
   /**
-   * Returns the Universally Unique Identifier (UUID) used, along with the version of the survey section definition, to uniquely identify the survey section definition.
+   * Returns the Universally Unique Identifier (UUID) used, along with the version of the survey
+   * section definition, to uniquely identify the survey section definition.
    *
-   * @return the Universally Unique Identifier (UUID) used, along with the version of the survey section definition, to uniquely identify the survey section definition
+   * @return the Universally Unique Identifier (UUID) used, along with the version of the survey
+   *         section definition, to uniquely identify the survey section definition
    */
   public UUID getId()
   {
