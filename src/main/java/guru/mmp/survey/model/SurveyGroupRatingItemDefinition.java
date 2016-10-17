@@ -14,6 +14,7 @@ package guru.mmp.survey.model;
 //~--- JDK imports ------------------------------------------------------------
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
@@ -27,6 +28,7 @@ import java.util.UUID;
 @IdClass(VersionedId.class)
 @Table(schema = "SURVEY", name = "SURVEY_GROUP_RATING_ITEM_DEFINITIONS")
 public class SurveyGroupRatingItemDefinition
+  implements Serializable
 {
   /**
    * The Universally Unique Identifier (UUID) used, along with the version of the survey group
@@ -48,13 +50,23 @@ public class SurveyGroupRatingItemDefinition
   private String name;
 
   /**
-   * The survey definition this survey group definition is associated with.
+   * The survey definition this survey group rating item definition is associated with.
    */
   @SuppressWarnings("unused")
   @ManyToOne
   @JoinColumns({ @JoinColumn(name = "SURVEY_DEFINITION_ID", referencedColumnName = "ID") ,
       @JoinColumn(name = "SURVEY_DEFINITION_VERSION", referencedColumnName = "VERSION") })
   private SurveyDefinition surveyDefinition;
+
+  /**
+   * The optional survey section definition this survey group rating item definition is associated
+   * with.
+   */
+  @SuppressWarnings("unused")
+  @ManyToOne(cascade = { CascadeType.MERGE })
+  @JoinColumns({ @JoinColumn(name = "SURVEY_SECTION_DEFINITION_ID", referencedColumnName = "ID") ,
+      @JoinColumn(name = "SURVEY_SECTION_DEFINITION_VERSION", referencedColumnName = "VERSION") })
+  private SurveySectionDefinition surveySectionDefinition;
 
   /**
    * The survey group definition this survey group rating item definition is associated with.
@@ -101,6 +113,32 @@ public class SurveyGroupRatingItemDefinition
     this.name = name;
     this.surveyGroupDefinition = surveyGroupDefinition;
     this.ratingType = ratingType;
+  }
+
+  /**
+   * Constructs a new <code>SurveyDefinitionGroupRatingItem</code>.
+   *
+   * @param id                      the Universally Unique Identifier (UUID) used, along with the
+   *                                version of the survey group rating item definition, to uniquely
+   *                                identify the survey group rating item definition
+   * @param version                 the version of the survey group rating item definition
+   * @param name                    the name of the survey group rating item definition
+   * @param surveyGroupDefinition   the survey group definition this survey group rating item
+   *                                definition is associated with
+   * @param ratingType              the numeric code giving the type of survey group rating item
+   *                                e.g. 1 = Percentage, 2 = Yes/No/NA, etc
+   * @param surveySectionDefinition the optional survey section definition this survey group rating
+   *                                item definition is associated
+   */
+  public SurveyGroupRatingItemDefinition(UUID id, int version, String name,
+    SurveyGroupDefinition surveyGroupDefinition, SurveyGroupRatingItemType ratingType, SurveySectionDefinition surveySectionDefinition)
+  {
+    this.id = id;
+    this.version = version;
+    this.name = name;
+    this.surveyGroupDefinition = surveyGroupDefinition;
+    this.ratingType = ratingType;
+    this.surveySectionDefinition = surveySectionDefinition;
   }
 
   /**
@@ -170,16 +208,6 @@ public class SurveyGroupRatingItemDefinition
   }
 
   /**
-   * Returns the survey group definition this survey group rating item definition is associated with.
-   *
-   * @return the survey group definition this survey group rating item definition is associated with
-   */
-  public SurveyGroupDefinition getSurveyGroupDefinition()
-  {
-    return surveyGroupDefinition;
-  }
-
-  /**
    * Return the version of the survey group rating item definition.
    *
    * @return the version of the survey group rating item definition
@@ -230,11 +258,39 @@ public class SurveyGroupRatingItemDefinition
   @Override
   public String toString()
   {
-    String buffer = "SurveyDefinitionGroupRatingItem {" + "id=\"" + getId() + "\", " + "version=\""
+    return "SurveyDefinitionGroupRatingItem {" + "id=\"" + getId() + "\", " + "version=\""
         + getVersion() + "\", " + "name=\"" + getName() + "\", " + "ratingType=\""
         + getRatingType().description() + "\"" + "}";
+  }
 
-    return buffer;
+  /**
+   * Returns the survey group definition this survey group rating item definition is associated with.
+   *
+   * @return the survey group definition this survey group rating item definition is associated with
+   */
+  SurveyGroupDefinition getSurveyGroupDefinition()
+  {
+    return surveyGroupDefinition;
+  }
+
+  /**
+   * Returns the optional survey section definition this survey group rating item definition is
+   * associated with.
+   *
+   * @return the optional survey section definition this survey group rating item definition is
+   *         associated with
+   */
+  SurveySectionDefinition getSurveySectionDefinition()
+  {
+    return surveySectionDefinition;
+  }
+
+  /**
+   * Increment the version of the survey group rating item definition.
+   */
+  void incrementVersion()
+  {
+    version++;
   }
 
   /**
@@ -243,7 +299,7 @@ public class SurveyGroupRatingItemDefinition
    * @param surveyDefinition the survey definition this survey group rating item definition is
    *                         associated with
    */
-  protected void setSurveyDefinition(SurveyDefinition surveyDefinition)
+  void setSurveyDefinition(SurveyDefinition surveyDefinition)
   {
     this.surveyDefinition = surveyDefinition;
   }

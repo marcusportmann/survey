@@ -20,6 +20,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -97,8 +98,6 @@ public class SurveyService
    * @param surveyDefinition the survey definition
    *
    * @return the saved survey definition
-   *
-   * @throws SurveyServiceException
    */
   @Transactional
   public SurveyDefinition saveSurveyDefinition(SurveyDefinition surveyDefinition)
@@ -106,6 +105,25 @@ public class SurveyService
   {
     try
     {
+      // Check if a survey instance exists for the current version of the survey definition
+      Query surveyInstanceExistsQuery = entityManager.createQuery(
+          "SELECT COUNT(si.id) FROM SurveyInstance si JOIN si.surveyDefinition sd"
+          + " WHERE sd.id = :id AND sd.version = :version");
+
+      surveyInstanceExistsQuery.setParameter("id", surveyDefinition.getId());
+      surveyInstanceExistsQuery.setParameter("version", surveyDefinition.getVersion());
+
+      boolean surveyInstanceExists =
+          (((Number) surveyInstanceExistsQuery.getSingleResult()).intValue() > 0);
+
+      // Duplicate the survey definition and increment the current version if required
+      if (surveyInstanceExists)
+      {
+        surveyDefinition = surveyDefinition.duplicate();
+
+        surveyDefinition.incrementVersion();
+      }
+
       if (!entityManager.contains(surveyDefinition))
       {
         surveyDefinition = entityManager.merge(surveyDefinition);
@@ -117,6 +135,33 @@ public class SurveyService
     {
       throw new SurveyServiceException("Failed to save the survey definition with ID ("
           + surveyDefinition.getId() + ")", e);
+    }
+  }
+
+  /**
+   * Save the survey instance.
+   *
+   * @param surveyInstance the survey instance
+   *
+   * @return the saved survey instance
+   */
+  @Transactional
+  public SurveyInstance saveSurveyInstance(SurveyInstance surveyInstance)
+    throws SurveyServiceException
+  {
+    try
+    {
+      if (!entityManager.contains(surveyInstance))
+      {
+        surveyInstance = entityManager.merge(surveyInstance);
+      }
+
+      return surveyInstance;
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to save the survey instance with ID ("
+          + surveyInstance.getId() + ")", e);
     }
   }
 }

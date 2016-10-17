@@ -28,7 +28,7 @@
 // */
 //@Entity
 //@Table(schema = "SURVEY", name = "SURVEY_RESPONSE_GROUP_RATING_ITEMS")
-//public class SurveyResponseGroupRatingItem
+//public class SurveyResponseGroupRatingItem implements Serializable
 //{
 //  /**
 //   * The Universally Unique Identifier (UUID) used to uniquely identify the survey response group
@@ -215,3 +215,4 @@
 //    this.templateItemId = templateItemId;
 //  }
 //}
+

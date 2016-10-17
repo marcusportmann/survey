@@ -14,6 +14,7 @@ package guru.mmp.survey.model;
 //~--- JDK imports ------------------------------------------------------------
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -29,6 +30,7 @@ import java.util.UUID;
 @IdClass(VersionedId.class)
 @Table(schema = "SURVEY", name = "SURVEY_GROUP_DEFINITIONS")
 public class SurveyGroupDefinition
+  implements Serializable
 {
   /**
    * The Universally Unique Identifier (UUID) used, along with the version of the survey group
@@ -290,11 +292,23 @@ public class SurveyGroupDefinition
   }
 
   /**
+   * Increment the version of the survey group definition.
+   */
+  void incrementVersion()
+  {
+    // Increment the survey group definition
+    version++;
+
+    // Increment the survey group member definitions
+    surveyGroupMemberDefinitions.forEach(SurveyGroupMemberDefinition::incrementVersion);
+  }
+
+  /**
    * Set the survey definition this survey group definition is associated with.
    *
    * @param surveyDefinition the survey definition this survey group definition is associated with
    */
-  protected void setSurveyDefinition(SurveyDefinition surveyDefinition)
+  void setSurveyDefinition(SurveyDefinition surveyDefinition)
   {
     this.surveyDefinition = surveyDefinition;
   }

@@ -14,17 +14,19 @@ package guru.mmp.survey.model;
 //~--- JDK imports ------------------------------------------------------------
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
- * The <code>SurveyInstance</code> class implements the Survey Definition entity, which represents
- * an instance of a survey..
+ * The <code>SurveyInstance</code> class implements the Survey Instance entity, which represents
+ * an instance of a survey.
  *
  * @author Marcus Portmann
  */
 @Entity
 @Table(schema = "SURVEY", name = "SURVEY_INSTANCES")
 public class SurveyInstance
+  implements Serializable
 {
   /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey instance.
@@ -34,7 +36,7 @@ public class SurveyInstance
   private UUID id;
 
   /**
-   * The survey definition this survey group definition is associated with.
+   * The survey definition this survey instance is associated with.
    */
   @SuppressWarnings("unused")
   @ManyToOne
@@ -55,7 +57,7 @@ public class SurveyInstance
    *
    * @param id                the Universally Unique Identifier (UUID) used to uniquely identify the
    *                          survey instance
-   * @param surveyDefinition  the survey definition this survey group definition is associated with
+   * @param surveyDefinition  the survey definition this survey instance is associated with
    */
   public SurveyInstance(UUID id, SurveyDefinition surveyDefinition)
   {
@@ -112,13 +114,10 @@ public class SurveyInstance
   @Override
   public String toString()
   {
-    int count;
-
     StringBuilder buffer = new StringBuilder();
 
     buffer.append("SurveyInstance {");
     buffer.append("id=\"").append(getId()).append("\"");
-
     buffer.append("}");
 
     return buffer.toString();

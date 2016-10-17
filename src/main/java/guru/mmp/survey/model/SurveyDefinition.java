@@ -14,6 +14,7 @@ package guru.mmp.survey.model;
 //~--- JDK imports ------------------------------------------------------------
 
 import javax.persistence.*;
+import java.io.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -29,6 +30,7 @@ import java.util.function.Predicate;
 @IdClass(VersionedId.class)
 @Table(schema = "SURVEY", name = "SURVEY_DEFINITIONS")
 public class SurveyDefinition
+  implements Serializable
 {
   /**
    * The Universally Unique Identifier (UUID) used, along with the version of the survey definition,
@@ -54,6 +56,14 @@ public class SurveyDefinition
    */
   @Column(name = "DESCRIPTION", nullable = false)
   private String description;
+
+  /**
+   * The survey section definitions that are associated with the survey definition.
+   */
+  @OneToMany(mappedBy = "surveyDefinition", cascade = CascadeType.ALL, fetch = FetchType.EAGER,
+      orphanRemoval = true)
+  @OrderBy("INDEX ASC")
+  private Set<SurveySectionDefinition> surveySectionDefinitions;
 
   /**
    * The survey group definitions that are associated with the survey definition.
@@ -94,6 +104,7 @@ public class SurveyDefinition
     this.version = version;
     this.name = name;
     this.description = description;
+    this.surveySectionDefinitions = new LinkedHashSet<>();
     this.surveyGroupDefinitions = new LinkedHashSet<>();
     this.surveyGroupRatingItemDefinitions = new LinkedHashSet<>();
   }
@@ -101,25 +112,38 @@ public class SurveyDefinition
   /**
    * Add the survey group definition to the survey definition.
    *
-   * @param group the survey group definition
+   * @param surveyGroupDefinition the survey group definition
    */
-  public void addSurveyGroupDefinition(SurveyGroupDefinition group)
+  public void addSurveyGroupDefinition(SurveyGroupDefinition surveyGroupDefinition)
   {
-    group.setSurveyDefinition(this);
+    surveyGroupDefinition.setSurveyDefinition(this);
 
-    surveyGroupDefinitions.add(group);
+    surveyGroupDefinitions.add(surveyGroupDefinition);
   }
 
   /**
    * Add the survey group rating item definition to the survey definition.
    *
-   * @param groupRatingItem the survey group rating item definition
+   * @param surveyGroupRatingItemDefinition the survey group rating item definition
    */
-  public void addSurveyGroupRatingItemDefinition(SurveyGroupRatingItemDefinition groupRatingItem)
+  public void addSurveyGroupRatingItemDefinition(
+      SurveyGroupRatingItemDefinition surveyGroupRatingItemDefinition)
   {
-    groupRatingItem.setSurveyDefinition(this);
+    surveyGroupRatingItemDefinition.setSurveyDefinition(this);
 
-    surveyGroupRatingItemDefinitions.add(groupRatingItem);
+    surveyGroupRatingItemDefinitions.add(surveyGroupRatingItemDefinition);
+  }
+
+  /**
+   * Add the survey section definition to the survey definition.
+   *
+   * @param surveySectionDefinition the survey group definition
+   */
+  public void addSurveySectionDefinition(SurveySectionDefinition surveySectionDefinition)
+  {
+    surveySectionDefinition.setSurveyDefinition(this);
+
+    surveySectionDefinitions.add(surveySectionDefinition);
   }
 
   /**
@@ -196,11 +220,11 @@ public class SurveyDefinition
    */
   public SurveyGroupDefinition getSurveyGroupDefinition(UUID id)
   {
-    for (SurveyGroupDefinition group : surveyGroupDefinitions)
+    for (SurveyGroupDefinition surveyGroupDefinition : surveyGroupDefinitions)
     {
-      if (group.getId().equals(id))
+      if (surveyGroupDefinition.getId().equals(id))
       {
-        return group;
+        return surveyGroupDefinition;
       }
     }
 
@@ -228,11 +252,12 @@ public class SurveyDefinition
    */
   public SurveyGroupRatingItemDefinition getSurveyGroupRatingItemDefinition(UUID id)
   {
-    for (SurveyGroupRatingItemDefinition groupRatingItem : surveyGroupRatingItemDefinitions)
+    for (SurveyGroupRatingItemDefinition surveyGroupRatingItemDefinition :
+        surveyGroupRatingItemDefinitions)
     {
-      if (groupRatingItem.getId().equals(id))
+      if (surveyGroupRatingItemDefinition.getId().equals(id))
       {
-        return groupRatingItem;
+        return surveyGroupRatingItemDefinition;
       }
     }
 
@@ -249,6 +274,38 @@ public class SurveyDefinition
   public Set<SurveyGroupRatingItemDefinition> getSurveyGroupRatingItemDefinitions()
   {
     return surveyGroupRatingItemDefinitions;
+  }
+
+  /**
+   * Retrieve the survey section definition.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey section
+   *           definition
+   *
+   * @return the survey section definition or <code>null</code> if the survey section definition
+   *         could not be found
+   */
+  public SurveySectionDefinition getSurveySectionDefinition(UUID id)
+  {
+    for (SurveySectionDefinition surveySectionDefinition : surveySectionDefinitions)
+    {
+      if (surveySectionDefinition.getId().equals(id))
+      {
+        return surveySectionDefinition;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Returns the survey section definitions that are associated with the survey definition.
+   *
+   * @return the survey section definitions that are associated with the survey definition
+   */
+  public Set<SurveySectionDefinition> getSurveySectionDefinitions()
+  {
+    return surveySectionDefinitions;
   }
 
   /**
@@ -269,14 +326,38 @@ public class SurveyDefinition
    */
   public void removeSurveyGroupDefinition(UUID id)
   {
-    for (SurveyGroupDefinition group : surveyGroupDefinitions)
+    for (SurveyGroupDefinition surveyGroupDefinition : surveyGroupDefinitions)
     {
-      if (group.getId().equals(id))
+      if (surveyGroupDefinition.getId().equals(id))
       {
-        surveyGroupDefinitions.remove(group);
+        surveyGroupDefinitions.remove(surveyGroupDefinition);
 
-        Predicate<SurveyGroupRatingItemDefinition> groupRatingItemPredicate = p -> p.getSurveyGroupDefinition()
-            == group;
+        Predicate<SurveyGroupRatingItemDefinition> groupRatingItemPredicate =
+            p -> p.getSurveyGroupDefinition() == surveyGroupDefinition;
+
+        surveyGroupRatingItemDefinitions.removeIf(groupRatingItemPredicate);
+
+        return;
+      }
+    }
+  }
+
+  /**
+   * Remove the survey section definition from the survey definition.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           section definition
+   */
+  public void removeSurveySectionDefinition(UUID id)
+  {
+    for (SurveySectionDefinition surveySectionDefinition : surveySectionDefinitions)
+    {
+      if (surveySectionDefinition.getId().equals(id))
+      {
+        surveySectionDefinitions.remove(surveySectionDefinition);
+
+        Predicate<SurveyGroupRatingItemDefinition> groupRatingItemPredicate =
+            p -> p.getSurveySectionDefinition() == surveySectionDefinition;
 
         surveyGroupRatingItemDefinitions.removeIf(groupRatingItemPredicate);
 
@@ -362,5 +443,56 @@ public class SurveyDefinition
     buffer.append("}");
 
     return buffer.toString();
+  }
+
+  /**
+   * Duplicate (deep-copy) this survey definition.
+   *
+   * @return the duplicated (deep-copied) survey definition
+   */
+  SurveyDefinition duplicate()
+  {
+    byte[] surveyDefinitionData;
+
+    try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      ObjectOutputStream oos = new ObjectOutputStream(baos))
+    {
+      oos.writeObject(this);
+      oos.flush();
+
+      surveyDefinitionData = baos.toByteArray();
+    }
+    catch (Throwable e)
+    {
+      throw new RuntimeException("Failed to duplicate the survey definition", e);
+    }
+
+    try (ByteArrayInputStream bais = new ByteArrayInputStream(surveyDefinitionData);
+      ObjectInputStream ois = new ObjectInputStream(bais))
+    {
+      return (SurveyDefinition) ois.readObject();
+    }
+    catch (Throwable e)
+    {
+      throw new RuntimeException("Failed to duplicate the survey definition", e);
+    }
+  }
+
+  /**
+   * Increment the version of the survey definition.
+   */
+  void incrementVersion()
+  {
+    // Increment the survey definition
+    version++;
+
+    // Increment the survey section definitions
+    surveySectionDefinitions.forEach(SurveySectionDefinition::incrementVersion);
+
+    // Increment the survey group definitions
+    surveyGroupDefinitions.forEach(SurveyGroupDefinition::incrementVersion);
+
+    // Increment the survey group rating item definitions
+    surveyGroupRatingItemDefinitions.forEach(SurveyGroupRatingItemDefinition::incrementVersion);
   }
 }

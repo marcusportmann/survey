@@ -42,9 +42,17 @@ public interface ISurveyService
    * @param surveyDefinition the survey definition
    *
    * @return the saved survey definition
-   *
-   * @throws SurveyServiceException
    */
   SurveyDefinition saveSurveyDefinition(SurveyDefinition surveyDefinition)
+    throws SurveyServiceException;
+
+  /**
+   * Save the survey instance.
+   *
+   * @param surveyInstance the survey instance
+   *
+   * @return the saved survey instance
+   */
+  SurveyInstance saveSurveyInstance(SurveyInstance surveyInstance)
     throws SurveyServiceException;
 }

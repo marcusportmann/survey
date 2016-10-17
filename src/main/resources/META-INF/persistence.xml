@@ -7,6 +7,7 @@
     <jta-data-source>java:app/jdbc/ApplicationDataSource</jta-data-source>
 
     <class>guru.mmp.survey.model.SurveyDefinition</class>
+    <class>guru.mmp.survey.model.SurveySectionDefinition</class>
     <class>guru.mmp.survey.model.SurveyGroupDefinition</class>
     <class>guru.mmp.survey.model.SurveyGroupMemberDefinition</class>
     <class>guru.mmp.survey.model.SurveyGroupRatingItemDefinition</class>

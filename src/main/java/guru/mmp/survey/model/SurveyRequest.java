@@ -27,7 +27,7 @@
 // */
 //@Entity
 //@Table(schema = "SURVEY", name = "SURVEY_REQUESTS")
-//public class SurveyRequest
+//public class SurveyRequest implements Serializable
 //{
 //  /**
 //   * The Universally Unique Identifier (UUID) used to uniquely identify the survey request.
@@ -92,3 +92,4 @@
 //    this.templateId = templateId;
 //  }
 //}
+
