@@ -6,17 +6,23 @@
   <persistence-unit name="Application" transaction-type="JTA">
     <jta-data-source>java:app/jdbc/ApplicationDataSource</jta-data-source>
 
-    <class>guru.mmp.survey.model.SurveyRequest</class>
-    <class>guru.mmp.survey.model.SurveyResponse</class>
-    <class>guru.mmp.survey.model.SurveyResponseGroupRatingItem</class>
-    <class>guru.mmp.survey.model.SurveyTemplate</class>
+    <class>guru.mmp.survey.model.SurveyDefinition</class>
+    <class>guru.mmp.survey.model.SurveyGroupDefinition</class>
+    <class>guru.mmp.survey.model.SurveyGroupMemberDefinition</class>
+    <class>guru.mmp.survey.model.SurveyGroupRatingItemDefinition</class>
+    <class>guru.mmp.survey.model.SurveyGroupRatingItemTypeConverter</class>
+
+    <class>guru.mmp.survey.model.SurveyInstance</class>
+
+
+    <!--<class>guru.mmp.survey.model.SurveyRequest</class>-->
+    <!--<class>guru.mmp.survey.model.SurveyResponse</class>-->
+    <!--<class>guru.mmp.survey.model.SurveyResponseGroupRatingItem</class>-->
+
+
     <!--
-    <class>guru.mmp.survey.model.SurveyTemplateGroup</class>
-    <class>guru.mmp.survey.model.SurveyTemplateGroupMember</class>
-    -->
     <class>guru.mmp.survey.model.SurveyTemplateGroupRatingItem</class>
-    <class>guru.mmp.survey.model.SurveyTemplateGroupRatingType</class>
-    <class>guru.mmp.survey.model.SurveyTemplateGroupRatingTypeConverter</class>
+    -->
 
     <properties>
       <property name="hibernate.show_sql" value="true" />

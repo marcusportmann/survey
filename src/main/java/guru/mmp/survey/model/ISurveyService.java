@@ -24,26 +24,27 @@ import java.util.UUID;
 public interface ISurveyService
 {
   /**
-   * Retrieve the survey template identified by the specified ID.
+   * Retrieve the survey definition identified by the specified ID.
    *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
-   *           template
+   * @param id      the Universally Unique Identifier (UUID) used, along with the version of the
+   *                survey definition, to uniquely identify the survey definition
+   * @param version the version of the survey definition
    *
-   * @return the survey template identified by the specified ID or <code>null</code> if the
-   *         survey template could not be found
+   * @return the survey definition identified by the specified ID and version or <code>null</code>
+   *         if the survey definition could not be found
    */
-  SurveyTemplate getSurveyTemplate(UUID id)
+  SurveyDefinition getSurveyDefinition(UUID id, int version)
     throws SurveyServiceException;
 
   /**
-   * Save the survey template.
+   * Save the survey definition.
    *
-   * @param surveyTemplate the survey template
+   * @param surveyDefinition the survey definition
    *
-   * @return the saved survey template
+   * @return the saved survey definition
    *
    * @throws SurveyServiceException
    */
-  SurveyTemplate saveSurveyTemplate(SurveyTemplate surveyTemplate)
+  SurveyDefinition saveSurveyDefinition(SurveyDefinition surveyDefinition)
     throws SurveyServiceException;
 }

@@ -51,69 +51,72 @@ public class SurveyService
   public SurveyService() {}
 
   /**
-   * Retrieve the survey template identified by the specified ID.
+   * Retrieve the survey definition identified by the specified ID.
    *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
-   *           template
+   * @param id      the Universally Unique Identifier (UUID) used, along with the version of the
+   *                survey definition, to uniquely identify the survey definition
+   * @param version the version of the survey definition
    *
-   * @return the survey template identified by the specified ID or <code>null</code> if the
-   *         survey template could not be found
+   * @return the survey definition identified by the specified ID and version or <code>null</code>
+   *         if the survey definition could not be found
    */
-  public SurveyTemplate getSurveyTemplate(UUID id)
+  public SurveyDefinition getSurveyDefinition(UUID id, int version)
     throws SurveyServiceException
   {
     try
     {
-      String getSurveyTemplateSQL = "SELECT st FROM SurveyTemplate st WHERE st.id = :id";
+      String getSurveyDefinitionSQL =
+          "SELECT st FROM SurveyDefinition st WHERE st.id = :id AND st.version = :version";
 
-      TypedQuery<SurveyTemplate> query = entityManager.createQuery(getSurveyTemplateSQL,
-          SurveyTemplate.class);
+      TypedQuery<SurveyDefinition> query = entityManager.createQuery(getSurveyDefinitionSQL,
+          SurveyDefinition.class);
 
       query.setParameter("id", id);
+      query.setParameter("version", version);
 
-      List<SurveyTemplate> surveyTemplates = query.getResultList();
+      List<SurveyDefinition> surveyDefinitions = query.getResultList();
 
-      if (surveyTemplates.size() == 0)
+      if (surveyDefinitions.size() == 0)
       {
         return null;
       }
       else
       {
-        return surveyTemplates.get(0);
+        return surveyDefinitions.get(0);
       }
     }
     catch (Throwable e)
     {
-      throw new SurveyServiceException("Failed to retrieve the survey template (" + id + ")", e);
+      throw new SurveyServiceException("Failed to retrieve the survey definition (" + id + ")", e);
     }
   }
 
   /**
-   * Save the survey template.
+   * Save the survey definition.
    *
-   * @param surveyTemplate the survey template
+   * @param surveyDefinition the survey definition
    *
-   * @return the saved survey template
+   * @return the saved survey definition
    *
    * @throws SurveyServiceException
    */
   @Transactional
-  public SurveyTemplate saveSurveyTemplate(SurveyTemplate surveyTemplate)
+  public SurveyDefinition saveSurveyDefinition(SurveyDefinition surveyDefinition)
     throws SurveyServiceException
   {
     try
     {
-      if (!entityManager.contains(surveyTemplate))
+      if (!entityManager.contains(surveyDefinition))
       {
-        surveyTemplate = entityManager.merge(surveyTemplate);
+        surveyDefinition = entityManager.merge(surveyDefinition);
       }
 
-      return surveyTemplate;
+      return surveyDefinition;
     }
     catch (Throwable e)
     {
-      throw new SurveyServiceException("Failed to save the survey template with ID ("
-          + surveyTemplate.getId() + ")", e);
+      throw new SurveyServiceException("Failed to save the survey definition with ID ("
+          + surveyDefinition.getId() + ")", e);
     }
   }
 }

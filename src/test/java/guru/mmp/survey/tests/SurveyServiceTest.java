@@ -41,234 +41,236 @@ public class SurveyServiceTest
   private ISurveyService surveyService;
 
   /**
-   * Test the remove survey template group member functionality.
+   * Test the remove survey group definition member functionality.
    */
   @Test
-  public void removeSurveyTemplateGroupMemberTest()
+  public void removeSurveyGroupDefinitionMemberTest()
     throws Exception
   {
-    SurveyTemplate surveyTemplate = getTestSurveyTemplate();
+    SurveyDefinition surveyDefinition = getTestSurveyDefinition();
 
-    surveyService.saveSurveyTemplate(surveyTemplate);
+    surveyService.saveSurveyDefinition(surveyDefinition);
 
-    surveyTemplate = surveyService.getSurveyTemplate(surveyTemplate.getId());
+    surveyDefinition = surveyService.getSurveyDefinition(surveyDefinition.getId(), 1);
 
-    SurveyTemplateGroup firstSurveyTemplateGroup = surveyTemplate.getGroups().iterator().next();
+    SurveyGroupDefinition firstSurveyGroupDefinition = surveyDefinition.getSurveyGroupDefinitions().iterator().next();
 
-    firstSurveyTemplateGroup.removeMember(firstSurveyTemplateGroup.getMembers().get(0).getId());
+    firstSurveyGroupDefinition.removeSurveyGroupMemberDefinition(firstSurveyGroupDefinition.getSurveyGroupMemberDefinitions().get(0).getId());
 
-    surveyService.saveSurveyTemplate(surveyTemplate);
+    surveyService.saveSurveyDefinition(surveyDefinition);
 
-    SurveyTemplate retrievedSurveyTemplate = surveyService.getSurveyTemplate(
-        surveyTemplate.getId());
+    SurveyDefinition retrievedSurveyDefinition = surveyService.getSurveyDefinition(
+        surveyDefinition.getId(), surveyDefinition.getVersion());
 
-    compareSurveyTemplates(surveyTemplate, retrievedSurveyTemplate);
+    compareSurveyDefinitions(surveyDefinition, retrievedSurveyDefinition);
   }
 
   /**
-   * Test the remove survey template group rating item functionality.
+   * Test the remove survey group rating item definition functionality.
    */
   @Test
-  public void removeSurveyTemplateGroupRatingItem()
+  public void removeSurveyGroupDefinitionRatingItem()
     throws Exception
   {
-    SurveyTemplate surveyTemplate = getTestSurveyTemplate();
+    SurveyDefinition surveyDefinition = getTestSurveyDefinition();
 
-    surveyService.saveSurveyTemplate(surveyTemplate);
+    surveyService.saveSurveyDefinition(surveyDefinition);
 
-    surveyTemplate = surveyService.getSurveyTemplate(surveyTemplate.getId());
+    surveyDefinition = surveyService.getSurveyDefinition(surveyDefinition.getId(), 1);
 
-    surveyTemplate.getGroupRatingItems().remove(surveyTemplate.getGroupRatingItems().iterator()
+    surveyDefinition.getSurveyGroupRatingItemDefinitions().remove(surveyDefinition.getSurveyGroupRatingItemDefinitions().iterator()
         .next());
 
-    surveyService.saveSurveyTemplate(surveyTemplate);
+    surveyService.saveSurveyDefinition(surveyDefinition);
 
-    SurveyTemplate retrievedSurveyTemplate = surveyService.getSurveyTemplate(
-        surveyTemplate.getId());
+    SurveyDefinition retrievedSurveyDefinition = surveyService.getSurveyDefinition(
+        surveyDefinition.getId(), surveyDefinition.getVersion());
 
-    compareSurveyTemplates(surveyTemplate, retrievedSurveyTemplate);
+    compareSurveyDefinitions(surveyDefinition, retrievedSurveyDefinition);
   }
 
   /**
-   * Test the remove survey template group functionality.
+   * Test the remove survey group definition functionality.
    */
   @Test
-  public void removeSurveyTemplateGroupTest()
+  public void removeSurveyGroupDefinitionTest()
     throws Exception
   {
-    SurveyTemplate surveyTemplate = getTestSurveyTemplate();
+    SurveyDefinition surveyDefinition = getTestSurveyDefinition();
 
-    surveyService.saveSurveyTemplate(surveyTemplate);
+    surveyService.saveSurveyDefinition(surveyDefinition);
 
-    surveyTemplate = surveyService.getSurveyTemplate(surveyTemplate.getId());
+    surveyDefinition = surveyService.getSurveyDefinition(surveyDefinition.getId(), 1);
 
-    SurveyTemplateGroup firstSurveyTemplateGroup = surveyTemplate.getGroups().iterator().next();
+    SurveyGroupDefinition firstSurveyGroupDefinition = surveyDefinition.getSurveyGroupDefinitions().iterator().next();
 
-    surveyTemplate.removeGroup(firstSurveyTemplateGroup.getId());
+    surveyDefinition.removeSurveyGroupDefinition(firstSurveyGroupDefinition.getId());
 
-    surveyService.saveSurveyTemplate(surveyTemplate);
+    surveyService.saveSurveyDefinition(surveyDefinition);
 
-    SurveyTemplate retrievedSurveyTemplate = surveyService.getSurveyTemplate(
-        surveyTemplate.getId());
+    SurveyDefinition retrievedSurveyDefinition = surveyService.getSurveyDefinition(
+        surveyDefinition.getId(), surveyDefinition.getVersion());
 
-    compareSurveyTemplates(surveyTemplate, retrievedSurveyTemplate);
+    compareSurveyDefinitions(surveyDefinition, retrievedSurveyDefinition);
   }
 
   /**
-   * Test the save new survey template functionality.
+   * Test the save new survey definition functionality.
    */
   @Test
-  public void saveNewSurveyTemplateTest()
+  public void saveNewSurveyDefinitionTest()
     throws Exception
   {
-    SurveyTemplate surveyTemplate = getTestSurveyTemplate();
+    SurveyDefinition surveyDefinition = getTestSurveyDefinition();
 
-    surveyService.saveSurveyTemplate(surveyTemplate);
+    surveyService.saveSurveyDefinition(surveyDefinition);
 
-    SurveyTemplate retrievedSurveyTemplate = surveyService.getSurveyTemplate(
-        surveyTemplate.getId());
+    SurveyDefinition retrievedSurveyDefinition = surveyService.getSurveyDefinition(
+        surveyDefinition.getId(), 1);
 
-    compareSurveyTemplates(surveyTemplate, retrievedSurveyTemplate);
+    compareSurveyDefinitions(surveyDefinition, retrievedSurveyDefinition);
   }
 
   /**
-   * Test the save updated survey template functionality.
+   * Test the save updated survey definition functionality.
    */
   @Test
-  public void saveUpdatedSurveyTemplateTest()
+  public void saveUpdatedSurveyDefinitionTest()
     throws Exception
   {
-    SurveyTemplate surveyTemplate = getTestSurveyTemplate();
+    SurveyDefinition surveyDefinition = getTestSurveyDefinition();
 
-    surveyService.saveSurveyTemplate(surveyTemplate);
+    surveyService.saveSurveyDefinition(surveyDefinition);
 
-    surveyTemplate = surveyService.getSurveyTemplate(surveyTemplate.getId());
+    surveyDefinition = surveyService.getSurveyDefinition(surveyDefinition.getId(), 1);
 
-    surveyTemplate.setName(surveyTemplate.getName() + " Updated");
-    surveyTemplate.setDescription(surveyTemplate.getDescription() + " Updated");
+    surveyDefinition.setName(surveyDefinition.getName() + " Updated");
+    surveyDefinition.setDescription(surveyDefinition.getDescription() + " Updated");
 
-    surveyService.saveSurveyTemplate(surveyTemplate);
+    surveyService.saveSurveyDefinition(surveyDefinition);
 
-    SurveyTemplate retrievedSurveyTemplate = surveyService.getSurveyTemplate(
-        surveyTemplate.getId());
+    SurveyDefinition retrievedSurveyDefinition = surveyService.getSurveyDefinition(
+        surveyDefinition.getId(), surveyDefinition.getVersion());
 
-    compareSurveyTemplates(surveyTemplate, retrievedSurveyTemplate);
+    compareSurveyDefinitions(surveyDefinition, retrievedSurveyDefinition);
   }
 
-  private static synchronized SurveyTemplate getTestSurveyTemplate()
+  private static synchronized SurveyDefinition getTestSurveyDefinition()
   {
-    SurveyTemplate surveyTemplate = new SurveyTemplate(UUID.randomUUID(),
+    SurveyDefinition surveyDefinition = new SurveyDefinition(UUID.randomUUID(), 1,
         "Test Survey Template Name", "Test Survey Template Description");
 
-    SurveyTemplateGroup surveyTemplateGroup = new SurveyTemplateGroup(UUID.randomUUID(),
-        "Test Survey Template Group Name", "Test Survey Template Group Description");
+    SurveyGroupDefinition surveyDefinitionGroup = new SurveyGroupDefinition(UUID.randomUUID(), 1,
+        "Test Survey Group Definition Name", "Test Survey Group Definition Description");
 
-    surveyTemplateGroup.addMember(new SurveyTemplateGroupMember(UUID.randomUUID(),
-        "Test Survey Template Group Member 1"));
-    surveyTemplateGroup.addMember(new SurveyTemplateGroupMember(UUID.randomUUID(),
-        "Test Survey Template Group Member 2"));
-    surveyTemplateGroup.addMember(new SurveyTemplateGroupMember(UUID.randomUUID(),
-        "Test Survey Template Group Member 4"));
-    surveyTemplateGroup.addMember(new SurveyTemplateGroupMember(UUID.randomUUID(),
-        "Test Survey Template Group Member 3"));
+    surveyDefinitionGroup.addSurveyGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.randomUUID(), 1,
+        "Test Survey Group Definition Member 1"));
+    surveyDefinitionGroup.addSurveyGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.randomUUID(), 1,
+        "Test Survey Group Definition Member 2"));
+    surveyDefinitionGroup.addSurveyGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.randomUUID(), 1,
+        "Test Survey Group Definition Member 4"));
+    surveyDefinitionGroup.addSurveyGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.randomUUID(), 1,
+        "Test Survey Group Definition Member 3"));
 
-    surveyTemplate.addGroup(surveyTemplateGroup);
+    surveyDefinition.addSurveyGroupDefinition(surveyDefinitionGroup);
 
-    surveyTemplate.addGroupRatingItem(new SurveyTemplateGroupRatingItem(UUID.randomUUID(),
-        "Test Survey Template Group Rating Item 1", surveyTemplateGroup,
-        SurveyTemplateGroupRatingType.YES_NO_NA));
-    surveyTemplate.addGroupRatingItem(new SurveyTemplateGroupRatingItem(UUID.randomUUID(),
-        "Test Survey Template Group Rating Item 2", surveyTemplateGroup,
-        SurveyTemplateGroupRatingType.YES_NO_NA));
+    surveyDefinition.addSurveyGroupRatingItemDefinition(new SurveyGroupRatingItemDefinition(UUID.randomUUID(), 1,
+        "Test Survey Group Definition Rating Item 1", surveyDefinitionGroup,
+      SurveyGroupRatingItemType.YES_NO_NA));
+    surveyDefinition.addSurveyGroupRatingItemDefinition(new SurveyGroupRatingItemDefinition(UUID.randomUUID(), 1,
+        "Test Survey Group Definition Rating Item 2", surveyDefinitionGroup,
+      SurveyGroupRatingItemType.YES_NO_NA));
 
-    surveyTemplate.addGroupRatingItem(new SurveyTemplateGroupRatingItem(UUID.randomUUID(),
-        "Test Survey Template Group Rating Item 3", surveyTemplateGroup,
-        SurveyTemplateGroupRatingType.YES_NO_NA));
+    surveyDefinition.addSurveyGroupRatingItemDefinition(new SurveyGroupRatingItemDefinition(UUID.randomUUID(), 1,
+        "Test Survey Group Definition Rating Item 3", surveyDefinitionGroup,
+      SurveyGroupRatingItemType.YES_NO_NA));
 
-    return surveyTemplate;
+    return surveyDefinition;
   }
 
-  private void compareSurveyTemplateGroupMembers(
-      SurveyTemplateGroupMember surveyTemplateGroupMember1,
-      SurveyTemplateGroupMember surveyTemplateGroupMember2)
+  private void compareSurveyGroupMemberDefinitions(
+      SurveyGroupMemberDefinition surveyGroupMemberDefinition1,
+      SurveyGroupMemberDefinition surveyGroupMemberDefinition2)
   {
-    assertEquals("The ID values for the two survey template group members do not match",
-        surveyTemplateGroupMember1.getId(), surveyTemplateGroupMember2.getId());
-    assertEquals("The name values for the two survey template group members do not match",
-        surveyTemplateGroupMember1.getName(), surveyTemplateGroupMember2.getName());
+    assertEquals("The ID values for the two survey group definition members do not match",
+        surveyGroupMemberDefinition1.getId(), surveyGroupMemberDefinition2.getId());
+    assertEquals("The name values for the two survey group definition members do not match",
+        surveyGroupMemberDefinition1.getName(), surveyGroupMemberDefinition2.getName());
   }
 
-  private void compareSurveyTemplateGroupRatingItems(
-      SurveyTemplateGroupRatingItem surveyTemplateGroupRatingItem1,
-      SurveyTemplateGroupRatingItem surveyTemplateGroupRatingItem2)
+  private void compareSurveyGroupRatingItemDefinitions(
+      SurveyGroupRatingItemDefinition surveyDefinitionGroupRatingItem1,
+      SurveyGroupRatingItemDefinition surveyDefinitionGroupRatingItem2)
   {
-    assertEquals("The ID values for the two survey template group rating items do not match",
-        surveyTemplateGroupRatingItem1.getId(), surveyTemplateGroupRatingItem2.getId());
-    assertEquals("The name values for the two survey template group rating items do not match",
-        surveyTemplateGroupRatingItem1.getName(), surveyTemplateGroupRatingItem2.getName());
+    assertEquals("The ID values for the two survey group rating item definitions do not match",
+        surveyDefinitionGroupRatingItem1.getId(), surveyDefinitionGroupRatingItem2.getId());
+    assertEquals("The name values for the two survey group rating item definitions do not match",
+        surveyDefinitionGroupRatingItem1.getName(), surveyDefinitionGroupRatingItem2.getName());
     assertEquals(
-        "The rating type values for the two survey template group rating items do not match",
-        surveyTemplateGroupRatingItem1.getRatingType(),
-        surveyTemplateGroupRatingItem2.getRatingType());
+        "The rating type values for the two survey group rating item definitions do not match",
+        surveyDefinitionGroupRatingItem1.getRatingType(),
+        surveyDefinitionGroupRatingItem2.getRatingType());
 
   }
 
-  private void compareSurveyTemplateGroups(SurveyTemplateGroup surveyTemplateGroup1,
-      SurveyTemplateGroup surveyTemplateGroup2)
+  private void compareSurveyGroupDefinitions(SurveyGroupDefinition surveyDefinitionGroup1,
+      SurveyGroupDefinition surveyDefinitionGroup2)
   {
-    assertEquals("The ID values for the two survey template groups do not match",
-        surveyTemplateGroup1.getId(), surveyTemplateGroup2.getId());
-    assertEquals("The name values for the two survey template groups do not match",
-        surveyTemplateGroup1.getName(), surveyTemplateGroup2.getName());
-    assertEquals("The description values for the two survey template groups do not match",
-        surveyTemplateGroup1.getDescription(), surveyTemplateGroup2.getDescription());
+    assertEquals("The ID values for the two survey group definitions do not match",
+        surveyDefinitionGroup1.getId(), surveyDefinitionGroup2.getId());
+    assertEquals("The name values for the two survey group definitions do not match",
+        surveyDefinitionGroup1.getName(), surveyDefinitionGroup2.getName());
+    assertEquals("The description values for the two survey group definitions do not match",
+        surveyDefinitionGroup1.getDescription(), surveyDefinitionGroup2.getDescription());
     assertEquals(
-        "The survey template group members for the two survey template groups do not match",
-        surveyTemplateGroup1.getMembers().size(), surveyTemplateGroup2.getMembers().size());
+        "The survey group definition members for the two survey group definitions do not match",
+        surveyDefinitionGroup1.getSurveyGroupMemberDefinitions().size(), surveyDefinitionGroup2.getSurveyGroupMemberDefinitions().size());
 
-    for (SurveyTemplateGroupMember member1 : surveyTemplateGroup1.getMembers())
+    for (SurveyGroupMemberDefinition member1 : surveyDefinitionGroup1.getSurveyGroupMemberDefinitions())
     {
-      SurveyTemplateGroupMember member2 = surveyTemplateGroup2.getMember(member1.getId());
+      SurveyGroupMemberDefinition member2 = surveyDefinitionGroup2.getSurveyGroupMemberDefinition(member1.getId());
 
-      assertNotNull("The survey template group member could not be found", member2);
+      assertNotNull("The survey group definition member could not be found", member2);
 
-      compareSurveyTemplateGroupMembers(member1, member2);
+      compareSurveyGroupMemberDefinitions(member1, member2);
     }
   }
 
-  private void compareSurveyTemplates(SurveyTemplate surveyTemplate1,
-      SurveyTemplate surveyTemplate2)
+  private void compareSurveyDefinitions(SurveyDefinition surveyDefinition1,
+      SurveyDefinition surveyDefinition2)
   {
-    assertEquals("The ID values for the two survey templates do not match",
-        surveyTemplate1.getId(), surveyTemplate2.getId());
-    assertEquals("The name values for the two survey templates do not match",
-        surveyTemplate1.getName(), surveyTemplate2.getName());
-    assertEquals("The description values for the two survey templates do not match",
-        surveyTemplate1.getDescription(), surveyTemplate2.getDescription());
-    assertEquals("The survey template groups for the two survey templates do not match",
-        surveyTemplate1.getGroups().size(), surveyTemplate2.getGroups().size());
+    assertEquals("The ID values for the two survey definitions do not match",
+        surveyDefinition1.getId(), surveyDefinition2.getId());
+    assertEquals("The version values for the two survey definitions do not match",
+      surveyDefinition1.getVersion(), surveyDefinition2.getVersion());
+    assertEquals("The name values for the two survey definitions do not match",
+        surveyDefinition1.getName(), surveyDefinition2.getName());
+    assertEquals("The description values for the two survey definitions do not match",
+        surveyDefinition1.getDescription(), surveyDefinition2.getDescription());
+    assertEquals("The survey group definitions for the two survey definitions do not match",
+        surveyDefinition1.getSurveyGroupDefinitions().size(), surveyDefinition2.getSurveyGroupDefinitions().size());
 
-    for (SurveyTemplateGroup group1 : surveyTemplate1.getGroups())
+    for (SurveyGroupDefinition group1 : surveyDefinition1.getSurveyGroupDefinitions())
     {
-      SurveyTemplateGroup group2 = surveyTemplate2.getGroup(group1.getId());
+      SurveyGroupDefinition group2 = surveyDefinition2.getSurveyGroupDefinition(group1.getId());
 
-      assertNotNull("The survey template group could not be found", group2);
+      assertNotNull("The survey group definition could not be found", group2);
 
-      compareSurveyTemplateGroups(group1, group2);
+      compareSurveyGroupDefinitions(group1, group2);
     }
 
     assertEquals(
-        "The survey template group rating items for the two survey templates do not match",
-        surveyTemplate1.getGroupRatingItems().size(), surveyTemplate2.getGroupRatingItems().size());
+        "The survey group rating item definitions for the two survey definitions do not match",
+        surveyDefinition1.getSurveyGroupRatingItemDefinitions().size(), surveyDefinition2.getSurveyGroupRatingItemDefinitions().size());
 
-    for (SurveyTemplateGroupRatingItem groupRatingItem1 : surveyTemplate1.getGroupRatingItems())
+    for (SurveyGroupRatingItemDefinition groupRatingItem1 : surveyDefinition1.getSurveyGroupRatingItemDefinitions())
     {
-      SurveyTemplateGroupRatingItem groupRatingItem2 = surveyTemplate2.getGroupRatingItem(
+      SurveyGroupRatingItemDefinition groupRatingItem2 = surveyDefinition2.getSurveyGroupRatingItemDefinition(
           groupRatingItem1.getId());
 
-      assertNotNull("The survey template group rating item could not be found", groupRatingItem2);
+      assertNotNull("The survey group rating item definition could not be found", groupRatingItem2);
 
-      compareSurveyTemplateGroupRatingItems(groupRatingItem1, groupRatingItem2);
+      compareSurveyGroupRatingItemDefinitions(groupRatingItem1, groupRatingItem2);
     }
   }
 }

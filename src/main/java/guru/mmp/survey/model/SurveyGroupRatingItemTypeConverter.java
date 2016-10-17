@@ -16,13 +16,13 @@ package guru.mmp.survey.model;
 import javax.persistence.AttributeConverter;
 
 /**
- * The <code>SurveyTemplateGroupRatingTypeConverter</code> class implements the custom JPA converter
- * for the <code>SurveyTemplateGroupRatingType</code> class.
+ * The <code>SurveyGroupRatingItemTypeConverter</code> class implements the custom JPA converter
+ * for the <code>SurveyGroupRatingItemType</code> class.
  *
  * @author Marcus Portmann
  */
-public class SurveyTemplateGroupRatingTypeConverter
-  implements AttributeConverter<SurveyTemplateGroupRatingType, Integer>
+public class SurveyGroupRatingItemTypeConverter
+  implements AttributeConverter<SurveyGroupRatingItemType, Integer>
 {
   /**
    * Converts the value stored in the entity attribute into the data representation to be stored in
@@ -33,7 +33,7 @@ public class SurveyTemplateGroupRatingTypeConverter
    * @return the converted data to be stored in the database column
    */
   @Override
-  public Integer convertToDatabaseColumn(SurveyTemplateGroupRatingType attribute)
+  public Integer convertToDatabaseColumn(SurveyGroupRatingItemType attribute)
   {
     return attribute.code();
   }
@@ -49,8 +49,8 @@ public class SurveyTemplateGroupRatingTypeConverter
    * @return the converted value to be stored in the entity attribute
    */
   @Override
-  public SurveyTemplateGroupRatingType convertToEntityAttribute(Integer dbData)
+  public SurveyGroupRatingItemType convertToEntityAttribute(Integer dbData)
   {
-    return SurveyTemplateGroupRatingType.fromCode(dbData);
+    return SurveyGroupRatingItemType.fromCode(dbData);
   }
 }

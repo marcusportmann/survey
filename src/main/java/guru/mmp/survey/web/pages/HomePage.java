@@ -15,11 +15,9 @@ import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.pages.AnonymousOnlyWebPage;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
 import guru.mmp.survey.model.ISurveyService;
-import guru.mmp.survey.model.SurveyTemplate;
 import org.apache.wicket.markup.html.form.Button;
 
 import javax.inject.Inject;
-import java.util.UUID;
 
 /**
  * The <code>HomePage</code> class implements the "Home"
@@ -55,7 +53,7 @@ public class HomePage
 
         try
         {
-          //SurveyTemplate surveyTemplate = surveyService.getSurveyTemplate(surveyTemplateId);
+          //SurveyDefinition surveyTemplate = surveyService.getSurveyDefinition(surveyTemplateId);
 
 
 
@@ -70,7 +68,7 @@ public class HomePage
         }
         catch (Throwable e)
         {
-          throw new WebApplicationException("Failed to retrieve the survey template (" + surveyTemplateId + ")", e);
+          throw new WebApplicationException("Failed to retrieve the survey definition (" + surveyTemplateId + ")", e);
         }
 
         System.out.println("Hello World!!!");
