@@ -52,7 +52,7 @@ public class SurveyService
   public SurveyService() {}
 
   /**
-   * Retrieve the survey definition identified by the specified ID.
+   * Retrieve the survey definition identified by the specified ID and version.
    *
    * @param id      the Universally Unique Identifier (UUID) used, along with the version of the
    *                survey definition, to uniquely identify the survey definition
@@ -89,6 +89,118 @@ public class SurveyService
     catch (Throwable e)
     {
       throw new SurveyServiceException("Failed to retrieve the survey definition (" + id + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the survey instance identified by the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey instance
+   *
+   * @return the survey instance identified by the specified ID or <code>null</code> if the survey
+   *         instance could not be found
+   */
+  public SurveyInstance getSurveyInstance(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String getSurveyInstanceSQL = "SELECT si FROM SurveyInstance si WHERE si.id = :id";
+
+      TypedQuery<SurveyInstance> query = entityManager.createQuery(getSurveyInstanceSQL,
+          SurveyInstance.class);
+
+      query.setParameter("id", id);
+
+      List<SurveyInstance> surveyInstances = query.getResultList();
+
+      if (surveyInstances.size() == 0)
+      {
+        return null;
+      }
+      else
+      {
+        return surveyInstances.get(0);
+      }
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to retrieve the survey instance (" + id + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the survey request identified by the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey request
+   *
+   * @return the survey request identified by the specified ID or <code>null</code> if the survey
+   *         request could not be found
+   */
+  public SurveyRequest getSurveyRequest(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String getSurveyRequestSQL = "SELECT sr FROM SurveyRequest sr WHERE sr.id = :id";
+
+      TypedQuery<SurveyRequest> query = entityManager.createQuery(getSurveyRequestSQL,
+          SurveyRequest.class);
+
+      query.setParameter("id", id);
+
+      List<SurveyRequest> surveyRequests = query.getResultList();
+
+      if (surveyRequests.size() == 0)
+      {
+        return null;
+      }
+      else
+      {
+        return surveyRequests.get(0);
+      }
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to retrieve the survey request (" + id + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the survey response identified by the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           response
+   *
+   * @return the survey response identified by the specified ID or <code>null</code> if the survey
+   *         response could not be found
+   */
+  public SurveyResponse getSurveyResponse(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String getSurveyResponseSQL = "SELECT sr FROM SurveyResponse sr WHERE sr.id = :id";
+
+      TypedQuery<SurveyResponse> query = entityManager.createQuery(getSurveyResponseSQL,
+          SurveyResponse.class);
+
+      query.setParameter("id", id);
+
+      List<SurveyResponse> surveyResponses = query.getResultList();
+
+      if (surveyResponses.size() == 0)
+      {
+        return null;
+      }
+      else
+      {
+        return surveyResponses.get(0);
+      }
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to retrieve the survey response (" + id + ")", e);
     }
   }
 
@@ -162,6 +274,33 @@ public class SurveyService
     {
       throw new SurveyServiceException("Failed to save the survey instance with ID ("
           + surveyInstance.getId() + ")", e);
+    }
+  }
+
+  /**
+   * Save the survey response.
+   *
+   * @param surveyResponse the survey response
+   *
+   * @return the saved survey response
+   */
+  @Transactional
+  public SurveyResponse saveSurveyResponse(SurveyResponse surveyResponse)
+    throws SurveyServiceException
+  {
+    try
+    {
+      if (!entityManager.contains(surveyResponse))
+      {
+        surveyResponse = entityManager.merge(surveyResponse);
+      }
+
+      return surveyResponse;
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to save the survey response with ID ("
+          + surveyResponse.getId() + ")", e);
     }
   }
 }

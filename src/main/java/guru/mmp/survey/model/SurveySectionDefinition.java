@@ -11,11 +11,17 @@
 
 package guru.mmp.survey.model;
 
-//~--- JDK imports ------------------------------------------------------------
+//~--- non-JDK imports --------------------------------------------------------
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+
+//~--- JDK imports ------------------------------------------------------------
 
 /**
  * The <code>SurveySectionDefinition</code> class implements the Survey Section Definition entity,
@@ -23,56 +29,38 @@ import java.util.UUID;
  *
  * @author Marcus Portmann
  */
-@Entity
-@IdClass(VersionedId.class)
-@Table(schema = "SURVEY", name = "SURVEY_SECTION_DEFINITIONS")
+@JsonPropertyOrder({ "id", "name", "description", "groupMemberDefinitions" })
 public class SurveySectionDefinition
   implements Serializable
 {
   /**
-   * The Universally Unique Identifier (UUID) used, along with the version of the survey section
-   * definition, to uniquely identify the survey section definition.
+   * The Universally Unique Identifier (UUID) used to uniquely identify the survey section
+   * definition.
    */
-  @Id
+  @JsonProperty
   private UUID id;
-
-  /**
-   * The version of the survey section definition
-   */
-  @Id
-  private int version;
 
   /**
    * The name of the survey section definition.
    */
-  @Column(name = "NAME", nullable = false)
+  @JsonProperty
   private String name;
 
   /**
    * The description for the survey section definition.
    */
-  @Column(name = "DESCRIPTION", nullable = false)
+  @JsonProperty
   private String description;
 
   /**
-   * The index used to define the order of the survey section definitions for a survey definition.
+   * The survey group rating item definitions that are associated with the survey section
+   * definition.
    */
-  @Column(name = "INDEX", nullable = false)
-  private int index;
-
-  /**
-   * The survey definition this survey section definition is associated with.
-   */
-  @SuppressWarnings("unused")
-  @ManyToOne
-  @JoinColumns({ @JoinColumn(name = "SURVEY_DEFINITION_ID", referencedColumnName = "ID") ,
-      @JoinColumn(name = "SURVEY_DEFINITION_VERSION", referencedColumnName = "VERSION") })
-  private SurveyDefinition surveyDefinition;
+  @JsonProperty
+  private List<SurveyGroupRatingItemDefinition> groupRatingItemDefinitions;
 
   /**
    * Constructs a new <code>SurveySectionDefinition</code>.
-   *
-   * Default constructor required for JPA.
    */
   @SuppressWarnings("unused")
   SurveySectionDefinition() {}
@@ -80,22 +68,28 @@ public class SurveySectionDefinition
   /**
    * Constructs a new <code>SurveySectionDefinition</code>.
    *
-   * @param id           the Universally Unique Identifier (UUID) used, along with the version of
-   *                     the survey section definition, to uniquely identify the survey section
-   *                     definition
-   * @param version      the version of the survey section definition
-   * @param index        the index used to define the order of the survey section definitions for a
-   *                     survey definition
-   * @param name         the name of the survey section definition
-   * @param description  the description for the survey section definition
+   * @param id          the Universally Unique Identifier (UUID) used to uniquely identify the
+   *                    survey section definition
+   * @param name        the name of the survey section definition
+   * @param description the description for the survey section definition
    */
-  public SurveySectionDefinition(UUID id, int version, int index, String name, String description)
+  public SurveySectionDefinition(UUID id, String name, String description)
   {
     this.id = id;
-    this.version = version;
-    this.index = index;
     this.name = name;
     this.description = description;
+    this.groupRatingItemDefinitions = new ArrayList<>();
+  }
+
+  /**
+   * Add the survey group rating item definition to the survey section definition.
+   *
+   * @param groupRatingItemDefinition the survey group rating item definition
+   */
+  public void addGroupRatingItemDefinition(
+      SurveyGroupRatingItemDefinition groupRatingItemDefinition)
+  {
+    groupRatingItemDefinitions.add(groupRatingItemDefinition);
   }
 
   /**
@@ -140,27 +134,49 @@ public class SurveySectionDefinition
   }
 
   /**
-   * Returns the Universally Unique Identifier (UUID) used, along with the version of the survey
-   * section definition, to uniquely identify the survey section definition.
+   * Retrieve the survey group rating item definition.
    *
-   * @return the Universally Unique Identifier (UUID) used, along with the version of the survey
-   *         section definition, to uniquely identify the survey section definition
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   *           rating item definition
+   *
+   * @return the survey group rating item definition or <code>null</code> if the survey group rating
+   *         item definition could not be found
+   */
+  public SurveyGroupRatingItemDefinition getGroupRatingItemDefinition(UUID id)
+  {
+    for (SurveyGroupRatingItemDefinition groupRatingItemDefinition : groupRatingItemDefinitions)
+    {
+      if (groupRatingItemDefinition.getId().equals(id))
+      {
+        return groupRatingItemDefinition;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Returns the survey group rating item definitions that are associated with the survey section
+   * definition.
+   *
+   * @return the survey group rating item definitions that are associated with the survey section
+   *         definition
+   */
+  public List<SurveyGroupRatingItemDefinition> getGroupRatingItemDefinitions()
+  {
+    return groupRatingItemDefinitions;
+  }
+
+  /**
+   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey section
+   * definition.
+   *
+   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey section
+   *         definition
    */
   public UUID getId()
   {
     return id;
-  }
-
-  /**
-   * Returns the index used to define the order of the survey section definitions for a survey
-   * definition.
-   *
-   * @return the index used to define the order of the survey section definitions for a survey
-   *         definition
-   */
-  public int getIndex()
-  {
-    return index;
   }
 
   /**
@@ -174,13 +190,22 @@ public class SurveySectionDefinition
   }
 
   /**
-   * Returns the version of the survey section definition.
+   * Remove the survey group rating item definition from the survey definition.
    *
-   * @return the version of the survey section definition
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   *           rating item definition
    */
-  public int getVersion()
+  public void removeGroupRatingItemDefinition(UUID id)
   {
-    return version;
+    for (SurveyGroupRatingItemDefinition groupRatingItemDefinition : groupRatingItemDefinitions)
+    {
+      if (groupRatingItemDefinition.getId().equals(id))
+      {
+        groupRatingItemDefinitions.remove(groupRatingItemDefinition);
+
+        return;
+      }
+    }
   }
 
   /**
@@ -191,18 +216,6 @@ public class SurveySectionDefinition
   public void setDescription(String description)
   {
     this.description = description;
-  }
-
-  /**
-   * Set the index used to define the order of the survey section definitions for a survey
-   * definition.
-   *
-   * @param index the index used to define the order of the survey section definitions for a survey
-   *              definition
-   */
-  public void setIndex(int index)
-  {
-    this.index = index;
   }
 
   /**
@@ -223,32 +236,7 @@ public class SurveySectionDefinition
   @Override
   public String toString()
   {
-    StringBuilder buffer = new StringBuilder();
-
-    buffer.append("SurveySectionDefinition {");
-    buffer.append("id=\"").append(getId()).append("\", ");
-    buffer.append("version=\"").append(getVersion()).append("\", ");
-    buffer.append("index=\"").append(getIndex()).append("\"");
-    buffer.append("}");
-
-    return buffer.toString();
-  }
-
-  /**
-   * Increment the version of the survey section definition.
-   */
-  void incrementVersion()
-  {
-    version++;
-  }
-
-  /**
-   * Set the survey definition this survey section definition is associated with.
-   *
-   * @param surveyDefinition the survey definition this survey section definition is associated with
-   */
-  void setSurveyDefinition(SurveyDefinition surveyDefinition)
-  {
-    this.surveyDefinition = surveyDefinition;
+    return String.format("SurveySectionDefinition {id=\"%s\", name=\"%s\"}",
+      getId(), getName());
   }
 }

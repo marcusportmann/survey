@@ -11,6 +11,11 @@
 
 package guru.mmp.survey.model;
 
+//~--- non-JDK imports --------------------------------------------------------
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * The <code>SurveyGroupRatingItemType</code> class implements the Survey Group Definition Rating
  * Type entity, which represents a type of group rating item that can form part of a survey definition.
@@ -31,12 +36,13 @@ public enum SurveyGroupRatingItemType
   }
 
   /**
-   * Returns the survey group definition rating type given by the specified numeric code value.
+   * Returns the survey group rating item type given by the specified numeric code value.
    *
-   * @param code the numeric code value identifying the survey group definition rating type
+   * @param code the numeric code value identifying the survey group rating item type
    *
-   * @return the survey group definition rating type given by the specified numeric code value
+   * @return the survey group rating item type given by the specified numeric code value
    */
+  @JsonCreator
   public static SurveyGroupRatingItemType fromCode(int code)
   {
     switch (code)
@@ -53,19 +59,40 @@ public enum SurveyGroupRatingItemType
   }
 
   /**
-   * Returns the numeric code for the survey group definition rating type.
+   * Returns the numeric code for the survey group rating item type.
    *
-   * @return the numeric code for the survey group definition rating type
+   * @return the numeric code for the survey group rating item type
    */
+  @JsonValue
   public int code()
   {
     return code;
   }
 
   /**
-   * Returns the description for the survey group definition rating type.
+   * Returns the default rating for the survey group rating item type.
    *
-   * @return the description for the survey group definition rating type
+   * @return the default rating for the survey group rating item type
+   */
+  public int defaultRating()
+  {
+    switch (code)
+    {
+      case 1:
+        return 0;
+
+      case 2:
+        return -1;
+
+      default:
+        return 0;
+    }
+  }
+
+  /**
+   * Returns the description for the survey group rating item type.
+   *
+   * @return the description for the survey group rating item type
    */
   public String description()
   {

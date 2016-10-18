@@ -16,12 +16,16 @@ import guru.mmp.application.web.pages.AnonymousOnlyWebPage;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
 import guru.mmp.survey.model.ISurveyService;
 import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import javax.inject.Inject;
 
 /**
  * The <code>HomePage</code> class implements the "Home"
  * page for the web application.
+ *
+ * @author Marcus Portmann
  */
 @AnonymousOnlyWebPage
 public class HomePage 
@@ -41,6 +45,10 @@ public class HomePage
   public HomePage()
   {
     super("Home");
+
+    PageParameters captureSurveyResponsePageParameters = new PageParameters();
+    captureSurveyResponsePageParameters.add("surveyInstanceId", "b222aa15-715f-4752-923d-8f33ee8a1736");
+    add(new BookmarkablePageLink<>("captureSurveyResponseLink", CaptureSurveyResponsePage.class, captureSurveyResponsePageParameters));
 
     add(new Button("testButton") {
 

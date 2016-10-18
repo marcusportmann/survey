@@ -139,11 +139,7 @@ public class SurveyApplicationListener
       DatabaseMetaData metaData = connection.getMetaData();
 
       logger.info("Connected to the " + metaData.getDatabaseProductName()
-          + " application database with " + "version " + metaData.getDatabaseProductVersion());
-
-
-      if (true)
-        return;
+          + " application database with version " + metaData.getDatabaseProductVersion());
 
       // Determine the suffix for the SQL files containing the database DDL
       String databaseFileSuffix;

@@ -11,13 +11,17 @@
 
 package guru.mmp.survey.model;
 
-//~--- JDK imports ------------------------------------------------------------
+//~--- non-JDK imports --------------------------------------------------------
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+//~--- JDK imports ------------------------------------------------------------
 
 /**
  * The <code>SurveyGroupDefinition</code> class implements the Survey Group Definition entity, which
@@ -26,58 +30,36 @@ import java.util.UUID;
  *
  * @author Marcus Portmann
  */
-@Entity
-@IdClass(VersionedId.class)
-@Table(schema = "SURVEY", name = "SURVEY_GROUP_DEFINITIONS")
+@JsonPropertyOrder({ "id", "name", "description", "groupMemberDefinitions" })
 public class SurveyGroupDefinition
   implements Serializable
 {
   /**
-   * The Universally Unique Identifier (UUID) used, along with the version of the survey group
-   * definition, to uniquely identify the survey group definition.
+   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group definition.
    */
-  @Id
+  @JsonProperty
   private UUID id;
-
-  /**
-   * The version of the survey group definition.
-   */
-  @Id
-  private int version;
 
   /**
    * The name of the survey group definition.
    */
-  @Column(name = "NAME", nullable = false)
+  @JsonProperty
   private String name;
 
   /**
    * The description for the survey group definition.
    */
-  @Column(name = "DESCRIPTION", nullable = false)
+  @JsonProperty
   private String description;
-
-  /**
-   * The survey definition this survey group definition is associated with.
-   */
-  @SuppressWarnings("unused")
-  @ManyToOne
-  @JoinColumns({ @JoinColumn(name = "SURVEY_DEFINITION_ID", referencedColumnName = "ID") ,
-      @JoinColumn(name = "SURVEY_DEFINITION_VERSION", referencedColumnName = "VERSION") })
-  private SurveyDefinition surveyDefinition;
 
   /**
    * The survey group member definitions associated with the survey group definition.
    */
-  @OneToMany(mappedBy = "surveyGroupDefinition", cascade = CascadeType.ALL, fetch = FetchType.EAGER,
-      orphanRemoval = true)
-  @OrderBy("NAME ASC")
-  private List<SurveyGroupMemberDefinition> surveyGroupMemberDefinitions;
+  @JsonProperty
+  private List<SurveyGroupMemberDefinition> groupMemberDefinitions;
 
   /**
    * Constructs a new <code>SurveyDefinitionGroup</code>.
-   *
-   * Default constructor required for JPA.
    */
   @SuppressWarnings("unused")
   SurveyGroupDefinition() {}
@@ -85,32 +67,27 @@ public class SurveyGroupDefinition
   /**
    * Constructs a new <code>SurveyDefinitionGroup</code>.
    *
-   * @param id          the Universally Unique Identifier (UUID) used, along with the version of the
-   *                    survey group definition, to uniquely identify the survey group definition
-   * @param version     the version of the survey group definition
+   * @param id          the Universally Unique Identifier (UUID) used to uniquely identify the
+   *                    survey group definition
    * @param name        the name of the survey group definition
    * @param description the description for the survey group definition
    */
-  public SurveyGroupDefinition(UUID id, int version, String name, String description)
+  public SurveyGroupDefinition(UUID id, String name, String description)
   {
     this.id = id;
-    this.version = version;
     this.name = name;
     this.description = description;
-    this.surveyGroupMemberDefinitions = new ArrayList<>();
+    this.groupMemberDefinitions = new ArrayList<>();
   }
 
   /**
    * Add the survey group member definition to the survey group definition.
    *
-   * @param surveyGroupMemberDefinition the survey group member definition
+   * @param groupMemberDefinition the survey group member definition
    */
-  public void addSurveyGroupMemberDefinition(
-      SurveyGroupMemberDefinition surveyGroupMemberDefinition)
+  public void addGroupMemberDefinition(SurveyGroupMemberDefinition groupMemberDefinition)
   {
-    surveyGroupMemberDefinition.setGroup(this);
-
-    surveyGroupMemberDefinitions.add(surveyGroupMemberDefinition);
+    groupMemberDefinitions.add(groupMemberDefinition);
   }
 
   /**
@@ -155,11 +132,43 @@ public class SurveyGroupDefinition
   }
 
   /**
-   * Returns the Universally Unique Identifier (UUID) used, along with the version of the survey
-   * group definition, to uniquely identify the survey group definition.
+   * Retrieve the survey group member definition.
    *
-   * @return the Universally Unique Identifier (UUID) used, along with the version of the survey
-   *         group definition, to uniquely identify the survey group definition
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           group member definition
+   *
+   * @return the survey group member definition or <code>null</code> if the survey group member
+   *         definition could not be found
+   */
+  public SurveyGroupMemberDefinition getGroupMemberDefinition(UUID id)
+  {
+    for (SurveyGroupMemberDefinition groupMemberDefinition : groupMemberDefinitions)
+    {
+      if (groupMemberDefinition.getId().equals(id))
+      {
+        return groupMemberDefinition;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Returns the survey group member definitions associated with the survey group definition.
+   *
+   * @return the survey group member definitions associated with the survey group definition
+   */
+  public List<SurveyGroupMemberDefinition> getGroupMemberDefinitions()
+  {
+    return groupMemberDefinitions;
+  }
+
+  /**
+   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   * definition.
+   *
+   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   *         definition
    */
   public UUID getId()
   {
@@ -177,60 +186,18 @@ public class SurveyGroupDefinition
   }
 
   /**
-   * Retrieve the survey group member definition.
-   *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
-   *           group member definition
-   *
-   * @return the survey group member definition or <code>null</code> if the survey group member
-   *         definition could not be found
-   */
-  public SurveyGroupMemberDefinition getSurveyGroupMemberDefinition(UUID id)
-  {
-    for (SurveyGroupMemberDefinition member : surveyGroupMemberDefinitions)
-    {
-      if (member.getId().equals(id))
-      {
-        return member;
-      }
-    }
-
-    return null;
-  }
-
-  /**
-   * Returns the survey group member definitions associated with the survey group definition.
-   *
-   * @return the survey group member definitions associated with the survey group definition
-   */
-  public List<SurveyGroupMemberDefinition> getSurveyGroupMemberDefinitions()
-  {
-    return surveyGroupMemberDefinitions;
-  }
-
-  /**
-   * Returns the version of the survey group definition.
-   *
-   * @return the version of the survey group definition
-   */
-  public int getVersion()
-  {
-    return version;
-  }
-
-  /**
    * Remove the survey group member definition from the survey group definition.
    *
    * @param id the Universally Unique Identifier (UUID) used  to uniquely identify the survey
    *           group member definition
    */
-  public void removeSurveyGroupMemberDefinition(UUID id)
+  public void removeGroupMemberDefinition(UUID id)
   {
-    for (SurveyGroupMemberDefinition member : surveyGroupMemberDefinitions)
+    for (SurveyGroupMemberDefinition groupMemberDefinition : groupMemberDefinitions)
     {
-      if (member.getId().equals(id))
+      if (groupMemberDefinition.getId().equals(id))
       {
-        surveyGroupMemberDefinitions.remove(member);
+        groupMemberDefinitions.remove(groupMemberDefinition);
 
         return;
       }
@@ -272,16 +239,16 @@ public class SurveyGroupDefinition
     buffer.append("name=\"").append(getName()).append("\", ");
     buffer.append("description=\"").append(getDescription()).append("\", ");
 
-    buffer.append("surveyGroupMemberDefinitions={");
+    buffer.append("groupMemberDefinitions={");
 
-    for (int i = 0; i < surveyGroupMemberDefinitions.size(); i++)
+    for (int i = 0; i < groupMemberDefinitions.size(); i++)
     {
       if (i > 0)
       {
         buffer.append(", ");
       }
 
-      buffer.append(surveyGroupMemberDefinitions.get(i));
+      buffer.append(groupMemberDefinitions.get(i));
     }
 
     buffer.append("}");
@@ -289,27 +256,5 @@ public class SurveyGroupDefinition
     buffer.append("}");
 
     return buffer.toString();
-  }
-
-  /**
-   * Increment the version of the survey group definition.
-   */
-  void incrementVersion()
-  {
-    // Increment the survey group definition
-    version++;
-
-    // Increment the survey group member definitions
-    surveyGroupMemberDefinitions.forEach(SurveyGroupMemberDefinition::incrementVersion);
-  }
-
-  /**
-   * Set the survey definition this survey group definition is associated with.
-   *
-   * @param surveyDefinition the survey definition this survey group definition is associated with
-   */
-  void setSurveyDefinition(SurveyDefinition surveyDefinition)
-  {
-    this.surveyDefinition = surveyDefinition;
   }
 }

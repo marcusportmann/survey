@@ -11,56 +11,42 @@
 
 package guru.mmp.survey.model;
 
-//~--- JDK imports ------------------------------------------------------------
+//~--- non-JDK imports --------------------------------------------------------
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import java.io.Serializable;
 import java.util.UUID;
 
+//~--- JDK imports ------------------------------------------------------------
+
 /**
  * The <code>SurveyGroupMemberDefinition</code> class implements the Survey Group Member Definition
- * entity, which represents represents the definition of an entity who is a member of a survey
- * group definition, e.g. a member of a team, that is associated with a survey definition
+ * entity, which represents the definition of an entity who is a member of a survey group
+ * definition, e.g. a member of a team, that is associated with a survey definition
  *
  * @author Marcus Portmann
  */
-@Entity
-@IdClass(VersionedId.class)
-@Table(schema = "SURVEY", name = "SURVEY_GROUP_MEMBER_DEFINITIONS")
+@JsonPropertyOrder({ "id", "name" })
 public class SurveyGroupMemberDefinition
   implements Serializable
 {
   /**
-   * The Universally Unique Identifier (UUID) used, along with the version of the survey group
-   * member definition, to uniquely identify the survey group member definition.
+   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group member
+   * definition.
    */
-  @Id
+  @JsonProperty
   private UUID id;
-
-  /**
-   * The version of the survey group member definition.
-   */
-  @Id
-  private int version;
 
   /**
    * The name of the survey group member definition.
    */
-  @Column(name = "NAME", nullable = false)
+  @JsonProperty
   private String name;
 
   /**
-   * The survey group definition this survey group member definition is associated with.
-   */
-  @ManyToOne
-  @JoinColumns({ @JoinColumn(name = "SURVEY_GROUP_DEFINITION_ID", referencedColumnName = "ID") ,
-      @JoinColumn(name = "SURVEY_GROUP_DEFINITION_VERSION", referencedColumnName = "VERSION") })
-  private SurveyGroupDefinition surveyGroupDefinition;
-
-  /**
    * Constructs a new <code>SurveyGroupMemberDefinition</code>.
-   *
-   * Default constructor required for JPA.
    */
   @SuppressWarnings("unused")
   SurveyGroupMemberDefinition() {}
@@ -68,16 +54,13 @@ public class SurveyGroupMemberDefinition
   /**
    * Constructs a new <code>SurveyGroupMemberDefinition</code>.
    *
-   * @param id      the Universally Unique Identifier (UUID) used, along with the version of the
-   *                survey group member definition, to uniquely identify the survey group member
-   *                definition
-   * @param version the version of the survey group member definition
-   * @param name    the name of the survey group member definition
+   * @param id   the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   *             member definition
+   * @param name the name of the survey group member definition
    */
-  public SurveyGroupMemberDefinition(UUID id, int version, String name)
+  public SurveyGroupMemberDefinition(UUID id, String name)
   {
     this.id = id;
-    this.version = version;
     this.name = name;
   }
 
@@ -113,11 +96,11 @@ public class SurveyGroupMemberDefinition
   }
 
   /**
-   * Returns the Universally Unique Identifier (UUID) used, along with the version of the survey
-   * group member definition, to uniquely identify the survey group member definition.
+   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   * member definition.
    *
-   * @return the Universally Unique Identifier (UUID) used, along with the version of the survey
-   *         group member definition, to uniquely identify the survey group member definition
+   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   *         member definition
    */
   public UUID getId()
   {
@@ -132,16 +115,6 @@ public class SurveyGroupMemberDefinition
   public String getName()
   {
     return name;
-  }
-
-  /**
-   * Returns the version of the survey group member definition.
-   *
-   * @return the version of the survey group member definition
-   */
-  public int getVersion()
-  {
-    return version;
   }
 
   /**
@@ -162,26 +135,7 @@ public class SurveyGroupMemberDefinition
   @Override
   public String toString()
   {
-    return "SurveyGroupMemberDefinition {" + "id=\"" + getId() + "\", " + "version=\""
-        + getVersion() + "\", " + "name=\"" + getName() + "\"" + "}";
-  }
-
-  /**
-   * Increment the version of the survey group member definition.
-   */
-  void incrementVersion()
-  {
-    version++;
-  }
-
-  /**
-   * Set the survey group definition this survey group member definition is associated with.
-   *
-   * @param surveyGroupDefinition the survey group definition this survey group member definition is
-   *                              associated with
-   */
-  protected void setGroup(SurveyGroupDefinition surveyGroupDefinition)
-  {
-    this.surveyGroupDefinition = surveyGroupDefinition;
+    return String.format("SurveyGroupMemberDefinition {id=\"%s\", name=\"%s\"}", getId(),
+      getName());
   }
 }

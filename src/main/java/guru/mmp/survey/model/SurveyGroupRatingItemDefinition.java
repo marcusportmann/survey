@@ -11,90 +11,55 @@
 
 package guru.mmp.survey.model;
 
-//~--- JDK imports ------------------------------------------------------------
+//~--- non-JDK imports --------------------------------------------------------
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import java.io.Serializable;
 import java.util.UUID;
 
+//~--- JDK imports ------------------------------------------------------------
+
 /**
  * The <code>SurveyGroupRatingItemDefinition</code> class implements the Survey Group Rating Item
- * Definition entity, which represents represents the definition for a group rating item that forms
- * part of a survey definition.
+ * Definition entity, which represents the definition for a group rating item that forms part of a
+ * survey definition.
  *
  * @author Marcus Portmann
  */
-@Entity
-@IdClass(VersionedId.class)
-@Table(schema = "SURVEY", name = "SURVEY_GROUP_RATING_ITEM_DEFINITIONS")
+@JsonPropertyOrder({ "id", "name", "groupDefinitionId", "ratingType" })
 public class SurveyGroupRatingItemDefinition
   implements Serializable
 {
   /**
-   * The Universally Unique Identifier (UUID) used, along with the version of the survey group
-   * rating item definition, to uniquely identify the survey group rating item definition.
+   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group rating item
+   * definition.
    */
-  @Id
+  @JsonProperty
   private UUID id;
-
-  /**
-   * The version of the survey group rating item definition.
-   */
-  @Id
-  private int version;
 
   /**
    * The name of the survey group rating item definition.
    */
-  @Column(name = "NAME", nullable = false)
+  @JsonProperty
   private String name;
 
   /**
-   * The index used to define the order of the items under the survey definition or survey section
-   * definition this survey group rating item definition is associated with.
+   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group definition
+   * this survey group rating item definition is associated with.
    */
-  @Column(name = "INDEX", nullable = false)
-  private int index;
+  @JsonProperty
+  private UUID groupDefinitionId;
 
   /**
-   * The survey definition this survey group rating item definition is associated with.
+   * The type of survey group rating item.
    */
-  @SuppressWarnings("unused")
-  @ManyToOne
-  @JoinColumns({ @JoinColumn(name = "SURVEY_DEFINITION_ID", referencedColumnName = "ID") ,
-      @JoinColumn(name = "SURVEY_DEFINITION_VERSION", referencedColumnName = "VERSION") })
-  private SurveyDefinition surveyDefinition;
-
-  /**
-   * The optional survey section definition this survey group rating item definition is associated
-   * with.
-   */
-  @SuppressWarnings("unused")
-  @ManyToOne(cascade = { CascadeType.MERGE })
-  @JoinColumns({ @JoinColumn(name = "SURVEY_SECTION_DEFINITION_ID", referencedColumnName = "ID") ,
-      @JoinColumn(name = "SURVEY_SECTION_DEFINITION_VERSION", referencedColumnName = "VERSION") })
-  private SurveySectionDefinition surveySectionDefinition;
-
-  /**
-   * The survey group definition this survey group rating item definition is associated with.
-   */
-  @ManyToOne(cascade = { CascadeType.MERGE })
-  @JoinColumns({ @JoinColumn(name = "SURVEY_GROUP_DEFINITION_ID", referencedColumnName = "ID") ,
-      @JoinColumn(name = "SURVEY_GROUP_DEFINITION_VERSION", referencedColumnName = "VERSION") })
-  private SurveyGroupDefinition surveyGroupDefinition;
-
-  /**
-   * The numeric code giving the type of survey group rating item e.g. 1 = Percentage,
-   * 2 = Yes/No/NA, etc.
-   */
-  @Column(name = "RATING_TYPE", nullable = false)
-  @Convert(converter = SurveyGroupRatingItemTypeConverter.class)
+  @JsonProperty
   private SurveyGroupRatingItemType ratingType;
 
   /**
    * Constructs a new <code>SurveyDefinitionGroupRatingItem</code>.
-   *
-   * Default constructor required for JPA.
    */
   @SuppressWarnings("unused")
   SurveyGroupRatingItemDefinition() {}
@@ -102,51 +67,21 @@ public class SurveyGroupRatingItemDefinition
   /**
    * Constructs a new <code>SurveyDefinitionGroupRatingItem</code>.
    *
-   * @param id                    the Universally Unique Identifier (UUID) used, along with the
-   *                              version of the survey group rating item definition, to uniquely
-   *                              identify the survey group rating item definition
-   * @param version               the version of the survey group rating item definition
-   * @param name                  the name of the survey group rating item definition
-   * @param surveyGroupDefinition the survey group definition this survey group rating item
-   *                              definition is associated with
-   * @param ratingType            the numeric code giving the type of survey group rating item
-   *                              e.g. 1 = Percentage, 2 = Yes/No/NA, etc
+   * @param id                the Universally Unique Identifier (UUID) used to uniquely identify the
+   *                          survey group rating item definition
+   * @param name              the name of the survey group rating item definition
+   * @param groupDefinitionId the Universally Unique Identifier (UUID) used to uniquely identify the
+   *                          survey group definition this survey group rating item definition is
+   *                          associated with
+   * @param ratingType        the type of survey group rating item
    */
-  public SurveyGroupRatingItemDefinition(UUID id, int version, String name,
-      SurveyGroupDefinition surveyGroupDefinition, SurveyGroupRatingItemType ratingType)
+  public SurveyGroupRatingItemDefinition(UUID id, String name, UUID groupDefinitionId,
+      SurveyGroupRatingItemType ratingType)
   {
     this.id = id;
-    this.version = version;
     this.name = name;
-    this.surveyGroupDefinition = surveyGroupDefinition;
+    this.groupDefinitionId = groupDefinitionId;
     this.ratingType = ratingType;
-  }
-
-  /**
-   * Constructs a new <code>SurveyDefinitionGroupRatingItem</code>.
-   *
-   * @param id                      the Universally Unique Identifier (UUID) used, along with the
-   *                                version of the survey group rating item definition, to uniquely
-   *                                identify the survey group rating item definition
-   * @param version                 the version of the survey group rating item definition
-   * @param name                    the name of the survey group rating item definition
-   * @param surveyGroupDefinition   the survey group definition this survey group rating item
-   *                                definition is associated with
-   * @param ratingType              the numeric code giving the type of survey group rating item
-   *                                e.g. 1 = Percentage, 2 = Yes/No/NA, etc
-   * @param surveySectionDefinition the optional survey section definition this survey group rating
-   *                                item definition is associated
-   */
-  public SurveyGroupRatingItemDefinition(UUID id, int version, String name,
-      SurveyGroupDefinition surveyGroupDefinition, SurveyGroupRatingItemType ratingType,
-      SurveySectionDefinition surveySectionDefinition)
-  {
-    this.id = id;
-    this.version = version;
-    this.name = name;
-    this.surveyGroupDefinition = surveyGroupDefinition;
-    this.ratingType = ratingType;
-    this.surveySectionDefinition = surveySectionDefinition;
   }
 
   /**
@@ -181,28 +116,27 @@ public class SurveyGroupRatingItemDefinition
   }
 
   /**
-   * Returns the Universally Unique Identifier (UUID) used, along with the version of the survey
-   * group rating item definition, to uniquely identify the survey group rating item definition.
+   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   * definition this survey group rating item definition is associated with.
    *
-   * @return the Universally Unique Identifier (UUID) used, along with the version of the survey
-   *         group rating item definition, to uniquely identify the survey group rating item
-   *         definition
+   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   *         definition this survey group rating item definition is associated with
+   */
+  public UUID getGroupDefinitionId()
+  {
+    return groupDefinitionId;
+  }
+
+  /**
+   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   * rating item definition.
+   *
+   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   *         rating item definition
    */
   public UUID getId()
   {
     return id;
-  }
-
-  /**
-   * Returns the index used to define the order of the items under the survey definition or survey
-   * section definition this survey group rating item definition is associated with.
-   *
-   * @return the index used to define the order of the items under the survey definition or survey
-   *         section definition this survey group rating item definition is associated with
-   */
-  public int getIndex()
-  {
-    return index;
   }
 
   /**
@@ -216,11 +150,9 @@ public class SurveyGroupRatingItemDefinition
   }
 
   /**
-   * Returns the numeric code giving the type of survey group rating item e.g. 1 = Percentage,
-   * 2 = Yes/No/NA, etc.
+   * Returns the type of survey group rating item.
    *
-   * @return the numeric code giving the type of survey group rating item e.g. 1 = Percentage,
-   *         2 = Yes/No/NA, etc
+   * @return the type of survey group rating item
    */
   public SurveyGroupRatingItemType getRatingType()
   {
@@ -228,25 +160,16 @@ public class SurveyGroupRatingItemDefinition
   }
 
   /**
-   * Return the version of the survey group rating item definition.
+   * Set the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   * definition this survey group rating item definition is associated with.
    *
-   * @return the version of the survey group rating item definition
+   * @param groupDefinitionId the Universally Unique Identifier (UUID) used to uniquely identify the
+   *                          survey group definition this survey group rating item definition is
+   *                          associated with
    */
-  public int getVersion()
+  public void setGroupDefinitionId(UUID groupDefinitionId)
   {
-    return version;
-  }
-
-  /**
-   * Set the index used to define the order of the items under the survey definition or survey
-   * section definition this survey group rating item definition is associated with.
-   *
-   * @param index the index used to define the order of the items under the survey definition or
-   *              survey section definition this survey group rating item definition is associated with
-   */
-  public void setIndex(int index)
-  {
-    index = this.index;
+    this.groupDefinitionId = groupDefinitionId;
   }
 
   /**
@@ -260,26 +183,13 @@ public class SurveyGroupRatingItemDefinition
   }
 
   /**
-   * Set the numeric code giving the type of survey group rating item e.g. 1 = Percentage,
-   * 2 = Yes/No/NA, etc.
+   * Set the type of survey group rating item.
    *
-   * @param ratingType the numeric code giving the type of survey group rating item
-   *                   e.g. 1 = Percentage, 2 = Yes/No/NA, etc
+   * @param ratingType the type of survey group rating item
    */
   public void setRatingType(SurveyGroupRatingItemType ratingType)
   {
     this.ratingType = ratingType;
-  }
-
-  /**
-   * Set the survey group definition this survey group rating item definition is associated with.
-   *
-   * @param surveyGroupDefinition the survey group definition this survey group rating item
-   *                              definition is associated with
-   */
-  public void setSurveyGroupDefinition(SurveyGroupDefinition surveyGroupDefinition)
-  {
-    this.surveyGroupDefinition = surveyGroupDefinition;
   }
 
   /**
@@ -290,49 +200,8 @@ public class SurveyGroupRatingItemDefinition
   @Override
   public String toString()
   {
-    return "SurveyDefinitionGroupRatingItem {" + "id=\"" + getId() + "\", " + "version=\""
-        + getVersion() + "\", " + "name=\"" + getName() + "\", " + "ratingType=\""
-        + getRatingType().description() + "\", " + "index=\"" + getIndex() + "\"" + "}";
-  }
-
-  /**
-   * Returns the survey group definition this survey group rating item definition is associated with.
-   *
-   * @return the survey group definition this survey group rating item definition is associated with
-   */
-  SurveyGroupDefinition getSurveyGroupDefinition()
-  {
-    return surveyGroupDefinition;
-  }
-
-  /**
-   * Returns the optional survey section definition this survey group rating item definition is
-   * associated with.
-   *
-   * @return the optional survey section definition this survey group rating item definition is
-   *         associated with
-   */
-  SurveySectionDefinition getSurveySectionDefinition()
-  {
-    return surveySectionDefinition;
-  }
-
-  /**
-   * Increment the version of the survey group rating item definition.
-   */
-  void incrementVersion()
-  {
-    version++;
-  }
-
-  /**
-   * Set the survey definition this survey group rating item definition is associated with.
-   *
-   * @param surveyDefinition the survey definition this survey group rating item definition is
-   *                         associated with
-   */
-  void setSurveyDefinition(SurveyDefinition surveyDefinition)
-  {
-    this.surveyDefinition = surveyDefinition;
+    return String.format(
+        "SurveyDefinitionGroupRatingItem {id=\"%s\", name=\"%s\", ratingType=\"%s\"}", getId(),
+        getName(), getRatingType().description());
   }
 }

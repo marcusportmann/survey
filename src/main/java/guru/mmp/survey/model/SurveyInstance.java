@@ -36,6 +36,12 @@ public class SurveyInstance
   private UUID id;
 
   /**
+   * The name of the survey instance.
+   */
+  @Column(name = "NAME", nullable = false)
+  private String name;
+
+  /**
    * The survey definition this survey instance is associated with.
    */
   @SuppressWarnings("unused")
@@ -57,11 +63,13 @@ public class SurveyInstance
    *
    * @param id                the Universally Unique Identifier (UUID) used to uniquely identify the
    *                          survey instance
+   * @param name              the name of the survey instance
    * @param surveyDefinition  the survey definition this survey instance is associated with
    */
-  public SurveyInstance(UUID id, SurveyDefinition surveyDefinition)
+  public SurveyInstance(UUID id, String name, SurveyDefinition surveyDefinition)
   {
     this.id = id;
+    this.name = name;
     this.surveyDefinition = surveyDefinition;
   }
 
@@ -107,6 +115,36 @@ public class SurveyInstance
   }
 
   /**
+   * Returns the name of the survey instance.
+   *
+   * @return the name of the survey instance
+   */
+  public String getName()
+  {
+    return name;
+  }
+
+  /**
+   * Returns the survey definition this survey instance is associated with.
+   *
+   * @return the survey definition this survey instance is associated with
+   */
+  public SurveyDefinition getSurveyDefinition()
+  {
+    return surveyDefinition;
+  }
+
+  /**
+   * Set the name of the survey instance.
+   *
+   * @param name the name of the survey instance
+   */
+  public void setName(String name)
+  {
+    this.name = name;
+  }
+
+  /**
    * Returns the String representation of the survey instance.
    *
    * @return the String representation of the survey instance
@@ -114,12 +152,6 @@ public class SurveyInstance
   @Override
   public String toString()
   {
-    StringBuilder buffer = new StringBuilder();
-
-    buffer.append("SurveyInstance {");
-    buffer.append("id=\"").append(getId()).append("\"");
-    buffer.append("}");
-
-    return buffer.toString();
+    return String.format("SurveyInstance {id=\"%s\", name=\"%s\"}", getId(), getName());
   }
 }

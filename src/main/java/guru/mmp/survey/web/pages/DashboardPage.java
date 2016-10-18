@@ -18,6 +18,8 @@ import guru.mmp.application.web.template.pages.TemplateWebPage;
 /**
  * The <code>DashboardPage</code> class implements the "Dashboard"
  * page for the web application.
+ *
+ * @author Marcus Portmann
  */
 @WebPageSecurity(TemplateSecurity.FUNCTION_CODE_DASHBOARD)
 public class DashboardPage

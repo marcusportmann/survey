@@ -24,7 +24,19 @@ import java.util.UUID;
 public interface ISurveyService
 {
   /**
-   * Retrieve the survey definition identified by the specified ID.
+   * Retrieve the survey response identified by the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           response
+   *
+   * @return the survey response identified by the specified ID or <code>null</code> if the survey
+   *         response could not be found
+   */
+  SurveyResponse getSurveyResponse(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the survey definition identified by the specified ID and version.
    *
    * @param id      the Universally Unique Identifier (UUID) used, along with the version of the
    *                survey definition, to uniquely identify the survey definition
@@ -34,6 +46,29 @@ public interface ISurveyService
    *         if the survey definition could not be found
    */
   SurveyDefinition getSurveyDefinition(UUID id, int version)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the survey instance identified by the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           instance
+   *
+   * @return the survey instance identified by the specified ID or <code>null</code> if the survey
+   *         instance could not be found
+   */
+  SurveyInstance getSurveyInstance(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the survey request identified by the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey request
+   *
+   * @return the survey request identified by the specified ID or <code>null</code> if the survey
+   *         request could not be found
+   */
+  SurveyRequest getSurveyRequest(UUID id)
     throws SurveyServiceException;
 
   /**
@@ -54,5 +89,15 @@ public interface ISurveyService
    * @return the saved survey instance
    */
   SurveyInstance saveSurveyInstance(SurveyInstance surveyInstance)
+    throws SurveyServiceException;
+
+  /**
+   * Save the survey response.
+   *
+   * @param surveyResponse the survey response
+   *
+   * @return the saved survey response
+   */
+  SurveyResponse saveSurveyResponse(SurveyResponse surveyResponse)
     throws SurveyServiceException;
 }
