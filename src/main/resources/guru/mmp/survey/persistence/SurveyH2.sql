@@ -9,13 +9,19 @@ CREATE SCHEMA SURVEY;
 -- CREATE TABLES
 -- -------------------------------------------------------------------------------------------------
 CREATE TABLE SURVEY.SURVEY_DEFINITIONS (
-  ID           UUID NOT NULL,
-  VERSION      INTEGER NOT NULL,
-  NAME         TEXT NOT NULL,
-  DESCRIPTION  TEXT NOT NULL,
+  ID               UUID NOT NULL,
+  VERSION          INTEGER NOT NULL,
+  ORGANISATION_ID  UUID NOT NULL,
+  NAME             TEXT NOT NULL,
+  DESCRIPTION      TEXT NOT NULL,
 
-  PRIMARY KEY (ID, VERSION)
+  PRIMARY KEY (ID, VERSION),
+  CONSTRAINT  SURVEY_SURVEY_DEFINITIONS_ORGANISATION_FK FOREIGN KEY (ORGANISATION_ID) REFERENCES MMP.ORGANISATIONS(ID) ON DELETE CASCADE
 );
+
+CREATE INDEX SURVEY_SURVEY_DEFINITIONS_ORGANISATION_ID_IX
+  ON SURVEY.SURVEY_DEFINITIONS
+  (ORGANISATION_ID);
 
 COMMENT ON COLUMN SURVEY.SURVEY_DEFINITIONS.ID
 IS 'The Universally Unique Identifier (UUID) used, along with the version of the survey definition, to uniquely identify the survey definition';
@@ -23,11 +29,14 @@ IS 'The Universally Unique Identifier (UUID) used, along with the version of the
 COMMENT ON COLUMN SURVEY.SURVEY_DEFINITIONS.VERSION
 IS 'The version of the survey definition';
 
+COMMENT ON COLUMN SURVEY.SURVEY_DEFINITIONS.ORGANISATION_ID
+IS 'The Universally Unique Identifier (UUID) used to uniquely identify the organisation the survey definition is associated with';
+
 COMMENT ON COLUMN SURVEY.SURVEY_DEFINITIONS.NAME
-IS 'The name of the survey definition.';
+IS 'The name of the survey definition';
 
 COMMENT ON COLUMN SURVEY.SURVEY_DEFINITIONS.DESCRIPTION
-IS 'The description for the survey definition.';
+IS 'The description for the survey definition';
 
 
 
@@ -331,8 +340,8 @@ IS 'The rating for the survey  group rating item response e.g. 1=Yes, 0=No and -
 -- -------------------------------------------------------------------------------------------------
 -- POPULATE TABLES
 -- -------------------------------------------------------------------------------------------------
-INSERT INTO SURVEY.SURVEY_DEFINITIONS (ID, VERSION, NAME, DESCRIPTION) VALUES
-  ('706fb4a4-8ba8-11e6-ae22-56b6b6499611', 1, 'CTO ELT Values Survey - November 2016', '');
+INSERT INTO SURVEY.SURVEY_DEFINITIONS (ID, VERSION, ORGANISATION_ID, NAME, DESCRIPTION) VALUES
+  ('706fb4a4-8ba8-11e6-ae22-56b6b6499611', 1, 'c1685b92-9fe5-453a-995b-89d8c0f29cb5', 'CTO ELT Values Survey', '');
 
 INSERT INTO SURVEY.SURVEY_GROUP_DEFINITIONS (ID, VERSION, SURVEY_DEFINITION_ID, SURVEY_DEFINITION_VERSION, NAME, DESCRIPTION) VALUES
   ('98886698-8ba8-11e6-ae22-56b6b6499611', 1, '706fb4a4-8ba8-11e6-ae22-56b6b6499611', 1, 'CTO ELT', '');

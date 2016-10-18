@@ -52,6 +52,13 @@ public class SurveyDefinition
   private String name;
 
   /**
+   * The Universally Unique Identifier (UUID) used to uniquely identify the organisation the survey
+   * definition is associated with.
+   */
+  @Column(name = "ORGANISATION_ID", nullable = false)
+  private UUID organisationId;
+
+  /**
    * The description for the survey definition.
    */
   @Column(name = "DESCRIPTION", nullable = false)
@@ -92,16 +99,20 @@ public class SurveyDefinition
   /**
    * Constructs a new <code>SurveyDefinition</code>.
    *
-   * @param id          the Universally Unique Identifier (UUID) used, along with the version of the
-   *                    survey definition, to uniquely identify the survey definition
-   * @param version     the version of the survey definition
-   * @param name        the name of the survey definition
-   * @param description the description for the survey definition
+   * @param id             the Universally Unique Identifier (UUID) used, along with the version of
+   *                       the survey definition, to uniquely identify the survey definition
+   * @param version        the version of the survey definition
+   * @param organisationId the Universally Unique Identifier (UUID) used to uniquely identify the
+   *                       organisation the survey definition is associated with
+   * @param name           the name of the survey definition
+   * @param description    the description for the survey definition
    */
-  public SurveyDefinition(UUID id, int version, String name, String description)
+  public SurveyDefinition(UUID id, int version, UUID organisationId, String name,
+      String description)
   {
     this.id = id;
     this.version = version;
+    this.organisationId = organisationId;
     this.name = name;
     this.description = description;
     this.surveySectionDefinitions = new LinkedHashSet<>();
@@ -207,6 +218,18 @@ public class SurveyDefinition
   public String getName()
   {
     return name;
+  }
+
+  /**
+   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the organisation the
+   * survey definition is associated with.
+   *
+   * @return the Universally Unique Identifier (UUID) used to uniquely identify the organisation the
+   *         survey definition is associated with
+   */
+  public UUID getOrganisationId()
+  {
+    return organisationId;
   }
 
   /**

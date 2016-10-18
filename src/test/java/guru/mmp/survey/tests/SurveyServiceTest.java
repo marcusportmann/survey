@@ -185,8 +185,9 @@ public class SurveyServiceTest
 
   private static synchronized SurveyDefinition getTestSurveyDefinition()
   {
-    SurveyDefinition surveyDefinition = new SurveyDefinition(UUID.randomUUID(), 1,
-        "Test Survey Template Name", "Test Survey Template Description");
+    SurveyDefinition surveyDefinition = new SurveyDefinition(UUID.randomUUID(), 1, UUID.fromString(
+        "c1685b92-9fe5-453a-995b-89d8c0f29cb5"), "Test Survey Template Name",
+        "Test Survey Template Description");
 
     SurveySectionDefinition surveySectionDefinition1 = new SurveySectionDefinition(
         UUID.randomUUID(), 1, 1, "Test Survey Section Definition Name 1",
@@ -309,7 +310,7 @@ public class SurveyServiceTest
     assertEquals("The ID values for the two survey group definitions do not match",
         surveyGroupDefinition1.getId(), surveyGroupDefinition2.getId());
     assertEquals("The version values for the two survey group definitions do not match",
-      surveyGroupDefinition1.getVersion(), surveyGroupDefinition2.getVersion());
+        surveyGroupDefinition1.getVersion(), surveyGroupDefinition2.getVersion());
     assertEquals("The name values for the two survey group definitions do not match",
         surveyGroupDefinition1.getName(), surveyGroupDefinition2.getName());
     assertEquals("The description values for the two survey group definitions do not match",
@@ -338,7 +339,7 @@ public class SurveyServiceTest
     assertEquals("The ID values for the two survey group member definitions do not match",
         surveyGroupMemberDefinition1.getId(), surveyGroupMemberDefinition2.getId());
     assertEquals("The version values for the two survey group member definitions do not match",
-      surveyGroupMemberDefinition1.getVersion(), surveyGroupMemberDefinition2.getVersion());
+        surveyGroupMemberDefinition1.getVersion(), surveyGroupMemberDefinition2.getVersion());
     assertEquals("The name values for the two survey group member definitions do not match",
         surveyGroupMemberDefinition1.getName(), surveyGroupMemberDefinition2.getName());
   }
@@ -349,8 +350,10 @@ public class SurveyServiceTest
   {
     assertEquals("The ID values for the two survey group rating item definitions do not match",
         surveyGroupDefinitionRatingItem1.getId(), surveyGroupDefinitionRatingItem2.getId());
-    assertEquals("The version values for the two survey group rating item definitions do not match",
-      surveyGroupDefinitionRatingItem1.getVersion(), surveyGroupDefinitionRatingItem2.getVersion());
+    assertEquals(
+        "The version values for the two survey group rating item definitions do not match",
+        surveyGroupDefinitionRatingItem1.getVersion(),
+        surveyGroupDefinitionRatingItem2.getVersion());
     assertEquals("The name values for the two survey group rating item definitions do not match",
         surveyGroupDefinitionRatingItem1.getName(), surveyGroupDefinitionRatingItem2.getName());
     assertEquals(
@@ -358,7 +361,7 @@ public class SurveyServiceTest
         surveyGroupDefinitionRatingItem1.getRatingType(),
         surveyGroupDefinitionRatingItem2.getRatingType());
     assertEquals("The index values for the two survey group rating item definitions do not match",
-      surveyGroupDefinitionRatingItem1.getIndex(), surveyGroupDefinitionRatingItem2.getIndex());
+        surveyGroupDefinitionRatingItem1.getIndex(), surveyGroupDefinitionRatingItem2.getIndex());
 
   }
 
@@ -368,7 +371,7 @@ public class SurveyServiceTest
     assertEquals("The ID values for the two survey section definitions do not match",
         surveySectionDefinition1.getId(), surveySectionDefinition2.getId());
     assertEquals("The version values for the two survey section definitions do not match",
-      surveySectionDefinition1.getVersion(), surveySectionDefinition2.getVersion());
+        surveySectionDefinition1.getVersion(), surveySectionDefinition2.getVersion());
     assertEquals("The name values for the two survey section definitions do not match",
         surveySectionDefinition1.getName(), surveySectionDefinition2.getName());
     assertEquals("The description values for the two survey section definitions do not match",
