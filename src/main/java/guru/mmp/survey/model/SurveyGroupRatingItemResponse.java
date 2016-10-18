@@ -103,28 +103,28 @@ public class SurveyGroupRatingItemResponse
     this.rating = groupRatingItemDefinition.getRatingType().defaultRating();
   }
 
-  /**
-   * Constructs a new <code>SurveyGroupRatingItemResponse</code>.
-   *
-   * @param id                          the Universally Unique Identifier (UUID) used to uniquely
-   *                                    identify the survey group rating item response
-   * @param groupRatingItemDefinitionId the Universally Unique Identifier (UUID) used to uniquely
-   *                                    identify the survey group rating item definition this
-   *                                    survey group rating item response is associated with
-   * @param groupMemberDefinitionId     the Universally Unique Identifier (UUID) used to uniquely
-   *                                    identify the survey group member definition this survey
-   *                                    group rating item response is associated with
-   * @param rating                      the rating for the survey group rating item response
-   *                                    e.g. 1=Yes, 0=No and -1=Not Applicable
-   */
-  public SurveyGroupRatingItemResponse(UUID id, UUID groupRatingItemDefinitionId,
-      UUID groupMemberDefinitionId, int rating)
-  {
-    this.id = id;
-    this.groupRatingItemDefinitionId = groupRatingItemDefinitionId;
-    this.groupMemberDefinitionId = groupMemberDefinitionId;
-    this.rating = rating;
-  }
+///**
+// * Constructs a new <code>SurveyGroupRatingItemResponse</code>.
+// *
+// * @param id                          the Universally Unique Identifier (UUID) used to uniquely
+// *                                    identify the survey group rating item response
+// * @param groupRatingItemDefinitionId the Universally Unique Identifier (UUID) used to uniquely
+// *                                    identify the survey group rating item definition this
+// *                                    survey group rating item response is associated with
+// * @param groupMemberDefinitionId     the Universally Unique Identifier (UUID) used to uniquely
+// *                                    identify the survey group member definition this survey
+// *                                    group rating item response is associated with
+// * @param rating                      the rating for the survey group rating item response
+// *                                    e.g. 1=Yes, 0=No and -1=Not Applicable
+// */
+//public SurveyGroupRatingItemResponse(UUID id, UUID groupRatingItemDefinitionId,
+//    UUID groupMemberDefinitionId, int rating)
+//{
+//  this.id = id;
+//  this.groupRatingItemDefinitionId = groupRatingItemDefinitionId;
+//  this.groupMemberDefinitionId = groupMemberDefinitionId;
+//  this.rating = rating;
+//}
 
   /**
    * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey group

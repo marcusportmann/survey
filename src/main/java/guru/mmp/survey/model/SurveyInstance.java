@@ -48,7 +48,7 @@ public class SurveyInstance
   @ManyToOne
   @JoinColumns({ @JoinColumn(name = "SURVEY_DEFINITION_ID", referencedColumnName = "ID") ,
       @JoinColumn(name = "SURVEY_DEFINITION_VERSION", referencedColumnName = "VERSION") })
-  private SurveyDefinition surveyDefinition;
+  private SurveyDefinition definition;
 
   /**
    * Constructs a new <code>SurveyInstance</code>.
@@ -61,16 +61,16 @@ public class SurveyInstance
   /**
    * Constructs a new <code>SurveyInstance</code>.
    *
-   * @param id                the Universally Unique Identifier (UUID) used to uniquely identify the
-   *                          survey instance
-   * @param name              the name of the survey instance
-   * @param surveyDefinition  the survey definition this survey instance is associated with
+   * @param id         the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *                   instance
+   * @param name       the name of the survey instance
+   * @param definition the survey definition this survey instance is associated with
    */
-  public SurveyInstance(UUID id, String name, SurveyDefinition surveyDefinition)
+  public SurveyInstance(UUID id, String name, SurveyDefinition definition)
   {
     this.id = id;
     this.name = name;
-    this.surveyDefinition = surveyDefinition;
+    this.definition = definition;
   }
 
   /**
@@ -105,6 +105,16 @@ public class SurveyInstance
   }
 
   /**
+   * Returns the survey definition this survey instance is associated with.
+   *
+   * @return the survey definition this survey instance is associated with
+   */
+  public SurveyDefinition getDefinition()
+  {
+    return definition;
+  }
+
+  /**
    * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey instance.
    *
    * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey instance
@@ -122,16 +132,6 @@ public class SurveyInstance
   public String getName()
   {
     return name;
-  }
-
-  /**
-   * Returns the survey definition this survey instance is associated with.
-   *
-   * @return the survey definition this survey instance is associated with
-   */
-  public SurveyDefinition getSurveyDefinition()
-  {
-    return surveyDefinition;
   }
 
   /**

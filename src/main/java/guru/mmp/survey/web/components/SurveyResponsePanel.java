@@ -18,9 +18,21 @@ package guru.mmp.survey.web.components;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import guru.mmp.application.web.components.StringSelectOption;
+import guru.mmp.application.web.template.components.DropDownChoiceWithFeedback;
 import guru.mmp.application.web.template.components.InputPanel;
-import guru.mmp.survey.model.SurveyResponse;
+import guru.mmp.survey.model.*;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
+
+import java.util.ArrayList;
+import java.util.List;
+
+//~--- JDK imports ------------------------------------------------------------
 
 /**
  * The <code>SurveyResponsePanel</code> class.
@@ -39,6 +51,99 @@ public class SurveyResponsePanel extends InputPanel
    */
   public SurveyResponsePanel(String id, IModel<SurveyResponse> surveyResponseModel)
   {
-    super(id);
+    super(id, surveyResponseModel);
+
+    SurveyResponse surveyResponse = surveyResponseModel.getObject();
+
+    SurveyDefinition surveyDefinition = surveyResponse.getInstance().getDefinition();
+
+    add(new ListView<SurveyGroupDefinition>("groupDefinition",
+        surveyDefinition.getGroupDefinitions())
+        {
+          @Override
+          protected void populateItem(ListItem<SurveyGroupDefinition> item)
+          {
+            SurveyGroupDefinition groupDefinition = item.getModelObject();
+
+            List<SurveyGroupRatingItemDefinition> groupRatingItemDefinitions =
+                surveyDefinition.getGroupRatingItemDefinitionsForGroupDefinition(
+                groupDefinition.getId());
+
+            item.add(new ListView<SurveyGroupRatingItemDefinition>("groupRatingItemDefinition",
+                groupRatingItemDefinitions)
+            {
+              @Override
+              protected void populateItem(ListItem<SurveyGroupRatingItemDefinition> item)
+              {
+                SurveyGroupRatingItemDefinition groupRatingItemDefinition = item.getModelObject();
+
+                item.add(new Label("name", groupRatingItemDefinition.getName()));
+              }
+            });
+
+            item.add(new ListView<SurveyGroupMemberDefinition>("groupMemberDefinition",
+                groupDefinition.getGroupMemberDefinitions())
+            {
+              @Override
+              protected void populateItem(ListItem<SurveyGroupMemberDefinition> item)
+              {
+                SurveyGroupMemberDefinition groupMemberDefinition = item.getModelObject();
+
+                item.add(new Label("name", groupMemberDefinition.getName()));
+
+                List<SurveyGroupRatingItemResponse> groupRatingItemResponses = new ArrayList<>();
+
+                for (SurveyGroupRatingItemDefinition groupRatingItemDefinition :
+                    groupRatingItemDefinitions)
+                {
+                  groupRatingItemResponses.add(surveyResponse.getGroupRatingItemResponse(
+                      groupRatingItemDefinition.getId(), groupMemberDefinition.getId()));
+                }
+
+                item.add(new ListView<SurveyGroupRatingItemResponse>("groupRatingItemResponse",
+                    groupRatingItemResponses)
+                {
+                  @Override
+                  protected void populateItem(ListItem<SurveyGroupRatingItemResponse> item)
+                  {
+                    SurveyGroupRatingItemResponse groupRatingItemResponse = item.getModelObject();
+
+                    if (groupRatingItemResponse.getGroupRatingItemDefinitionRatingType().equals(
+                        SurveyGroupRatingItemType.YES_NO_NA))
+                    {
+                      ChoiceRenderer<StringSelectOption> choiceRenderer = new ChoiceRenderer<>(
+                          "name", "value");
+
+                      item.add(new DropDownChoiceWithFeedback<>("rating", new PropertyModel<>(
+                          groupRatingItemResponse, "rating"), getGroupRatingItemResponseOptions(
+                          groupRatingItemResponse.getGroupRatingItemDefinitionRatingType()),
+                          choiceRenderer));
+                    }
+                    else
+                    {
+                      throw new RuntimeException("Unsupported survey group rating item type ("
+                          + groupRatingItemResponse.getGroupRatingItemDefinitionRatingType() + ")");
+                    }
+                  }
+                });
+              }
+            });
+          }
+        });
+  }
+
+  private List<StringSelectOption> getGroupRatingItemResponseOptions(
+      SurveyGroupRatingItemType groupRatingItemType)
+  {
+    List<StringSelectOption> options = new ArrayList<>();
+
+    if (groupRatingItemType == SurveyGroupRatingItemType.YES_NO_NA)
+    {
+      options.add(new StringSelectOption("Yes", "1"));
+      options.add(new StringSelectOption("No", "0"));
+      options.add(new StringSelectOption("N/A", "-1"));
+    }
+
+    return options;
   }
 }

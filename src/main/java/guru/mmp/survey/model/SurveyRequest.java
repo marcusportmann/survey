@@ -41,7 +41,7 @@ public class SurveyRequest
   @SuppressWarnings("unused")
   @ManyToOne
   @JoinColumn(name = "SURVEY_INSTANCE_ID")
-  private SurveyInstance surveyInstance;
+  private SurveyInstance instance;
 
   /**
    * Constructs a new <code>SurveyRequest</code>.
@@ -54,14 +54,14 @@ public class SurveyRequest
   /**
    * Constructs a new <code>SurveyRequest</code>.
    *
-   * @param id             the Universally Unique Identifier (UUID) used to uniquely identify the
-   *                       survey request
-   * @param surveyInstance the survey instance this survey request is associated with
+   * @param id       the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *                 request
+   * @param instance the survey instance this survey request is associated with
    */
-  public SurveyRequest(UUID id, SurveyInstance surveyInstance)
+  public SurveyRequest(UUID id, SurveyInstance instance)
   {
     this.id = id;
-    this.surveyInstance = surveyInstance;
+    this.instance = instance;
   }
 
   /**

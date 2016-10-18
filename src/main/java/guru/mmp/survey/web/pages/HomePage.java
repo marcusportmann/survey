@@ -48,7 +48,7 @@ public class HomePage
 
     PageParameters captureSurveyResponsePageParameters = new PageParameters();
     captureSurveyResponsePageParameters.add("surveyInstanceId", "b222aa15-715f-4752-923d-8f33ee8a1736");
-    add(new BookmarkablePageLink<>("captureSurveyResponseLink", CaptureSurveyResponsePage.class, captureSurveyResponsePageParameters));
+    add(new BookmarkablePageLink<>("captureSurveyResponseLink", CompleteSurveyPage.class, captureSurveyResponsePageParameters));
 
     add(new Button("testButton") {
 
@@ -61,7 +61,7 @@ public class HomePage
 
         try
         {
-          //SurveyDefinition surveyTemplate = surveyService.getSurveyDefinition(surveyTemplateId);
+          //SurveyDefinition surveyTemplate = surveyService.getDefinition(surveyTemplateId);
 
 
 

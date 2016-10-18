@@ -234,7 +234,7 @@ public class SurveyGroupDefinition
   {
     StringBuilder buffer = new StringBuilder();
 
-    buffer.append("SurveyDefinitionGroup {");
+    buffer.append("SurveyGroupDefinition {");
     buffer.append("id=\"").append(getId()).append("\", ");
     buffer.append("name=\"").append(getName()).append("\", ");
     buffer.append("description=\"").append(getDescription()).append("\", ");

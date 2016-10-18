@@ -236,7 +236,6 @@ public class SurveySectionDefinition
   @Override
   public String toString()
   {
-    return String.format("SurveySectionDefinition {id=\"%s\", name=\"%s\"}",
-      getId(), getName());
+    return String.format("SurveySectionDefinition {id=\"%s\", name=\"%s\"}", getId(), getName());
   }
 }

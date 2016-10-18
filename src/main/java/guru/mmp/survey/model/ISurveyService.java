@@ -24,18 +24,6 @@ import java.util.UUID;
 public interface ISurveyService
 {
   /**
-   * Retrieve the survey response identified by the specified ID.
-   *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
-   *           response
-   *
-   * @return the survey response identified by the specified ID or <code>null</code> if the survey
-   *         response could not be found
-   */
-  SurveyResponse getSurveyResponse(UUID id)
-    throws SurveyServiceException;
-
-  /**
    * Retrieve the survey definition identified by the specified ID and version.
    *
    * @param id      the Universally Unique Identifier (UUID) used, along with the version of the
@@ -69,6 +57,18 @@ public interface ISurveyService
    *         request could not be found
    */
   SurveyRequest getSurveyRequest(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the survey response identified by the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           response
+   *
+   * @return the survey response identified by the specified ID or <code>null</code> if the survey
+   *         response could not be found
+   */
+  SurveyResponse getSurveyResponse(UUID id)
     throws SurveyServiceException;
 
   /**

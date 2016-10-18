@@ -290,6 +290,30 @@ public class SurveyDefinition
   }
 
   /**
+   * Returns the survey group rating item definitions associated with the survey group definition.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           group definition
+   *
+   * @return the survey group rating item definitions associated with the survey group definition
+   */
+  public List<SurveyGroupRatingItemDefinition> getGroupRatingItemDefinitionsForGroupDefinition(
+      UUID id)
+  {
+    List<SurveyGroupRatingItemDefinition> matchingGroupRatingItemDefinitions = new ArrayList<>();
+
+    for (SurveyGroupRatingItemDefinition groupRatingItemDefinition : groupRatingItemDefinitions)
+    {
+      if (groupRatingItemDefinition.getGroupDefinitionId().equals(id))
+      {
+        matchingGroupRatingItemDefinitions.add(groupRatingItemDefinition);
+      }
+    }
+
+    return matchingGroupRatingItemDefinitions;
+  }
+
+  /**
    * Returns the Universally Unique Identifier (UUID) used, along with the version of the survey
    * definition, to uniquely identify the survey definition.
    *
@@ -373,11 +397,11 @@ public class SurveyDefinition
    */
   public void removeGroupDefinition(UUID id)
   {
-    for (SurveyGroupDefinition groupDefinition : groupDefinitions)
+    for (SurveyGroupDefinition surveyGroupDefinition : groupDefinitions)
     {
-      if (groupDefinition.getId().equals(id))
+      if (surveyGroupDefinition.getId().equals(id))
       {
-        groupDefinitions.remove(groupDefinition);
+        groupDefinitions.remove(surveyGroupDefinition);
 
         return;
       }

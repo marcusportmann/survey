@@ -30,3 +30,80 @@ span.copyright-name:before
   content: "Marcus Portmann";
 }
 
+table.table-group-definition > thead > tr > th
+{
+  font-size: 12px;
+}
+
+table.table-group-definition > tbody > tr > td
+{
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+
+
+
+
+
+
+div.group-rating-item-response
+{
+}
+
+div.group-rating-item-response select
+{
+  -webkit-appearance:none;
+  -moz-appearance: none;
+  background: none;
+  border: transparent;
+  border-radius: 0;
+  width: 100%;
+  height: auto;
+  padding-left: 0;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  font-size: 12px;
+}
+
+div.group-rating-item-response select:focus
+{
+  background: none;
+}
+
+.has-error .form-material div.group-rating-item-response select
+{
+  -webkit-box-shadow:0 2px 0 #d26a5c;box-shadow:0 1px 0 #d26a5c
+}
+
+.has-error .form-material div.group-rating-item-response select:focus
+{
+  -webkit-box-shadow:0 2px 0 #d26a5c;box-shadow:0 2px 0 #d26a5c
+}
+
+div.group-rating-item-response select option[disabled]:first-child
+{
+  display: none;
+}
+
+div.group-rating-item-response:after
+{
+  background: none;
+  color: #888;
+  content: "\f0d7";
+  font-family: 'FontAwesome';
+  font-size: 13px;
+  padding-top: 8px;
+  padding-right: 0;
+  padding-left: 10px;
+  padding-bottom: 0;
+  position: absolute;
+  right: 0px;
+  width: 20px;
+  top: 0;
+  text-align: center;
+}
+
+
+
+

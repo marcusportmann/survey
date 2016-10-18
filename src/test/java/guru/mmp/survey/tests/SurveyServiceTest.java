@@ -127,6 +127,31 @@ public class SurveyServiceTest
   }
 
   /**
+   * Test the save survey response functionality.
+   */
+  @Test
+  public void saveCTOValuesSurveyResponseTest()
+    throws Exception
+  {
+    SurveyDefinition surveyDefinition = getCTOValuesSurveyDefinition();
+
+    surveyService.saveSurveyDefinition(surveyDefinition);
+
+    SurveyInstance surveyInstance = getCTOValuesSurveyInstance(surveyDefinition);
+
+    surveyService.saveSurveyInstance(surveyInstance);
+
+    SurveyResponse surveyResponse = new SurveyResponse(surveyInstance);
+
+    surveyService.saveSurveyResponse(surveyResponse);
+
+    SurveyResponse retrievedSurveyResponse = surveyService.getSurveyResponse(
+        surveyResponse.getId());
+
+    compareSurveyResponses(surveyResponse, retrievedSurveyResponse);
+  }
+
+  /**
    * Test the save new survey definition functionality.
    */
   @Test
@@ -209,33 +234,6 @@ public class SurveyServiceTest
 
     compareSurveyResponses(surveyResponse, retrievedSurveyResponse);
   }
-
-
-  /**
-   * Test the save survey response functionality.
-   */
-  @Test
-  public void saveCTOValuesSurveyResponseTest()
-    throws Exception
-  {
-    SurveyDefinition surveyDefinition = getCTOValuesSurveyDefinition();
-
-    surveyService.saveSurveyDefinition(surveyDefinition);
-
-    SurveyInstance surveyInstance = getCTOValuesSurveyInstance(surveyDefinition);
-
-    surveyService.saveSurveyInstance(surveyInstance);
-
-    SurveyResponse surveyResponse = new SurveyResponse(surveyInstance);
-
-    surveyService.saveSurveyResponse(surveyResponse);
-
-    SurveyResponse retrievedSurveyResponse = surveyService.getSurveyResponse(
-      surveyResponse.getId());
-
-    compareSurveyResponses(surveyResponse, retrievedSurveyResponse);
-  }
-
 
   /**
    * Test the save updated survey definition functionality.
@@ -349,6 +347,15 @@ public class SurveyServiceTest
     return surveyDefinition;
   }
 
+  private static synchronized SurveyInstance getCTOValuesSurveyInstance(
+      SurveyDefinition surveyDefinition)
+  {
+    SurveyInstance surveyInstance = new SurveyInstance(UUID.randomUUID(),
+        "CTO ELT Values Survey - September 2016", surveyDefinition);
+
+    return surveyInstance;
+  }
+
   private static synchronized SurveyDefinition getTestSurveyDefinition()
   {
     SurveyDefinition surveyDefinition = new SurveyDefinition(UUID.randomUUID(), 1, UUID.fromString(
@@ -411,15 +418,6 @@ public class SurveyServiceTest
   {
     SurveyInstance surveyInstance = new SurveyInstance(UUID.randomUUID(), "Test Survey Instance",
         surveyDefinition);
-
-    return surveyInstance;
-  }
-
-  private static synchronized SurveyInstance getCTOValuesSurveyInstance(
-    SurveyDefinition surveyDefinition)
-  {
-    SurveyInstance surveyInstance = new SurveyInstance(UUID.randomUUID(), "CTO ELT Values Survey - September 2016",
-      surveyDefinition);
 
     return surveyInstance;
   }
@@ -558,10 +556,8 @@ public class SurveyServiceTest
         "The survey group rating item definition rating type values for the two survey group rating item responses do not match",
         surveyGroupRatingItemResponse1.getGroupRatingItemDefinitionRatingType(),
         surveyGroupRatingItemResponse2.getGroupRatingItemDefinitionRatingType());
-    assertEquals(
-      "The rating values for the two survey group rating item responses do not match",
-      surveyGroupRatingItemResponse1.getRating(),
-      surveyGroupRatingItemResponse2.getRating());
+    assertEquals("The rating values for the two survey group rating item responses do not match",
+        surveyGroupRatingItemResponse1.getRating(), surveyGroupRatingItemResponse2.getRating());
   }
 
   private void compareSurveyInstances(SurveyInstance surveyInstance1,

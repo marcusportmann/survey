@@ -52,7 +52,7 @@ public class SurveyResponse
   @ManyToOne
   @JoinColumn(name = "SURVEY_INSTANCE_ID")
   @JsonIgnore
-  private SurveyInstance surveyInstance;
+  private SurveyInstance instance;
 
   /**
    * The optional survey request this survey response is associated with.
@@ -61,7 +61,7 @@ public class SurveyResponse
   @ManyToOne
   @JoinColumn(name = "SURVEY_REQUEST_ID")
   @JsonIgnore
-  private SurveyRequest surveyRequest;
+  private SurveyRequest request;
 
   /**
    * The survey group rating item responses that are associated with the survey response.
@@ -81,31 +81,31 @@ public class SurveyResponse
   /**
    * Constructs a new <code>SurveyResponse</code>.
    *
-   * @param surveyInstance the survey instance this survey response is associated with
+   * @param instance the survey instance this survey response is associated with
    */
-  public SurveyResponse(SurveyInstance surveyInstance)
+  public SurveyResponse(SurveyInstance instance)
   {
-    this(surveyInstance, null);
+    this(instance, null);
   }
 
   /**
    * Constructs a new <code>SurveyResponse</code>.
    *
-   * @param surveyInstance the survey instance this survey response is associated with
-   * @param surveyRequest  the optional survey request this survey response is associated with
+   * @param instance the survey instance this survey response is associated with
+   * @param request  the optional survey request this survey response is associated with
    */
-  public SurveyResponse(SurveyInstance surveyInstance, SurveyRequest surveyRequest)
+  public SurveyResponse(SurveyInstance instance, SurveyRequest request)
   {
     this.id = UUID.randomUUID();
-    this.surveyInstance = surveyInstance;
-    this.surveyRequest = surveyRequest;
+    this.instance = instance;
+    this.request = request;
     this.groupRatingItemResponses = new ArrayList<>();
 
-    for (SurveyGroupRatingItemDefinition groupRatingItemDefinition :
-        surveyInstance.getSurveyDefinition().getGroupRatingItemDefinitions())
+    for (SurveyGroupRatingItemDefinition groupRatingItemDefinition : instance.getDefinition()
+        .getGroupRatingItemDefinitions())
     {
-      SurveyGroupDefinition groupDefinition = surveyInstance.getSurveyDefinition()
-          .getGroupDefinition(groupRatingItemDefinition.getGroupDefinitionId());
+      SurveyGroupDefinition groupDefinition = instance.getDefinition().getGroupDefinition(
+          groupRatingItemDefinition.getGroupDefinitionId());
 
       for (SurveyGroupMemberDefinition groupMemberDefinition :
           groupDefinition.getGroupMemberDefinitions())
@@ -119,29 +119,29 @@ public class SurveyResponse
   /**
    * Constructs a new <code>SurveyResponse</code>.
    *
-   * @param id             the Universally Unique Identifier (UUID) used to uniquely identify the
-   *                       survey response
-   * @param surveyInstance the survey instance this survey response is associated with
+   * @param id       the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *                 response
+   * @param instance the survey instance this survey response is associated with
    */
-  public SurveyResponse(UUID id, SurveyInstance surveyInstance)
+  public SurveyResponse(UUID id, SurveyInstance instance)
   {
     this.id = id;
-    this.surveyInstance = surveyInstance;
+    this.instance = instance;
   }
 
   /**
    * Constructs a new <code>SurveyResponse</code>.
    *
-   * @param id             the Universally Unique Identifier (UUID) used to uniquely identify the
-   *                       survey response
-   * @param surveyInstance the survey instance this survey response is associated with
-   * @param surveyRequest  the optional survey request this survey response is associated with
+   * @param id       the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *                 response
+   * @param instance the survey instance this survey response is associated with
+   * @param request  the optional survey request this survey response is associated with
    */
-  public SurveyResponse(UUID id, SurveyInstance surveyInstance, SurveyRequest surveyRequest)
+  public SurveyResponse(UUID id, SurveyInstance instance, SurveyRequest request)
   {
     this.id = id;
-    this.surveyInstance = surveyInstance;
-    this.surveyRequest = surveyRequest;
+    this.instance = instance;
+    this.request = request;
   }
 
   /**
@@ -218,6 +218,35 @@ public class SurveyResponse
   }
 
   /**
+   * Retrieve the survey group rating item response.
+   *
+   * @param groupRatingItemDefinitionId the Universally Unique Identifier (UUID) used to uniquely
+   *                                    identify the survey group rating item definition this survey
+   *                                    group rating item response is associated with
+   * @param groupMemberDefinitionId     the Universally Unique Identifier (UUID) used to uniquely
+   *                                    identify the survey group member definition this survey
+   *                                    group rating item response is associated with
+   *
+   * @return the survey group rating item response or <code>null</code> if the survey group rating
+   *         item response could not be found
+   */
+  public SurveyGroupRatingItemResponse getGroupRatingItemResponse(UUID groupRatingItemDefinitionId,
+      UUID groupMemberDefinitionId)
+  {
+    for (SurveyGroupRatingItemResponse groupRatingItemResponse : groupRatingItemResponses)
+    {
+      if ((groupRatingItemResponse.getGroupRatingItemDefinitionId().equals(
+          groupRatingItemDefinitionId))
+          && (groupRatingItemResponse.getGroupMemberDefinitionId().equals(groupMemberDefinitionId)))
+      {
+        return groupRatingItemResponse;
+      }
+    }
+
+    return null;
+  }
+
+  /**
    * Returns the survey group rating item responses that are associated with the survey response.
    *
    * @return the survey group rating item responses that are associated with the survey response
@@ -235,6 +264,16 @@ public class SurveyResponse
   public UUID getId()
   {
     return id;
+  }
+
+  /**
+   * Returns the survey instance this survey response is associated with.
+   *
+   * @return the survey instance this survey response is associated with
+   */
+  public SurveyInstance getInstance()
+  {
+    return instance;
   }
 
   /**

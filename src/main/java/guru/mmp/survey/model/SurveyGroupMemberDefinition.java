@@ -136,6 +136,6 @@ public class SurveyGroupMemberDefinition
   public String toString()
   {
     return String.format("SurveyGroupMemberDefinition {id=\"%s\", name=\"%s\"}", getId(),
-      getName());
+        getName());
   }
 }

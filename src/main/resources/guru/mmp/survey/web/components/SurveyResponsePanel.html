@@ -3,8 +3,28 @@
   <body>
     <wicket:panel>
 
+      <div wicket:id="groupDefinition">
+        <table class="table table-striped table-group-definition">
+          <thead>
+            <tr>
+              <th></th>
+              <th wicket:id="groupRatingItemDefinition"><div><span wicket:id="name"></span></div></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr wicket:id="groupMemberDefinition">
+              <td><span wicket:id="name" style="font-weight: bold;"></span></td>
+              <td wicket:id="groupRatingItemResponse" style="text-align: center;">
+                  <div class="group-rating-item-response">
+                <select wicket:id="rating" class="form-control"></select>
+                  </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
 
+      </div>
 
 
     </wicket:panel>

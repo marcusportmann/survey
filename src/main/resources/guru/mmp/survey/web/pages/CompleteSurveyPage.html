@@ -62,7 +62,17 @@
         <div class="content content-narrow">
           <wicket:extend>
 
-            <div wicket:id="surveyResponse"></div>
+            <form wicket:id="completeSurveyForm" id="completeSurveyForm" class="form-horizontal push-10-t push-10">
+
+              <div wicket:id="surveyResponse"></div>
+
+              <div class="form-group">
+                <div class="col-xs-12">
+                  <button wicket:id="submitButton" type="submit" class="btn btn-default pull-right">Submit</button>
+                </div>
+              </div>
+
+            </form>
 
           </wicket:extend>
         </div>

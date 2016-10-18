@@ -162,7 +162,7 @@ public class SurveyApplicationListener
       }
 
       // Create and populate the database tables if required
-      if (!DAOUtil.tableExists(connection, null, "SURVEY", "DATA"))
+      if (!DAOUtil.tableExists(connection, null, "SURVEY", "SURVEY_DEFINITIONS"))
       {
         logger.info("Creating and populating the application database tables");
 
