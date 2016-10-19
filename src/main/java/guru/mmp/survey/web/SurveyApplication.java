@@ -78,11 +78,11 @@ public class SurveyApplication
   @Override
   protected void initNavigation(NavigationGroup root)
   {
-    super.initNavigation(root);
-  
     root.addItem(new NavigationLink("Home", "fa fa-home", HomePage.class));
     root.addItem(new NavigationLink("Dashboard", "fa fa-home", DashboardPage.class));
     root.addItem(new NavigationLink("Audiences", "fa fa-users", SurveyAudienceAdministrationPage.class));
+
+    super.initNavigation(root);
   }
 }
 
