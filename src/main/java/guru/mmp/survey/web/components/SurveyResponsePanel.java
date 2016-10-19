@@ -141,7 +141,7 @@ public class SurveyResponsePanel extends InputPanel
     {
       options.add(new StringSelectOption("Yes", "1"));
       options.add(new StringSelectOption("No", "0"));
-      options.add(new StringSelectOption("N/A", "-1"));
+      options.add(new StringSelectOption("-", "-1"));
     }
 
     return options;

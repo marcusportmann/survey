@@ -39,60 +39,72 @@ table.table-group-definition > tbody > tr > td
 {
   font-size: 12px;
   white-space: nowrap;
+  text-align: center;
 }
 
-
-
-
-
-
-
-div.group-rating-item-response
+table.table-group-definition .form-group
 {
+  margin: 0;
+  display: inline-block;
+
 }
 
-div.group-rating-item-response select
+
+table.table-group-definition .form-group .form-material
+{
+  margin: 0;
+}
+
+
+table.table-group-definition .group-rating-item-response
+{
+  margin-bottom: 0px;
+}
+
+table.table-group-definition .group-rating-item-response select
 {
   -webkit-appearance:none;
   -moz-appearance: none;
   background: none;
   border: transparent;
   border-radius: 0;
-  width: 100%;
+  width: 40px;
+  font-size: 12px;
   height: auto;
   padding-left: 0;
-  padding-top: 3px;
-  padding-bottom: 5px;
-  font-size: 12px;
+  padding-top: 5px;
+  padding-bottom: 7px;
+  /*-webkit-box-shadow: 0 1px 0 #e6e6e6;*/
+  /*box-shadow: 0 1px 0 #e6e6e6;*/
 }
 
-div.group-rating-item-response select:focus
+table.table-group-definition .group-rating-item-response select:focus
 {
-  background: none;
+  -webkit-box-shadow:0 2px 0 #5c90d2;box-shadow:0 2px 0 #5c90d2;
 }
 
-.has-error .form-material div.group-rating-item-response select
+table.table-group-definition .has-error .form-material .group-rating-item-response select
 {
   -webkit-box-shadow:0 2px 0 #d26a5c;box-shadow:0 1px 0 #d26a5c
 }
 
-.has-error .form-material div.group-rating-item-response select:focus
+table.table-group-definition .has-error .form-material .group-rating-item-response select:focus
 {
   -webkit-box-shadow:0 2px 0 #d26a5c;box-shadow:0 2px 0 #d26a5c
 }
 
-div.group-rating-item-response select option[disabled]:first-child
+table.table-group-definition .group-rating-item-response select option[disabled]:first-child
 {
   display: none;
 }
 
-div.group-rating-item-response:after
+table.table-group-definition .group-rating-item-response:after
 {
   background: none;
-  color: #888;
+  color: #bbb;
   content: "\f0d7";
   font-family: 'FontAwesome';
-  font-size: 13px;
+  font-size: 12px;
   padding-top: 8px;
   padding-right: 0;
   padding-left: 10px;
@@ -103,7 +115,6 @@ div.group-rating-item-response:after
   top: 0;
   text-align: center;
 }
-
 
 
 
