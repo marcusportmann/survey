@@ -52,6 +52,169 @@ public class SurveyService
   public SurveyService() {}
 
   /**
+   * Returns the number of members for the survey audience.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           audience
+   *
+   * @return the number of members for the survey audience
+   */
+  public int getNumberOfMembersForSurveyAudience(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      Query query = entityManager.createQuery("SELECT COUNT(sam.id) FROM SurveyAudienceMember sam"
+          + " WHERE sam.audience.id = :id");
+
+      query.setParameter("id", id);
+
+      return ((Number) query.getSingleResult()).intValue();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the number of members for the survey audience with ID (" + id + ")",
+          e);
+    }
+  }
+
+  /**
+   * Returns the number of survey audiences for the organisation.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
+   *
+   * @return the number of survey audiences for the organisation
+   */
+  public int getNumberOfSurveyAudiencesForOrganisation(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      Query query = entityManager.createQuery("SELECT COUNT(sa.id) FROM SurveyAudience sa"
+          + " WHERE sa.organisationId = :organisationId");
+
+      query.setParameter("organisationId", id);
+
+      return ((Number) query.getSingleResult()).intValue();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the number of survey audiences for the organisation with ID ("
+          + id + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the survey audience identified by the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           audience
+   *
+   * @return the survey audience identified by the specified ID or <code>null</code> if the survey
+   *         audience could not be found
+   */
+  public SurveyAudience getSurveyAudience(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT sa FROM SurveyAudience sa WHERE sa.id = :id";
+
+      TypedQuery<SurveyAudience> query = entityManager.createQuery(sql,
+          SurveyAudience.class);
+
+      query.setParameter("id", id);
+
+      List<SurveyAudience> surveyAudiences = query.getResultList();
+
+      if (surveyAudiences.size() == 0)
+      {
+        return null;
+      }
+      else
+      {
+        return surveyAudiences.get(0);
+      }
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to retrieve the survey audience (" + id + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the survey audience member identified by the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           audience member
+   *
+   * @return the survey audience member identified by the specified ID or <code>null</code> if the
+   *         survey audience member could not be found
+   */
+  public SurveyAudienceMember getSurveyAudienceMember(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql =
+          "SELECT sam FROM SurveyAudienceMember sam WHERE sam.id = :id";
+
+      TypedQuery<SurveyAudienceMember> query = entityManager.createQuery(
+          sql, SurveyAudienceMember.class);
+
+      query.setParameter("id", id);
+
+      List<SurveyAudienceMember> surveyAudienceMembers = query.getResultList();
+
+      if (surveyAudienceMembers.size() == 0)
+      {
+        return null;
+      }
+      else
+      {
+        return surveyAudienceMembers.get(0);
+      }
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to retrieve the survey audience member (" + id
+          + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the survey audiences for the organisation.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
+   *
+   * @return the survey audiences for the organisation
+   */
+  public List<SurveyAudience> getSurveyAudiencesForOrganisation(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql =
+          "SELECT sa FROM SurveyAudience sa WHERE sa.organisationId = :id";
+
+      TypedQuery<SurveyAudience> query = entityManager.createQuery(sql,
+          SurveyAudience.class);
+
+      query.setParameter("id", id);
+
+      return query.getResultList();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the survey audiences for the organisation with ID (" + id + ")",
+          e);
+    }
+  }
+
+  /**
    * Retrieve the survey definition identified by the specified ID and version.
    *
    * @param id      the Universally Unique Identifier (UUID) used, along with the version of the
@@ -66,10 +229,10 @@ public class SurveyService
   {
     try
     {
-      String getSurveyDefinitionSQL =
+      String sql =
           "SELECT st FROM SurveyDefinition st WHERE st.id = :id AND st.version = :version";
 
-      TypedQuery<SurveyDefinition> query = entityManager.createQuery(getSurveyDefinitionSQL,
+      TypedQuery<SurveyDefinition> query = entityManager.createQuery(sql,
           SurveyDefinition.class);
 
       query.setParameter("id", id);
@@ -105,9 +268,9 @@ public class SurveyService
   {
     try
     {
-      String getSurveyInstanceSQL = "SELECT si FROM SurveyInstance si WHERE si.id = :id";
+      String sql = "SELECT si FROM SurveyInstance si WHERE si.id = :id";
 
-      TypedQuery<SurveyInstance> query = entityManager.createQuery(getSurveyInstanceSQL,
+      TypedQuery<SurveyInstance> query = entityManager.createQuery(sql,
           SurveyInstance.class);
 
       query.setParameter("id", id);
@@ -142,9 +305,9 @@ public class SurveyService
   {
     try
     {
-      String getSurveyRequestSQL = "SELECT sr FROM SurveyRequest sr WHERE sr.id = :id";
+      String sql = "SELECT sr FROM SurveyRequest sr WHERE sr.id = :id";
 
-      TypedQuery<SurveyRequest> query = entityManager.createQuery(getSurveyRequestSQL,
+      TypedQuery<SurveyRequest> query = entityManager.createQuery(sql,
           SurveyRequest.class);
 
       query.setParameter("id", id);
@@ -180,9 +343,9 @@ public class SurveyService
   {
     try
     {
-      String getSurveyResponseSQL = "SELECT sr FROM SurveyResponse sr WHERE sr.id = :id";
+      String sql = "SELECT sr FROM SurveyResponse sr WHERE sr.id = :id";
 
-      TypedQuery<SurveyResponse> query = entityManager.createQuery(getSurveyResponseSQL,
+      TypedQuery<SurveyResponse> query = entityManager.createQuery(sql,
           SurveyResponse.class);
 
       query.setParameter("id", id);
@@ -205,6 +368,33 @@ public class SurveyService
   }
 
   /**
+   * Save the survey audience.
+   *
+   * @param surveyAudience the survey audience
+   *
+   * @return the saved survey audience
+   */
+  @Transactional
+  public SurveyAudience saveSurveyAudience(SurveyAudience surveyAudience)
+    throws SurveyServiceException
+  {
+    try
+    {
+      if (!entityManager.contains(surveyAudience))
+      {
+        surveyAudience = entityManager.merge(surveyAudience);
+      }
+
+      return surveyAudience;
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to save the survey audience with ID ("
+          + surveyAudience.getId() + ")", e);
+    }
+  }
+
+  /**
    * Save the survey definition.
    *
    * @param surveyDefinition the survey definition
@@ -219,7 +409,7 @@ public class SurveyService
     {
       // Check if a survey instance exists for the current version of the survey definition
       Query surveyInstanceExistsQuery = entityManager.createQuery(
-          "SELECT COUNT(si.id) FROM SurveyInstance si JOIN si.surveyDefinition sd"
+          "SELECT COUNT(si.id) FROM SurveyInstance si JOIN si.definition sd"
           + " WHERE sd.id = :id AND sd.version = :version");
 
       surveyInstanceExistsQuery.setParameter("id", surveyDefinition.getId());
@@ -303,4 +493,198 @@ public class SurveyService
           + surveyResponse.getId() + ")", e);
     }
   }
+
+
+
+
+  /**
+   * Retrieve the filtered survey audiences for the organisation.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
+   *               organisation
+   * @param filter the filter used to limit the matching survey audiences
+   *
+   * @return the filtered survey audiences for the organisation
+   */
+  public List<SurveyAudience> getFilteredSurveyAudiencesForOrganisation(UUID id, String filter)
+    throws SurveyServiceException
+  {
+    try
+    {
+      StringBuilder filterBuffer = new StringBuilder();
+
+      filterBuffer.append("%");
+      filterBuffer.append(filter.toUpperCase());
+      filterBuffer.append("%");
+
+      String sql = "SELECT sa FROM SurveyAudience sa WHERE sa.organisationId = :id"
+        + " AND (UPPER(sa.name) LIKE :filter)";
+
+      TypedQuery<SurveyAudience> query = entityManager.createQuery(sql,
+        SurveyAudience.class);
+
+      query.setParameter("id", id);
+      query.setParameter("filter", filterBuffer.toString());
+
+      return query.getResultList();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+        "Failed to retrieve the survey audiences for the organisation with ID (" + id + ") matching the filter (" + filter + ")",
+        e);
+    }
+  }
+
+  /**
+   * Returns the number of filtered survey audiences for the organisation.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
+   *               organisation
+   * @param filter the filter used to limit the matching survey audiences
+   *
+   * @return the number of filtered survey audiences for the organisation
+   */
+  public int getNumberOfFilteredSurveyAudiencesForOrganisation(UUID id, String filter)
+    throws SurveyServiceException
+  {
+    try
+    {
+      StringBuilder filterBuffer = new StringBuilder();
+
+      filterBuffer.append("%");
+      filterBuffer.append(filter.toUpperCase());
+      filterBuffer.append("%");
+
+      Query query = entityManager.createQuery("SELECT COUNT(sa.id) FROM SurveyAudience sa"
+        + " WHERE sa.organisationId = :id AND (UPPER(sa.name) LIKE :filter)");
+
+      query.setParameter("id", id);
+      query.setParameter("filter", filterBuffer.toString());
+
+      return ((Number) query.getSingleResult()).intValue();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+        "Failed to retrieve the number of survey audiences for the organisation with ID (" + id + ") matching the filter (" + filter + ")",
+        e);
+    }
+  }
+
+
+
+  /**
+   * Returns the number of filtered survey audience members for the survey audience.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *               audience
+   * @param filter the filter used to limit the matching survey audience members
+   *
+   * @return the number of filtered survey audience members for the survey audience
+   */
+  public int getNumberOfFilteredMembersForSurveyAudience(UUID id, String filter)
+    throws SurveyServiceException
+  {
+    try
+    {
+      StringBuilder filterBuffer = new StringBuilder();
+
+      filterBuffer.append("%");
+      filterBuffer.append(filter.toUpperCase());
+      filterBuffer.append("%");
+
+      Query query = entityManager.createQuery("SELECT COUNT(sam.id) FROM SurveyAudienceMember sam JOIN sam.audience sa"
+        + " WHERE sa.id = :id AND ((UPPER(sam.firstName) LIKE :filter)"
+        + " OR (UPPER(sam.lastName) LIKE :filter) OR (UPPER(sam.email) LIKE :filter))");
+
+      query.setParameter("id", id);
+      query.setParameter("filter", filterBuffer.toString());
+
+      return ((Number) query.getSingleResult()).intValue();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+        "Failed to retrieve the number of survey audience members for the survey audience with ID (" + id + ") matching the filter (" + filter + ")",
+        e);
+    }  }
+
+  /**
+   * Retrieve the filtered survey audience members for the survey audience.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *               audience
+   * @param filter the filter used to limit the matching survey audience members
+   *
+   * @return the filtered survey audiences members for the survey audience
+   */
+  public List<SurveyAudienceMember> getFilteredMembersForSurveyAudience(UUID id, String filter)
+    throws SurveyServiceException
+  {
+    try
+    {
+      StringBuilder filterBuffer = new StringBuilder();
+
+      filterBuffer.append("%");
+      filterBuffer.append(filter.toUpperCase());
+      filterBuffer.append("%");
+
+      String sql = "SELECT sam FROM SurveyAudienceMember sam JOIN sam.audience sa"
+        + " WHERE sa.id = :id AND ((UPPER(sam.firstName) LIKE :filter)"
+        + " OR (UPPER(sam.lastName) LIKE :filter) OR (UPPER(sam.email) LIKE :filter))";
+
+      TypedQuery<SurveyAudienceMember> query = entityManager.createQuery(sql,
+        SurveyAudienceMember.class);
+
+      query.setParameter("id", id);
+      query.setParameter("filter", filterBuffer.toString());
+
+      return query.getResultList();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+        "Failed to retrieve the survey audience members for the survey audience with ID (" + id + ") matching the filter (" + filter + ")",
+        e);
+    }
+  }
+
+
+
+
+  /**
+   * Retrieve the survey audience members for the survey audience.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           audience
+   *
+   * @return the survey audiences members for the survey audience
+   */
+  public List<SurveyAudienceMember> getMembersForSurveyAudience(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT sam FROM SurveyAudienceMember sam JOIN sam.audience sa WHERE sa.id = :id";
+
+      TypedQuery<SurveyAudienceMember> query = entityManager.createQuery(sql,
+        SurveyAudienceMember.class);
+
+      query.setParameter("id", id);
+
+      return query.getResultList();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+        "Failed to retrieve the survey audience members for the survey audience with ID (" + id + ")",
+        e);
+    }
+
+  }
+
+
+
+
 }

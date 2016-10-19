@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -259,6 +260,81 @@ public class SurveyServiceTest
     compareSurveyDefinitions(surveyDefinition, retrievedSurveyDefinition);
   }
 
+  /**
+   * Test the survey audience functionality.
+   *
+   */
+  @Test
+  public void surveyAudienceTest()
+    throws Exception
+  {
+    SurveyAudience surveyAudience = getTestSurveyAudience();
+
+    surveyService.saveSurveyAudience(surveyAudience);
+
+    SurveyAudience retrievedSurveyAudience = surveyService.getSurveyAudience(
+        surveyAudience.getId());
+
+    compareSurveyAudiences(surveyAudience, retrievedSurveyAudience);
+
+    SurveyAudienceMember retrievedSurveyAudienceMember = surveyService.getSurveyAudienceMember(
+        surveyAudience.getMembers().get(0).getId());
+
+    compareSurveyAudienceMembers(surveyAudience.getMembers().get(0), retrievedSurveyAudienceMember);
+
+    List<SurveyAudienceMember> retrievedSurveyAudienceMembers =
+        surveyService.getMembersForSurveyAudience(surveyAudience.getId());
+
+    assertEquals(
+        "Failed to retrieve the correct number of survey audience members for the survey audience ("
+        + surveyAudience.getId() + ")", surveyAudience.getMembers().size(),
+        retrievedSurveyAudienceMembers.size());
+
+    for (SurveyAudienceMember surveyAudienceMember : surveyAudience.getMembers())
+    {
+      for (SurveyAudienceMember tmpSurveyAudienceMember : retrievedSurveyAudienceMembers)
+      {
+        if (surveyAudienceMember.getId().equals(tmpSurveyAudienceMember.getId()))
+        {
+          compareSurveyAudienceMembers(surveyAudienceMember, tmpSurveyAudienceMember);
+        }
+      }
+    }
+
+    assertEquals("Failed to retrieve the correct number of survey audiences for the organisation ("
+        + surveyAudience.getOrganisationId() + ")", 1,
+        surveyService.getNumberOfSurveyAudiencesForOrganisation(
+        surveyAudience.getOrganisationId()));
+
+    assertEquals(
+        "Failed to retrieve the correct number of survey audience members for the survey audience ("
+        + surveyAudience.getId() + ")", surveyAudience.getMembers().size(),
+        surveyService.getNumberOfMembersForSurveyAudience(surveyAudience.getId()));
+
+    assertEquals(
+        "Failed to retrieve the correct number of filtered survey audiences for the organisation ("
+        + surveyAudience.getOrganisationId() + ")", 1,
+        surveyService.getNumberOfFilteredSurveyAudiencesForOrganisation(
+        surveyAudience.getOrganisationId(), "Test"));
+
+    retrievedSurveyAudience = surveyService.getFilteredSurveyAudiencesForOrganisation(
+        surveyAudience.getOrganisationId(), "Test").get(0);
+
+    compareSurveyAudiences(surveyAudience, retrievedSurveyAudience);
+
+    assertEquals(
+        "Failed to retrieve the correct number of filtered survey audience members for the survey audience ("
+        + surveyAudience.getId() + ")", 1,
+        surveyService.getNumberOfFilteredMembersForSurveyAudience(surveyAudience.getId(),
+        "Test First Name 1"));
+
+    retrievedSurveyAudienceMember = surveyService.getFilteredMembersForSurveyAudience(
+        surveyAudience.getId(), "Test First Name 1").get(0);
+
+    compareSurveyAudienceMembers(surveyAudience.getMembers().get(0), retrievedSurveyAudienceMember);
+
+  }
+
   private static synchronized SurveyDefinition getCTOValuesSurveyDefinition()
   {
     SurveyDefinition surveyDefinition = new SurveyDefinition(UUID.fromString(
@@ -356,6 +432,21 @@ public class SurveyServiceTest
     return surveyInstance;
   }
 
+  private static synchronized SurveyAudience getTestSurveyAudience()
+  {
+    SurveyAudience surveyAudience = new SurveyAudience(UUID.randomUUID(), UUID.fromString(
+        "c1685b92-9fe5-453a-995b-89d8c0f29cb5"), "Test Survey Audience");
+
+    surveyAudience.addMember(new SurveyAudienceMember(UUID.randomUUID(), "Test First Name 1",
+        "Test Last Name 1", "Test Email 1"));
+    surveyAudience.addMember(new SurveyAudienceMember(UUID.randomUUID(), "Test First Name 2",
+        "Test Last Name 2", "Test Email 2"));
+    surveyAudience.addMember(new SurveyAudienceMember(UUID.randomUUID(), "Test First Name 3",
+        "Test Last Name 3", "Test Email 3"));
+
+    return surveyAudience;
+  }
+
   private static synchronized SurveyDefinition getTestSurveyDefinition()
   {
     SurveyDefinition surveyDefinition = new SurveyDefinition(UUID.randomUUID(), 1, UUID.fromString(
@@ -420,6 +511,37 @@ public class SurveyServiceTest
         surveyDefinition);
 
     return surveyInstance;
+  }
+
+  private void compareSurveyAudienceMembers(SurveyAudienceMember surveyAudienceMember1,
+      SurveyAudienceMember surveyAudienceMember2)
+  {
+    assertEquals("The ID values for the two survey audience members do not match",
+        surveyAudienceMember1.getId(), surveyAudienceMember2.getId());
+    assertEquals("The first name values for the two survey audience members do not match",
+        surveyAudienceMember1.getFirstName(), surveyAudienceMember2.getFirstName());
+    assertEquals("The last name values for the two survey audience members do not match",
+        surveyAudienceMember1.getLastName(), surveyAudienceMember2.getLastName());
+    assertEquals("The email values for the two survey audience members do not match",
+        surveyAudienceMember1.getEmail(), surveyAudienceMember2.getEmail());
+  }
+
+  private void compareSurveyAudiences(SurveyAudience surveyAudience1,
+      SurveyAudience surveyAudience2)
+  {
+    assertEquals("The ID values for the two survey audiences do not match",
+        surveyAudience1.getId(), surveyAudience2.getId());
+    assertEquals("The name values for the two survey audiences do not match",
+        surveyAudience1.getName(), surveyAudience2.getName());
+
+    for (SurveyAudienceMember member1 : surveyAudience1.getMembers())
+    {
+      SurveyAudienceMember member2 = surveyAudience2.getMember(member1.getId());
+
+      assertNotNull("The survey audience member could not be found", member2);
+
+      compareSurveyAudienceMembers(member1, member2);
+    }
   }
 
   private void compareSurveyDefinitions(SurveyDefinition surveyDefinition1,

@@ -20,6 +20,7 @@ package guru.mmp.survey.web;
  */
 public class SurveySecurity
 {
-  /** The Survey.SurveyFunction function code */
-  public static final String FUNCTION_CODE_SAMPLE_FUNCTION = "Survey.SurveyFunction";
+  /** The Survey.SurveyAudienceAdministration function code */
+  public static final String FUNCTION_CODE_SURVEY_AUDIENCE_ADMINISTRATION =
+      "Survey.SurveyAudienceAdministration";
 }

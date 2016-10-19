@@ -28,7 +28,7 @@ import java.util.UUID;
  *
  * @author Marcus Portmann
  */
-@JsonPropertyOrder({ "id", "groupRatingItemDefinitionId", "groupMemberDefinitionId", "rating" })
+@JsonPropertyOrder({ "id", "groupRatingItemDefinitionId",  "groupRatingItemDefinitionName", "groupRatingItemDefinitionRatingType", "groupMemberDefinitionId", "groupMemberDefinitionName", "rating" })
 public class SurveyGroupRatingItemResponse
   implements Serializable
 {
@@ -38,6 +38,13 @@ public class SurveyGroupRatingItemResponse
    */
   @JsonProperty
   private UUID id;
+
+  /**
+   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group member
+   * definition this survey group rating item response is associated with.
+   */
+  @JsonProperty
+  private UUID groupMemberDefinitionId;
 
   /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey group rating item
@@ -53,11 +60,10 @@ public class SurveyGroupRatingItemResponse
   private String groupRatingItemDefinitionName;
 
   /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group member
-   * definition this survey group rating item response is associated with.
-   */
+   * The type of survey group rating item.
+  */
   @JsonProperty
-  private UUID groupMemberDefinitionId;
+  private SurveyGroupRatingItemType groupRatingItemDefinitionRatingType;
 
   /**
    * The rating for the survey group rating item response e.g. 1=Yes, 0=No and -1=Not Applicable.
@@ -65,11 +71,6 @@ public class SurveyGroupRatingItemResponse
   @JsonProperty
   private int rating;
 
-  /**
-   * The type of survey group rating item.
-   */
-  @JsonProperty
-  private SurveyGroupRatingItemType groupRatingItemDefinitionRatingType;
 
   /**
    * The name of the survey group member definition.

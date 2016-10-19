@@ -13,6 +13,7 @@ package guru.mmp.survey.model;
 
 //~--- JDK imports ------------------------------------------------------------
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -23,6 +24,132 @@ import java.util.UUID;
  */
 public interface ISurveyService
 {
+  /**
+   * Retrieve the filtered survey audiences for the organisation.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
+   *               organisation
+   * @param filter the filter used to limit the matching survey audiences
+   *
+   * @return the filtered survey audiences for the organisation
+   */
+  List<SurveyAudience> getFilteredSurveyAudiencesForOrganisation(UUID id, String filter)
+    throws SurveyServiceException;
+
+  /**
+   * Returns the number of filtered survey audiences for the organisation.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
+   *               organisation
+   * @param filter the filter used to limit the matching survey audiences
+   *
+   * @return the number of filtered survey audiences for the organisation
+   */
+  int getNumberOfFilteredSurveyAudiencesForOrganisation(UUID id, String filter)
+    throws SurveyServiceException;
+
+
+
+
+  /**
+   * Returns the number of filtered survey audience members for the survey audience.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *               audience
+   * @param filter the filter used to limit the matching survey audience members
+   *
+   * @return the number of filtered survey audience members for the survey audience
+   */
+  int getNumberOfFilteredMembersForSurveyAudience(UUID id, String filter)
+    throws SurveyServiceException;
+
+
+  /**
+   * Retrieve the filtered survey audience members for the survey audience.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *               audience
+   * @param filter the filter used to limit the matching survey audience members
+   *
+   * @return the filtered survey audiences members for the survey audience
+   */
+  List<SurveyAudienceMember> getFilteredMembersForSurveyAudience(UUID id, String filter)
+    throws SurveyServiceException;
+
+
+
+
+
+
+  /**
+   * Retrieve the survey audience members for the survey audience.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           audience
+   *
+   * @return the survey audiences members for the survey audience
+   */
+  List<SurveyAudienceMember> getMembersForSurveyAudience(UUID id)
+    throws SurveyServiceException;
+
+
+
+
+  /**
+   * Returns the number of members for the survey audience.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           audience
+   *
+   * @return the number of members for the survey audience
+   */
+  int getNumberOfMembersForSurveyAudience(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Returns the number of survey audiences for the organisation.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
+   *
+   * @return the number of survey audiences for the organisation
+   */
+  int getNumberOfSurveyAudiencesForOrganisation(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the survey audience identified by the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           audience
+   *
+   * @return the survey audience identified by the specified ID or <code>null</code> if the survey
+   *         audience could not be found
+   */
+  SurveyAudience getSurveyAudience(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the survey audience member identified by the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           audience member
+   *
+   * @return the survey audience member identified by the specified ID or <code>null</code> if the
+   *         survey audience member could not be found
+   */
+  SurveyAudienceMember getSurveyAudienceMember(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the survey audiences for the organisation.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
+   *
+   * @return the survey audiences for the organisation
+   */
+  List<SurveyAudience> getSurveyAudiencesForOrganisation(UUID id)
+    throws SurveyServiceException;
+
   /**
    * Retrieve the survey definition identified by the specified ID and version.
    *
@@ -69,6 +196,16 @@ public interface ISurveyService
    *         response could not be found
    */
   SurveyResponse getSurveyResponse(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Save the survey audience.
+   *
+   * @param surveyAudience the survey audience
+   *
+   * @return the saved survey audience
+   */
+  SurveyAudience saveSurveyAudience(SurveyAudience surveyAudience)
     throws SurveyServiceException;
 
   /**

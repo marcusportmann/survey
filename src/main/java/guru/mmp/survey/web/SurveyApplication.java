@@ -18,6 +18,7 @@ import guru.mmp.application.web.template.navigation.NavigationLink;
 import guru.mmp.survey.web.pages.DashboardPage;
 import guru.mmp.survey.web.pages.HomePage;
 import guru.mmp.survey.web.pages.CompleteSurveyPage;
+import guru.mmp.survey.web.pages.SurveyAudienceAdministrationPage;
 import org.apache.wicket.Page;
 import org.apache.wicket.request.resource.CssResourceReference;
 
@@ -81,6 +82,7 @@ public class SurveyApplication
   
     root.addItem(new NavigationLink("Home", "fa fa-home", HomePage.class));
     root.addItem(new NavigationLink("Dashboard", "fa fa-home", DashboardPage.class));
+    root.addItem(new NavigationLink("Audiences", "fa fa-users", SurveyAudienceAdministrationPage.class));
   }
 }
 
