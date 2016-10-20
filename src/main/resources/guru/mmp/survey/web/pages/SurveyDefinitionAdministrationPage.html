@@ -99,16 +99,18 @@
               <table class="table table-bordered table-striped table-condensed table-actions">
                 <thead>
                   <tr>
-                    <th>Name</th>
+                    <th class="stretch-column">Name</th>
+                    <th class="three-actions center">Version</th>
                     <th class="three-actions center">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr wicket:id="surveyDefinition">
                     <td><span wicket:id="name">[Name]</span></td>
+                    <td class="three-actions center"><span wicket:id="version">[Version]</span></td>
                     <td class="three-actions">
                       <div class="btn-group">
-                        <a wicket:id="instancesLink" class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="" data-original-title="Instances"><i class="fa fa-group"></i></a>
+                        <a wicket:id="surveyInstancesLink" class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="" data-original-title="Survey Instances"><i class="fa fa-files-o"></i></a>
                         <a wicket:id="updateLink" class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="" data-original-title="Update Survey"><i class="fa fa-edit"></i></a>
                         <a wicket:id="removeLink" class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="" data-original-title="Remove Survey"><i class="fa fa-times"></i></a>
                       </div>

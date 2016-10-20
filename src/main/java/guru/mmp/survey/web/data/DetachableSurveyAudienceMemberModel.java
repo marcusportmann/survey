@@ -54,13 +54,13 @@ public class DetachableSurveyAudienceMemberModel
   /**
    * Constructs a new <code>DetachableSurveyAudienceMemberModel</code>.
    *
-   * @param codeCategory the <code>SurveyAudienceMember</code> instance
+   * @param surveyAudienceMember the <code>SurveyAudienceMember</code> instance
    */
-  public DetachableSurveyAudienceMemberModel(SurveyAudienceMember codeCategory)
+  public DetachableSurveyAudienceMemberModel(SurveyAudienceMember surveyAudienceMember)
   {
-    this(codeCategory.getId());
+    this(surveyAudienceMember.getId());
 
-    setObject(codeCategory);
+    setObject(surveyAudienceMember);
   }
 
   /**

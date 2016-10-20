@@ -16,7 +16,7 @@ package guru.mmp.survey.web.data;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.data.InjectableLoadableDetachableModel;
 import guru.mmp.survey.model.ISurveyService;
-import guru.mmp.survey.model.SurveyAudience;
+import guru.mmp.survey.model.SurveyDefinition;
 
 import javax.inject.Inject;
 import java.util.UUID;
@@ -24,12 +24,16 @@ import java.util.UUID;
 //~--- JDK imports ------------------------------------------------------------
 
 /**
- * The <code>DetachableSurveyAudienceModel</code> class provides a detachable model
- * implementation for the <code>SurveyAudience</code> model class.
+ * The <code>DetachableSurveyDefinitionModel</code> class provides a detachable model
+ * implementation for the <code>SurveyDefinition</code> model class.
+ *
+ * This detachable model implementation retrieves the latest version of a particular survey
+ * definition.
  *
  * @author Marcus Portmann
  */
-public class DetachableSurveyAudienceModel extends InjectableLoadableDetachableModel<SurveyAudience>
+public class DetachableLatestSurveyDefinitionModel
+    extends InjectableLoadableDetachableModel<SurveyDefinition>
 {
   private static final long serialVersionUID = 1000000;
 
@@ -38,37 +42,36 @@ public class DetachableSurveyAudienceModel extends InjectableLoadableDetachableM
   private ISurveyService surveyService;
 
   /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the survey audience.
+   * The Universally Unique Identifier (UUID) used to uniquely identify the survey definition.
    */
   private UUID id;
 
   /**
-   * Constructs a new <code>DetachableSurveyAudienceModel</code>.
+   * Constructs a new <code>DetachableSurveyDefinitionModel</code>.
    * <p/>
    * Hidden default constructor to support CDI.
    */
   @SuppressWarnings("unused")
-  protected DetachableSurveyAudienceModel() {}
+  protected DetachableLatestSurveyDefinitionModel() {}
 
   /**
-   * Constructs a new <code>DetachableSurveyAudienceModel</code>.
+   * Constructs a new <code>DetachableSurveyDefinitionModel</code>.
    *
-   * @param surveyAudience the <code>SurveyAudience</code> instance
+   * @param surveyDefinition the <code>SurveyDefinition</code> instance
    */
-  public DetachableSurveyAudienceModel(SurveyAudience surveyAudience)
+  public DetachableLatestSurveyDefinitionModel(SurveyDefinition surveyDefinition)
   {
-    this(surveyAudience.getId());
+    this(surveyDefinition.getId());
 
-    setObject(surveyAudience);
+    setObject(surveyDefinition);
   }
 
   /**
-   * Constructs a new <code>DetachableSurveyAudienceModel</code>.
+   * Constructs a new <code>DetachableSurveyDefinitionModel</code>.
    *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the
-   *           survey audience
+   * @param id
    */
-  public DetachableSurveyAudienceModel(UUID id)
+  public DetachableLatestSurveyDefinitionModel(UUID id)
   {
     this.id = id;
   }
@@ -77,16 +80,16 @@ public class DetachableSurveyAudienceModel extends InjectableLoadableDetachableM
    * @see org.apache.wicket.model.LoadableDetachableModel#load()
    */
   @Override
-  protected SurveyAudience load()
+  protected SurveyDefinition load()
   {
     try
     {
-      return surveyService.getSurveyAudience(id);
+      return surveyService.getLatestVersionForSurveyDefinition(id);
     }
     catch (Throwable e)
     {
-      throw new WebApplicationException(String.format("Failed to load the survey audience (%s)",
-          id), e);
+      throw new WebApplicationException(String.format(
+          "Failed to load the latest version of the survey definition (%s)", id), e);
     }
   }
 

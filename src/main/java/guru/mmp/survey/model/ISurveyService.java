@@ -103,6 +103,72 @@ public interface ISurveyService
   List<SurveyAudienceMember> getMembersForSurveyAudience(UUID id)
     throws SurveyServiceException;
 
+
+
+
+
+  /**
+   * Retrieve the survey instances for all versions of the survey definition.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to identify the survey definition
+   *               the survey instances are associated with
+   *
+   * @return the survey instances for all versions of the survey definition
+   *
+   * @throws SurveyServiceException
+   */
+  List<SurveyInstance> getSurveyInstancesForSurveyDefinition(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the number of survey instances for all versions of the survey definition.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to identify the survey definition
+   *               the survey instances are associated with
+   *
+   * @return the number of survey instances for all versions of the survey definition
+   *
+   * @throws SurveyServiceException
+   */
+  int getNumberOfSurveyInstancesForSurveyDefinition(UUID id)
+    throws SurveyServiceException;
+
+
+
+
+  /**
+   * Retrieve the filtered survey instances for all versions of the survey definition.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to identify the survey definition
+   *               the survey instances are associated with
+   * @param filter the filter used to limit the matching survey definitions
+   *
+   * @return the filtered survey instances for all versions of the survey definition
+   *
+   * @throws SurveyServiceException
+   */
+  List<SurveyInstance> getFilteredSurveyInstancesForSurveyDefinition(UUID id, String filter)
+    throws SurveyServiceException;
+
+
+  /**
+   * Retrieve the number of filtered survey instances for all versions of the survey definition.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to identify the survey definition
+   *               the survey instances are associated with
+   * @param filter the filter used to limit the matching survey definitions
+   *
+   * @return the number of filtered survey instances for all versions of the survey definition
+   *
+   * @throws SurveyServiceException
+   */
+  int getNumberOfFilteredSurveyInstancesForSurveyDefinition(UUID id, String filter)
+    throws SurveyServiceException;
+
+
+
+
+
   /**
    * Retrieve the number of latest versions of the filtered survey definitions for the organisation.
    *
