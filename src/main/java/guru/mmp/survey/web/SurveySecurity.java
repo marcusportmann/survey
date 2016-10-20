@@ -23,4 +23,9 @@ public class SurveySecurity
   /** The Survey.SurveyAudienceAdministration function code */
   public static final String FUNCTION_CODE_SURVEY_AUDIENCE_ADMINISTRATION =
       "Survey.SurveyAudienceAdministration";
+
+  /** The Survey.SurveyAdministration function code */
+  public static final String FUNCTION_CODE_SURVEY_ADMINISTRATION =
+    "Survey.SurveyAdministration";
+
 }

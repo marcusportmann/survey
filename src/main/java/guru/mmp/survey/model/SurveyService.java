@@ -52,6 +52,383 @@ public class SurveyService
   public SurveyService() {}
 
   /**
+   * Retrieve the latest versions of the filtered survey definitions for the organisation.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
+   *               organisation
+   * @param filter the filter used to limit the matching survey definitions
+   *
+   * @return the latest versions of the filtered survey definitions for the organisation
+   */
+  public List<SurveyDefinition> getFilteredLatestSurveyDefinitionsForOrganisation(UUID id,
+      String filter)
+    throws SurveyServiceException
+  {
+    try
+    {
+      StringBuilder filterBuffer = new StringBuilder();
+
+      filterBuffer.append("%");
+      filterBuffer.append(filter.toUpperCase());
+      filterBuffer.append("%");
+
+      String sql = "SELECT sd FROM SurveyDefinition sd WHERE sd.version ="
+          + " (SELECT MAX(sdInner.version) FROM SurveyDefinition sdInner WHERE sdInner.id = sd.id)"
+          + " AND (UPPER(sd.name) LIKE :filter)";
+
+      TypedQuery<SurveyDefinition> query = entityManager.createQuery(sql, SurveyDefinition.class);
+
+      query.setParameter("filter", filterBuffer.toString());
+
+      return query.getResultList();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to retrieve the filtered latest versions of the"
+          + " survey definitions for the organisation with ID (" + id + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the filtered survey audience members for the survey audience.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *               audience
+   * @param filter the filter used to limit the matching survey audience members
+   *
+   * @return the filtered survey audiences members for the survey audience
+   */
+  public List<SurveyAudienceMember> getFilteredMembersForSurveyAudience(UUID id, String filter)
+    throws SurveyServiceException
+  {
+    try
+    {
+      StringBuilder filterBuffer = new StringBuilder();
+
+      filterBuffer.append("%");
+      filterBuffer.append(filter.toUpperCase());
+      filterBuffer.append("%");
+
+      String sql = "SELECT sam FROM SurveyAudienceMember sam JOIN sam.audience sa"
+          + " WHERE sa.id = :id AND ((UPPER(sam.firstName) LIKE :filter)"
+          + " OR (UPPER(sam.lastName) LIKE :filter) OR (UPPER(sam.email) LIKE :filter))";
+
+      TypedQuery<SurveyAudienceMember> query = entityManager.createQuery(sql,
+          SurveyAudienceMember.class);
+
+      query.setParameter("id", id);
+      query.setParameter("filter", filterBuffer.toString());
+
+      return query.getResultList();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the survey audience members for the survey audience with ID (" + id
+          + ") matching the filter (" + filter + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the filtered survey audiences for the organisation.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
+   *               organisation
+   * @param filter the filter used to limit the matching survey audiences
+   *
+   * @return the filtered survey audiences for the organisation
+   */
+  public List<SurveyAudience> getFilteredSurveyAudiencesForOrganisation(UUID id, String filter)
+    throws SurveyServiceException
+  {
+    try
+    {
+      StringBuilder filterBuffer = new StringBuilder();
+
+      filterBuffer.append("%");
+      filterBuffer.append(filter.toUpperCase());
+      filterBuffer.append("%");
+
+      String sql = "SELECT sa FROM SurveyAudience sa WHERE sa.organisationId = :id"
+          + " AND (UPPER(sa.name) LIKE :filter)";
+
+      TypedQuery<SurveyAudience> query = entityManager.createQuery(sql, SurveyAudience.class);
+
+      query.setParameter("id", id);
+      query.setParameter("filter", filterBuffer.toString());
+
+      return query.getResultList();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the survey audiences for the organisation with ID (" + id
+          + ") matching the filter (" + filter + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the latest versions of the survey definitions for the organisation.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
+   *
+   * @return the latest versions of the survey definitions for the organisation
+   */
+  public List<SurveyDefinition> getLatestSurveyDefinitionsForOrganisation(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT sd FROM SurveyDefinition sd WHERE sd.version ="
+          + " (SELECT MAX(sdInner.version) FROM SurveyDefinition sdInner WHERE sdInner.id = sd.id)";
+
+      TypedQuery<SurveyDefinition> query = entityManager.createQuery(sql, SurveyDefinition.class);
+
+      return query.getResultList();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to retrieve the latest versions of the survey"
+          + " definitions for the organisation with ID (" + id + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the latest version for the survey definition.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to identify the survey definition
+   *
+   * @return the latest version for the survey definition or <code>null</code> if the survey
+   *         definition could not be found
+   */
+  public SurveyDefinition getLatestVersionForSurveyDefinition(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT sd FROM SurveyDefinition sd WHERE sd.id = :id"
+          + " AND sd.version IN (SELECT MAX(sd.version) FROM SurveyDefinition sd WHERE sd.id = :id)";
+
+      TypedQuery<SurveyDefinition> query = entityManager.createQuery(sql, SurveyDefinition.class);
+
+      query.setParameter("id", id);
+
+      List<SurveyDefinition> surveyDefinitions = query.getResultList();
+
+      if (surveyDefinitions.size() == 0)
+      {
+        return null;
+      }
+      else
+      {
+        return surveyDefinitions.get(0);
+      }
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the latest version of the survey definition with ID (" + id + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the latest version number for the survey definition.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to identify the survey definition
+   *
+   * @return the latest version number for the survey definition or 0 if the survey definition
+   *         could not be found
+   */
+  public int getLatestVersionNumberForSurveyDefinition(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT MAX(sd.version) FROM SurveyDefinition sd WHERE sd.id = :id";
+
+      Query query = entityManager.createQuery(sql);
+
+      query.setParameter("id", id);
+
+      return ((Number) query.getSingleResult()).intValue();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the latest version number for the survey definition with ID (" + id
+          + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the survey audience members for the survey audience.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           audience
+   *
+   * @return the survey audiences members for the survey audience
+   */
+  public List<SurveyAudienceMember> getMembersForSurveyAudience(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql =
+          "SELECT sam FROM SurveyAudienceMember sam JOIN sam.audience sa WHERE sa.id = :id";
+
+      TypedQuery<SurveyAudienceMember> query = entityManager.createQuery(sql,
+          SurveyAudienceMember.class);
+
+      query.setParameter("id", id);
+
+      return query.getResultList();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the survey audience members for the survey audience with ID (" + id
+          + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the number of latest versions of the filtered survey definitions for the organisation.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
+   *               organisation
+   * @param filter the filter used to limit the matching survey definitions
+   *
+   * @return the number of latest versions of the filtered survey definitions for the organisation
+   */
+  public int getNumberOfFilteredLatestSurveyDefinitionsForOrganisation(UUID id, String filter)
+    throws SurveyServiceException
+  {
+    try
+    {
+      StringBuilder filterBuffer = new StringBuilder();
+
+      filterBuffer.append("%");
+      filterBuffer.append(filter.toUpperCase());
+      filterBuffer.append("%");
+
+      String sql = "SELECT COUNT(sd.id) FROM SurveyDefinition sd WHERE sd.version ="
+          + " (SELECT MAX(sdInner.version) FROM SurveyDefinition sdInner WHERE sdInner.id = sd.id)"
+          + " AND (UPPER(sd.name) LIKE :filter)";
+
+      Query query = entityManager.createQuery(sql);
+
+      query.setParameter("filter", filterBuffer.toString());
+
+      return ((Number) query.getSingleResult()).intValue();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to retrieve the number of filtered latest versions"
+          + " of the survey definitions for the organisation with ID (" + id + ")", e);
+    }
+  }
+
+  /**
+   * Returns the number of filtered survey audience members for the survey audience.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *               audience
+   * @param filter the filter used to limit the matching survey audience members
+   *
+   * @return the number of filtered survey audience members for the survey audience
+   */
+  public int getNumberOfFilteredMembersForSurveyAudience(UUID id, String filter)
+    throws SurveyServiceException
+  {
+    try
+    {
+      StringBuilder filterBuffer = new StringBuilder();
+
+      filterBuffer.append("%");
+      filterBuffer.append(filter.toUpperCase());
+      filterBuffer.append("%");
+
+      Query query = entityManager.createQuery(
+          "SELECT COUNT(sam.id) FROM SurveyAudienceMember sam JOIN sam.audience sa"
+          + " WHERE sa.id = :id AND ((UPPER(sam.firstName) LIKE :filter)"
+          + " OR (UPPER(sam.lastName) LIKE :filter) OR (UPPER(sam.email) LIKE :filter))");
+
+      query.setParameter("id", id);
+      query.setParameter("filter", filterBuffer.toString());
+
+      return ((Number) query.getSingleResult()).intValue();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the number of survey audience members for the survey audience with ID ("
+          + id + ") matching the filter (" + filter + ")", e);
+    }
+  }
+
+  /**
+   * Returns the number of filtered survey audiences for the organisation.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
+   *               organisation
+   * @param filter the filter used to limit the matching survey audiences
+   *
+   * @return the number of filtered survey audiences for the organisation
+   */
+  public int getNumberOfFilteredSurveyAudiencesForOrganisation(UUID id, String filter)
+    throws SurveyServiceException
+  {
+    try
+    {
+      StringBuilder filterBuffer = new StringBuilder();
+
+      filterBuffer.append("%");
+      filterBuffer.append(filter.toUpperCase());
+      filterBuffer.append("%");
+
+      Query query = entityManager.createQuery("SELECT COUNT(sa.id) FROM SurveyAudience sa"
+          + " WHERE sa.organisationId = :id AND (UPPER(sa.name) LIKE :filter)");
+
+      query.setParameter("id", id);
+      query.setParameter("filter", filterBuffer.toString());
+
+      return ((Number) query.getSingleResult()).intValue();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the number of survey audiences for the organisation with ID (" + id
+          + ") matching the filter (" + filter + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the number of latest versions of the survey definitions for the organisation.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
+   *
+   * @return the number of latest versions of the survey definitions for the organisation
+   */
+  public int getNumberOfLatestSurveyDefinitionsForOrganisation(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT COUNT(sd.id) FROM SurveyDefinition sd WHERE sd.version ="
+          + " (SELECT MAX(sdInner.version) FROM SurveyDefinition sdInner WHERE sdInner.id = sd.id)";
+
+      Query query = entityManager.createQuery(sql);
+
+      return ((Number) query.getSingleResult()).intValue();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to retrieve the number of latest versions of the"
+          + " survey definitions for the organisation with ID (" + id + ")", e);
+    }
+  }
+
+  /**
    * Returns the number of members for the survey audience.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
@@ -101,8 +478,8 @@ public class SurveyService
     catch (Throwable e)
     {
       throw new SurveyServiceException(
-          "Failed to retrieve the number of survey audiences for the organisation with ID ("
-          + id + ")", e);
+          "Failed to retrieve the number of survey audiences for the organisation with ID (" + id
+          + ")", e);
     }
   }
 
@@ -122,8 +499,7 @@ public class SurveyService
     {
       String sql = "SELECT sa FROM SurveyAudience sa WHERE sa.id = :id";
 
-      TypedQuery<SurveyAudience> query = entityManager.createQuery(sql,
-          SurveyAudience.class);
+      TypedQuery<SurveyAudience> query = entityManager.createQuery(sql, SurveyAudience.class);
 
       query.setParameter("id", id);
 
@@ -158,11 +534,10 @@ public class SurveyService
   {
     try
     {
-      String sql =
-          "SELECT sam FROM SurveyAudienceMember sam WHERE sam.id = :id";
+      String sql = "SELECT sam FROM SurveyAudienceMember sam WHERE sam.id = :id";
 
-      TypedQuery<SurveyAudienceMember> query = entityManager.createQuery(
-          sql, SurveyAudienceMember.class);
+      TypedQuery<SurveyAudienceMember> query = entityManager.createQuery(sql,
+          SurveyAudienceMember.class);
 
       query.setParameter("id", id);
 
@@ -196,11 +571,9 @@ public class SurveyService
   {
     try
     {
-      String sql =
-          "SELECT sa FROM SurveyAudience sa WHERE sa.organisationId = :id";
+      String sql = "SELECT sa FROM SurveyAudience sa WHERE sa.organisationId = :id";
 
-      TypedQuery<SurveyAudience> query = entityManager.createQuery(sql,
-          SurveyAudience.class);
+      TypedQuery<SurveyAudience> query = entityManager.createQuery(sql, SurveyAudience.class);
 
       query.setParameter("id", id);
 
@@ -209,8 +582,7 @@ public class SurveyService
     catch (Throwable e)
     {
       throw new SurveyServiceException(
-          "Failed to retrieve the survey audiences for the organisation with ID (" + id + ")",
-          e);
+          "Failed to retrieve the survey audiences for the organisation with ID (" + id + ")", e);
     }
   }
 
@@ -229,11 +601,9 @@ public class SurveyService
   {
     try
     {
-      String sql =
-          "SELECT st FROM SurveyDefinition st WHERE st.id = :id AND st.version = :version";
+      String sql = "SELECT st FROM SurveyDefinition st WHERE st.id = :id AND st.version = :version";
 
-      TypedQuery<SurveyDefinition> query = entityManager.createQuery(sql,
-          SurveyDefinition.class);
+      TypedQuery<SurveyDefinition> query = entityManager.createQuery(sql, SurveyDefinition.class);
 
       query.setParameter("id", id);
       query.setParameter("version", version);
@@ -270,8 +640,7 @@ public class SurveyService
     {
       String sql = "SELECT si FROM SurveyInstance si WHERE si.id = :id";
 
-      TypedQuery<SurveyInstance> query = entityManager.createQuery(sql,
-          SurveyInstance.class);
+      TypedQuery<SurveyInstance> query = entityManager.createQuery(sql, SurveyInstance.class);
 
       query.setParameter("id", id);
 
@@ -307,8 +676,7 @@ public class SurveyService
     {
       String sql = "SELECT sr FROM SurveyRequest sr WHERE sr.id = :id";
 
-      TypedQuery<SurveyRequest> query = entityManager.createQuery(sql,
-          SurveyRequest.class);
+      TypedQuery<SurveyRequest> query = entityManager.createQuery(sql, SurveyRequest.class);
 
       query.setParameter("id", id);
 
@@ -345,8 +713,7 @@ public class SurveyService
     {
       String sql = "SELECT sr FROM SurveyResponse sr WHERE sr.id = :id";
 
-      TypedQuery<SurveyResponse> query = entityManager.createQuery(sql,
-          SurveyResponse.class);
+      TypedQuery<SurveyResponse> query = entityManager.createQuery(sql, SurveyResponse.class);
 
       query.setParameter("id", id);
 
@@ -493,198 +860,4 @@ public class SurveyService
           + surveyResponse.getId() + ")", e);
     }
   }
-
-
-
-
-  /**
-   * Retrieve the filtered survey audiences for the organisation.
-   *
-   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
-   *               organisation
-   * @param filter the filter used to limit the matching survey audiences
-   *
-   * @return the filtered survey audiences for the organisation
-   */
-  public List<SurveyAudience> getFilteredSurveyAudiencesForOrganisation(UUID id, String filter)
-    throws SurveyServiceException
-  {
-    try
-    {
-      StringBuilder filterBuffer = new StringBuilder();
-
-      filterBuffer.append("%");
-      filterBuffer.append(filter.toUpperCase());
-      filterBuffer.append("%");
-
-      String sql = "SELECT sa FROM SurveyAudience sa WHERE sa.organisationId = :id"
-        + " AND (UPPER(sa.name) LIKE :filter)";
-
-      TypedQuery<SurveyAudience> query = entityManager.createQuery(sql,
-        SurveyAudience.class);
-
-      query.setParameter("id", id);
-      query.setParameter("filter", filterBuffer.toString());
-
-      return query.getResultList();
-    }
-    catch (Throwable e)
-    {
-      throw new SurveyServiceException(
-        "Failed to retrieve the survey audiences for the organisation with ID (" + id + ") matching the filter (" + filter + ")",
-        e);
-    }
-  }
-
-  /**
-   * Returns the number of filtered survey audiences for the organisation.
-   *
-   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
-   *               organisation
-   * @param filter the filter used to limit the matching survey audiences
-   *
-   * @return the number of filtered survey audiences for the organisation
-   */
-  public int getNumberOfFilteredSurveyAudiencesForOrganisation(UUID id, String filter)
-    throws SurveyServiceException
-  {
-    try
-    {
-      StringBuilder filterBuffer = new StringBuilder();
-
-      filterBuffer.append("%");
-      filterBuffer.append(filter.toUpperCase());
-      filterBuffer.append("%");
-
-      Query query = entityManager.createQuery("SELECT COUNT(sa.id) FROM SurveyAudience sa"
-        + " WHERE sa.organisationId = :id AND (UPPER(sa.name) LIKE :filter)");
-
-      query.setParameter("id", id);
-      query.setParameter("filter", filterBuffer.toString());
-
-      return ((Number) query.getSingleResult()).intValue();
-    }
-    catch (Throwable e)
-    {
-      throw new SurveyServiceException(
-        "Failed to retrieve the number of survey audiences for the organisation with ID (" + id + ") matching the filter (" + filter + ")",
-        e);
-    }
-  }
-
-
-
-  /**
-   * Returns the number of filtered survey audience members for the survey audience.
-   *
-   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the survey
-   *               audience
-   * @param filter the filter used to limit the matching survey audience members
-   *
-   * @return the number of filtered survey audience members for the survey audience
-   */
-  public int getNumberOfFilteredMembersForSurveyAudience(UUID id, String filter)
-    throws SurveyServiceException
-  {
-    try
-    {
-      StringBuilder filterBuffer = new StringBuilder();
-
-      filterBuffer.append("%");
-      filterBuffer.append(filter.toUpperCase());
-      filterBuffer.append("%");
-
-      Query query = entityManager.createQuery("SELECT COUNT(sam.id) FROM SurveyAudienceMember sam JOIN sam.audience sa"
-        + " WHERE sa.id = :id AND ((UPPER(sam.firstName) LIKE :filter)"
-        + " OR (UPPER(sam.lastName) LIKE :filter) OR (UPPER(sam.email) LIKE :filter))");
-
-      query.setParameter("id", id);
-      query.setParameter("filter", filterBuffer.toString());
-
-      return ((Number) query.getSingleResult()).intValue();
-    }
-    catch (Throwable e)
-    {
-      throw new SurveyServiceException(
-        "Failed to retrieve the number of survey audience members for the survey audience with ID (" + id + ") matching the filter (" + filter + ")",
-        e);
-    }  }
-
-  /**
-   * Retrieve the filtered survey audience members for the survey audience.
-   *
-   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the survey
-   *               audience
-   * @param filter the filter used to limit the matching survey audience members
-   *
-   * @return the filtered survey audiences members for the survey audience
-   */
-  public List<SurveyAudienceMember> getFilteredMembersForSurveyAudience(UUID id, String filter)
-    throws SurveyServiceException
-  {
-    try
-    {
-      StringBuilder filterBuffer = new StringBuilder();
-
-      filterBuffer.append("%");
-      filterBuffer.append(filter.toUpperCase());
-      filterBuffer.append("%");
-
-      String sql = "SELECT sam FROM SurveyAudienceMember sam JOIN sam.audience sa"
-        + " WHERE sa.id = :id AND ((UPPER(sam.firstName) LIKE :filter)"
-        + " OR (UPPER(sam.lastName) LIKE :filter) OR (UPPER(sam.email) LIKE :filter))";
-
-      TypedQuery<SurveyAudienceMember> query = entityManager.createQuery(sql,
-        SurveyAudienceMember.class);
-
-      query.setParameter("id", id);
-      query.setParameter("filter", filterBuffer.toString());
-
-      return query.getResultList();
-    }
-    catch (Throwable e)
-    {
-      throw new SurveyServiceException(
-        "Failed to retrieve the survey audience members for the survey audience with ID (" + id + ") matching the filter (" + filter + ")",
-        e);
-    }
-  }
-
-
-
-
-  /**
-   * Retrieve the survey audience members for the survey audience.
-   *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
-   *           audience
-   *
-   * @return the survey audiences members for the survey audience
-   */
-  public List<SurveyAudienceMember> getMembersForSurveyAudience(UUID id)
-    throws SurveyServiceException
-  {
-    try
-    {
-      String sql = "SELECT sam FROM SurveyAudienceMember sam JOIN sam.audience sa WHERE sa.id = :id";
-
-      TypedQuery<SurveyAudienceMember> query = entityManager.createQuery(sql,
-        SurveyAudienceMember.class);
-
-      query.setParameter("id", id);
-
-      return query.getResultList();
-    }
-    catch (Throwable e)
-    {
-      throw new SurveyServiceException(
-        "Failed to retrieve the survey audience members for the survey audience with ID (" + id + ")",
-        e);
-    }
-
-  }
-
-
-
-
 }

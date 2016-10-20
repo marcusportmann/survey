@@ -25,6 +25,30 @@ import java.util.UUID;
 public interface ISurveyService
 {
   /**
+   * Retrieve the latest versions of the filtered survey definitions for the organisation.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
+   *               organisation
+   * @param filter the filter used to limit the matching survey definitions
+   *
+   * @return the latest versions of the filtered survey definitions for the organisation
+   */
+  List<SurveyDefinition> getFilteredLatestSurveyDefinitionsForOrganisation(UUID id, String filter)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the filtered survey audience members for the survey audience.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *               audience
+   * @param filter the filter used to limit the matching survey audience members
+   *
+   * @return the filtered survey audiences members for the survey audience
+   */
+  List<SurveyAudienceMember> getFilteredMembersForSurveyAudience(UUID id, String filter)
+    throws SurveyServiceException;
+
+  /**
    * Retrieve the filtered survey audiences for the organisation.
    *
    * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
@@ -34,6 +58,73 @@ public interface ISurveyService
    * @return the filtered survey audiences for the organisation
    */
   List<SurveyAudience> getFilteredSurveyAudiencesForOrganisation(UUID id, String filter)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the latest versions of the survey definitions for the organisation.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
+   *
+   * @return the latest versions of the survey definitions for the organisation
+   */
+  List<SurveyDefinition> getLatestSurveyDefinitionsForOrganisation(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the latest version for the survey definition.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to identify the survey definition
+   *
+   * @return the latest version for the survey definition or <code>null</code> if the survey
+   *         definition could not be found
+   */
+  SurveyDefinition getLatestVersionForSurveyDefinition(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the latest version number for the survey definition.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to identify the survey definition
+   *
+   * @return the latest version number for the survey definition or 0 if the survey definition
+   *         could not be found
+   */
+  int getLatestVersionNumberForSurveyDefinition(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the survey audience members for the survey audience.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           audience
+   *
+   * @return the survey audiences members for the survey audience
+   */
+  List<SurveyAudienceMember> getMembersForSurveyAudience(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the number of latest versions of the filtered survey definitions for the organisation.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
+   *               organisation
+   * @param filter the filter used to limit the matching survey definitions
+   *
+   * @return the number of latest versions of the filtered survey definitions for the organisation
+   */
+  int getNumberOfFilteredLatestSurveyDefinitionsForOrganisation(UUID id, String filter)
+    throws SurveyServiceException;
+
+  /**
+   * Returns the number of filtered survey audience members for the survey audience.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *               audience
+   * @param filter the filter used to limit the matching survey audience members
+   *
+   * @return the number of filtered survey audience members for the survey audience
+   */
+  int getNumberOfFilteredMembersForSurveyAudience(UUID id, String filter)
     throws SurveyServiceException;
 
   /**
@@ -48,52 +139,15 @@ public interface ISurveyService
   int getNumberOfFilteredSurveyAudiencesForOrganisation(UUID id, String filter)
     throws SurveyServiceException;
 
-
-
-
   /**
-   * Returns the number of filtered survey audience members for the survey audience.
+   * Retrieve the number of latest versions of the survey definitions for the organisation.
    *
-   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the survey
-   *               audience
-   * @param filter the filter used to limit the matching survey audience members
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
    *
-   * @return the number of filtered survey audience members for the survey audience
+   * @return the number of latest versions of the survey definitions for the organisation
    */
-  int getNumberOfFilteredMembersForSurveyAudience(UUID id, String filter)
+  int getNumberOfLatestSurveyDefinitionsForOrganisation(UUID id)
     throws SurveyServiceException;
-
-
-  /**
-   * Retrieve the filtered survey audience members for the survey audience.
-   *
-   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the survey
-   *               audience
-   * @param filter the filter used to limit the matching survey audience members
-   *
-   * @return the filtered survey audiences members for the survey audience
-   */
-  List<SurveyAudienceMember> getFilteredMembersForSurveyAudience(UUID id, String filter)
-    throws SurveyServiceException;
-
-
-
-
-
-
-  /**
-   * Retrieve the survey audience members for the survey audience.
-   *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
-   *           audience
-   *
-   * @return the survey audiences members for the survey audience
-   */
-  List<SurveyAudienceMember> getMembersForSurveyAudience(UUID id)
-    throws SurveyServiceException;
-
-
-
 
   /**
    * Returns the number of members for the survey audience.

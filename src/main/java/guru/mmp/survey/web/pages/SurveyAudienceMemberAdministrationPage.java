@@ -224,7 +224,7 @@ public class SurveyAudienceMemberAdministrationPage extends TemplateWebPage
 
   /**
    * The <code>RemoveDialog</code> class implements a dialog that allows the removal of a
-   * survey audience to be confirmed.
+   * survey audience member to be confirmed.
    */
   private class RemoveDialog extends Dialog
   {
@@ -235,8 +235,8 @@ public class SurveyAudienceMemberAdministrationPage extends TemplateWebPage
     /**
      * Constructs a new <code>RemoveDialog</code>.
      *
-     * @param tableContainer the table container, which allows the survey audience table and its
-     *                       associated navigator to be updated using AJAX
+     * @param tableContainer the table container, which allows the survey audience member table and
+     *                       its associated navigator to be updated using AJAX
      */
     public RemoveDialog(WebMarkupContainer tableContainer)
     {
@@ -267,7 +267,7 @@ public class SurveyAudienceMemberAdministrationPage extends TemplateWebPage
           }
           catch (Throwable e)
           {
-            logger.error(String.format("Failed to remove the survey audience (%s): %s", id,
+            logger.error(String.format("Failed to remove the survey audience member (%s): %s", id,
                 e.getMessage()), e);
 
             SurveyAudienceMemberAdministrationPage.this.error(

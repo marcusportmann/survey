@@ -197,6 +197,39 @@ public class SurveyServiceTest
         surveyDefinition.getId(), savedSurveyDefinition.getVersion());
 
     compareSurveyDefinitions(savedSurveyDefinition, retrievedSurveyDefinition);
+
+    assertEquals("The version number for the updated survey definition is incorrect", 2, surveyService.getLatestVersionNumberForSurveyDefinition(surveyDefinition.getId()));
+
+    retrievedSurveyDefinition = surveyService.getLatestVersionForSurveyDefinition(surveyDefinition.getId());
+
+    compareSurveyDefinitions(savedSurveyDefinition, retrievedSurveyDefinition);
+
+    List<SurveyDefinition> retrievedSurveyDefinitions = surveyService.getLatestSurveyDefinitionsForOrganisation(surveyDefinition.getOrganisationId());
+
+    for (SurveyDefinition tmpSurveyDefinition : retrievedSurveyDefinitions)
+    {
+      if (tmpSurveyDefinition.getId().equals(surveyDefinition.getId()))
+      {
+        compareSurveyDefinitions(savedSurveyDefinition, tmpSurveyDefinition);
+      }
+    }
+
+    assertEquals("The number of latest survey definitions for the organisation is incorrect", retrievedSurveyDefinitions.size(), surveyService.getNumberOfLatestSurveyDefinitionsForOrganisation(surveyDefinition.getOrganisationId()));
+
+    retrievedSurveyDefinitions = surveyService.getFilteredLatestSurveyDefinitionsForOrganisation(surveyDefinition.getOrganisationId(), surveyDefinition.getName());
+
+    assertEquals("The number of filtered latest survey definitions for the organisation is incorrect", 1, retrievedSurveyDefinitions.size());
+
+    for (SurveyDefinition tmpSurveyDefinition : retrievedSurveyDefinitions)
+    {
+      if (tmpSurveyDefinition.getId().equals(surveyDefinition.getId()))
+      {
+        compareSurveyDefinitions(savedSurveyDefinition, tmpSurveyDefinition);
+      }
+    }
+
+    assertEquals("The number of filtered latest survey definitions for the organisation is incorrect", 1, surveyService.getNumberOfFilteredLatestSurveyDefinitionsForOrganisation(surveyDefinition.getOrganisationId(), surveyDefinition.getName()));
+
   }
 
   /**
