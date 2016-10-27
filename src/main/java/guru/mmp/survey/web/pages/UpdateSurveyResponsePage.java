@@ -14,12 +14,15 @@ package guru.mmp.survey.web.pages;
 //~--- non-JDK imports --------------------------------------------------------
 
 import guru.mmp.application.web.WebApplicationException;
+import guru.mmp.application.web.pages.WebPageSecurity;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
 import guru.mmp.survey.model.ISurveyService;
 import guru.mmp.survey.model.SurveyInstance;
 import guru.mmp.survey.model.SurveyRequest;
 import guru.mmp.survey.model.SurveyResponse;
+import guru.mmp.survey.web.SurveySecurity;
 import guru.mmp.survey.web.components.SurveyResponseInputPanel;
+import org.apache.wicket.PageReference;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -33,13 +36,14 @@ import java.util.UUID;
 //~--- JDK imports ------------------------------------------------------------
 
 /**
- * The <code>CompleteSurveyPage</code> class implements the "Complete Survey"
+ * The <code>UpdateSurveyResponsePage</code> class implements the "Update Survey Response"
  * page for the web application.
  *
  * @author Marcus Portmann
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-public class CompleteSurveyPage extends TemplateWebPage
+@WebPageSecurity(SurveySecurity.FUNCTION_CODE_SURVEY_ADMINISTRATION)
+public class UpdateSurveyResponsePage extends TemplateWebPage
 {
   private static final long serialVersionUID = 1000000;
 
@@ -50,39 +54,24 @@ public class CompleteSurveyPage extends TemplateWebPage
   private ISurveyService surveyService;
 
   /**
-   * Constructs a new <code>CompleteSurveyPage</code>.
+   * Constructs a new <code>UpdateSurveyResponsePage</code>.
    *
-   * @param pageParameters the page parameters
+   * @param previousPage        the previous page
+   * @param surveyResponseModel the model for the code
    */
-  public CompleteSurveyPage(PageParameters pageParameters)
+  public UpdateSurveyResponsePage(PageReference previousPage, IModel<SurveyResponse> surveyResponseModel)
   {
-    super("Complete Survey");
+    super("Update Survey Response", surveyResponseModel.getObject().getName());
 
     try
     {
-      SurveyInstance surveyInstance = surveyService.getSurveyInstance(UUID.fromString(
-          pageParameters.get("surveyInstanceId").toString()));
+      Form<SurveyResponse> updateForm = new Form<>("updateForm", new CompoundPropertyModel
+        <SurveyResponse>(surveyResponseModel));
 
-      SurveyRequest surveyRequest = null;
+      updateForm.add(new SurveyResponseInputPanel("surveyResponse", surveyResponseModel));
 
-      if ((!pageParameters.get("surveyRequestId").isNull())
-          && (!pageParameters.get("surveyRequestId").isEmpty()))
-      {
-        surveyRequest = surveyService.getSurveyRequest(UUID.fromString(pageParameters.get(
-            "surveyRequestId").toString()));
-      }
-
-      SurveyResponse surveyResponse = new SurveyResponse(surveyInstance, surveyRequest);
-
-      IModel<SurveyResponse> surveyResponseModel = new Model<>(surveyResponse);
-
-      Form<SurveyResponse> completeSurveyForm = new Form<>("completeSurveyForm",
-          new CompoundPropertyModel<>(surveyResponseModel));
-
-      completeSurveyForm.add(new SurveyResponseInputPanel("surveyResponse", surveyResponseModel));
-
-      // The "submitButton" button
-      Button submitButton = new Button("submitButton")
+      // The "updateButton" button
+      Button updateButton = new Button("updateButton")
       {
         private static final long serialVersionUID = 1000000;
 
@@ -95,14 +84,28 @@ public class CompleteSurveyPage extends TemplateWebPage
 
         }
       };
-      submitButton.setDefaultFormProcessing(true);
-      completeSurveyForm.add(submitButton);
+      updateButton.setDefaultFormProcessing(true);
+      updateForm.add(updateButton);
 
-      add(completeSurveyForm);
+      // The "cancelButton" button
+      Button cancelButton = new Button("cancelButton")
+      {
+        private static final long serialVersionUID = 1000000;
+
+        @Override
+        public void onSubmit()
+        {
+          setResponsePage(previousPage.getPage());
+        }
+      };
+      cancelButton.setDefaultFormProcessing(false);
+      updateForm.add(cancelButton);
+
+      add(updateForm);
     }
     catch (Throwable e)
     {
-      throw new WebApplicationException("Failed to initialise the CompleteSurveyPage", e);
+      throw new WebApplicationException("Failed to initialise the UpdateSurveyResponsePage", e);
     }
   }
 }

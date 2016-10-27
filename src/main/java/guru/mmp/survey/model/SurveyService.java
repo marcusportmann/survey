@@ -40,6 +40,7 @@ public class SurveyService
   implements ISurveyService
 {
   /* Logger */
+  @SuppressWarnings("unused")
   private static final Logger logger = LoggerFactory.getLogger(SurveyService.class);
 
   /* Entity Manager */
@@ -66,19 +67,13 @@ public class SurveyService
   {
     try
     {
-      StringBuilder filterBuffer = new StringBuilder();
-
-      filterBuffer.append("%");
-      filterBuffer.append(filter.toUpperCase());
-      filterBuffer.append("%");
-
       String sql = "SELECT sd FROM SurveyDefinition sd WHERE sd.version ="
           + " (SELECT MAX(sdInner.version) FROM SurveyDefinition sdInner WHERE sdInner.id = sd.id)"
           + " AND (UPPER(sd.name) LIKE :filter)";
 
       TypedQuery<SurveyDefinition> query = entityManager.createQuery(sql, SurveyDefinition.class);
 
-      query.setParameter("filter", filterBuffer.toString());
+      query.setParameter("filter", "%" + filter.toUpperCase() + "%");
 
       return query.getResultList();
     }
@@ -103,12 +98,6 @@ public class SurveyService
   {
     try
     {
-      StringBuilder filterBuffer = new StringBuilder();
-
-      filterBuffer.append("%");
-      filterBuffer.append(filter.toUpperCase());
-      filterBuffer.append("%");
-
       String sql = "SELECT sam FROM SurveyAudienceMember sam JOIN sam.audience sa"
           + " WHERE sa.id = :id AND ((UPPER(sam.firstName) LIKE :filter)"
           + " OR (UPPER(sam.lastName) LIKE :filter) OR (UPPER(sam.email) LIKE :filter))";
@@ -117,7 +106,7 @@ public class SurveyService
           SurveyAudienceMember.class);
 
       query.setParameter("id", id);
-      query.setParameter("filter", filterBuffer.toString());
+      query.setParameter("filter", "%" + filter.toUpperCase() + "%");
 
       return query.getResultList();
     }
@@ -143,19 +132,13 @@ public class SurveyService
   {
     try
     {
-      StringBuilder filterBuffer = new StringBuilder();
-
-      filterBuffer.append("%");
-      filterBuffer.append(filter.toUpperCase());
-      filterBuffer.append("%");
-
       String sql = "SELECT sa FROM SurveyAudience sa WHERE sa.organisationId = :id"
           + " AND (UPPER(sa.name) LIKE :filter)";
 
       TypedQuery<SurveyAudience> query = entityManager.createQuery(sql, SurveyAudience.class);
 
       query.setParameter("id", id);
-      query.setParameter("filter", filterBuffer.toString());
+      query.setParameter("filter", "%" + filter.toUpperCase() + "%");
 
       return query.getResultList();
     }
@@ -175,26 +158,19 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey definitions
    *
    * @return the filtered survey instances for all versions of the survey definition
-   *
-   * @throws SurveyServiceException
    */
   public List<SurveyInstance> getFilteredSurveyInstancesForSurveyDefinition(UUID id, String filter)
     throws SurveyServiceException
   {
     try
     {
-      StringBuilder filterBuffer = new StringBuilder();
-
-      filterBuffer.append("%");
-      filterBuffer.append(filter.toUpperCase());
-      filterBuffer.append("%");
-
       String sql = "SELECT si FROM SurveyInstance si JOIN si.definition sd"
           + " WHERE sd.id = :id AND (UPPER(si.name) LIKE :filter)";
 
       TypedQuery<SurveyInstance> query = entityManager.createQuery(sql, SurveyInstance.class);
 
       query.setParameter("id", id);
+      query.setParameter("filter", "%" + filter.toUpperCase() + "%");
 
       return query.getResultList();
     }
@@ -203,6 +179,72 @@ public class SurveyService
       throw new SurveyServiceException(
           "Failed to retrieve the filtered survey instances for the survey definition with ID ("
           + id + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the filtered survey requests for the survey instance.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to identify the survey instance
+   *               the survey requests are associated with
+   * @param filter the filter used to limit the matching survey requests
+   *
+   * @return the filtered survey requests for the survey instance
+   */
+  public List<SurveyRequest> getFilteredSurveyRequestsForSurveyInstance(UUID id, String filter)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT sr FROM SurveyRequest sr JOIN sr.instance si WHERE si.id = :id"
+          + " AND ((UPPER(sr.firstName) LIKE :filter) OR (UPPER(sr.lastName) LIKE :filter)"
+          + " OR (UPPER(sr.email) LIKE :filter))";
+
+      TypedQuery<SurveyRequest> query = entityManager.createQuery(sql, SurveyRequest.class);
+
+      query.setParameter("id", id);
+      query.setParameter("filter", "%" + filter.toUpperCase() + "%");
+
+      return query.getResultList();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the filtered survey requests for the survey instance with ID (" + id
+          + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the filtered survey responses for the survey instance.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to identify the survey instance
+   *               the survey responses are associated with
+   * @param filter the filter used to limit the matching survey responses
+   *
+   * @return the filtered survey responses for the survey instance
+   */
+  public List<SurveyResponse> getFilteredSurveyResponsesForSurveyInstance(UUID id, String filter)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT sr FROM SurveyResponse sr JOIN sr.instance si"
+          + " JOIN sr.request req WHERE si.id = :id AND ((UPPER(req.firstName) LIKE :filter)"
+          + " OR (UPPER(req.lastName) LIKE :filter) OR (UPPER(req.email) LIKE :filter))";
+
+      TypedQuery<SurveyResponse> query = entityManager.createQuery(sql, SurveyResponse.class);
+
+      query.setParameter("id", id);
+      query.setParameter("filter", "%" + filter.toUpperCase() + "%");
+
+      return query.getResultList();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the filtered survey responses for the survey instance with ID (" + id
+          + ")", e);
     }
   }
 
@@ -344,19 +386,13 @@ public class SurveyService
   {
     try
     {
-      StringBuilder filterBuffer = new StringBuilder();
-
-      filterBuffer.append("%");
-      filterBuffer.append(filter.toUpperCase());
-      filterBuffer.append("%");
-
       String sql = "SELECT COUNT(sd.id) FROM SurveyDefinition sd WHERE sd.version ="
           + " (SELECT MAX(sdInner.version) FROM SurveyDefinition sdInner WHERE sdInner.id = sd.id)"
           + " AND (UPPER(sd.name) LIKE :filter)";
 
       Query query = entityManager.createQuery(sql);
 
-      query.setParameter("filter", filterBuffer.toString());
+      query.setParameter("filter", "%" + filter.toUpperCase() + "%");
 
       return ((Number) query.getSingleResult()).intValue();
     }
@@ -381,19 +417,13 @@ public class SurveyService
   {
     try
     {
-      StringBuilder filterBuffer = new StringBuilder();
-
-      filterBuffer.append("%");
-      filterBuffer.append(filter.toUpperCase());
-      filterBuffer.append("%");
-
       Query query = entityManager.createQuery(
           "SELECT COUNT(sam.id) FROM SurveyAudienceMember sam JOIN sam.audience sa"
           + " WHERE sa.id = :id AND ((UPPER(sam.firstName) LIKE :filter)"
           + " OR (UPPER(sam.lastName) LIKE :filter) OR (UPPER(sam.email) LIKE :filter))");
 
       query.setParameter("id", id);
-      query.setParameter("filter", filterBuffer.toString());
+      query.setParameter("filter", "%" + filter.toUpperCase() + "%");
 
       return ((Number) query.getSingleResult()).intValue();
     }
@@ -419,17 +449,11 @@ public class SurveyService
   {
     try
     {
-      StringBuilder filterBuffer = new StringBuilder();
-
-      filterBuffer.append("%");
-      filterBuffer.append(filter.toUpperCase());
-      filterBuffer.append("%");
-
       Query query = entityManager.createQuery("SELECT COUNT(sa.id) FROM SurveyAudience sa"
           + " WHERE sa.organisationId = :id AND (UPPER(sa.name) LIKE :filter)");
 
       query.setParameter("id", id);
-      query.setParameter("filter", filterBuffer.toString());
+      query.setParameter("filter", "%" + filter.toUpperCase() + "%");
 
       return ((Number) query.getSingleResult()).intValue();
     }
@@ -449,26 +473,19 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey definitions
    *
    * @return the number of filtered survey instances for all versions of the survey definition
-   *
-   * @throws SurveyServiceException
    */
   public int getNumberOfFilteredSurveyInstancesForSurveyDefinition(UUID id, String filter)
     throws SurveyServiceException
   {
     try
     {
-      StringBuilder filterBuffer = new StringBuilder();
-
-      filterBuffer.append("%");
-      filterBuffer.append(filter.toUpperCase());
-      filterBuffer.append("%");
-
       String sql = "SELECT si FROM SurveyInstance si JOIN si.definition sd"
           + " WHERE sd.id = :id AND (UPPER(si.name) LIKE :filter)";
 
       Query query = entityManager.createQuery(sql);
 
       query.setParameter("id", id);
+      query.setParameter("filter", "%" + filter.toUpperCase() + "%");
 
       return ((Number) query.getSingleResult()).intValue();
     }
@@ -477,6 +494,73 @@ public class SurveyService
       throw new SurveyServiceException(
           "Failed to retrieve the number of filtered survey instances for the survey definition with"
           + " ID (" + id + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the number of filtered survey requests for the survey instance.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to identify the survey instance
+   *               the survey requests are associated with
+   * @param filter the filter used to limit the matching survey requests
+   *
+   * @return the number of filtered survey requests for the survey instance
+   */
+  public int getNumberOfFilteredSurveyRequestsForSurveyInstance(UUID id, String filter)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql =
+          "SELECT COUNT(sr.id) FROM SurveyRequest sr JOIN sr.instance si WHERE si.id = :id"
+          + " AND ((UPPER(sr.firstName) LIKE :filter) OR (UPPER(sr.lastName) LIKE :filter)"
+          + " OR (UPPER(sr.email) LIKE :filter))";
+
+      Query query = entityManager.createQuery(sql);
+
+      query.setParameter("id", id);
+      query.setParameter("filter", "%" + filter.toUpperCase() + "%");
+
+      return ((Number) query.getSingleResult()).intValue();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the number of filtered survey requests for the survey instance with ID ("
+          + id + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the number of filtered survey responses for the survey instance.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to identify the survey instance
+   *               the survey responses are associated with
+   * @param filter the filter used to limit the matching survey responses
+   *
+   * @return the number of filtered survey responses for the survey instance
+   */
+  public int getNumberOfFilteredSurveyResponsesForSurveyInstance(UUID id, String filter)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT COUNT(sr.id) FROM SurveyResponse sr JOIN sr.instance si"
+          + " JOIN sr.request req WHERE si.id = :id AND ((UPPER(req.firstName) LIKE :filter)"
+          + " OR (UPPER(req.lastName) LIKE :filter) OR (UPPER(req.email) LIKE :filter))";
+
+      Query query = entityManager.createQuery(sql);
+
+      query.setParameter("id", id);
+      query.setParameter("filter", "%" + filter.toUpperCase() + "%");
+
+      return ((Number) query.getSingleResult()).intValue();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the number of filtered survey responses for the survey instance with ID ("
+          + id + ")", e);
     }
   }
 
@@ -568,8 +652,6 @@ public class SurveyService
    *               the survey instances are associated with
    *
    * @return the number of survey instances for all versions of the survey definition
-   *
-   * @throws SurveyServiceException
    */
   public int getNumberOfSurveyInstancesForSurveyDefinition(UUID id)
     throws SurveyServiceException
@@ -590,6 +672,66 @@ public class SurveyService
       throw new SurveyServiceException(
           "Failed to retrieve the survey instances for the survey definition with ID (" + id + ")",
           e);
+    }
+  }
+
+  /**
+   * Retrieve the number of survey requests for the survey instance.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to identify the survey instance the
+   *           survey requests are associated with
+   *
+   * @return the number of survey requests for the survey instance
+   */
+  public int getNumberOfSurveyRequestsForSurveyInstance(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT COUNT(sr.id) FROM SurveyRequest sr JOIN sr.instance si"
+          + " WHERE si.id = :id";
+
+      Query query = entityManager.createQuery(sql);
+
+      query.setParameter("id", id);
+
+      return ((Number) query.getSingleResult()).intValue();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the number of survey requests for the survey instance with ID (" + id
+          + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the number of survey responses for the survey instance.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to identify the survey instance the
+   *           survey responses are associated with
+   *
+   * @return the number of survey responses for the survey instance
+   */
+  public int getNumberOfSurveyResponsesForSurveyInstance(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT COUNT(sr.id) FROM SurveyResponse sr JOIN sr.instance si"
+          + " WHERE si.id = :id";
+
+      Query query = entityManager.createQuery(sql);
+
+      query.setParameter("id", id);
+
+      return ((Number) query.getSingleResult()).intValue();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the number of survey responses for the survey instance with ID ("
+          + id + ")", e);
     }
   }
 
@@ -778,8 +920,6 @@ public class SurveyService
    *               the survey instances are associated with
    *
    * @return the survey instances for all versions of the survey definition
-   *
-   * @throws SurveyServiceException
    */
   public List<SurveyInstance> getSurveyInstancesForSurveyDefinition(UUID id)
     throws SurveyServiceException
@@ -839,6 +979,34 @@ public class SurveyService
   }
 
   /**
+   * Retrieve the survey requests for the survey instance.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to identify the survey instance the
+   *           survey requests are associated with
+   *
+   * @return the survey requests for the survey instance
+   */
+  public List<SurveyRequest> getSurveyRequestsForSurveyInstance(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT sr FROM SurveyRequest sr JOIN sr.instance si WHERE si.id = :id";
+
+      TypedQuery<SurveyRequest> query = entityManager.createQuery(sql, SurveyRequest.class);
+
+      query.setParameter("id", id);
+
+      return query.getResultList();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the survey requests for the survey instance with ID (" + id + ")", e);
+    }
+  }
+
+  /**
    * Retrieve the survey response identified by the specified ID.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
@@ -872,6 +1040,35 @@ public class SurveyService
     catch (Throwable e)
     {
       throw new SurveyServiceException("Failed to retrieve the survey response (" + id + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the survey responses for the survey instance.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to identify the survey instance the
+   *           survey responses are associated with
+   *
+   * @return the survey responses for the survey instance
+   */
+  public List<SurveyResponse> getSurveyResponsesForSurveyInstance(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT sr FROM SurveyResponse sr JOIN sr.instance si WHERE si.id = :id";
+
+      TypedQuery<SurveyResponse> query = entityManager.createQuery(sql, SurveyResponse.class);
+
+      query.setParameter("id", id);
+
+      return query.getResultList();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the survey responses for the survey instance with ID (" + id + ")",
+          e);
     }
   }
 
@@ -972,6 +1169,33 @@ public class SurveyService
     {
       throw new SurveyServiceException("Failed to save the survey instance with ID ("
           + surveyInstance.getId() + ")", e);
+    }
+  }
+
+  /**
+   * Save the survey request.
+   *
+   * @param surveyRequest the survey request
+   *
+   * @return the saved survey request
+   */
+  @Transactional
+  public SurveyRequest saveSurveyRequest(SurveyRequest surveyRequest)
+    throws SurveyServiceException
+  {
+    try
+    {
+      if (!entityManager.contains(surveyRequest))
+      {
+        surveyRequest = entityManager.merge(surveyRequest);
+      }
+
+      return surveyRequest;
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to save the survey request with ID ("
+          + surveyRequest.getId() + ")", e);
     }
   }
 

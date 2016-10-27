@@ -19,11 +19,11 @@ import guru.mmp.application.web.pages.WebPageSecurity;
 import guru.mmp.application.web.template.components.Dialog;
 import guru.mmp.application.web.template.components.PagingNavigator;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
+import guru.mmp.common.util.DateUtil;
 import guru.mmp.survey.model.ISurveyService;
-import guru.mmp.survey.model.SurveyDefinition;
-import guru.mmp.survey.model.SurveyInstance;
+import guru.mmp.survey.model.SurveyResponse;
 import guru.mmp.survey.web.SurveySecurity;
-import guru.mmp.survey.web.data.FilteredSurveyInstanceDataProvider;
+import guru.mmp.survey.web.data.FilteredSurveyResponseDataProvider;
 import org.apache.wicket.PageReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -47,19 +47,19 @@ import java.util.UUID;
 //~--- JDK imports ------------------------------------------------------------
 
 /**
- * The <code>SurveyInstanceAdministrationPage</code> class implements the
- * "Survey Instance Administration" page for the web application.
+ * The <code>SurveyResponseAdministrationPage</code> class implements the
+ * "Survey Response Administration" page for the web application.
  *
  * @author Marcus Portmann
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 @WebPageSecurity({ SurveySecurity.FUNCTION_CODE_SURVEY_ADMINISTRATION,
   SurveySecurity.FUNCTION_CODE_VIEW_SURVEY_RESPONSE })
-public class SurveyInstanceAdministrationPage extends TemplateWebPage
+public class SurveyResponseAdministrationPage extends TemplateWebPage
 {
   /* Logger */
   private static final Logger logger = LoggerFactory.getLogger(
-    SurveyInstanceAdministrationPage.class);
+      SurveyResponseAdministrationPage.class);
   private static final long serialVersionUID = 1000000;
 
   /* Survey Service */
@@ -67,20 +67,17 @@ public class SurveyInstanceAdministrationPage extends TemplateWebPage
   private ISurveyService surveyService;
 
   /**
-   * Constructs a new <code>SurveyInstanceAdministrationPage</code>.
+   * Constructs a new <code>SurveyResponseAdministrationPage</code>.
    *
-   * NOTE: The survey instances for all versions of the survey definition with the specified ID
-   *       will be shown.
-   *
-   * @param previousPage         the previous page
-   * @param surveyDefinitionId   the Universally Unique Identifier (UUID) used to identify the
-   *                             survey definition the survey instances are associated with
-   * @param surveyDefinitionName the name of the survey definition
+   * @param previousPage       the previous page
+   * @param surveyInstanceId   the Universally Unique Identifier (UUID) used to identify the survey
+   *                           instance the survey responses are associated with
+   * @param surveyInstanceName the name of the survey response
    */
-  public SurveyInstanceAdministrationPage(PageReference previousPage, UUID surveyDefinitionId,
-    String surveyDefinitionName)
+  public SurveyResponseAdministrationPage(PageReference previousPage, UUID surveyInstanceId,
+      String surveyInstanceName)
   {
-    super("Survey Instances", surveyDefinitionName);
+    super("Survey Responses", surveyInstanceName);
 
     try
     {
@@ -94,11 +91,11 @@ public class SurveyInstanceAdministrationPage extends TemplateWebPage
       tableContainer.setOutputMarkupId(true);
       add(tableContainer);
 
-      // The dialog used to confirm the removal of a survey instance
+      // The dialog used to confirm the removal of a survey response
       RemoveDialog removeDialog = new RemoveDialog(tableContainer);
       add(removeDialog);
 
-      // The "addLink" used to add a new survey instance
+      // The "addLink" used to add a new survey response
       Link<Void> addLink = new Link<Void>("addLink")
       {
         private static final long serialVersionUID = 1000000;
@@ -106,13 +103,13 @@ public class SurveyInstanceAdministrationPage extends TemplateWebPage
         @Override
         public void onClick()
         {
-          // setResponsePage(new AddSurveyInstancePage(getPageReference(), surveyDefinitionId));
+          // setResponsePage(new AddSurveyResponsePage(getPageReference(), surveyInstanceId));
         }
       };
       tableContainer.add(addLink);
 
-      FilteredSurveyInstanceDataProvider dataProvider =
-        new FilteredSurveyInstanceDataProvider(surveyDefinitionId);
+      FilteredSurveyResponseDataProvider dataProvider = new FilteredSurveyResponseDataProvider(
+          surveyInstanceId);
 
       // The "filterForm" form
       Form<Void> filterForm = new Form<>("filterForm");
@@ -121,7 +118,7 @@ public class SurveyInstanceAdministrationPage extends TemplateWebPage
 
       // The "filter" field
       TextField<String> filterField = new TextField<>("filter", new PropertyModel<>(dataProvider,
-        "filter"));
+          "filter"));
       filterForm.add(filterField);
 
       // The "filterButton" button
@@ -163,49 +160,33 @@ public class SurveyInstanceAdministrationPage extends TemplateWebPage
       };
       tableContainer.add(backLink);
 
-      // The survey instance data view
-      DataView<SurveyInstance> dataView = new DataView<SurveyInstance>(
-        "surveyInstance", dataProvider)
+      // The survey response data view
+      DataView<SurveyResponse> dataView = new DataView<SurveyResponse>("surveyResponse",
+          dataProvider)
       {
         private static final long serialVersionUID = 1000000;
 
         @Override
-        protected void populateItem(Item<SurveyInstance> item)
+        protected void populateItem(Item<SurveyResponse> item)
         {
           item.add(new Label("name", new PropertyModel<String>(item.getModel(), "name")));
+          item.add(new Label("received", new PropertyModel<String>(item.getModel(), "receivedAsString")));
 
-          // The "surveyRequestsLink" link
-          Link<Void> surveyRequestsLink = new Link<Void>("surveyRequestsLink")
+          // The "viewLink" link
+          Link<Void> viewLink = new Link<Void>("viewLink")
           {
             private static final long serialVersionUID = 1000000;
 
             @Override
             public void onClick()
             {
-              SurveyInstance surveyInstance = item.getModelObject();
+              ViewSurveyResponsePage page = new ViewSurveyResponsePage(
+                getPageReference(), item.getModel());
 
-              setResponsePage(new SurveyRequestAdministrationPage(getPageReference(),
-                surveyInstance.getId(), surveyInstance.getName()));
+              setResponsePage(page);
             }
           };
-          item.add(surveyRequestsLink);
-
-
-          // The "surveyResponsesLink" link
-          Link<Void> surveyResponsesLink = new Link<Void>("surveyResponsesLink")
-          {
-            private static final long serialVersionUID = 1000000;
-
-            @Override
-            public void onClick()
-            {
-              SurveyInstance surveyInstance = item.getModelObject();
-
-              setResponsePage(new SurveyResponseAdministrationPage(getPageReference(),
-                surveyInstance.getId(), surveyInstance.getName()));
-            }
-          };
-          item.add(surveyResponsesLink);
+          item.add(viewLink);
 
 
           // The "updateLink" link
@@ -216,10 +197,10 @@ public class SurveyInstanceAdministrationPage extends TemplateWebPage
             @Override
             public void onClick()
             {
-//            UpdateSurveyInstancePage page = new UpdateSurveyInstancePage(
-//              getPageReference(), item.getModel());
-//
-//            setResponsePage(page);
+              UpdateSurveyResponsePage page = new UpdateSurveyResponsePage(
+                getPageReference(), item.getModel());
+
+              setResponsePage(page);
             }
           };
           updateLink.setVisible(session.hasAcccessToFunction(SurveySecurity
@@ -234,7 +215,7 @@ public class SurveyInstanceAdministrationPage extends TemplateWebPage
             @Override
             public void onClick(AjaxRequestTarget target)
             {
-              SurveyInstance surveyInstance = item.getModelObject();
+              SurveyResponse surveyInstance = item.getModelObject();
 
               if (surveyInstance != null)
               {
@@ -260,13 +241,13 @@ public class SurveyInstanceAdministrationPage extends TemplateWebPage
     catch (Throwable e)
     {
       throw new WebApplicationException(
-        "Failed to initialise the SurveyInstanceAdministrationPage", e);
+          "Failed to initialise the SurveyResponseAdministrationPage", e);
     }
   }
 
   /**
    * The <code>RemoveDialog</code> class implements a dialog that allows the removal of a
-   * survey instance to be confirmed.
+   * survey response to be confirmed.
    */
   private class RemoveDialog extends Dialog
   {
@@ -277,7 +258,7 @@ public class SurveyInstanceAdministrationPage extends TemplateWebPage
     /**
      * Constructs a new <code>RemoveDialog</code>.
      *
-     * @param tableContainer the table container, which allows the survey instance table and its
+     * @param tableContainer the table container, which allows the survey response table and its
      *                       associated navigator to be updated using AJAX
      */
     public RemoveDialog(WebMarkupContainer tableContainer)
@@ -299,21 +280,19 @@ public class SurveyInstanceAdministrationPage extends TemplateWebPage
         {
           try
           {
-            // surveyService.deleteSurveyInstance(id)
+            // surveyService.deleteSurveyResponse(id)
 
             target.add(tableContainer);
 
-            SurveyInstanceAdministrationPage.this.info(
-              "Successfully removed the survey instance "
+            SurveyResponseAdministrationPage.this.info("Successfully removed the survey response "
                 + nameLabel.getDefaultModelObjectAsString());
           }
           catch (Throwable e)
           {
-            logger.error(String.format("Failed to remove the survey instance (%s): %s", id,
-              e.getMessage()), e);
+            logger.error(String.format("Failed to remove the survey response (%s): %s", id,
+                e.getMessage()), e);
 
-            SurveyInstanceAdministrationPage.this.error(
-              "Failed to remove the survey instance "
+            SurveyResponseAdministrationPage.this.error("Failed to remove the survey response "
                 + nameLabel.getDefaultModelObjectAsString());
           }
 
@@ -329,13 +308,13 @@ public class SurveyInstanceAdministrationPage extends TemplateWebPage
      * Show the dialog using Ajax.
      *
      * @param target         the AJAX request target
-     * @param surveyInstance the survey instance being removed
+     * @param surveyResponse the survey response being removed
      */
-    public void show(AjaxRequestTarget target, SurveyInstance surveyInstance)
+    public void show(AjaxRequestTarget target, SurveyResponse surveyResponse)
     {
-      id = surveyInstance.getId();
+      id = surveyResponse.getId();
 
-      nameLabel.setDefaultModelObject(surveyInstance.getName());
+      nameLabel.setDefaultModelObject(surveyResponse.getName());
 
       target.add(nameLabel);
 

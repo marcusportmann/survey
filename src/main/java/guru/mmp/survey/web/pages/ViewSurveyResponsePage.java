@@ -14,14 +14,19 @@ package guru.mmp.survey.web.pages;
 //~--- non-JDK imports --------------------------------------------------------
 
 import guru.mmp.application.web.WebApplicationException;
+import guru.mmp.application.web.pages.WebPageSecurity;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
 import guru.mmp.survey.model.ISurveyService;
 import guru.mmp.survey.model.SurveyInstance;
 import guru.mmp.survey.model.SurveyRequest;
 import guru.mmp.survey.model.SurveyResponse;
+import guru.mmp.survey.web.SurveySecurity;
 import guru.mmp.survey.web.components.SurveyResponseInputPanel;
+import guru.mmp.survey.web.components.SurveyResponseReadOnlyPanel;
+import org.apache.wicket.PageReference;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -33,13 +38,15 @@ import java.util.UUID;
 //~--- JDK imports ------------------------------------------------------------
 
 /**
- * The <code>CompleteSurveyPage</code> class implements the "Complete Survey"
+ * The <code>ViewSurveyResponsePage</code> class implements the "View Survey Response"
  * page for the web application.
  *
  * @author Marcus Portmann
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-public class CompleteSurveyPage extends TemplateWebPage
+@WebPageSecurity({ SurveySecurity.FUNCTION_CODE_SURVEY_ADMINISTRATION,
+  SurveySecurity.FUNCTION_CODE_VIEW_SURVEY_RESPONSE })
+public class ViewSurveyResponsePage extends TemplateWebPage
 {
   private static final long serialVersionUID = 1000000;
 
@@ -50,59 +57,35 @@ public class CompleteSurveyPage extends TemplateWebPage
   private ISurveyService surveyService;
 
   /**
-   * Constructs a new <code>CompleteSurveyPage</code>.
+   * Constructs a new <code>ViewSurveyResponsePage</code>.
    *
-   * @param pageParameters the page parameters
+   * @param previousPage        the previous page
+   * @param surveyResponseModel the model for the code
    */
-  public CompleteSurveyPage(PageParameters pageParameters)
+  public ViewSurveyResponsePage(PageReference previousPage, IModel<SurveyResponse> surveyResponseModel)
   {
-    super("Complete Survey");
+    super("View Survey Response", surveyResponseModel.getObject().getName());
 
     try
     {
-      SurveyInstance surveyInstance = surveyService.getSurveyInstance(UUID.fromString(
-          pageParameters.get("surveyInstanceId").toString()));
+      add(new SurveyResponseReadOnlyPanel("surveyResponse", surveyResponseModel));
 
-      SurveyRequest surveyRequest = null;
-
-      if ((!pageParameters.get("surveyRequestId").isNull())
-          && (!pageParameters.get("surveyRequestId").isEmpty()))
-      {
-        surveyRequest = surveyService.getSurveyRequest(UUID.fromString(pageParameters.get(
-            "surveyRequestId").toString()));
-      }
-
-      SurveyResponse surveyResponse = new SurveyResponse(surveyInstance, surveyRequest);
-
-      IModel<SurveyResponse> surveyResponseModel = new Model<>(surveyResponse);
-
-      Form<SurveyResponse> completeSurveyForm = new Form<>("completeSurveyForm",
-          new CompoundPropertyModel<>(surveyResponseModel));
-
-      completeSurveyForm.add(new SurveyResponseInputPanel("surveyResponse", surveyResponseModel));
-
-      // The "submitButton" button
-      Button submitButton = new Button("submitButton")
+      // The "backLink" link
+      Link<Void> backLink = new Link<Void>("backLink")
       {
         private static final long serialVersionUID = 1000000;
 
         @Override
-        public void onSubmit()
+        public void onClick()
         {
-
-          int xxx = 0;
-          xxx++;
-
+          setResponsePage(previousPage.getPage());
         }
       };
-      submitButton.setDefaultFormProcessing(true);
-      completeSurveyForm.add(submitButton);
-
-      add(completeSurveyForm);
+      add(backLink);
     }
     catch (Throwable e)
     {
-      throw new WebApplicationException("Failed to initialise the CompleteSurveyPage", e);
+      throw new WebApplicationException("Failed to initialise the ViewSurveyResponsePage", e);
     }
   }
 }

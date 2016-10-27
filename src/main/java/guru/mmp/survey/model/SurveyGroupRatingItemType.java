@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum SurveyGroupRatingItemType
 {
-  PERCENTAGE(1, "Percentage"), YES_NO_NA(2, "Yes/No/NA");
+  ONE_TO_TEN(1, "One To Ten"), YES_NO_NA(2, "Yes/No/NA");
 
   private String description;
   private int code;
@@ -48,13 +48,13 @@ public enum SurveyGroupRatingItemType
     switch (code)
     {
       case 1:
-        return SurveyGroupRatingItemType.PERCENTAGE;
+        return SurveyGroupRatingItemType.ONE_TO_TEN;
 
       case 2:
         return SurveyGroupRatingItemType.YES_NO_NA;
 
       default:
-        return SurveyGroupRatingItemType.PERCENTAGE;
+        return SurveyGroupRatingItemType.ONE_TO_TEN;
     }
   }
 
@@ -79,7 +79,7 @@ public enum SurveyGroupRatingItemType
     switch (code)
     {
       case 1:
-        return 0;
+        return 1;
 
       case 2:
         return -1;

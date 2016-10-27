@@ -14,15 +14,13 @@ package guru.mmp.survey.web.components;
 //~--- non-JDK imports --------------------------------------------------------
 
 import guru.mmp.application.web.components.StringSelectOption;
-import guru.mmp.application.web.template.components.DropDownChoiceWithFeedback;
 import guru.mmp.application.web.template.components.InputPanel;
 import guru.mmp.survey.model.*;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,21 +28,21 @@ import java.util.List;
 //~--- JDK imports ------------------------------------------------------------
 
 /**
- * The <code>SurveyResponsePanel</code> class.
+ * The <code>SurveyResponseReadOnlyPanel</code> class.
  *
  * @author Marcus Portmann
  */
-public class SurveyResponsePanel extends InputPanel
+public class SurveyResponseReadOnlyPanel extends InputPanel
 {
   private static final long serialVersionUID = 1000000;
 
   /**
-   * Constructs a new <code>SurveyResponsePanel</code>.
+   * Constructs a new <code>SurveyResponseReadOnlyPanel</code>.
    *
    * @param id                  the non-null id of this component
    * @param surveyResponseModel the model for the survey response
    */
-  public SurveyResponsePanel(String id, IModel<SurveyResponse> surveyResponseModel)
+  public SurveyResponseReadOnlyPanel(String id, IModel<SurveyResponse> surveyResponseModel)
   {
     super(id, surveyResponseModel);
 
@@ -106,13 +104,8 @@ public class SurveyResponsePanel extends InputPanel
                     if (groupRatingItemResponse.getGroupRatingItemDefinitionRatingType().equals(
                         SurveyGroupRatingItemType.YES_NO_NA))
                     {
-                      ChoiceRenderer<StringSelectOption> choiceRenderer = new ChoiceRenderer<>(
-                          "name", "value");
-
-                      item.add(new DropDownChoiceWithFeedback<>("rating", new PropertyModel<>(
-                          groupRatingItemResponse, "rating"), getGroupRatingItemResponseOptions(
-                          groupRatingItemResponse.getGroupRatingItemDefinitionRatingType()),
-                          choiceRenderer));
+                      item.add(new YesNoNaRatingLabel("rating", new Model<YesNoNaRating>(
+                          YesNoNaRating.fromCode(groupRatingItemResponse.getRating()))));
                     }
                     else
                     {

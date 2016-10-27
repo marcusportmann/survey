@@ -61,6 +61,42 @@ public interface ISurveyService
     throws SurveyServiceException;
 
   /**
+   * Retrieve the filtered survey instances for all versions of the survey definition.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to identify the survey definition
+   *               the survey instances are associated with
+   * @param filter the filter used to limit the matching survey definitions
+   *
+   * @return the filtered survey instances for all versions of the survey definition
+   */
+  List<SurveyInstance> getFilteredSurveyInstancesForSurveyDefinition(UUID id, String filter)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the filtered survey requests for the survey instance.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to identify the survey instance
+   *               the survey requests are associated with
+   * @param filter the filter used to limit the matching survey requests
+   *
+   * @return the filtered survey requests for the survey instance
+   */
+  List<SurveyRequest> getFilteredSurveyRequestsForSurveyInstance(UUID id, String filter)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the filtered survey responses for the survey instance.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to identify the survey instance
+   *               the survey responses are associated with
+   * @param filter the filter used to limit the matching survey responses
+   *
+   * @return the filtered survey responses for the survey instance
+   */
+  List<SurveyResponse> getFilteredSurveyResponsesForSurveyInstance(UUID id, String filter)
+    throws SurveyServiceException;
+
+  /**
    * Retrieve the latest versions of the survey definitions for the organisation.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
@@ -103,72 +139,6 @@ public interface ISurveyService
   List<SurveyAudienceMember> getMembersForSurveyAudience(UUID id)
     throws SurveyServiceException;
 
-
-
-
-
-  /**
-   * Retrieve the survey instances for all versions of the survey definition.
-   *
-   * @param id     the Universally Unique Identifier (UUID) used to identify the survey definition
-   *               the survey instances are associated with
-   *
-   * @return the survey instances for all versions of the survey definition
-   *
-   * @throws SurveyServiceException
-   */
-  List<SurveyInstance> getSurveyInstancesForSurveyDefinition(UUID id)
-    throws SurveyServiceException;
-
-  /**
-   * Retrieve the number of survey instances for all versions of the survey definition.
-   *
-   * @param id     the Universally Unique Identifier (UUID) used to identify the survey definition
-   *               the survey instances are associated with
-   *
-   * @return the number of survey instances for all versions of the survey definition
-   *
-   * @throws SurveyServiceException
-   */
-  int getNumberOfSurveyInstancesForSurveyDefinition(UUID id)
-    throws SurveyServiceException;
-
-
-
-
-  /**
-   * Retrieve the filtered survey instances for all versions of the survey definition.
-   *
-   * @param id     the Universally Unique Identifier (UUID) used to identify the survey definition
-   *               the survey instances are associated with
-   * @param filter the filter used to limit the matching survey definitions
-   *
-   * @return the filtered survey instances for all versions of the survey definition
-   *
-   * @throws SurveyServiceException
-   */
-  List<SurveyInstance> getFilteredSurveyInstancesForSurveyDefinition(UUID id, String filter)
-    throws SurveyServiceException;
-
-
-  /**
-   * Retrieve the number of filtered survey instances for all versions of the survey definition.
-   *
-   * @param id     the Universally Unique Identifier (UUID) used to identify the survey definition
-   *               the survey instances are associated with
-   * @param filter the filter used to limit the matching survey definitions
-   *
-   * @return the number of filtered survey instances for all versions of the survey definition
-   *
-   * @throws SurveyServiceException
-   */
-  int getNumberOfFilteredSurveyInstancesForSurveyDefinition(UUID id, String filter)
-    throws SurveyServiceException;
-
-
-
-
-
   /**
    * Retrieve the number of latest versions of the filtered survey definitions for the organisation.
    *
@@ -206,6 +176,42 @@ public interface ISurveyService
     throws SurveyServiceException;
 
   /**
+   * Retrieve the number of filtered survey instances for all versions of the survey definition.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to identify the survey definition
+   *               the survey instances are associated with
+   * @param filter the filter used to limit the matching survey definitions
+   *
+   * @return the number of filtered survey instances for all versions of the survey definition
+   */
+  int getNumberOfFilteredSurveyInstancesForSurveyDefinition(UUID id, String filter)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the number of filtered survey requests for the survey instance.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to identify the survey instance
+   *               the survey requests are associated with
+   * @param filter the filter used to limit the matching survey requests
+   *
+   * @return the number of filtered survey requests for the survey instance
+   */
+  int getNumberOfFilteredSurveyRequestsForSurveyInstance(UUID id, String filter)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the number of filtered survey responses for the survey instance.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to identify the survey instance
+   *               the survey responses are associated with
+   * @param filter the filter used to limit the matching survey responses
+   *
+   * @return the number of filtered survey responses for the survey instance
+   */
+  int getNumberOfFilteredSurveyResponsesForSurveyInstance(UUID id, String filter)
+    throws SurveyServiceException;
+
+  /**
    * Retrieve the number of latest versions of the survey definitions for the organisation.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
@@ -234,6 +240,39 @@ public interface ISurveyService
    * @return the number of survey audiences for the organisation
    */
   int getNumberOfSurveyAudiencesForOrganisation(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the number of survey instances for all versions of the survey definition.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to identify the survey definition the
+   *           survey instances are associated with
+   *
+   * @return the number of survey instances for all versions of the survey definition
+   */
+  int getNumberOfSurveyInstancesForSurveyDefinition(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the number of survey requests for the survey instance.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to identify the survey instance the
+   *           survey requests are associated with
+   *
+   * @return the number of survey requests for the survey instance
+   */
+  int getNumberOfSurveyRequestsForSurveyInstance(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the number of survey responses for the survey instance.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to identify the survey instance the
+   *           survey responses are associated with
+   *
+   * @return the number of survey responses for the survey instance
+   */
+  int getNumberOfSurveyResponsesForSurveyInstance(UUID id)
     throws SurveyServiceException;
 
   /**
@@ -296,6 +335,17 @@ public interface ISurveyService
     throws SurveyServiceException;
 
   /**
+   * Retrieve the survey instances for all versions of the survey definition.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to identify the survey definition the
+   *           survey instances are associated with
+   *
+   * @return the survey instances for all versions of the survey definition
+   */
+  List<SurveyInstance> getSurveyInstancesForSurveyDefinition(UUID id)
+    throws SurveyServiceException;
+
+  /**
    * Retrieve the survey request identified by the specified ID.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey request
@@ -304,6 +354,17 @@ public interface ISurveyService
    *         request could not be found
    */
   SurveyRequest getSurveyRequest(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the survey requests for the survey instance.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to identify the survey instance the
+   *           survey requests are associated with
+   *
+   * @return the survey requests for the survey instance
+   */
+  List<SurveyRequest> getSurveyRequestsForSurveyInstance(UUID id)
     throws SurveyServiceException;
 
   /**
@@ -316,6 +377,17 @@ public interface ISurveyService
    *         response could not be found
    */
   SurveyResponse getSurveyResponse(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the survey responses for the survey instance.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to identify the survey instance the
+   *           survey responses are associated with
+   *
+   * @return the survey responses for the survey instance
+   */
+  List<SurveyResponse> getSurveyResponsesForSurveyInstance(UUID id)
     throws SurveyServiceException;
 
   /**
@@ -346,6 +418,16 @@ public interface ISurveyService
    * @return the saved survey instance
    */
   SurveyInstance saveSurveyInstance(SurveyInstance surveyInstance)
+    throws SurveyServiceException;
+
+  /**
+   * Save the survey request.
+   *
+   * @param surveyRequest the survey request
+   *
+   * @return the saved survey request
+   */
+  SurveyRequest saveSurveyRequest(SurveyRequest surveyRequest)
     throws SurveyServiceException;
 
   /**

@@ -35,6 +35,10 @@
           <div class="sidebar-content">
             <div class="side-header side-content bg-white-op">
               <button class="btn btn-link text-gray pull-right hidden-md hidden-lg" type="button" data-toggle="layout" data-action="sidebar_close"><i class="fa fa-times"></i></button>
+              <div class="application-logo-container">
+                <div class="application-logo-icon"></div>
+                <div class="application-logo-name sidebar-mini-hide"></div>
+              </div>
             </div>
             <div class="side-content">
               <ul class="nav-main"><li><a href="#"><i class="si si-speedometer"></i><span class="sidebar-mini-hide">Dashboard</span></a></li></ul>
@@ -55,73 +59,21 @@
             <div class="col-sm-5 text-right hidden-xs"><ol class="breadcrumb push-10-t"><li>Category</li><li class="active">Page</li></ol></div>
           </div>
         </div>
-        <div class="content">
+        <div class="content content-narrow">
           <wicket:extend>
 
-            <div id="removeDialog" wicket:id="removeDialog" class="modal fade" tabindex="-1" role="dialog">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title">Remove Survey Instance</h4>
-                  </div>
-                  <div class="modal-body">
-                    <p>
-                      Are you sure you wish to remove the survey instance <b><span wicket:id="name">[Name]</span></b>?
-                    </p>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                    <a wicket:id="removeLink" class="btn btn-primary">Yes</a>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <form wicket:id="updateForm" id="updateForm" class="form-horizontal push-10-t push-10">
 
-            <div wicket:id="tableContainer" class="table-container">
-              <div class="table-header">
-                <div class="table-header-left">
-                  <a wicket:id="addLink" class="btn btn-primary btn-sm" href="#"><i class="fa fa-plus"></i> Add Survey Instance</a>
-                </div>
-                <div class="table-header-right">
-                  &nbsp;<a wicket:id="backLink" class="btn btn-primary btn-sm" href="#"><i class="fa fa-angle-left"></i> Back</a>
-                </div>
-                <div class="table-header-right">
-                  <form wicket:id="filterForm" class="table-filter-form">
-                    <input wicket:id="filter" type="text" name="filter"/>
-                    <div class="btn-group">
-                      <button wicket:id="filterButton" type="submit" class="btn btn-default btn-sm"><i class="fa fa-filter"></i> Filter</button>
-                      <button wicket:id="resetButton" type="submit" class="btn btn-default btn-sm"><i class="fa fa-times"></i></button>
-                    </div>
-                  </form>
+              <div wicket:id="surveyResponse"></div>
+
+              <div class="form-group">
+                <div class="col-xs-12">
+                  <button wicket:id="updateButton" type="submit" class="btn btn-primary pull-right push-10-l">Update</button>
+                  <button wicket:id="cancelButton" type="submit" class="btn btn-default pull-right">Cancel</button>
                 </div>
               </div>
 
-              <table class="table table-bordered table-striped table-condensed table-actions">
-                <thead>
-                  <tr>
-                    <th class="stretch-column">Name</th>
-                    <th class="four-actions center">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr wicket:id="surveyInstance">
-                    <td><span wicket:id="name">[Name]</span></td>
-                    <td class="four-actions">
-                      <div class="btn-group">
-                        <a wicket:id="surveyRequestsLink" class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="" data-original-title="Survey Requests"><i class="fa fa-share-square-o"></i></a>
-                        <a wicket:id="surveyResponsesLink" class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="" data-original-title="Survey Responses"><i class="fa fa-check-square-o"></i></a>
-                        <a wicket:id="updateLink" class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="" data-original-title="Update Survey Instance"><i class="fa fa-edit"></i></a>
-                        <a wicket:id="removeLink" class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="" data-original-title="Remove Survey Instance"><i class="fa fa-times"></i></a>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <div wicket:id="navigator" class="paging-navigator"></div>
-            </div>
+            </form>
 
           </wicket:extend>
         </div>
@@ -134,3 +86,4 @@
     </div>
   </body>
 </html>
+

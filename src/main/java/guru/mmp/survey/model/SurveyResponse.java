@@ -16,10 +16,12 @@ package guru.mmp.survey.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import guru.mmp.common.util.DateUtil;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -71,6 +73,12 @@ public class SurveyResponse
   private List<SurveyGroupRatingItemResponse> groupRatingItemResponses;
 
   /**
+   * The date and time the survey response was received.
+   */
+  @Column(name = "RECEIVED", nullable = false)
+  private Date received;
+
+  /**
    * Constructs a new <code>SurveyResponse</code>.
    *
    * Default constructor required for JPA.
@@ -99,6 +107,7 @@ public class SurveyResponse
     this.id = UUID.randomUUID();
     this.instance = instance;
     this.request = request;
+    this.received = new Date();
     this.groupRatingItemResponses = new ArrayList<>();
 
     for (SurveyGroupRatingItemDefinition groupRatingItemDefinition : instance.getDefinition()
@@ -277,6 +286,56 @@ public class SurveyResponse
   }
 
   /**
+   * The name for the survey response.
+   *
+   * @return the name for the survey response
+   */
+  @JsonIgnore
+  public String getName()
+  {
+    if (request == null)
+    {
+      return String.format("Anonymous on %s", DateUtil.getYYYYMMDDFormat().format(getReceived()));
+    }
+    else
+    {
+      return request.getFullName();
+    }
+  }
+
+  /**
+   * Returns the date and time the survey response was received.
+   *
+   * @return the date and time the survey response was received
+   */
+  public Date getReceived()
+  {
+    return received;
+  }
+
+  /**
+   * Returns the date and time the survey response was received as a <code>String</code>.
+   *
+   * @return the date and time the survey response was received as a <code>String</code>
+   */
+  @JsonIgnore
+  public String getReceivedAsString()
+  {
+    return DateUtil.getYYYYMMDDFormat().format(received);
+  }
+
+  /**
+   * Returns the optional survey request this survey response is associated with.
+   *
+   * @return the optional survey request this survey response is associated with
+   */
+  @JsonIgnore
+  public SurveyRequest getRequest()
+  {
+    return request;
+  }
+
+  /**
    * Set the JSON data for the survey response.
    *
    * @param data the JSON data for the survey response
@@ -291,6 +350,16 @@ public class SurveyResponse
     {
       throw new RuntimeException("Failed to populate the survey response using the JSON data", e);
     }
+  }
+
+  /**
+   * Set the date and time the survey response was received.
+   *
+   * @param received the date and time the survey response was received
+   */
+  public void setReceived(Date received)
+  {
+    this.received = received;
   }
 
   /**
