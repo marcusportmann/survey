@@ -25,6 +25,147 @@ import java.util.UUID;
 public interface ISurveyService
 {
   /**
+   * Delete the survey audience.
+   *
+   * @param surveyAudience the survey audience to delete
+   *
+   * @return <code>true</code> if the survey audience was deleted or <code>false</code> otherwise
+   */
+  boolean deleteSurveyAudience(SurveyAudience surveyAudience)
+    throws SurveyServiceException;
+
+  /**
+   * Delete the survey audience with the specified ID.
+   *
+   * @param id  the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *            audience
+   *
+   * @return <code>true</code> if the survey audience was deleted or <code>false</code> otherwise
+   */
+  boolean deleteSurveyAudience(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Delete the survey audience member.
+   *
+   * @param surveyAudienceMember the survey audience member to delete
+   *
+   * @return <code>true</code> if the survey audience member was deleted or <code>false</code>
+   *         otherwise
+   */
+  boolean deleteSurveyAudienceMember(SurveyAudienceMember surveyAudienceMember)
+    throws SurveyServiceException;
+
+  /**
+   * Delete the survey audience member with the specified ID.
+   *
+   * @param id  the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *            audience member
+   *
+   * @return <code>true</code> if the survey audience member was deleted or <code>false</code>
+   *         otherwise
+   */
+  boolean deleteSurveyAudienceMember(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Delete the survey definition.
+   *
+   * @param surveyDefinition the survey definition to delete
+   *
+   * @return <code>true</code> if the survey definition was deleted or <code>false</code> otherwise
+   */
+  boolean deleteSurveyDefinition(SurveyDefinition surveyDefinition)
+    throws SurveyServiceException;
+
+  /**
+   * Delete all versions of the survey definition with the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to, along with the version of the
+   *           survey definition, uniquely identify the survey definitions
+   *
+   * @return <code>true</code> if all versions of the survey definition were deleted or
+   *        <code>false</code> otherwise
+   */
+  boolean deleteSurveyDefinition(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Delete the survey definition with the specified ID and version.
+   *
+   * @param id      the Universally Unique Identifier (UUID) used to, along with the version of the
+   *                survey definition, uniquely identify the survey definition
+   * @param version the version of the survey definition
+   *
+   * @return <code>true</code> if the survey definition was deleted or <code>false</code> otherwise
+   */
+  boolean deleteSurveyDefinition(UUID id, int version)
+    throws SurveyServiceException;
+
+  /**
+   * Delete the survey instance.
+   *
+   * @param surveyInstance the survey instance to delete
+   *
+   * @return <code>true</code> if the survey instance was deleted or <code>false</code> otherwise
+   */
+  boolean deleteSurveyInstance(SurveyInstance surveyInstance)
+    throws SurveyServiceException;
+
+  /**
+   * Delete the survey instance with the specified ID.
+   *
+   * @param id  the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *            instance
+   *
+   * @return <code>true</code> if the survey instance was deleted or <code>false</code> otherwise
+   */
+  boolean deleteSurveyInstance(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Delete the survey request.
+   *
+   * @param surveyRequest the survey request to delete
+   *
+   * @return <code>true</code> if the survey request was deleted or <code>false</code> otherwise
+   */
+  boolean deleteSurveyRequest(SurveyRequest surveyRequest)
+    throws SurveyServiceException;
+
+  /**
+   * Delete the survey request with the specified ID.
+   *
+   * @param id  the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *            request
+   *
+   * @return <code>true</code> if the survey request was deleted or <code>false</code> otherwise
+   */
+  boolean deleteSurveyRequest(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Delete the survey response.
+   *
+   * @param surveyResponse the survey response to delete
+   *
+   * @return <code>true</code> if the survey response was deleted or <code>false</code> otherwise
+   */
+  boolean deleteSurveyResponse(SurveyResponse surveyResponse)
+    throws SurveyServiceException;
+
+  /**
+   * Delete the survey response with the specified ID.
+   *
+   * @param id  the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *            response
+   *
+   * @return <code>true</code> if the survey response was deleted or <code>false</code> otherwise
+   */
+  boolean deleteSurveyResponse(UUID id)
+    throws SurveyServiceException;
+
+  /**
    * Retrieve the latest versions of the filtered survey definitions for the organisation.
    *
    * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
@@ -312,8 +453,8 @@ public interface ISurveyService
   /**
    * Retrieve the survey definition identified by the specified ID and version.
    *
-   * @param id      the Universally Unique Identifier (UUID) used, along with the version of the
-   *                survey definition, to uniquely identify the survey definition
+   * @param id      the Universally Unique Identifier (UUID) used to, along with the version of the
+   *                survey definition, uniquely identify the survey definition
    * @param version the version of the survey definition
    *
    * @return the survey definition identified by the specified ID and version or <code>null</code>
@@ -398,6 +539,16 @@ public interface ISurveyService
    * @return the saved survey audience
    */
   SurveyAudience saveSurveyAudience(SurveyAudience surveyAudience)
+    throws SurveyServiceException;
+
+  /**
+   * Save the survey audience member.
+   *
+   * @param surveyAudienceMember the survey audience member
+   *
+   * @return the saved survey response
+   */
+  SurveyAudienceMember saveSurveyAudienceMember(SurveyAudienceMember surveyAudienceMember)
     throws SurveyServiceException;
 
   /**

@@ -53,6 +53,392 @@ public class SurveyService
   public SurveyService() {}
 
   /**
+   * Delete the survey audience.
+   *
+   * @param surveyAudience the survey audience to delete
+   *
+   * @return <code>true</code> if the survey audience was deleted or <code>false</code> otherwise
+   */
+  @Transactional
+  public boolean deleteSurveyAudience(SurveyAudience surveyAudience)
+    throws SurveyServiceException
+  {
+    try
+    {
+      if (entityManager.contains(surveyAudience))
+      {
+        entityManager.remove(surveyAudience);
+        entityManager.flush();
+
+        return true;
+      }
+      else
+      {
+        return deleteSurveyAudience(surveyAudience.getId());
+      }
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to delete the survey audience with ID ("
+          + surveyAudience.getId() + ")", e);
+    }
+  }
+
+  /**
+   * Delete the survey audience with the specified ID.
+   *
+   * @param id  the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *            audience
+   *
+   * @return <code>true</code> if the survey audience was deleted or <code>false</code> otherwise
+   */
+  @Transactional
+  public boolean deleteSurveyAudience(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      Query query = entityManager.createQuery("delete from SurveyAudience sa where sa.id = :id");
+
+      query.setParameter("id", id);
+
+      return (query.executeUpdate() > 0);
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to delete the survey audience with ID (" + id + ")",
+          e);
+    }
+  }
+
+  /**
+   * Delete the survey audience member.
+   *
+   * @param surveyAudienceMember the survey audience member to delete
+   */
+  @Transactional
+  public boolean deleteSurveyAudienceMember(SurveyAudienceMember surveyAudienceMember)
+    throws SurveyServiceException
+  {
+    try
+    {
+      if (entityManager.contains(surveyAudienceMember))
+      {
+        entityManager.remove(surveyAudienceMember);
+        entityManager.flush();
+
+        return true;
+      }
+      else
+      {
+        return deleteSurveyAudienceMember(surveyAudienceMember.getId());
+      }
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to delete the survey audience member with ID ("
+          + surveyAudienceMember.getId() + ")", e);
+    }
+
+  }
+
+  /**
+   * Delete the survey audience member with the specified ID.
+   *
+   * @param id  the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *            audience member
+   *
+   * @return <code>true</code> if the survey audience member was deleted or <code>false</code>
+   *         otherwise
+   */
+  @Transactional
+  public boolean deleteSurveyAudienceMember(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      Query query = entityManager.createQuery(
+          "delete from SurveyAudienceMember sam where sam.id = :id");
+
+      query.setParameter("id", id);
+
+      return (query.executeUpdate() > 0);
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to delete the survey audience member with ID (" + id
+          + ")", e);
+    }
+  }
+
+  /**
+   * Delete the survey definition.
+   *
+   * @param surveyDefinition the survey definition to delete
+   *
+   * @return <code>true</code> if the survey definition was deleted or <code>false</code> otherwise
+   */
+  @Transactional
+  public boolean deleteSurveyDefinition(SurveyDefinition surveyDefinition)
+    throws SurveyServiceException
+  {
+    try
+    {
+      if (entityManager.contains(surveyDefinition))
+      {
+        entityManager.remove(surveyDefinition);
+        entityManager.flush();
+
+        return true;
+      }
+      else
+      {
+        return deleteSurveyDefinition(surveyDefinition.getId(), surveyDefinition.getVersion());
+      }
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to delete the survey definition with ID ("
+          + surveyDefinition.getId() + ") and version (" + surveyDefinition.getVersion() + ")", e);
+    }
+  }
+
+  /**
+   * Delete all versions of the survey definition with the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to, along with the version of the
+   *           survey definition, uniquely identify the survey definitions
+   *
+   * @return <code>true</code> if all versions of the survey definition were deleted or
+   *        <code>false</code> otherwise
+   */
+  @Transactional
+  public boolean deleteSurveyDefinition(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      Query query = entityManager.createQuery("delete from SurveyDefinition sd where sd.id = :id");
+
+      query.setParameter("id", id);
+
+      return (query.executeUpdate() > 0);
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to delete all versions of the survey definition with ID (" + id + ")", e);
+    }
+  }
+
+  /**
+   * Delete the survey definition with the specified ID and version.
+   *
+   * @param id      the Universally Unique Identifier (UUID) used to, along with the version of the
+   *                survey definition, uniquely identify the survey definition
+   * @param version the version of the survey definition
+   *
+   * @return <code>true</code> if the survey definition was deleted or <code>false</code> otherwise
+   */
+  @Transactional
+  public boolean deleteSurveyDefinition(UUID id, int version)
+    throws SurveyServiceException
+  {
+    try
+    {
+      Query query = entityManager.createQuery(
+          "delete from SurveyDefinition sd where sd.id = :id AND sd.version = :version");
+
+      query.setParameter("id", id);
+      query.setParameter("version", version);
+
+      return (query.executeUpdate() > 0);
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to delete the survey definition with ID (" + id
+          + ") and version (" + version + ")", e);
+    }
+  }
+
+  /**
+   * Delete the survey instance.
+   *
+   * @param surveyInstance the survey instance to delete
+   *
+   * @return <code>true</code> if the survey instance was deleted or <code>false</code> otherwise
+   */
+  @Transactional
+  public boolean deleteSurveyInstance(SurveyInstance surveyInstance)
+    throws SurveyServiceException
+  {
+    try
+    {
+      if (entityManager.contains(surveyInstance))
+      {
+        entityManager.remove(surveyInstance);
+        entityManager.flush();
+
+        return true;
+      }
+      else
+      {
+        return deleteSurveyInstance(surveyInstance.getId());
+      }
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to delete the survey instance with ID ("
+          + surveyInstance.getId() + ")", e);
+    }
+  }
+
+  /**
+   * Delete the survey instance with the specified ID.
+   *
+   * @param id  the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *            instance
+   *
+   * @return <code>true</code> if the survey instance was deleted or <code>false</code> otherwise
+   */
+  @Transactional
+  public boolean deleteSurveyInstance(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      Query query = entityManager.createQuery("delete from SurveyInstance si where si.id = :id");
+
+      query.setParameter("id", id);
+
+      return (query.executeUpdate() > 0);
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to delete the survey instance with ID (" + id + ")",
+          e);
+    }
+  }
+
+  /**
+   * Delete the survey request.
+   *
+   * @param surveyRequest the survey request to delete
+   *
+   * @return <code>true</code> if the survey request was deleted or <code>false</code> otherwise
+   */
+  @Transactional
+  public boolean deleteSurveyRequest(SurveyRequest surveyRequest)
+    throws SurveyServiceException
+  {
+    try
+    {
+      if (entityManager.contains(surveyRequest))
+      {
+        entityManager.remove(surveyRequest);
+        entityManager.flush();
+
+        return true;
+      }
+      else
+      {
+        return deleteSurveyRequest(surveyRequest.getId());
+      }
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to delete the survey request with ID ("
+          + surveyRequest.getId() + ")", e);
+    }
+  }
+
+  /**
+   * Delete the survey request with the specified ID.
+   *
+   * @param id  the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *            request
+   *
+   * @return <code>true</code> if the survey request was deleted or <code>false</code> otherwise
+   */
+  @Transactional
+  public boolean deleteSurveyRequest(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      Query query = entityManager.createQuery("delete from SurveyRequest sr where sr.id = :id");
+
+      query.setParameter("id", id);
+
+      return (query.executeUpdate() > 0);
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to delete the survey request with ID (" + id + ")",
+          e);
+    }
+  }
+
+  /**
+   * Delete the survey response.
+   *
+   * @param surveyResponse the survey response to delete
+   *
+   * @return <code>true</code> if the survey response was deleted or <code>false</code> otherwise
+   */
+  @Transactional
+  public boolean deleteSurveyResponse(SurveyResponse surveyResponse)
+    throws SurveyServiceException
+  {
+    try
+    {
+      if (entityManager.contains(surveyResponse))
+      {
+        entityManager.remove(surveyResponse);
+        entityManager.flush();
+
+        return true;
+      }
+      else
+      {
+        return deleteSurveyResponse(surveyResponse.getId());
+      }
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to delete the survey response with ID ("
+          + surveyResponse.getId() + ")", e);
+    }
+  }
+
+  /**
+   * Delete the survey response with the specified ID.
+   *
+   * @param id  the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *            response
+   *
+   * @return <code>true</code> if the survey response was deleted or <code>false</code> otherwise
+   */
+  @Transactional
+  public boolean deleteSurveyResponse(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      Query query = entityManager.createQuery("delete from SurveyResponse sr where sr.id = :id");
+
+      query.setParameter("id", id);
+
+      return (query.executeUpdate() > 0);
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to delete the survey response with ID (" + id + ")",
+          e);
+    }
+  }
+
+  /**
    * Retrieve the latest versions of the filtered survey definitions for the organisation.
    *
    * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
@@ -98,8 +484,8 @@ public class SurveyService
   {
     try
     {
-      String sql = "SELECT sam FROM SurveyAudienceMember sam JOIN sam.audience sa"
-          + " WHERE sa.id = :id AND ((UPPER(sam.firstName) LIKE :filter)"
+      String sql = "SELECT sam FROM SurveyAudienceMember sam"
+          + " WHERE sam.audienceId = :id AND ((UPPER(sam.firstName) LIKE :filter)"
           + " OR (UPPER(sam.lastName) LIKE :filter) OR (UPPER(sam.email) LIKE :filter))";
 
       TypedQuery<SurveyAudienceMember> query = entityManager.createQuery(sql,
@@ -355,7 +741,7 @@ public class SurveyService
     try
     {
       String sql =
-          "SELECT sam FROM SurveyAudienceMember sam JOIN sam.audience sa WHERE sa.id = :id";
+          "SELECT sam FROM SurveyAudienceMember sam WHERE sam.audienceId = :id";
 
       TypedQuery<SurveyAudienceMember> query = entityManager.createQuery(sql,
           SurveyAudienceMember.class);
@@ -418,8 +804,8 @@ public class SurveyService
     try
     {
       Query query = entityManager.createQuery(
-          "SELECT COUNT(sam.id) FROM SurveyAudienceMember sam JOIN sam.audience sa"
-          + " WHERE sa.id = :id AND ((UPPER(sam.firstName) LIKE :filter)"
+          "SELECT COUNT(sam.id) FROM SurveyAudienceMember sam "
+          + " WHERE sam.audienceId = :id AND ((UPPER(sam.firstName) LIKE :filter)"
           + " OR (UPPER(sam.lastName) LIKE :filter) OR (UPPER(sam.email) LIKE :filter))");
 
       query.setParameter("id", id);
@@ -604,7 +990,7 @@ public class SurveyService
     try
     {
       Query query = entityManager.createQuery("SELECT COUNT(sam.id) FROM SurveyAudienceMember sam"
-          + " WHERE sam.audience.id = :id");
+          + " WHERE sam.audienceId = :id");
 
       query.setParameter("id", id);
 
@@ -841,8 +1227,8 @@ public class SurveyService
   /**
    * Retrieve the survey definition identified by the specified ID and version.
    *
-   * @param id      the Universally Unique Identifier (UUID) used, along with the version of the
-   *                survey definition, to uniquely identify the survey definition
+   * @param id      the Universally Unique Identifier (UUID) used to, along with the version of the
+   *                survey definition, uniquely identify the survey definition
    * @param version the version of the survey definition
    *
    * @return the survey definition identified by the specified ID and version or <code>null</code>
@@ -1071,6 +1457,36 @@ public class SurveyService
           e);
     }
   }
+  /**
+   * Save the survey audience member.
+   *
+   * @param surveyAudienceMember the survey audience member
+   *
+   * @return the saved survey response
+   */
+  @Transactional
+  public SurveyAudienceMember saveSurveyAudienceMember(SurveyAudienceMember surveyAudienceMember)
+    throws SurveyServiceException
+  {
+    try
+    {
+      if (!entityManager.contains(surveyAudienceMember))
+      {
+        surveyAudienceMember = entityManager.merge(surveyAudienceMember);
+
+        entityManager.flush();
+
+        entityManager.detach(surveyAudienceMember);
+      }
+
+      return surveyAudienceMember;
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to save the survey audience member with ID ("
+        + surveyAudienceMember.getId() + ")", e);
+    }
+  }
 
   /**
    * Save the survey audience.
@@ -1088,6 +1504,10 @@ public class SurveyService
       if (!entityManager.contains(surveyAudience))
       {
         surveyAudience = entityManager.merge(surveyAudience);
+
+        entityManager.flush();
+
+        entityManager.detach(surveyAudience);
       }
 
       return surveyAudience;
@@ -1126,6 +1546,8 @@ public class SurveyService
       // Duplicate the survey definition and increment the current version if required
       if (surveyInstanceExists)
       {
+        entityManager.detach(surveyDefinition);
+
         surveyDefinition = surveyDefinition.duplicate();
 
         surveyDefinition.incrementVersion();
@@ -1134,6 +1556,10 @@ public class SurveyService
       if (!entityManager.contains(surveyDefinition))
       {
         surveyDefinition = entityManager.merge(surveyDefinition);
+
+        entityManager.flush();
+
+        entityManager.detach(surveyDefinition);
       }
 
       return surveyDefinition;
@@ -1161,6 +1587,10 @@ public class SurveyService
       if (!entityManager.contains(surveyInstance))
       {
         surveyInstance = entityManager.merge(surveyInstance);
+
+        entityManager.flush();
+
+        entityManager.detach(surveyInstance);
       }
 
       return surveyInstance;
@@ -1188,6 +1618,10 @@ public class SurveyService
       if (!entityManager.contains(surveyRequest))
       {
         surveyRequest = entityManager.merge(surveyRequest);
+
+        entityManager.flush();
+
+        entityManager.detach(surveyRequest);
       }
 
       return surveyRequest;
@@ -1215,6 +1649,10 @@ public class SurveyService
       if (!entityManager.contains(surveyResponse))
       {
         surveyResponse = entityManager.merge(surveyResponse);
+
+        entityManager.flush();
+
+        entityManager.detach(surveyResponse);
       }
 
       return surveyResponse;

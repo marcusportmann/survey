@@ -16,11 +16,6 @@ package digital.survey.web.components;
 import guru.mmp.application.web.template.components.InputPanel;
 import guru.mmp.application.web.template.components.TextFieldWithFeedback;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.form.upload.FileUpload;
-import org.apache.wicket.markup.html.form.upload.FileUploadField;
-import org.apache.wicket.model.PropertyModel;
-
-import java.util.List;
 
 //~--- JDK imports ------------------------------------------------------------
 
@@ -37,19 +32,11 @@ public class SurveyAudienceMemberInputPanel extends InputPanel
   /**
    * Constructs a new <code>SurveyAudienceMemberInputPanel</code>.
    *
-   * @param id           the non-null id of this component
-   * @param isIdReadOnly <code>true</code> if the ID for the <code>SurveyAudienceMember</code>
-   *                     is readonly or <code>false</code> otherwise
+   * @param id the non-null id of this component
    */
-  public SurveyAudienceMemberInputPanel(String id, boolean isIdReadOnly)
+  public SurveyAudienceMemberInputPanel(String id)
   {
     super(id);
-
-    // The "id" field
-    TextField<String> idField = new TextFieldWithFeedback<>("id");
-    idField.setRequired(true);
-    idField.setEnabled(!isIdReadOnly);
-    add(idField);
 
     // The "firstName" field
     TextField<String> firstNameField = new TextFieldWithFeedback<>("firstName");

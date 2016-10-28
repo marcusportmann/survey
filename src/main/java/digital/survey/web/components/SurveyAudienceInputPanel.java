@@ -45,15 +45,14 @@ public class SurveyAudienceInputPanel extends InputPanel
   {
     super(id);
 
-    // The "id" field
-    TextField<String> idField = new TextFieldWithFeedback<>("id");
-    idField.setRequired(true);
-    idField.setEnabled(!isIdReadOnly);
-    add(idField);
-
     // The "name" field
     TextField<String> nameField = new TextFieldWithFeedback<>("name");
     nameField.setRequired(true);
     add(nameField);
+
+    // The "description" field
+    TextField<String> descriptionField = new TextFieldWithFeedback<>("description");
+    descriptionField.setRequired(true);
+    add(descriptionField);
   }
 }

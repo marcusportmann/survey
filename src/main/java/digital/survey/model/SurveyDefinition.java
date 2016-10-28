@@ -42,8 +42,8 @@ public class SurveyDefinition
   implements Serializable
 {
   /**
-   * The Universally Unique Identifier (UUID) used, along with the version of the survey definition,
-   * to uniquely identify the survey definition.
+   * The Universally Unique Identifier (UUID) used to, along with the version of the survey
+   * definition, uniquely identify the survey definition.
    */
   @Id
   @JsonProperty
@@ -110,8 +110,8 @@ public class SurveyDefinition
   /**
    * Constructs a new <code>SurveyDefinition</code>.
    *
-   * @param id             the Universally Unique Identifier (UUID) used, along with the version of
-   *                       the survey definition, to uniquely identify the survey definition
+   * @param id             the Universally Unique Identifier (UUID) used to, along with the version
+   *                       of the survey definition, uniquely identify the survey definition
    * @param version        the version of the survey definition
    * @param organisationId the Universally Unique Identifier (UUID) used to uniquely identify the
    *                       organisation the survey definition is associated with
@@ -314,11 +314,11 @@ public class SurveyDefinition
   }
 
   /**
-   * Returns the Universally Unique Identifier (UUID) used, along with the version of the survey
-   * definition, to uniquely identify the survey definition.
+   * Returns the Universally Unique Identifier (UUID) used to, along with the version of the survey
+   * definition, uniquely identify the survey definition.
    *
-   * @return the Universally Unique Identifier (UUID) used, along with the version of the survey
-   *         definition, to uniquely identify the survey definition
+   * @return the Universally Unique Identifier (UUID) used to, along with the version of the survey
+   *         definition, uniquely identify the survey definition
    */
   public UUID getId()
   {

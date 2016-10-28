@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,6 +42,8 @@ public class SurveyServiceTest
   @Inject
   private ISurveyService surveyService;
 
+  // TODO ADD METHODS TO TEST BOTH TYPES OF DELETE
+
   /**
    * Test the get CTO values survey definition functionality.
    */
@@ -49,20 +52,25 @@ public class SurveyServiceTest
   {
     SurveyDefinition surveyDefinition = getCTOValuesSurveyDefinition();
 
-    SurveyInstance surveyInstance = new SurveyInstance(UUID.fromString("b222aa15-715f-4752-923d-8f33ee8a1736"), "CTO ELT Values Survey - September 2016", surveyDefinition);
+    SurveyInstance surveyInstance = new SurveyInstance(UUID.fromString(
+        "b222aa15-715f-4752-923d-8f33ee8a1736"), "CTO ELT Values Survey - September 2016",
+        surveyDefinition);
 
-    SurveyRequest surveyRequest = new SurveyRequest(UUID.fromString("54a751f6-0f32-48bd-8c6c-665e3ac1906b"),  surveyInstance, "Marcus", "Portmann", "marcus@mmp.guru");
+    SurveyRequest surveyRequest = new SurveyRequest(UUID.fromString(
+        "54a751f6-0f32-48bd-8c6c-665e3ac1906b"), surveyInstance, "Marcus", "Portmann",
+        "marcus@mmp.guru");
 
-    SurveyResponse marcusSurveyResponse = new SurveyResponse(UUID.fromString("18f3fcc1-06b2-4dc4-90ea-7a8904009488"), surveyInstance, surveyRequest);
+    SurveyResponse marcusSurveyResponse = new SurveyResponse(UUID.fromString(
+        "18f3fcc1-06b2-4dc4-90ea-7a8904009488"), surveyInstance, surveyRequest);
 
-    SurveyResponse anonymousSurveyResponse = new SurveyResponse(UUID.fromString("9271229e-0824-4098-8477-1a564c0acca1"), surveyInstance);
+    SurveyResponse anonymousSurveyResponse = new SurveyResponse(UUID.fromString(
+        "9271229e-0824-4098-8477-1a564c0acca1"), surveyInstance);
 
     System.out.println("Survey Definition: " + surveyDefinition.getData());
 
     System.out.println("Survey Response (Marcus Portmann): " + marcusSurveyResponse.getData());
 
     System.out.println("Survey Response (Anonymous): " + anonymousSurveyResponse.getData());
-
   }
 
   /**
@@ -74,7 +82,7 @@ public class SurveyServiceTest
   {
     SurveyDefinition surveyDefinition = getTestSurveyDefinition();
 
-    surveyService.saveSurveyDefinition(surveyDefinition);
+    surveyDefinition = surveyService.saveSurveyDefinition(surveyDefinition);
 
     surveyDefinition = surveyService.getSurveyDefinition(surveyDefinition.getId(), 1);
 
@@ -90,6 +98,8 @@ public class SurveyServiceTest
         surveyDefinition.getId(), surveyDefinition.getVersion());
 
     compareSurveyDefinitions(surveyDefinition, retrievedSurveyDefinition);
+
+    surveyService.deleteSurveyDefinition(surveyDefinition.getId());
   }
 
   /**
@@ -101,7 +111,7 @@ public class SurveyServiceTest
   {
     SurveyDefinition surveyDefinition = getTestSurveyDefinition();
 
-    surveyService.saveSurveyDefinition(surveyDefinition);
+    surveyDefinition = surveyService.saveSurveyDefinition(surveyDefinition);
 
     surveyDefinition = surveyService.getSurveyDefinition(surveyDefinition.getId(), 1);
 
@@ -114,6 +124,8 @@ public class SurveyServiceTest
         surveyDefinition.getId(), surveyDefinition.getVersion());
 
     compareSurveyDefinitions(surveyDefinition, retrievedSurveyDefinition);
+
+    surveyService.deleteSurveyDefinition(surveyDefinition.getId());
   }
 
   /**
@@ -125,7 +137,7 @@ public class SurveyServiceTest
   {
     SurveyDefinition surveyDefinition = getTestSurveyDefinition();
 
-    surveyService.saveSurveyDefinition(surveyDefinition);
+    surveyDefinition = surveyService.saveSurveyDefinition(surveyDefinition);
 
     surveyDefinition = surveyService.getSurveyDefinition(surveyDefinition.getId(), 1);
 
@@ -140,6 +152,8 @@ public class SurveyServiceTest
         surveyDefinition.getId(), surveyDefinition.getVersion());
 
     compareSurveyDefinitions(surveyDefinition, retrievedSurveyDefinition);
+
+    surveyService.deleteSurveyDefinition(surveyDefinition.getId());
   }
 
   /**
@@ -151,20 +165,26 @@ public class SurveyServiceTest
   {
     SurveyDefinition surveyDefinition = getCTOValuesSurveyDefinition();
 
-    surveyService.saveSurveyDefinition(surveyDefinition);
+    surveyDefinition = surveyService.saveSurveyDefinition(surveyDefinition);
 
     SurveyInstance surveyInstance = getCTOValuesSurveyInstance(surveyDefinition);
 
-    surveyService.saveSurveyInstance(surveyInstance);
+    surveyInstance = surveyService.saveSurveyInstance(surveyInstance);
 
     SurveyResponse surveyResponse = new SurveyResponse(surveyInstance);
 
-    surveyService.saveSurveyResponse(surveyResponse);
+    surveyResponse = surveyService.saveSurveyResponse(surveyResponse);
 
     SurveyResponse retrievedSurveyResponse = surveyService.getSurveyResponse(
         surveyResponse.getId());
 
     compareSurveyResponses(surveyResponse, retrievedSurveyResponse);
+
+    surveyService.deleteSurveyResponse(surveyResponse);
+
+    surveyService.deleteSurveyInstance(surveyInstance);
+
+    surveyService.deleteSurveyDefinition(surveyDefinition.getId());
   }
 
   /**
@@ -176,12 +196,14 @@ public class SurveyServiceTest
   {
     SurveyDefinition surveyDefinition = getTestSurveyDefinition();
 
-    surveyService.saveSurveyDefinition(surveyDefinition);
+    surveyDefinition = surveyService.saveSurveyDefinition(surveyDefinition);
 
     SurveyDefinition retrievedSurveyDefinition = surveyService.getSurveyDefinition(
         surveyDefinition.getId(), 1);
 
     compareSurveyDefinitions(surveyDefinition, retrievedSurveyDefinition);
+
+    surveyService.deleteSurveyDefinition(surveyDefinition.getId());
   }
 
   /**
@@ -199,7 +221,7 @@ public class SurveyServiceTest
 
     SurveyInstance surveyInstance = getTestSurveyInstance(surveyDefinition);
 
-    surveyService.saveSurveyInstance(surveyInstance);
+    surveyInstance = surveyService.saveSurveyInstance(surveyInstance);
 
     SurveyInstance retrievedSurveyInstance = surveyService.getSurveyInstance(
         surveyInstance.getId());
@@ -258,6 +280,9 @@ public class SurveyServiceTest
         surveyService.getNumberOfFilteredLatestSurveyDefinitionsForOrganisation(
         surveyDefinition.getOrganisationId(), surveyDefinition.getName()));
 
+    surveyService.deleteSurveyInstance(surveyInstance);
+
+    surveyService.deleteSurveyDefinition(surveyDefinition.getId());
   }
 
   /**
@@ -269,19 +294,21 @@ public class SurveyServiceTest
   {
     SurveyDefinition surveyDefinition = getTestSurveyDefinition();
 
-    surveyService.saveSurveyDefinition(surveyDefinition);
+    surveyDefinition = surveyService.saveSurveyDefinition(surveyDefinition);
 
     surveyDefinition = surveyService.getSurveyDefinition(surveyDefinition.getId(), 1);
 
     surveyDefinition.setName(surveyDefinition.getName() + " Updated");
     surveyDefinition.setDescription(surveyDefinition.getDescription() + " Updated");
 
-    surveyService.saveSurveyDefinition(surveyDefinition);
+    surveyDefinition = surveyService.saveSurveyDefinition(surveyDefinition);
 
     SurveyDefinition retrievedSurveyDefinition = surveyService.getSurveyDefinition(
         surveyDefinition.getId(), surveyDefinition.getVersion());
 
     compareSurveyDefinitions(surveyDefinition, retrievedSurveyDefinition);
+
+    surveyService.deleteSurveyDefinition(surveyDefinition.getId());
   }
 
   /**
@@ -294,35 +321,18 @@ public class SurveyServiceTest
   {
     SurveyAudience surveyAudience = getTestSurveyAudience();
 
-    surveyService.saveSurveyAudience(surveyAudience);
+    surveyAudience = surveyService.saveSurveyAudience(surveyAudience);
 
     SurveyAudience retrievedSurveyAudience = surveyService.getSurveyAudience(
         surveyAudience.getId());
 
     compareSurveyAudiences(surveyAudience, retrievedSurveyAudience);
 
-    SurveyAudienceMember retrievedSurveyAudienceMember = surveyService.getSurveyAudienceMember(
-        surveyAudience.getMembers().get(0).getId());
+    List<SurveyAudienceMember> surveyAudienceMembers = getTestSurveyAudienceMembers(surveyAudience);
 
-    compareSurveyAudienceMembers(surveyAudience.getMembers().get(0), retrievedSurveyAudienceMember);
-
-    List<SurveyAudienceMember> retrievedSurveyAudienceMembers =
-        surveyService.getMembersForSurveyAudience(surveyAudience.getId());
-
-    assertEquals(
-        "Failed to retrieve the correct number of survey audience members for the survey audience ("
-        + surveyAudience.getId() + ")", surveyAudience.getMembers().size(),
-        retrievedSurveyAudienceMembers.size());
-
-    for (SurveyAudienceMember surveyAudienceMember : surveyAudience.getMembers())
+    for (SurveyAudienceMember surveyAudienceMember : surveyAudienceMembers)
     {
-      for (SurveyAudienceMember tmpSurveyAudienceMember : retrievedSurveyAudienceMembers)
-      {
-        if (surveyAudienceMember.getId().equals(tmpSurveyAudienceMember.getId()))
-        {
-          compareSurveyAudienceMembers(surveyAudienceMember, tmpSurveyAudienceMember);
-        }
-      }
+      surveyService.saveSurveyAudienceMember(surveyAudienceMember);
     }
 
     assertEquals("Failed to retrieve the correct number of survey audiences for the organisation ("
@@ -332,7 +342,7 @@ public class SurveyServiceTest
 
     assertEquals(
         "Failed to retrieve the correct number of survey audience members for the survey audience ("
-        + surveyAudience.getId() + ")", surveyAudience.getMembers().size(),
+        + surveyAudience.getId() + ")", surveyAudienceMembers.size(),
         surveyService.getNumberOfMembersForSurveyAudience(surveyAudience.getId()));
 
     assertEquals(
@@ -352,11 +362,19 @@ public class SurveyServiceTest
         surveyService.getNumberOfFilteredMembersForSurveyAudience(surveyAudience.getId(),
         "Test First Name 1"));
 
-    retrievedSurveyAudienceMember = surveyService.getFilteredMembersForSurveyAudience(
-        surveyAudience.getId(), "Test First Name 1").get(0);
+    SurveyAudienceMember retrievedSurveyAudienceMember =
+        surveyService.getFilteredMembersForSurveyAudience(surveyAudience.getId(),
+        "Test First Name 1").get(0);
 
-    compareSurveyAudienceMembers(surveyAudience.getMembers().get(0), retrievedSurveyAudienceMember);
+    compareSurveyAudienceMembers(surveyAudienceMembers.get(0), retrievedSurveyAudienceMember);
 
+    SurveyAudienceMember surveyAudienceMember = new SurveyAudienceMember(UUID.randomUUID(),
+        surveyAudience.getId(), "Another Test First Name", "Another Test Last Name",
+        "Another Test E-mail");
+
+    surveyService.saveSurveyAudienceMember(surveyAudienceMember);
+
+    surveyService.deleteSurveyAudience(surveyAudience);
   }
 
   /**
@@ -368,35 +386,48 @@ public class SurveyServiceTest
   {
     SurveyDefinition surveyDefinition = getTestSurveyDefinition();
 
-    surveyService.saveSurveyDefinition(surveyDefinition);
+    surveyDefinition = surveyService.saveSurveyDefinition(surveyDefinition);
 
     SurveyInstance surveyInstance = getTestSurveyInstance(surveyDefinition);
 
-    surveyService.saveSurveyInstance(surveyInstance);
+    surveyInstance = surveyService.saveSurveyInstance(surveyInstance);
 
     SurveyRequest surveyRequest = getTestSurveyRequest(surveyInstance);
 
-    surveyService.saveSurveyRequest(surveyRequest);
+    surveyRequest = surveyService.saveSurveyRequest(surveyRequest);
 
     SurveyRequest retrievedSurveyRequest = surveyService.getSurveyRequest(surveyRequest.getId());
 
     compareSurveyRequests(surveyRequest, retrievedSurveyRequest);
 
-    assertEquals("The number of survey requests for the survey instance is not correct", 1, surveyService.getNumberOfSurveyRequestsForSurveyInstance(surveyInstance.getId()));
+    assertEquals("The number of survey requests for the survey instance is not correct", 1,
+        surveyService.getNumberOfSurveyRequestsForSurveyInstance(surveyInstance.getId()));
 
-    List<SurveyRequest> surveyRequests = surveyService.getSurveyRequestsForSurveyInstance(surveyInstance.getId());
+    List<SurveyRequest> surveyRequests = surveyService.getSurveyRequestsForSurveyInstance(
+        surveyInstance.getId());
 
-    assertEquals("The number of survey requests for the survey instance is not correct", 1, surveyRequests.size());
+    assertEquals("The number of survey requests for the survey instance is not correct", 1,
+        surveyRequests.size());
+
+    compareSurveyRequests(surveyRequest, surveyRequests.get(0));
+
+    assertEquals("The number of filtered survey requests for the survey instance is not correct",
+        1, surveyService.getNumberOfFilteredSurveyRequestsForSurveyInstance(surveyInstance.getId(),
+        "Marcus"));
+
+    surveyRequests = surveyService.getFilteredSurveyRequestsForSurveyInstance(
+        surveyInstance.getId(), "Marcus");
+
+    assertEquals("The number of filtered survey requests for the survey instance is not correct",
+        1, surveyRequests.size());
 
     compareSurveyRequests(surveyRequest, surveyRequests.get(0));
 
-    assertEquals("The number of filtered survey requests for the survey instance is not correct", 1, surveyService.getNumberOfFilteredSurveyRequestsForSurveyInstance(surveyInstance.getId(), "Marcus"));
+    surveyService.deleteSurveyRequest(surveyRequest);
 
-    surveyRequests = surveyService.getFilteredSurveyRequestsForSurveyInstance(surveyInstance.getId(), "Marcus");
+    surveyService.deleteSurveyInstance(surveyInstance);
 
-    assertEquals("The number of filtered survey requests for the survey instance is not correct", 1, surveyRequests.size());
-
-    compareSurveyRequests(surveyRequest, surveyRequests.get(0));
+    surveyService.deleteSurveyDefinition(surveyDefinition.getId());
   }
 
   /**
@@ -408,42 +439,69 @@ public class SurveyServiceTest
   {
     SurveyDefinition surveyDefinition = getTestSurveyDefinition();
 
-    surveyService.saveSurveyDefinition(surveyDefinition);
+    surveyDefinition = surveyService.saveSurveyDefinition(surveyDefinition);
 
     surveyDefinition = surveyService.getSurveyDefinition(surveyDefinition.getId(), 1);
 
     SurveyInstance surveyInstance = getTestSurveyInstance(surveyDefinition);
 
-    surveyService.saveSurveyInstance(surveyInstance);
+    surveyInstance = surveyService.saveSurveyInstance(surveyInstance);
 
     SurveyRequest surveyRequest = getTestSurveyRequest(surveyInstance);
 
-    surveyService.saveSurveyRequest(surveyRequest);
+    surveyRequest = surveyService.saveSurveyRequest(surveyRequest);
 
     SurveyResponse surveyResponse = new SurveyResponse(surveyInstance, surveyRequest);
 
-    surveyService.saveSurveyResponse(surveyResponse);
+    surveyResponse = surveyService.saveSurveyResponse(surveyResponse);
 
     SurveyResponse retrievedSurveyResponse = surveyService.getSurveyResponse(
         surveyResponse.getId());
 
     compareSurveyResponses(surveyResponse, retrievedSurveyResponse);
 
-    assertEquals("The number of survey responses for the survey instance is not correct", 1, surveyService.getNumberOfSurveyResponsesForSurveyInstance(surveyInstance.getId()));
+    assertEquals("The number of survey responses for the survey instance is not correct", 1,
+        surveyService.getNumberOfSurveyResponsesForSurveyInstance(surveyInstance.getId()));
 
-    List<SurveyResponse> surveyResponses = surveyService.getSurveyResponsesForSurveyInstance(surveyInstance.getId());
+    List<SurveyResponse> surveyResponses = surveyService.getSurveyResponsesForSurveyInstance(
+        surveyInstance.getId());
 
-    assertEquals("The number of survey responses for the survey instance is not correct", 1, surveyResponses.size());
+    assertEquals("The number of survey responses for the survey instance is not correct", 1,
+        surveyResponses.size());
+
+    compareSurveyResponses(surveyResponse, surveyResponses.get(0));
+
+    assertEquals("The number of filtered survey responses for the survey instance is not correct",
+        1, surveyService.getNumberOfFilteredSurveyResponsesForSurveyInstance(
+        surveyInstance.getId(), "Marcus"));
+
+    surveyResponses = surveyService.getFilteredSurveyResponsesForSurveyInstance(
+        surveyInstance.getId(), "Marcus");
+
+    assertEquals("The number of filtered survey responses for the survey instance is not correct",
+        1, surveyResponses.size());
 
     compareSurveyResponses(surveyResponse, surveyResponses.get(0));
 
-    assertEquals("The number of filtered survey responses for the survey instance is not correct", 1, surveyService.getNumberOfFilteredSurveyResponsesForSurveyInstance(surveyInstance.getId(), "Marcus"));
+    surveyService.deleteSurveyResponse(surveyResponse);
 
-    surveyResponses = surveyService.getFilteredSurveyResponsesForSurveyInstance(surveyInstance.getId(), "Marcus");
+    assertEquals("The survey response was not deleted", null, surveyService.getSurveyResponse(
+        surveyResponse.getId()));
 
-    assertEquals("The number of filtered survey responses for the survey instance is not correct", 1, surveyResponses.size());
+    surveyService.deleteSurveyRequest(surveyRequest);
 
-    compareSurveyResponses(surveyResponse, surveyResponses.get(0));
+    assertEquals("The survey request was not deleted", null, surveyService.getSurveyRequest(
+        surveyRequest.getId()));
+
+    surveyService.deleteSurveyInstance(surveyInstance);
+
+    assertEquals("The survey instance was not deleted", null, surveyService.getSurveyInstance(
+        surveyInstance.getId()));
+
+    surveyService.deleteSurveyDefinition(surveyDefinition.getId());
+
+    assertEquals("The survey definition was not deleted", null, surveyService.getSurveyDefinition(
+        surveyDefinition.getId(), surveyDefinition.getVersion()));
   }
 
   private static synchronized SurveyDefinition getCTOValuesSurveyDefinition()
@@ -546,16 +604,24 @@ public class SurveyServiceTest
   private static synchronized SurveyAudience getTestSurveyAudience()
   {
     SurveyAudience surveyAudience = new SurveyAudience(UUID.randomUUID(), UUID.fromString(
-        "c1685b92-9fe5-453a-995b-89d8c0f29cb5"), "Test Survey Audience");
-
-    surveyAudience.addMember(new SurveyAudienceMember(UUID.randomUUID(), "Test First Name 1",
-        "Test Last Name 1", "Test Email 1"));
-    surveyAudience.addMember(new SurveyAudienceMember(UUID.randomUUID(), "Test First Name 2",
-        "Test Last Name 2", "Test Email 2"));
-    surveyAudience.addMember(new SurveyAudienceMember(UUID.randomUUID(), "Test First Name 3",
-        "Test Last Name 3", "Test Email 3"));
+        "c1685b92-9fe5-453a-995b-89d8c0f29cb5"), "Test Survey Audience", "");
 
     return surveyAudience;
+  }
+
+  private static synchronized List<SurveyAudienceMember> getTestSurveyAudienceMembers(
+      SurveyAudience surveyAudience)
+  {
+    List<SurveyAudienceMember> surveyAudienceMembers = new ArrayList<>();
+
+    surveyAudienceMembers.add(new SurveyAudienceMember(UUID.randomUUID(), surveyAudience.getId(),
+        "Test First Name 1", "Test Last Name 1", "Test Email 1"));
+    surveyAudienceMembers.add(new SurveyAudienceMember(UUID.randomUUID(), surveyAudience.getId(),
+        "Test First Name 2", "Test Last Name 2", "Test Email 2"));
+    surveyAudienceMembers.add(new SurveyAudienceMember(UUID.randomUUID(), surveyAudience.getId(),
+        "Test First Name 3", "Test Last Name 3", "Test Email 3"));
+
+    return surveyAudienceMembers;
   }
 
   private static synchronized SurveyDefinition getTestSurveyDefinition()
@@ -652,15 +718,6 @@ public class SurveyServiceTest
         surveyAudience1.getId(), surveyAudience2.getId());
     assertEquals("The name values for the two survey audiences do not match",
         surveyAudience1.getName(), surveyAudience2.getName());
-
-    for (SurveyAudienceMember member1 : surveyAudience1.getMembers())
-    {
-      SurveyAudienceMember member2 = surveyAudience2.getMember(member1.getId());
-
-      assertNotNull("The survey audience member could not be found", member2);
-
-      compareSurveyAudienceMembers(member1, member2);
-    }
   }
 
   private void compareSurveyDefinitions(SurveyDefinition surveyDefinition1,

@@ -298,7 +298,7 @@ public class SurveyInstanceAdministrationPage extends TemplateWebPage
         {
           try
           {
-            // surveyService.deleteSurveyInstance(id)
+            surveyService.deleteSurveyInstance(id);
 
             target.add(tableContainer);
 

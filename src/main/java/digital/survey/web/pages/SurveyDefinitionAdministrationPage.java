@@ -259,19 +259,19 @@ public class SurveyDefinitionAdministrationPage extends TemplateWebPage
         {
           try
           {
-            // surveyService.deleteSurveyDefinition(id)
+            surveyService.deleteSurveyDefinition(id);
 
             target.add(tableContainer);
 
-            SurveyDefinitionAdministrationPage.this.info("Successfully removed the audience "
+            SurveyDefinitionAdministrationPage.this.info("Successfully removed the survey "
                 + nameLabel.getDefaultModelObjectAsString());
           }
           catch (Throwable e)
           {
-            logger.error(String.format("Failed to remove the audience (%s): %s", id,
+            logger.error(String.format("Failed to remove the survey (%s): %s", id,
                 e.getMessage()), e);
 
-            SurveyDefinitionAdministrationPage.this.error("Failed to remove the audience "
+            SurveyDefinitionAdministrationPage.this.error("Failed to remove the survey "
                 + nameLabel.getDefaultModelObjectAsString());
           }
 

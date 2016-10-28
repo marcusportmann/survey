@@ -14,6 +14,7 @@ package digital.survey.web.pages;
 //~--- non-JDK imports --------------------------------------------------------
 
 import digital.survey.model.ISurveyService;
+import digital.survey.model.SurveyAudience;
 import digital.survey.web.SurveySecurity;
 import digital.survey.web.data.FilteredSurveyAudienceDataProvider;
 import guru.mmp.application.web.WebApplicationException;
@@ -22,7 +23,6 @@ import guru.mmp.application.web.pages.WebPageSecurity;
 import guru.mmp.application.web.template.components.Dialog;
 import guru.mmp.application.web.template.components.PagingNavigator;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
-import digital.survey.model.SurveyAudience;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -95,7 +95,7 @@ public class SurveyAudienceAdministrationPage extends TemplateWebPage
         @Override
         public void onClick()
         {
-          // setResponsePage(new AddSurveyAudiencePage(getPageReference(), organisationId));
+          setResponsePage(new AddSurveyAudiencePage(getPageReference(), organisationId));
         }
       };
       tableContainer.add(addLink);
@@ -177,10 +177,10 @@ public class SurveyAudienceAdministrationPage extends TemplateWebPage
             @Override
             public void onClick()
             {
-//            UpdateSurveyAudiencePage page = new UpdateSurveyAudiencePage(
-//              getPageReference(), item.getModel());
-//
-//            setResponsePage(page);
+              UpdateSurveyAudiencePage page = new UpdateSurveyAudiencePage(getPageReference(),
+                  item.getModel());
+
+              setResponsePage(page);
             }
           };
           item.add(updateLink);
@@ -256,7 +256,7 @@ public class SurveyAudienceAdministrationPage extends TemplateWebPage
         {
           try
           {
-            // surveyService.deleteSurveyAudience(id)
+            surveyService.deleteSurveyAudience(id);
 
             target.add(tableContainer);
 

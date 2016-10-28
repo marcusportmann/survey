@@ -13,7 +13,10 @@ package digital.survey.model;
 
 //~--- JDK imports ------------------------------------------------------------
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -54,12 +57,11 @@ public class SurveyAudienceMember
   private String email;
 
   /**
-   * The survey audience this survey audience member is associated with.
+   * The Universally Unique Identifier (UUID) used to uniquely identify the survey audience the
+   * survey audience member is associated with.
    */
-  @SuppressWarnings("unused")
-  @ManyToOne
-  @JoinColumn(name = "SURVEY_AUDIENCE_ID", referencedColumnName = "ID")
-  private SurveyAudience audience;
+  @Column(name = "SURVEY_AUDIENCE_ID", nullable = false)
+  private UUID audienceId;
 
   /**
    * Constructs a new <code>SurveyAudienceMember</code>.
@@ -72,15 +74,19 @@ public class SurveyAudienceMember
   /**
    * Constructs a new <code>SurveyAudienceMember</code>.
    *
-   * @param id        the Universally Unique Identifier (UUID) used to uniquely identify the survey
-   *                  audience member
-   * @param firstName the first name(s) for the survey audience member
-   * @param lastName  the last name for the survey audience member
-   * @param email     the e-mail address for the survey audience member
+   * @param id         the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *                   audience member
+   * @param audienceId the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *                   audience the survey audience member is associated with
+   * @param firstName  the first name(s) for the survey audience member
+   * @param lastName   the last name for the survey audience member
+   * @param email      the e-mail address for the survey audience member
    */
-  public SurveyAudienceMember(UUID id, String firstName, String lastName, String email)
+  public SurveyAudienceMember(UUID id, UUID audienceId, String firstName, String lastName,
+      String email)
   {
     this.id = id;
+    this.audienceId = audienceId;
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
@@ -160,6 +166,18 @@ public class SurveyAudienceMember
   }
 
   /**
+   * Set the Universally Unique Identifier (UUID) used to uniquely identify the survey audience the
+   * survey audience member is associated with.
+   *
+   * @param audienceId the Universally Unique Identifier (UUID) used to uniquely identify the
+   *                   survey audience the survey audience member is associated with
+   */
+  public void setAudienceId(UUID audienceId)
+  {
+    this.audienceId = audienceId;
+  }
+
+  /**
    * Set the e-mail address for the survey audience member.
    *
    * @param email the e-mail address for the survey audience member
@@ -197,25 +215,10 @@ public class SurveyAudienceMember
   @Override
   public String toString()
   {
-    StringBuilder buffer = new StringBuilder();
+    String buffer = "SurveyAudienceMember {" + "id=\"" + getId() + "\", " + "firstName=\""
+        + getFirstName() + "\", " + "lastName=\"" + getLastName() + "\", " + "email=\""
+        + getEmail() + "\"" + "}";
 
-    buffer.append("SurveyAudienceMember {");
-    buffer.append("id=\"").append(getId()).append("\", ");
-    buffer.append("firstName=\"").append(getFirstName()).append("\", ");
-    buffer.append("lastName=\"").append(getLastName()).append("\", ");
-    buffer.append("email=\"").append(getEmail()).append("\"");
-    buffer.append("}");
-
-    return buffer.toString();
-  }
-
-  /**
-   * Set the survey audience this survey audience member is associated with.
-   *
-   * @param audience the survey audience this survey audience member is associated with
-   */
-  void setAudience(SurveyAudience audience)
-  {
-    this.audience = audience;
+    return buffer;
   }
 }

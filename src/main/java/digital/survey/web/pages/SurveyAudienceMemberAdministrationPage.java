@@ -101,7 +101,7 @@ public class SurveyAudienceMemberAdministrationPage extends TemplateWebPage
         @Override
         public void onClick()
         {
-          // setResponsePage(new AddSurveyAudienceMemberPage(getPageReference(), surveyAudienceId));
+          setResponsePage(new AddSurveyAudienceMemberPage(getPageReference(), surveyAudienceId));
         }
       };
       tableContainer.add(addLink);
@@ -257,7 +257,7 @@ public class SurveyAudienceMemberAdministrationPage extends TemplateWebPage
         {
           try
           {
-            // surveyService.deleteSurveyAudienceMember(id)
+            surveyService.deleteSurveyAudienceMember(id);
 
             target.add(tableContainer);
 

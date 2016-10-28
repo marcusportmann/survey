@@ -13,10 +13,11 @@ package digital.survey.model;
 
 //~--- JDK imports ------------------------------------------------------------
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -51,12 +52,10 @@ public class SurveyAudience
   private String name;
 
   /**
-   * The survey audience members that are associated with the survey audience.
+   * The description for the survey audience.
    */
-  @OneToMany(mappedBy = "audience", cascade = CascadeType.ALL, fetch = FetchType.EAGER,
-      orphanRemoval = true)
-  @OrderBy("firstName ASC")
-  private List<SurveyAudienceMember> members;
+  @Column(name = "DESCRIPTION", nullable = false)
+  private String description;
 
   /**
    * Constructs a new <code>SurveyAudience</code>.
@@ -74,25 +73,14 @@ public class SurveyAudience
    * @param organisationId the Universally Unique Identifier (UUID) used to uniquely identify the
    *                       organisation the survey audience is associated with
    * @param name           the name of the survey audience
+   * @param description    the description for the survey audience
    */
-  public SurveyAudience(UUID id, UUID organisationId, String name)
+  public SurveyAudience(UUID id, UUID organisationId, String name, String description)
   {
     this.id = id;
     this.organisationId = organisationId;
     this.name = name;
-    this.members = new ArrayList<>();
-  }
-
-  /**
-   * Add the survey audience member to the survey audience.
-   *
-   * @param member the survey audience member
-   */
-  public void addMember(SurveyAudienceMember member)
-  {
-    member.setAudience(this);
-
-    members.add(member);
+    this.description = description;
   }
 
   /**
@@ -127,6 +115,16 @@ public class SurveyAudience
   }
 
   /**
+   * Returns the description for the survey audience.
+   *
+   * @return the description for the survey audience
+   */
+  public String getDescription()
+  {
+    return description;
+  }
+
+  /**
    * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey audience.
    *
    * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey audience
@@ -134,38 +132,6 @@ public class SurveyAudience
   public UUID getId()
   {
     return id;
-  }
-
-  /**
-   * Retrieve the survey audience member.
-   *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
-   *           audience member
-   *
-   * @return the survey audience member or <code>null</code> if the survey audience member could
-   *         not be found
-   */
-  public SurveyAudienceMember getMember(UUID id)
-  {
-    for (SurveyAudienceMember member : members)
-    {
-      if (member.getId().equals(id))
-      {
-        return member;
-      }
-    }
-
-    return null;
-  }
-
-  /**
-   * Returns the survey audience members that are associated with the survey audience.
-   *
-   * @return the survey audience members that are associated with the survey audience
-   */
-  public List<SurveyAudienceMember> getMembers()
-  {
-    return members;
   }
 
   /**
@@ -191,22 +157,13 @@ public class SurveyAudience
   }
 
   /**
-   * Remove the survey audience member from the survey audience.
+   * Set the description for the survey audience.
    *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
-   *           audience member
+   * @param description the description for the survey audience
    */
-  public void removeMember(UUID id)
+  public void setDescription(String description)
   {
-    for (SurveyAudienceMember member : members)
-    {
-      if (member.getId().equals(id))
-      {
-        members.remove(member);
-
-        return;
-      }
-    }
+    this.description = description;
   }
 
   /**
@@ -227,13 +184,9 @@ public class SurveyAudience
   @Override
   public String toString()
   {
-    StringBuilder buffer = new StringBuilder();
+    String buffer = "SurveyAudience {" + "id=\"" + getId() + "\", " + "name=\"" + getName()
+        + "\", " + "description=\"" + getDescription() + "\"" + "}";
 
-    buffer.append("SurveyAudience {");
-    buffer.append("id=\"").append(getId()).append("\", ");
-    buffer.append("name=\"").append(getName()).append("\"");
-    buffer.append("}");
-
-    return buffer.toString();
+    return buffer;
   }
 }

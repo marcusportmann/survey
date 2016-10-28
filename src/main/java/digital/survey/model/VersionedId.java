@@ -26,7 +26,7 @@ public class VersionedId
   implements Serializable
 {
   /**
-   * The Universally Unique Identifier (UUID) used, along with the version, to uniquely identify the
+   * The Universally Unique Identifier (UUID) used to, along with the version, uniquely identify the
    * entity.
    */
   @Column(name = "ID", nullable = false)
@@ -49,7 +49,7 @@ public class VersionedId
   /**
    * Constructs a new <code>VersionedId</code>.
    *
-   * @param id      the Universally Unique Identifier (UUID) used, along with the version, to
+   * @param id      the Universally Unique Identifier (UUID) used to, along with the version,
    *                uniquely identify the entity
    * @param version the version of the entity
    */
@@ -91,10 +91,10 @@ public class VersionedId
   }
 
   /**
-   * Returns the Universally Unique Identifier (UUID) used, along with the version, to uniquely
+   * Returns the Universally Unique Identifier (UUID) used to, along with the version, uniquely
    * identify the entity.
    *
-   * @return the Universally Unique Identifier (UUID) used, along with the version, to uniquely
+   * @return the Universally Unique Identifier (UUID) used to, along with the version, uniquely
    *         identify the entity
    */
   public UUID getId()

@@ -13,16 +13,16 @@ package digital.survey.web.pages;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import digital.survey.model.ISurveyService;
+import digital.survey.model.SurveyResponse;
 import digital.survey.web.SurveySecurity;
+import digital.survey.web.data.FilteredSurveyResponseDataProvider;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.WebSession;
 import guru.mmp.application.web.pages.WebPageSecurity;
 import guru.mmp.application.web.template.components.Dialog;
 import guru.mmp.application.web.template.components.PagingNavigator;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
-import digital.survey.model.ISurveyService;
-import digital.survey.model.SurveyResponse;
-import digital.survey.web.data.FilteredSurveyResponseDataProvider;
 import org.apache.wicket.PageReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -53,7 +53,7 @@ import java.util.UUID;
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 @WebPageSecurity({ SurveySecurity.FUNCTION_CODE_SURVEY_ADMINISTRATION,
-  SurveySecurity.FUNCTION_CODE_VIEW_SURVEY_RESPONSE })
+    SurveySecurity.FUNCTION_CODE_VIEW_SURVEY_RESPONSE })
 public class SurveyResponseAdministrationPage extends TemplateWebPage
 {
   /* Logger */
@@ -169,7 +169,8 @@ public class SurveyResponseAdministrationPage extends TemplateWebPage
         protected void populateItem(Item<SurveyResponse> item)
         {
           item.add(new Label("name", new PropertyModel<String>(item.getModel(), "name")));
-          item.add(new Label("received", new PropertyModel<String>(item.getModel(), "receivedAsString")));
+          item.add(new Label("received", new PropertyModel<String>(item.getModel(),
+              "receivedAsString")));
 
           // The "viewLink" link
           Link<Void> viewLink = new Link<Void>("viewLink")
@@ -179,14 +180,13 @@ public class SurveyResponseAdministrationPage extends TemplateWebPage
             @Override
             public void onClick()
             {
-              ViewSurveyResponsePage page = new ViewSurveyResponsePage(
-                getPageReference(), item.getModel());
+              ViewSurveyResponsePage page = new ViewSurveyResponsePage(getPageReference(),
+                  item.getModel());
 
               setResponsePage(page);
             }
           };
           item.add(viewLink);
-
 
           // The "updateLink" link
           Link<Void> updateLink = new Link<Void>("updateLink")
@@ -196,14 +196,14 @@ public class SurveyResponseAdministrationPage extends TemplateWebPage
             @Override
             public void onClick()
             {
-              UpdateSurveyResponsePage page = new UpdateSurveyResponsePage(
-                getPageReference(), item.getModel());
+              UpdateSurveyResponsePage page = new UpdateSurveyResponsePage(getPageReference(),
+                  item.getModel());
 
               setResponsePage(page);
             }
           };
           updateLink.setVisible(session.hasAcccessToFunction(SurveySecurity
-            .FUNCTION_CODE_SURVEY_ADMINISTRATION));
+              .FUNCTION_CODE_SURVEY_ADMINISTRATION));
           item.add(updateLink);
 
           // The "removeLink" link
@@ -227,7 +227,7 @@ public class SurveyResponseAdministrationPage extends TemplateWebPage
             }
           };
           removeLink.setVisible(session.hasAcccessToFunction(SurveySecurity
-            .FUNCTION_CODE_SURVEY_ADMINISTRATION));
+              .FUNCTION_CODE_SURVEY_ADMINISTRATION));
           item.add(removeLink);
         }
       };
@@ -279,11 +279,12 @@ public class SurveyResponseAdministrationPage extends TemplateWebPage
         {
           try
           {
-            // surveyService.deleteSurveyResponse(id)
+            surveyService.deleteSurveyResponse(id);
 
             target.add(tableContainer);
 
-            SurveyResponseAdministrationPage.this.info("Successfully removed the survey response "
+            SurveyResponseAdministrationPage.this.info(
+                "Successfully removed the survey response for "
                 + nameLabel.getDefaultModelObjectAsString());
           }
           catch (Throwable e)
@@ -291,7 +292,7 @@ public class SurveyResponseAdministrationPage extends TemplateWebPage
             logger.error(String.format("Failed to remove the survey response (%s): %s", id,
                 e.getMessage()), e);
 
-            SurveyResponseAdministrationPage.this.error("Failed to remove the survey response "
+            SurveyResponseAdministrationPage.this.error("Failed to remove the survey response for "
                 + nameLabel.getDefaultModelObjectAsString());
           }
 

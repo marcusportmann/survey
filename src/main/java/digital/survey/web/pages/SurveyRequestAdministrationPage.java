@@ -265,12 +265,12 @@ public class SurveyRequestAdministrationPage extends TemplateWebPage
         {
           try
           {
-            // surveyService.deleteSurveyRequest(id)
+            surveyService.deleteSurveyRequest(id);
 
             target.add(tableContainer);
 
             SurveyRequestAdministrationPage.this.info(
-              "Successfully removed the survey request "
+              "Successfully removed the survey request for "
                 + nameLabel.getDefaultModelObjectAsString());
           }
           catch (Throwable e)
@@ -279,7 +279,7 @@ public class SurveyRequestAdministrationPage extends TemplateWebPage
               e.getMessage()), e);
 
             SurveyRequestAdministrationPage.this.error(
-              "Failed to remove the survey request "
+              "Failed to remove the survey request for "
                 + nameLabel.getDefaultModelObjectAsString());
           }
 

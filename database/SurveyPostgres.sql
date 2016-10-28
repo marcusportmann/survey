@@ -272,16 +272,16 @@ CREATE TABLE MMP.USER_DIRECTORY_TYPES (
 );
 
 COMMENT ON COLUMN MMP.USER_DIRECTORY_TYPES.ID
-IS 'The Universally Unique Identifier (UUID) used to uniquely identify the user directory type';
+  IS 'The Universally Unique Identifier (UUID) used to uniquely identify the user directory type';
 
 COMMENT ON COLUMN MMP.USER_DIRECTORY_TYPES.NAME
-IS 'The name of the user directory type';
+  IS 'The name of the user directory type';
 
 COMMENT ON COLUMN MMP.USER_DIRECTORY_TYPES.USER_DIRECTORY_CLASS
-IS 'The fully qualified name of the Java class that implements the user directory type';
+  IS 'The fully qualified name of the Java class that implements the user directory type';
 
 COMMENT ON COLUMN MMP.USER_DIRECTORY_TYPES.ADMINISTRATION_CLASS
-IS 'The fully qualified name of the Java class that implements the Wicket component used to administer the configuration for the user directory type';
+  IS 'The fully qualified name of the Java class that implements the Wicket component used to administer the configuration for the user directory type';
 
 
 
@@ -300,16 +300,16 @@ CREATE INDEX MMP_USER_DIRECTORIES_NAME_IX
   (NAME);
 
 COMMENT ON COLUMN MMP.USER_DIRECTORIES.ID
-IS 'The Universally Unique Identifier (UUID) used to uniquely identify the user directory';
+  IS 'The Universally Unique Identifier (UUID) used to uniquely identify the user directory';
 
 COMMENT ON COLUMN MMP.USER_DIRECTORIES.TYPE_ID
-IS 'The Universally Unique Identifier (UUID) used to uniquely identify the user directory type';
+  IS 'The Universally Unique Identifier (UUID) used to uniquely identify the user directory type';
 
 COMMENT ON COLUMN MMP.USER_DIRECTORIES.NAME
-IS 'The name of the user directory';
+  IS 'The name of the user directory';
 
 COMMENT ON COLUMN MMP.USER_DIRECTORIES.CONFIGURATION
-IS 'The XML configuration data for the user directory';
+  IS 'The XML configuration data for the user directory';
 
 
 
@@ -891,7 +891,7 @@ CREATE INDEX SURVEY_SURVEY_DEFINITIONS_ORGANISATION_ID_IX
   (ORGANISATION_ID);
 
 COMMENT ON COLUMN SURVEY.SURVEY_DEFINITIONS.ID
-  IS 'The Universally Unique Identifier (UUID) used, along with the version of the survey definition, to uniquely identify the survey definition';
+  IS 'The Universally Unique Identifier (UUID) used to, along with the version of the survey definition, uniquely identify the survey definition';
 
 COMMENT ON COLUMN SURVEY.SURVEY_DEFINITIONS.VERSION
   IS 'The version of the survey definition';
@@ -925,10 +925,10 @@ CREATE INDEX SURVEY_SURVEY_INSTANCES_SURVEY_DEFINITION_IX
   (SURVEY_DEFINITION_ID, SURVEY_DEFINITION_VERSION);
 
 COMMENT ON COLUMN SURVEY.SURVEY_INSTANCES.ID
-  IS 'The Universally Unique Identifier (UUID) used  to uniquely identify the survey instance';
+  IS 'The Universally Unique Identifier (UUID) used to uniquely identify the survey instance';
 
 COMMENT ON COLUMN SURVEY.SURVEY_INSTANCES.SURVEY_DEFINITION_ID
-  IS 'The Universally Unique Identifier (UUID) used, along with the version of the survey definition, to uniquely identify the survey definition this survey instance is associated with';
+  IS 'The Universally Unique Identifier (UUID) used to, along with the version of the survey definition, uniquely identify the survey definition this survey instance is associated with';
 
 COMMENT ON COLUMN SURVEY.SURVEY_INSTANCES.SURVEY_DEFINITION_VERSION
   IS 'The version of the survey definition this survey instance is associated with';
@@ -979,7 +979,7 @@ CREATE TABLE SURVEY.SURVEY_RESPONSES (
   SURVEY_INSTANCE_ID  UUID NOT NULL,
   SURVEY_REQUEST_ID   UUID,
   RECEIVED            TIMESTAMP NOT NULL,
-  DATA                TEXT NOT NULL,
+  DATA                JSONB NOT NULL,
 
   PRIMARY KEY (ID),
   CONSTRAINT  SURVEY_SURVEY_RESPONSES_SURVEY_INSTANCE_FK FOREIGN KEY (SURVEY_INSTANCE_ID) REFERENCES SURVEY.SURVEY_INSTANCES(ID) ON DELETE CASCADE,
@@ -1015,9 +1015,10 @@ CREATE TABLE SURVEY.SURVEY_AUDIENCES (
   ID               UUID NOT NULL,
   ORGANISATION_ID  UUID NOT NULL,
   NAME             TEXT NOT NULL,
-  
-	PRIMARY KEY (ID),
-	CONSTRAINT  SURVEY_SURVEY_AUDIENCES_ORGANISATION_FK FOREIGN KEY (ORGANISATION_ID) REFERENCES MMP.ORGANISATIONS(ID) ON DELETE CASCADE
+  DESCRIPTION      TEXT NOT NULL,
+
+  PRIMARY KEY (ID),
+  CONSTRAINT  SURVEY_SURVEY_AUDIENCES_ORGANISATION_FK FOREIGN KEY (ORGANISATION_ID) REFERENCES MMP.ORGANISATIONS(ID) ON DELETE CASCADE
 );
 
 CREATE INDEX SURVEY_SURVEY_AUDIENCES_ORGANISATION_ID_IX
@@ -1026,12 +1027,15 @@ CREATE INDEX SURVEY_SURVEY_AUDIENCES_ORGANISATION_ID_IX
 
 COMMENT ON COLUMN SURVEY.SURVEY_AUDIENCES.ID
   IS 'The Universally Unique Identifier (UUID) used  to uniquely identify the survey audience';
-  
+
 COMMENT ON COLUMN SURVEY.SURVEY_AUDIENCES.ORGANISATION_ID
-  IS 'The Universally Unique Identifier (UUID) used to uniquely identify the organisation the survey audience is associated with';  
+  IS 'The Universally Unique Identifier (UUID) used to uniquely identify the organisation the survey audience is associated with';
 
 COMMENT ON COLUMN SURVEY.SURVEY_AUDIENCES.NAME
   IS 'The name of the survey audience';
+
+COMMENT ON COLUMN SURVEY.SURVEY_AUDIENCES.DESCRIPTION
+  IS 'The description for the survey audience';
 
 
 
@@ -1252,8 +1256,8 @@ INSERT INTO MMP.INTERNAL_USER_TO_INTERNAL_GROUP_MAP (INTERNAL_USER_ID, INTERNAL_
 
 
 
-INSERT INTO SURVEY.SURVEY_AUDIENCES (ID, ORGANISATION_ID, NAME) VALUES
-  ('c6e1bd3a-52e2-4e72-b49e-4f83445ac661', 'd077425e-c75f-4dd8-9d62-81f2d26b8a62', 'CTO ELT');
+INSERT INTO SURVEY.SURVEY_AUDIENCES (ID, ORGANISATION_ID, NAME, DESCRIPTION) VALUES
+  ('c6e1bd3a-52e2-4e72-b49e-4f83445ac661', 'd077425e-c75f-4dd8-9d62-81f2d26b8a62', 'CTO ELT', 'CTO ELT');
 
 --INSERT INTO SURVEY.SURVEY_AUDIENCE_MEMBERS (ID, SURVEY_AUDIENCE_ID, FIRST_NAME, LAST_NAME, EMAIL) VALUES
 --  ('b2a72a4b-08f9-4740-aa5b-f7a5e690f0a9', 'c6e1bd3a-52e2-4e72-b49e-4f83445ac661', 'Peter', 'Rix', '');

@@ -163,7 +163,7 @@ public class SurveyApplicationListener
       {
         logger.info("Creating and populating the application database tables");
 
-        String resourcePath = "/guru/mmp/survey/persistence/Survey" + databaseFileSuffix + ".sql";
+        String resourcePath = "/digital/survey/persistence/Survey" + databaseFileSuffix + ".sql";
         int numberOfStatementsExecuted = 0;
         int numberOfFailedStatements = 0;
         List<String> sqlStatements;
