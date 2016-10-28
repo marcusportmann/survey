@@ -6,10 +6,10 @@
   <persistence-unit name="Application" transaction-type="JTA">
     <jta-data-source>java:app/jdbc/ApplicationDataSource</jta-data-source>
 
-    <class>guru.mmp.survey.model.SurveyDefinition</class>
-    <class>guru.mmp.survey.model.SurveyInstance</class>
-    <class>guru.mmp.survey.model.SurveyRequest</class>
-    <class>guru.mmp.survey.model.SurveyResponse</class>
+    <class>digital.survey.model.SurveyDefinition</class>
+    <class>digital.survey.model.SurveyInstance</class>
+    <class>digital.survey.model.SurveyRequest</class>
+    <class>digital.survey.model.SurveyResponse</class>
 
     <properties>
       <property name="hibernate.show_sql" value="true" />

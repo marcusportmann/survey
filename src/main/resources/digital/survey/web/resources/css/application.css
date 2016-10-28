@@ -1,0 +1,127 @@
+.application-logo-icon
+{
+  background: url('../images/application-logo-icon.png') no-repeat;
+  background-size: 60px 60px;
+}
+
+.application-logo-name
+{
+  background: url('../images/application-logo-name.png') no-repeat;
+  background-size: 170px 60px;
+}
+
+@media only screen and (-moz-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-devicepixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx)
+{
+  .application-logo-icon
+  {
+    background: url('../images/application-logo-icon@2x.png') no-repeat;
+    background-size: 60px 60px;
+  }
+
+  .application-logo-name
+  {
+    background: url('../images/application-logo-name@2x.png') no-repeat;
+    background-size: 170px 60px;
+  }
+}
+
+span.copyright-name:before
+{
+  content: "Marcus Portmann";
+}
+
+span.application-tag-line:before
+{
+  content: "survey.digital";
+}
+
+
+
+table.table-group-definition > thead > tr > th
+{
+  font-size: 11px;
+}
+
+table.table-group-definition > tbody > tr > td
+{
+  font-size: 11px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+table.table-group-definition .form-group
+{
+  margin: 0;
+  display: inline-block;
+
+}
+
+
+table.table-group-definition .form-group .form-material
+{
+  margin: 0;
+}
+
+
+table.table-group-definition .group-rating-item-response
+{
+  margin-bottom: 0px;
+}
+
+table.table-group-definition .group-rating-item-response select
+{
+  -webkit-appearance:none;
+  -moz-appearance: none;
+  background: none;
+  border: transparent;
+  border-radius: 0;
+  width: 40px;
+  font-size: 11px;
+  height: auto;
+  padding-left: 0;
+  padding-top: 5px;
+  padding-bottom: 7px;
+  /*-webkit-box-shadow: 0 1px 0 #e6e6e6;*/
+  /*box-shadow: 0 1px 0 #e6e6e6;*/
+}
+
+table.table-group-definition .group-rating-item-response select:focus
+{
+  -webkit-box-shadow:0 2px 0 #5c90d2;box-shadow:0 2px 0 #5c90d2;
+}
+
+table.table-group-definition .has-error .form-material .group-rating-item-response select
+{
+  -webkit-box-shadow:0 2px 0 #d26a5c;box-shadow:0 1px 0 #d26a5c
+}
+
+table.table-group-definition .has-error .form-material .group-rating-item-response select:focus
+{
+  -webkit-box-shadow:0 2px 0 #d26a5c;box-shadow:0 2px 0 #d26a5c
+}
+
+table.table-group-definition .group-rating-item-response select option[disabled]:first-child
+{
+  display: none;
+}
+
+table.table-group-definition .group-rating-item-response:after
+{
+  background: none;
+  color: #bbb;
+  content: "\f0d7";
+  font-family: 'FontAwesome';
+  font-size: 11px;
+  padding-top: 8px;
+  padding-right: 0;
+  padding-left: 10px;
+  padding-bottom: 0;
+  position: absolute;
+  right: 0px;
+  width: 20px;
+  top: 0;
+  text-align: center;
+}
+
+
+
