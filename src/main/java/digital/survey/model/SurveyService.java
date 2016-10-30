@@ -1334,7 +1334,7 @@ public class SurveyService
     try
     {
       String sql = "SELECT sds FROM SurveyDefinitionSummary sds WHERE sds.id = :id"
-          + " AND sds.version = :version";
+          + " AND sds .version = :version";
 
       TypedQuery<SurveyDefinitionSummary> query = entityManager.createQuery(sql,
           SurveyDefinitionSummary.class);

@@ -50,7 +50,7 @@ public class FilteredSurveyResponseDataProvider extends InjectableDataProvider<S
   /**
    * The filter used to limit the matching survey responses.
    */
-  private String filter;
+  private String filter = "";
 
   /**
    * Constructs a new <code>FilteredSurveyResponseDataProvider</code>.

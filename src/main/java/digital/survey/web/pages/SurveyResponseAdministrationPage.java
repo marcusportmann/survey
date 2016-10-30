@@ -180,6 +180,8 @@ public class SurveyResponseAdministrationPage extends TemplateWebPage
             @Override
             public void onClick()
             {
+              SurveyResponse surveyResponse = item.getModelObject();
+
               ViewSurveyResponsePage page = new ViewSurveyResponsePage(getPageReference(),
                   item.getModel());
 

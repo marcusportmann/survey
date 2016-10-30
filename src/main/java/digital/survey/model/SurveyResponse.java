@@ -104,25 +104,7 @@ public class  SurveyResponse
    */
   public SurveyResponse(SurveyInstance instance, SurveyRequest request)
   {
-    this.id = UUID.randomUUID();
-    this.instance = instance;
-    this.request = request;
-    this.received = new Date();
-    this.groupRatingItemResponses = new ArrayList<>();
-
-    for (SurveyGroupRatingItemDefinition groupRatingItemDefinition : instance.getDefinition()
-        .getGroupRatingItemDefinitions())
-    {
-      SurveyGroupDefinition groupDefinition = instance.getDefinition().getGroupDefinition(
-          groupRatingItemDefinition.getGroupDefinitionId());
-
-      for (SurveyGroupMemberDefinition groupMemberDefinition :
-          groupDefinition.getGroupMemberDefinitions())
-      {
-        groupRatingItemResponses.add(new SurveyGroupRatingItemResponse(groupRatingItemDefinition,
-            groupMemberDefinition));
-      }
-    }
+    this(UUID.randomUUID(), instance, request);
   }
 
   /**
@@ -134,8 +116,7 @@ public class  SurveyResponse
    */
   public SurveyResponse(UUID id, SurveyInstance instance)
   {
-    this.id = id;
-    this.instance = instance;
+    this(id, instance, null);
   }
 
   /**
@@ -151,6 +132,22 @@ public class  SurveyResponse
     this.id = id;
     this.instance = instance;
     this.request = request;
+    this.received = new Date();
+    this.groupRatingItemResponses = new ArrayList<>();
+
+    for (SurveyGroupRatingItemDefinition groupRatingItemDefinition : instance.getDefinition()
+      .getGroupRatingItemDefinitions())
+    {
+      SurveyGroupDefinition groupDefinition = instance.getDefinition().getGroupDefinition(
+        groupRatingItemDefinition.getGroupDefinitionId());
+
+      for (SurveyGroupMemberDefinition groupMemberDefinition :
+        groupDefinition.getGroupMemberDefinitions())
+      {
+        groupRatingItemResponses.add(new SurveyGroupRatingItemResponse(groupRatingItemDefinition,
+          groupMemberDefinition));
+      }
+    }
   }
 
   /**

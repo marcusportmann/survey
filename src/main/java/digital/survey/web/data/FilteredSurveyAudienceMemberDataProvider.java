@@ -52,7 +52,7 @@ public class FilteredSurveyAudienceMemberDataProvider
   /**
    * The filter used to limit the matching survey audiences.
    */
-  private String filter;
+  private String filter = "";
 
   /**
    * Constructs a new <code>FilteredSurveyAudienceMemberDataProvider</code>.

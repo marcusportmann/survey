@@ -98,6 +98,7 @@ public class SurveyDefinition
   @SuppressWarnings("unused")
   @ManyToOne
   @JoinColumn(name = "ORGANISATION_ID", referencedColumnName = "ID")
+  @JsonIgnore
   protected Organisation organisation;
 
   /**

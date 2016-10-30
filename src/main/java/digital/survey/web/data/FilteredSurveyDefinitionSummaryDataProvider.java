@@ -54,7 +54,7 @@ public class FilteredSurveyDefinitionSummaryDataProvider
   /**
    * The filter used to limit the matching survey definitions.
    */
-  private String filter;
+  private String filter = "";
 
   /**
    * Constructs a new <code>FilteredLatestSurveyDefinitionSummaryDataProvider</code>.
