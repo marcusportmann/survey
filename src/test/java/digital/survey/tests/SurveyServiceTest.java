@@ -314,9 +314,18 @@ public class SurveyServiceTest
             savedSurveyDefinition.getName(), tmpSurveyDefinitionSummary.getName());
         assertEquals("The version for filtered the survey definition summary is incorrect",
             savedSurveyDefinition.getVersion(), tmpSurveyDefinitionSummary.getVersion());
-
       }
     }
+
+    SurveyDefinitionSummary surveyDefinitionSummary = surveyService.getSurveyDefinitionSummary(
+        savedSurveyDefinition.getId(), savedSurveyDefinition.getVersion());
+
+    assertEquals("The ID for the filtered survey definition summary is incorrect",
+        savedSurveyDefinition.getId(), surveyDefinitionSummary.getId());
+    assertEquals("The name for the filtered survey definition summary is incorrect",
+        savedSurveyDefinition.getName(), surveyDefinitionSummary.getName());
+    assertEquals("The version for filtered the survey definition summary is incorrect",
+        savedSurveyDefinition.getVersion(), surveyDefinitionSummary.getVersion());
 
     surveyService.deleteSurveyInstance(surveyInstance);
 

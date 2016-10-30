@@ -680,37 +680,6 @@ public class SurveyService
   }
 
   /**
-   * Retrieve the latest versions of the survey definitions for the organisation.
-   *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
-   *
-   * @return the latest versions of the survey definitions for the organisation
-   *
-   * @throws SurveyServiceException
-   */
-  public List<SurveyDefinition> getLatestSurveyDefinitionsForOrganisation(UUID id)
-    throws SurveyServiceException
-  {
-    try
-    {
-      String sql = "SELECT sd FROM SurveyDefinition sd WHERE sd.version IN "
-          + " (SELECT MAX(sd.version) FROM SurveyDefinition sd WHERE sd.id = sd.id)"
-          + " AND sd.organisation.id = :id";
-
-      TypedQuery<SurveyDefinition> query = entityManager.createQuery(sql, SurveyDefinition.class);
-
-      query.setParameter("id", id);
-
-      return query.getResultList();
-    }
-    catch (Throwable e)
-    {
-      throw new SurveyServiceException("Failed to retrieve the latest versions of the survey"
-          + " definitions for the organisation with ID (" + id + ")", e);
-    }
-  }
-
-  /**
    * Retrieve the latest version number for the survey definition.
    *
    * @param id the Universally Unique Identifier (UUID) used to identify the survey definition
@@ -1056,7 +1025,9 @@ public class SurveyService
 
       query.setParameter(1, id);
 
-      return ((Number) query.getSingleResult()).intValue();
+      int result =  ((Number) query.getSingleResult()).intValue();
+
+      return result;
     }
     catch (Throwable e)
     {
@@ -1363,7 +1334,7 @@ public class SurveyService
     try
     {
       String sql = "SELECT sds FROM SurveyDefinitionSummary sds WHERE sds.id = :id"
-          + " AND sd.sversion = :version";
+          + " AND sds.version = :version";
 
       TypedQuery<SurveyDefinitionSummary> query = entityManager.createQuery(sql,
           SurveyDefinitionSummary.class);
