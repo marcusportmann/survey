@@ -74,7 +74,7 @@ public class AddSurveyAudiencePage extends TemplateWebPage
       Form<SurveyAudience> addForm = new Form<>("addForm", new CompoundPropertyModel<>(new Model<>(
           new SurveyAudience(UUID.randomUUID(), webSession.getOrganisation(), "", ""))));
 
-      addForm.add(new SurveyAudienceInputPanel("surveyAudience", false));
+      addForm.add(new SurveyAudienceInputPanel("surveyAudience"));
 
       // The "addButton" button
       Button addButton = new Button("addButton")

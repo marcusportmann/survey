@@ -19,36 +19,39 @@ package digital.survey.web.pages;
 //~--- non-JDK imports --------------------------------------------------------
 
 import digital.survey.model.ISurveyService;
-import digital.survey.model.SurveyAudience;
+import digital.survey.model.SurveyDefinition;
+import digital.survey.model.SurveyInstance;
 import digital.survey.web.SurveySecurity;
-import digital.survey.web.components.SurveyAudienceInputPanel;
+import digital.survey.web.components.SurveyInstanceInputPanel;
 import guru.mmp.application.web.WebApplicationException;
+import guru.mmp.application.web.WebSession;
 import guru.mmp.application.web.pages.WebPageSecurity;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
 import org.apache.wicket.PageReference;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.util.UUID;
 
 //~--- JDK imports ------------------------------------------------------------
 
 /**
- * The <code>UpdateSurveyAudiencePage</code> class implements the
- * "Update Survey Audience" page for the web application.
+ * The <code>AddSurveyInstancePage</code> class implements the
+ * "Add Survey Instance" page for the web application.
  *
  * @author Marcus Portmann
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 @WebPageSecurity(SurveySecurity.FUNCTION_CODE_SURVEY_ADMINISTRATION)
-public class UpdateSurveyAudiencePage extends TemplateWebPage
+public class AddSurveyInstancePage extends TemplateWebPage
 {
   /* Logger */
-  private static final Logger logger = LoggerFactory.getLogger(UpdateSurveyAudiencePage.class);
+  private static final Logger logger = LoggerFactory.getLogger(AddSurveyInstancePage.class);
   private static final long serialVersionUID = 1000000;
 
   /* Survey Service */
@@ -56,25 +59,30 @@ public class UpdateSurveyAudiencePage extends TemplateWebPage
   private ISurveyService surveyService;
 
   /**
-   * Constructs a new <code>UpdateSurveyAudiencePage</code>.
+   * Constructs a new <code>AddSurveyInstancePage</code>.
    *
    * @param previousPage        the previous page
-   * @param surveyAudienceModel the model for the survey audience
+   * @param surveyDefinitionId  the Universally Unique Identifier (UUID) used to identify the survey
+   *                            definition for the survey instance
    */
-  public UpdateSurveyAudiencePage(PageReference previousPage,
-      IModel<SurveyAudience> surveyAudienceModel)
+  public AddSurveyInstancePage(PageReference previousPage, UUID surveyDefinitionId)
   {
-    super("Update Audience");
+    super("Add Survey Instance");
 
     try
     {
-      Form<SurveyAudience> updateForm = new Form<>("updateForm", new CompoundPropertyModel<>(
-          surveyAudienceModel));
+      WebSession webSession = getWebApplicationSession();
 
-      updateForm.add(new SurveyAudienceInputPanel("surveyAudience"));
+      SurveyDefinition surveyDefinition = surveyService.getLatestVersionOfSurveyDefinition(
+          surveyDefinitionId);
 
-      // The "updateButton" button
-      Button updateButton = new Button("updateButton")
+      Form<SurveyInstance> addForm = new Form<>("addForm", new CompoundPropertyModel<>(new Model<>(
+          new SurveyInstance(UUID.randomUUID(), "", "", surveyDefinition))));
+
+      addForm.add(new SurveyInstanceInputPanel("surveyInstance"));
+
+      // The "addButton" button
+      Button addButton = new Button("addButton")
       {
         private static final long serialVersionUID = 1000000;
 
@@ -83,19 +91,19 @@ public class UpdateSurveyAudiencePage extends TemplateWebPage
         {
           try
           {
-            surveyService.saveSurveyAudience(updateForm.getModelObject());
+            surveyService.saveSurveyInstance(addForm.getModelObject());
 
             setResponsePage(previousPage.getPage());
           }
           catch (Throwable e)
           {
-            logger.error("Failed to update the survey audience: " + e.getMessage(), e);
-            UpdateSurveyAudiencePage.this.error("Failed to update the survey audience");
+            logger.error("Failed to add the survey instance: " + e.getMessage(), e);
+            AddSurveyInstancePage.this.error("Failed to add the survey instance");
           }
         }
       };
-      updateButton.setDefaultFormProcessing(true);
-      updateForm.add(updateButton);
+      addButton.setDefaultFormProcessing(true);
+      addForm.add(addButton);
 
       // The "cancelButton" button
       Button cancelButton = new Button("cancelButton")
@@ -109,13 +117,13 @@ public class UpdateSurveyAudiencePage extends TemplateWebPage
         }
       };
       cancelButton.setDefaultFormProcessing(false);
-      updateForm.add(cancelButton);
+      addForm.add(cancelButton);
 
-      add(updateForm);
+      add(addForm);
     }
     catch (Throwable e)
     {
-      throw new WebApplicationException("Failed to initialise the UpdateSurveyAudiencePage", e);
+      throw new WebApplicationException("Failed to initialise the AddSurveyInstancePage", e);
     }
   }
 }

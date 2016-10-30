@@ -25,21 +25,21 @@ import java.util.List;
 //~--- JDK imports ------------------------------------------------------------
 
 /**
- * The <code>SurveyAudienceInputPanel</code> class provides a Wicket component that can
- * be used to capture the information for a <code>SurveyAudience</code>.
+ * The <code>SurveyInstanceInputPanel</code> class provides a Wicket component that can
+ * be used to capture the information for a <code>SurveyInstance</code>.
  *
  * @author Marcus Portmann
  */
-public class SurveyAudienceInputPanel extends InputPanel
+public class SurveyInstanceInputPanel extends InputPanel
 {
   private static final long serialVersionUID = 1000000;
 
   /**
-   * Constructs a new <code>SurveyAudienceInputPanel</code>.
+   * Constructs a new <code>SurveyInstanceInputPanel</code>.
    *
    * @param id the non-null id of this component
    */
-  public SurveyAudienceInputPanel(String id)
+  public SurveyInstanceInputPanel(String id)
   {
     super(id);
 

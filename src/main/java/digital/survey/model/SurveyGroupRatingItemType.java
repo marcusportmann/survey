@@ -18,7 +18,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * The <code>SurveyGroupRatingItemType</code> class implements the Survey Group Definition Rating
- * Type entity, which represents a type of group rating item that can form part of a survey definition.
+ * Type entity, which represents a type of group rating item that can form part of a survey
+ * definition.
  *
  * @author Marcus Portmann
  */

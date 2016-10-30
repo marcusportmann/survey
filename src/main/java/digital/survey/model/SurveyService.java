@@ -674,6 +674,46 @@ public class SurveyService
   }
 
   /**
+   * Retrieve the latest version of the survey definition identified by the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to, along with the version of the
+   *           survey definition, uniquely identify the survey definition
+   *
+   * @return the latest version of the survey definition identified by the specified ID
+   *
+   * @throws SurveyServiceException
+   */
+  public SurveyDefinition getLatestVersionOfSurveyDefinition(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT sd FROM SurveyDefinition sd WHERE sd.id = :id AND"
+          + " sd.version = (SELECT MAX(sd.version) FROM SurveyDefinition sd WHERE sd.id = :id)";
+
+      TypedQuery<SurveyDefinition> query = entityManager.createQuery(sql, SurveyDefinition.class);
+
+      query.setParameter("id", id);
+
+      List<SurveyDefinition> surveyDefinitions = query.getResultList();
+
+      if (surveyDefinitions.size() == 0)
+      {
+        return null;
+      }
+      else
+      {
+        return surveyDefinitions.get(0);
+      }
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the latest version of the survey definition (" + id + ")", e);
+    }
+  }
+
+  /**
    * Retrieve the survey audience members for the survey audience.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey

@@ -19,9 +19,9 @@ package digital.survey.web.pages;
 //~--- non-JDK imports --------------------------------------------------------
 
 import digital.survey.model.ISurveyService;
-import digital.survey.model.SurveyAudience;
+import digital.survey.model.SurveyInstance;
 import digital.survey.web.SurveySecurity;
-import digital.survey.web.components.SurveyAudienceInputPanel;
+import digital.survey.web.components.SurveyInstanceInputPanel;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.pages.WebPageSecurity;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
@@ -38,17 +38,17 @@ import javax.inject.Inject;
 //~--- JDK imports ------------------------------------------------------------
 
 /**
- * The <code>UpdateSurveyAudiencePage</code> class implements the
- * "Update Survey Audience" page for the web application.
+ * The <code>UpdateSurveyInstancePage</code> class implements the
+ * "Update Survey Instance" page for the web application.
  *
  * @author Marcus Portmann
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 @WebPageSecurity(SurveySecurity.FUNCTION_CODE_SURVEY_ADMINISTRATION)
-public class UpdateSurveyAudiencePage extends TemplateWebPage
+public class UpdateSurveyInstancePage extends TemplateWebPage
 {
   /* Logger */
-  private static final Logger logger = LoggerFactory.getLogger(UpdateSurveyAudiencePage.class);
+  private static final Logger logger = LoggerFactory.getLogger(UpdateSurveyInstancePage.class);
   private static final long serialVersionUID = 1000000;
 
   /* Survey Service */
@@ -56,22 +56,22 @@ public class UpdateSurveyAudiencePage extends TemplateWebPage
   private ISurveyService surveyService;
 
   /**
-   * Constructs a new <code>UpdateSurveyAudiencePage</code>.
+   * Constructs a new <code>UpdateSurveyInstancePage</code>.
    *
    * @param previousPage        the previous page
-   * @param surveyAudienceModel the model for the survey audience
+   * @param surveyInstanceModel the model for the survey instance
    */
-  public UpdateSurveyAudiencePage(PageReference previousPage,
-      IModel<SurveyAudience> surveyAudienceModel)
+  public UpdateSurveyInstancePage(PageReference previousPage,
+      IModel<SurveyInstance> surveyInstanceModel)
   {
-    super("Update Audience");
+    super("Update Survey Instance");
 
     try
     {
-      Form<SurveyAudience> updateForm = new Form<>("updateForm", new CompoundPropertyModel<>(
-          surveyAudienceModel));
+      Form<SurveyInstance> updateForm = new Form<>("updateForm", new CompoundPropertyModel<>(
+          surveyInstanceModel));
 
-      updateForm.add(new SurveyAudienceInputPanel("surveyAudience"));
+      updateForm.add(new SurveyInstanceInputPanel("surveyInstance"));
 
       // The "updateButton" button
       Button updateButton = new Button("updateButton")
@@ -83,14 +83,14 @@ public class UpdateSurveyAudiencePage extends TemplateWebPage
         {
           try
           {
-            surveyService.saveSurveyAudience(updateForm.getModelObject());
+            surveyService.saveSurveyInstance(updateForm.getModelObject());
 
             setResponsePage(previousPage.getPage());
           }
           catch (Throwable e)
           {
-            logger.error("Failed to update the survey audience: " + e.getMessage(), e);
-            UpdateSurveyAudiencePage.this.error("Failed to update the survey audience");
+            logger.error("Failed to update the survey instance: " + e.getMessage(), e);
+            UpdateSurveyInstancePage.this.error("Failed to update the survey instance");
           }
         }
       };
@@ -115,7 +115,7 @@ public class UpdateSurveyAudiencePage extends TemplateWebPage
     }
     catch (Throwable e)
     {
-      throw new WebApplicationException("Failed to initialise the UpdateSurveyAudiencePage", e);
+      throw new WebApplicationException("Failed to initialise the UpdateSurveyInstancePage", e);
     }
   }
 }

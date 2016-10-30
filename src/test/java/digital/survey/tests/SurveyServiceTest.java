@@ -59,7 +59,7 @@ public class SurveyServiceTest
 
     SurveyInstance surveyInstance = new SurveyInstance(UUID.fromString(
         "b222aa15-715f-4752-923d-8f33ee8a1736"), "CTO ELT Values Survey - September 2016",
-        surveyDefinition);
+        "CTO ELT Values Survey - September 2016", surveyDefinition);
 
     SurveyRequest surveyRequest = new SurveyRequest(UUID.fromString(
         "54a751f6-0f32-48bd-8c6c-665e3ac1906b"), surveyInstance, "Marcus", "Portmann",
@@ -262,6 +262,11 @@ public class SurveyServiceTest
 
     assertEquals("The version number for the updated survey definition is incorrect", 2,
         surveyService.getLatestVersionNumberForSurveyDefinition(surveyDefinition.getId()));
+
+    retrievedSurveyDefinition = surveyService.getLatestVersionOfSurveyDefinition(
+      surveyDefinition.getId());
+
+    compareSurveyDefinitions(savedSurveyDefinition, retrievedSurveyDefinition);
 
     List<SurveyDefinitionSummary> retrievedSurveyDefinitionSummaries =
         surveyService.getSurveyDefinitionSummariesForOrganisation(organisation.getId());
@@ -517,10 +522,10 @@ public class SurveyServiceTest
     compareSurveyResponses(surveyResponse, surveyResponseSummaries.get(0));
 
     List<SurveyRequestToSurveyResponseMapping> requestAndResponseIds =
-      surveyService.getRequestToResponseMappingsForSurveyInstance(surveyInstance.getId());
+        surveyService.getRequestToResponseMappingsForSurveyInstance(surveyInstance.getId());
 
-    assertEquals("The number of request and response IDs for the survey instance is not correct", 1,
-      requestAndResponseIds.size());
+    assertEquals("The number of request and response IDs for the survey instance is not correct",
+        1, requestAndResponseIds.size());
 
     assertEquals(surveyResponse.getId(), requestAndResponseIds.get(0).getResponseId());
 
@@ -658,7 +663,7 @@ public class SurveyServiceTest
       SurveyDefinition surveyDefinition)
   {
     return new SurveyInstance(UUID.randomUUID(), "CTO ELT Values Survey - September 2016",
-        surveyDefinition);
+        "CTO ELT Values Survey - September 2016", surveyDefinition);
   }
 
   private static synchronized Organisation getTestOrganisationDetails()
@@ -748,7 +753,8 @@ public class SurveyServiceTest
   private static synchronized SurveyInstance getTestSurveyInstanceDetails(
       SurveyDefinition surveyDefinition)
   {
-    return new SurveyInstance(UUID.randomUUID(), "Test Survey Instance", surveyDefinition);
+    return new SurveyInstance(UUID.randomUUID(), "Test Survey Instance", "Test Survey Instance",
+        surveyDefinition);
   }
 
   private static synchronized SurveyRequest getTestSurveyRequestDetails(
@@ -939,6 +945,8 @@ public class SurveyServiceTest
         surveyInstance1.getId(), surveyInstance2.getId());
     assertEquals("The name values for the two survey instances do not match",
         surveyInstance1.getName(), surveyInstance2.getName());
+    assertEquals("The description values for the two survey instances do not match",
+      surveyInstance1.getDescription(), surveyInstance2.getDescription());
   }
 
   private void compareSurveyRequests(SurveyRequest surveyRequest1, SurveyRequest surveyRequest2)

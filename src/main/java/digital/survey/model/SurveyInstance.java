@@ -42,6 +42,12 @@ public class SurveyInstance
   private String name;
 
   /**
+   * The description for the survey instance.
+   */
+  @Column(name = "DESCRIPTION", nullable = false)
+  private String description;
+
+  /**
    * The survey definition this survey instance is associated with.
    */
   @SuppressWarnings("unused")
@@ -61,15 +67,17 @@ public class SurveyInstance
   /**
    * Constructs a new <code>SurveyInstance</code>.
    *
-   * @param id         the Universally Unique Identifier (UUID) used to uniquely identify the survey
-   *                   instance
-   * @param name       the name of the survey instance
-   * @param definition the survey definition this survey instance is associated with
+   * @param id          the Universally Unique Identifier (UUID) used to uniquely identify the
+   *                    survey instance
+   * @param name        the name of the survey instance
+   * @param description the description for the survey instance
+   * @param definition  the survey definition this survey instance is associated with
    */
-  public SurveyInstance(UUID id, String name, SurveyDefinition definition)
+  public SurveyInstance(UUID id, String name, String description, SurveyDefinition definition)
   {
     this.id = id;
     this.name = name;
+    this.description = description;
     this.definition = definition;
   }
 
@@ -115,6 +123,16 @@ public class SurveyInstance
   }
 
   /**
+   * Returns the description for the survey instance.
+   *
+   * @return the description for the survey instance
+   */
+  public String getDescription()
+  {
+    return description;
+  }
+
+  /**
    * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey instance.
    *
    * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey instance
@@ -135,6 +153,16 @@ public class SurveyInstance
   }
 
   /**
+   * Set the description for the survey instance.
+   *
+   * @param description the description for the survey instance
+   */
+  public void setDescription(String description)
+  {
+    this.description = description;
+  }
+
+  /**
    * Set the name of the survey instance.
    *
    * @param name the name of the survey instance
@@ -152,6 +180,7 @@ public class SurveyInstance
   @Override
   public String toString()
   {
-    return String.format("SurveyInstance {id=\"%s\", name=\"%s\"}", getId(), getName());
+    return String.format("SurveyInstance {id=\"%s\", name=\"%s\", description=\"%s\"}", getId(),
+        getName(), getDescription());
   }
 }

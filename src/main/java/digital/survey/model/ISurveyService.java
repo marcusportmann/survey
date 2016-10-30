@@ -253,6 +253,19 @@ public interface ISurveyService
     throws SurveyServiceException;
 
   /**
+   * Retrieve the latest version of the survey definition identified by the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to, along with the version of the
+   *           survey definition, uniquely identify the survey definition
+   *
+   * @return the latest version of the survey definition identified by the specified ID
+   *
+   * @throws SurveyServiceException
+   */
+  SurveyDefinition getLatestVersionOfSurveyDefinition(UUID id)
+    throws SurveyServiceException;
+
+  /**
    * Retrieve the survey audience members for the survey audience.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
