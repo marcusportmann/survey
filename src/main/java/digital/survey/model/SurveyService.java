@@ -58,6 +58,8 @@ public class SurveyService
    * @param surveyAudience the survey audience to delete
    *
    * @return <code>true</code> if the survey audience was deleted or <code>false</code> otherwise
+   *
+   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyAudience(SurveyAudience surveyAudience)
@@ -91,6 +93,8 @@ public class SurveyService
    *            audience
    *
    * @return <code>true</code> if the survey audience was deleted or <code>false</code> otherwise
+   *
+   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyAudience(UUID id)
@@ -115,6 +119,10 @@ public class SurveyService
    * Delete the survey audience member.
    *
    * @param surveyAudienceMember the survey audience member to delete
+   *
+   * @return
+   *
+   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyAudienceMember(SurveyAudienceMember surveyAudienceMember)
@@ -150,6 +158,8 @@ public class SurveyService
    *
    * @return <code>true</code> if the survey audience member was deleted or <code>false</code>
    *         otherwise
+   *
+   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyAudienceMember(UUID id)
@@ -177,6 +187,8 @@ public class SurveyService
    * @param surveyDefinition the survey definition to delete
    *
    * @return <code>true</code> if the survey definition was deleted or <code>false</code> otherwise
+   *
+   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyDefinition(SurveyDefinition surveyDefinition)
@@ -211,6 +223,8 @@ public class SurveyService
    *
    * @return <code>true</code> if all versions of the survey definition were deleted or
    *        <code>false</code> otherwise
+   *
+   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyDefinition(UUID id)
@@ -239,6 +253,8 @@ public class SurveyService
    * @param version the version of the survey definition
    *
    * @return <code>true</code> if the survey definition was deleted or <code>false</code> otherwise
+   *
+   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyDefinition(UUID id, int version)
@@ -267,6 +283,8 @@ public class SurveyService
    * @param surveyInstance the survey instance to delete
    *
    * @return <code>true</code> if the survey instance was deleted or <code>false</code> otherwise
+   *
+   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyInstance(SurveyInstance surveyInstance)
@@ -300,6 +318,8 @@ public class SurveyService
    *            instance
    *
    * @return <code>true</code> if the survey instance was deleted or <code>false</code> otherwise
+   *
+   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyInstance(UUID id)
@@ -326,6 +346,8 @@ public class SurveyService
    * @param surveyRequest the survey request to delete
    *
    * @return <code>true</code> if the survey request was deleted or <code>false</code> otherwise
+   *
+   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyRequest(SurveyRequest surveyRequest)
@@ -359,6 +381,8 @@ public class SurveyService
    *            request
    *
    * @return <code>true</code> if the survey request was deleted or <code>false</code> otherwise
+   *
+   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyRequest(UUID id)
@@ -385,6 +409,8 @@ public class SurveyService
    * @param surveyResponse the survey response to delete
    *
    * @return <code>true</code> if the survey response was deleted or <code>false</code> otherwise
+   *
+   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyResponse(SurveyResponse surveyResponse)
@@ -418,6 +444,8 @@ public class SurveyService
    *            response
    *
    * @return <code>true</code> if the survey response was deleted or <code>false</code> otherwise
+   *
+   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyResponse(UUID id)
@@ -439,38 +467,6 @@ public class SurveyService
   }
 
   /**
-   * Retrieve the latest versions of the filtered survey definitions for the organisation.
-   *
-   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
-   *               organisation
-   * @param filter the filter used to limit the matching survey definitions
-   *
-   * @return the latest versions of the filtered survey definitions for the organisation
-   */
-  public List<SurveyDefinition> getFilteredLatestSurveyDefinitionsForOrganisation(UUID id,
-      String filter)
-    throws SurveyServiceException
-  {
-    try
-    {
-      String sql = "SELECT sd FROM SurveyDefinition sd WHERE sd.version ="
-          + " (SELECT MAX(sdInner.version) FROM SurveyDefinition sdInner WHERE sdInner.id = sd.id)"
-          + " AND (UPPER(sd.name) LIKE :filter)";
-
-      TypedQuery<SurveyDefinition> query = entityManager.createQuery(sql, SurveyDefinition.class);
-
-      query.setParameter("filter", "%" + filter.toUpperCase() + "%");
-
-      return query.getResultList();
-    }
-    catch (Throwable e)
-    {
-      throw new SurveyServiceException("Failed to retrieve the filtered latest versions of the"
-          + " survey definitions for the organisation with ID (" + id + ")", e);
-    }
-  }
-
-  /**
    * Retrieve the filtered survey audience members for the survey audience.
    *
    * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the survey
@@ -478,6 +474,8 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey audience members
    *
    * @return the filtered survey audiences members for the survey audience
+   *
+   * @throws SurveyServiceException
    */
   public List<SurveyAudienceMember> getFilteredMembersForSurveyAudience(UUID id, String filter)
     throws SurveyServiceException
@@ -485,7 +483,7 @@ public class SurveyService
     try
     {
       String sql = "SELECT sam FROM SurveyAudienceMember sam"
-          + " WHERE sam.audienceId = :id AND ((UPPER(sam.firstName) LIKE :filter)"
+          + " WHERE sam.audience.id = :id AND ((UPPER(sam.firstName) LIKE :filter)"
           + " OR (UPPER(sam.lastName) LIKE :filter) OR (UPPER(sam.email) LIKE :filter))";
 
       TypedQuery<SurveyAudienceMember> query = entityManager.createQuery(sql,
@@ -512,13 +510,15 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey audiences
    *
    * @return the filtered survey audiences for the organisation
+   *
+   * @throws SurveyServiceException
    */
   public List<SurveyAudience> getFilteredSurveyAudiencesForOrganisation(UUID id, String filter)
     throws SurveyServiceException
   {
     try
     {
-      String sql = "SELECT sa FROM SurveyAudience sa WHERE sa.organisationId = :id"
+      String sql = "SELECT sa FROM SurveyAudience sa WHERE sa.organisation.id = :id"
           + " AND (UPPER(sa.name) LIKE :filter)";
 
       TypedQuery<SurveyAudience> query = entityManager.createQuery(sql, SurveyAudience.class);
@@ -537,6 +537,45 @@ public class SurveyService
   }
 
   /**
+   * Retrieve the summaries for the latest versions of the filtered survey definitions for the
+   * organisation.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
+   *               organisation
+   * @param filter the filter used to limit the matching survey definitions
+   *
+   * @return the summaries for the latest versions of the filtered survey definitions for the
+   *         organisation
+   *
+   * @throws SurveyServiceException
+   */
+  public List<SurveyDefinitionSummary> getFilteredSurveyDefinitionSummariesForOrganisation(UUID id,
+      String filter)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT SD.ID, SD.VERSION, SD.NAME FROM SURVEY.SURVEY_DEFINITIONS SD"
+          + " JOIN (SELECT ID, MAX(VERSION) AS LATEST_VERSION FROM SURVEY.SURVEY_DEFINITIONS"
+          + " GROUP BY ID) LATEST ON (SD.VERSION = LATEST.LATEST_VERSION AND SD.ID = LATEST.ID)"
+          + " WHERE SD.ORGANISATION_ID = ?1 AND UPPER(SD.NAME) LIKE ?2";
+
+      Query query = entityManager.createNativeQuery(sql, SurveyDefinitionSummary.class);
+
+      query.setParameter(1, id);
+      query.setParameter(2, "%" + filter.toUpperCase() + "%");
+
+      return query.getResultList();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the summaries for the filtered latest versions of the survey"
+          + " definitions for the organisation with ID (" + id + ")", e);
+    }
+  }
+
+  /**
    * Retrieve the filtered survey instances for all versions of the survey definition.
    *
    * @param id     the Universally Unique Identifier (UUID) used to identify the survey definition
@@ -544,6 +583,8 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey definitions
    *
    * @return the filtered survey instances for all versions of the survey definition
+   *
+   * @throws SurveyServiceException
    */
   public List<SurveyInstance> getFilteredSurveyInstancesForSurveyDefinition(UUID id, String filter)
     throws SurveyServiceException
@@ -576,6 +617,8 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey requests
    *
    * @return the filtered survey requests for the survey instance
+   *
+   * @throws SurveyServiceException
    */
   public List<SurveyRequest> getFilteredSurveyRequestsForSurveyInstance(UUID id, String filter)
     throws SurveyServiceException
@@ -609,6 +652,8 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey responses
    *
    * @return the filtered survey responses for the survey instance
+   *
+   * @throws SurveyServiceException
    */
   public List<SurveyResponse> getFilteredSurveyResponsesForSurveyInstance(UUID id, String filter)
     throws SurveyServiceException
@@ -640,16 +685,21 @@ public class SurveyService
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
    *
    * @return the latest versions of the survey definitions for the organisation
+   *
+   * @throws SurveyServiceException
    */
   public List<SurveyDefinition> getLatestSurveyDefinitionsForOrganisation(UUID id)
     throws SurveyServiceException
   {
     try
     {
-      String sql = "SELECT sd FROM SurveyDefinition sd WHERE sd.version ="
-          + " (SELECT MAX(sdInner.version) FROM SurveyDefinition sdInner WHERE sdInner.id = sd.id)";
+      String sql = "SELECT sd FROM SurveyDefinition sd WHERE sd.version IN "
+          + " (SELECT MAX(sd.version) FROM SurveyDefinition sd WHERE sd.id = sd.id)"
+          + " AND sd.organisation.id = :id";
 
       TypedQuery<SurveyDefinition> query = entityManager.createQuery(sql, SurveyDefinition.class);
+
+      query.setParameter("id", id);
 
       return query.getResultList();
     }
@@ -661,50 +711,14 @@ public class SurveyService
   }
 
   /**
-   * Retrieve the latest version for the survey definition.
-   *
-   * @param id the Universally Unique Identifier (UUID) used to identify the survey definition
-   *
-   * @return the latest version for the survey definition or <code>null</code> if the survey
-   *         definition could not be found
-   */
-  public SurveyDefinition getLatestVersionForSurveyDefinition(UUID id)
-    throws SurveyServiceException
-  {
-    try
-    {
-      String sql = "SELECT sd FROM SurveyDefinition sd WHERE sd.id = :id"
-          + " AND sd.version IN (SELECT MAX(sd.version) FROM SurveyDefinition sd WHERE sd.id = :id)";
-
-      TypedQuery<SurveyDefinition> query = entityManager.createQuery(sql, SurveyDefinition.class);
-
-      query.setParameter("id", id);
-
-      List<SurveyDefinition> surveyDefinitions = query.getResultList();
-
-      if (surveyDefinitions.size() == 0)
-      {
-        return null;
-      }
-      else
-      {
-        return surveyDefinitions.get(0);
-      }
-    }
-    catch (Throwable e)
-    {
-      throw new SurveyServiceException(
-          "Failed to retrieve the latest version of the survey definition with ID (" + id + ")", e);
-    }
-  }
-
-  /**
    * Retrieve the latest version number for the survey definition.
    *
    * @param id the Universally Unique Identifier (UUID) used to identify the survey definition
    *
    * @return the latest version number for the survey definition or 0 if the survey definition
    *         could not be found
+   *
+   * @throws SurveyServiceException
    */
   public int getLatestVersionNumberForSurveyDefinition(UUID id)
     throws SurveyServiceException
@@ -734,14 +748,15 @@ public class SurveyService
    *           audience
    *
    * @return the survey audiences members for the survey audience
+   *
+   * @throws SurveyServiceException
    */
   public List<SurveyAudienceMember> getMembersForSurveyAudience(UUID id)
     throws SurveyServiceException
   {
     try
     {
-      String sql =
-          "SELECT sam FROM SurveyAudienceMember sam WHERE sam.audienceId = :id";
+      String sql = "SELECT sam FROM SurveyAudienceMember sam WHERE sam.audience.id = :id";
 
       TypedQuery<SurveyAudienceMember> query = entityManager.createQuery(sql,
           SurveyAudienceMember.class);
@@ -759,37 +774,6 @@ public class SurveyService
   }
 
   /**
-   * Retrieve the number of latest versions of the filtered survey definitions for the organisation.
-   *
-   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
-   *               organisation
-   * @param filter the filter used to limit the matching survey definitions
-   *
-   * @return the number of latest versions of the filtered survey definitions for the organisation
-   */
-  public int getNumberOfFilteredLatestSurveyDefinitionsForOrganisation(UUID id, String filter)
-    throws SurveyServiceException
-  {
-    try
-    {
-      String sql = "SELECT COUNT(sd.id) FROM SurveyDefinition sd WHERE sd.version ="
-          + " (SELECT MAX(sdInner.version) FROM SurveyDefinition sdInner WHERE sdInner.id = sd.id)"
-          + " AND (UPPER(sd.name) LIKE :filter)";
-
-      Query query = entityManager.createQuery(sql);
-
-      query.setParameter("filter", "%" + filter.toUpperCase() + "%");
-
-      return ((Number) query.getSingleResult()).intValue();
-    }
-    catch (Throwable e)
-    {
-      throw new SurveyServiceException("Failed to retrieve the number of filtered latest versions"
-          + " of the survey definitions for the organisation with ID (" + id + ")", e);
-    }
-  }
-
-  /**
    * Returns the number of filtered survey audience members for the survey audience.
    *
    * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the survey
@@ -797,15 +781,16 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey audience members
    *
    * @return the number of filtered survey audience members for the survey audience
+   *
+   * @throws SurveyServiceException
    */
   public int getNumberOfFilteredMembersForSurveyAudience(UUID id, String filter)
     throws SurveyServiceException
   {
     try
     {
-      Query query = entityManager.createQuery(
-          "SELECT COUNT(sam.id) FROM SurveyAudienceMember sam "
-          + " WHERE sam.audienceId = :id AND ((UPPER(sam.firstName) LIKE :filter)"
+      Query query = entityManager.createQuery("SELECT COUNT(sam.id) FROM SurveyAudienceMember sam "
+          + " WHERE sam.audience.id = :id AND ((UPPER(sam.firstName) LIKE :filter)"
           + " OR (UPPER(sam.lastName) LIKE :filter) OR (UPPER(sam.email) LIKE :filter))");
 
       query.setParameter("id", id);
@@ -829,6 +814,8 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey audiences
    *
    * @return the number of filtered survey audiences for the organisation
+   *
+   * @throws SurveyServiceException
    */
   public int getNumberOfFilteredSurveyAudiencesForOrganisation(UUID id, String filter)
     throws SurveyServiceException
@@ -836,7 +823,7 @@ public class SurveyService
     try
     {
       Query query = entityManager.createQuery("SELECT COUNT(sa.id) FROM SurveyAudience sa"
-          + " WHERE sa.organisationId = :id AND (UPPER(sa.name) LIKE :filter)");
+          + " WHERE sa.organisation.id = :id AND (UPPER(sa.name) LIKE :filter)");
 
       query.setParameter("id", id);
       query.setParameter("filter", "%" + filter.toUpperCase() + "%");
@@ -852,6 +839,39 @@ public class SurveyService
   }
 
   /**
+   * Retrieve the number of filtered survey definitions for the organisation.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
+   *               organisation
+   * @param filter the filter used to limit the matching survey definitions
+   *
+   * @return the number of filtered survey definitions for the organisation
+   *
+   * @throws SurveyServiceException
+   */
+  public int getNumberOfFilteredSurveyDefinitionsForOrganisation(UUID id, String filter)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT COUNT(DISTINCT SD.ID) FROM SURVEY.SURVEY_DEFINITIONS SD"
+          + " WHERE SD.ORGANISATION_ID = ?1 AND UPPER(SD.NAME) LIKE ?2";
+
+      Query query = entityManager.createNativeQuery(sql);
+
+      query.setParameter(1, id);
+      query.setParameter(2, "%" + filter.toUpperCase() + "%");
+
+      return ((Number) query.getSingleResult()).intValue();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to retrieve the number of filtered latest versions"
+          + " of the survey definitions for the organisation with ID (" + id + ")", e);
+    }
+  }
+
+  /**
    * Retrieve the number of filtered survey instances for all versions of the survey definition.
    *
    * @param id     the Universally Unique Identifier (UUID) used to identify the survey definition
@@ -859,6 +879,8 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey definitions
    *
    * @return the number of filtered survey instances for all versions of the survey definition
+   *
+   * @throws SurveyServiceException
    */
   public int getNumberOfFilteredSurveyInstancesForSurveyDefinition(UUID id, String filter)
     throws SurveyServiceException
@@ -891,6 +913,8 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey requests
    *
    * @return the number of filtered survey requests for the survey instance
+   *
+   * @throws SurveyServiceException
    */
   public int getNumberOfFilteredSurveyRequestsForSurveyInstance(UUID id, String filter)
     throws SurveyServiceException
@@ -925,6 +949,8 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey responses
    *
    * @return the number of filtered survey responses for the survey instance
+   *
+   * @throws SurveyServiceException
    */
   public int getNumberOfFilteredSurveyResponsesForSurveyInstance(UUID id, String filter)
     throws SurveyServiceException
@@ -951,38 +977,14 @@ public class SurveyService
   }
 
   /**
-   * Retrieve the number of latest versions of the survey definitions for the organisation.
-   *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
-   *
-   * @return the number of latest versions of the survey definitions for the organisation
-   */
-  public int getNumberOfLatestSurveyDefinitionsForOrganisation(UUID id)
-    throws SurveyServiceException
-  {
-    try
-    {
-      String sql = "SELECT COUNT(sd.id) FROM SurveyDefinition sd WHERE sd.version ="
-          + " (SELECT MAX(sdInner.version) FROM SurveyDefinition sdInner WHERE sdInner.id = sd.id)";
-
-      Query query = entityManager.createQuery(sql);
-
-      return ((Number) query.getSingleResult()).intValue();
-    }
-    catch (Throwable e)
-    {
-      throw new SurveyServiceException("Failed to retrieve the number of latest versions of the"
-          + " survey definitions for the organisation with ID (" + id + ")", e);
-    }
-  }
-
-  /**
    * Returns the number of members for the survey audience.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
    *           audience
    *
    * @return the number of members for the survey audience
+   *
+   * @throws SurveyServiceException
    */
   public int getNumberOfMembersForSurveyAudience(UUID id)
     throws SurveyServiceException
@@ -990,7 +992,7 @@ public class SurveyService
     try
     {
       Query query = entityManager.createQuery("SELECT COUNT(sam.id) FROM SurveyAudienceMember sam"
-          + " WHERE sam.audienceId = :id");
+          + " WHERE sam.audience.id = :id");
 
       query.setParameter("id", id);
 
@@ -1010,6 +1012,8 @@ public class SurveyService
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
    *
    * @return the number of survey audiences for the organisation
+   *
+   * @throws SurveyServiceException
    */
   public int getNumberOfSurveyAudiencesForOrganisation(UUID id)
     throws SurveyServiceException
@@ -1017,9 +1021,9 @@ public class SurveyService
     try
     {
       Query query = entityManager.createQuery("SELECT COUNT(sa.id) FROM SurveyAudience sa"
-          + " WHERE sa.organisationId = :organisationId");
+          + " WHERE sa.organisation.id = :id");
 
-      query.setParameter("organisationId", id);
+      query.setParameter("id", id);
 
       return ((Number) query.getSingleResult()).intValue();
     }
@@ -1032,12 +1036,44 @@ public class SurveyService
   }
 
   /**
+   * Retrieve the number of survey definitions for the organisation.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
+   *
+   * @return the number of survey definitions for the organisation
+   *
+   * @throws SurveyServiceException
+   */
+  public int getNumberOfSurveyDefinitionsForOrganisation(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT COUNT(DISTINCT SD.ID) FROM SURVEY.SURVEY_DEFINITIONS SD"
+          + " WHERE SD.ORGANISATION_ID = ?1";
+
+      Query query = entityManager.createNativeQuery(sql);
+
+      query.setParameter(1, id);
+
+      return ((Number) query.getSingleResult()).intValue();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to retrieve the number of latest versions of the"
+          + " survey definitions for the organisation with ID (" + id + ")", e);
+    }
+  }
+
+  /**
    * Retrieve the number of survey instances for all versions of the survey definition.
    *
    * @param id     the Universally Unique Identifier (UUID) used to identify the survey definition
    *               the survey instances are associated with
    *
    * @return the number of survey instances for all versions of the survey definition
+   *
+   * @throws SurveyServiceException
    */
   public int getNumberOfSurveyInstancesForSurveyDefinition(UUID id)
     throws SurveyServiceException
@@ -1068,6 +1104,8 @@ public class SurveyService
    *           survey requests are associated with
    *
    * @return the number of survey requests for the survey instance
+   *
+   * @throws SurveyServiceException
    */
   public int getNumberOfSurveyRequestsForSurveyInstance(UUID id)
     throws SurveyServiceException
@@ -1098,6 +1136,8 @@ public class SurveyService
    *           survey responses are associated with
    *
    * @return the number of survey responses for the survey instance
+   *
+   * @throws SurveyServiceException
    */
   public int getNumberOfSurveyResponsesForSurveyInstance(UUID id)
     throws SurveyServiceException
@@ -1129,6 +1169,8 @@ public class SurveyService
    *
    * @return the survey audience identified by the specified ID or <code>null</code> if the survey
    *         audience could not be found
+   *
+   * @throws SurveyServiceException
    */
   public SurveyAudience getSurveyAudience(UUID id)
     throws SurveyServiceException
@@ -1166,6 +1208,8 @@ public class SurveyService
    *
    * @return the survey audience member identified by the specified ID or <code>null</code> if the
    *         survey audience member could not be found
+   *
+   * @throws SurveyServiceException
    */
   public SurveyAudienceMember getSurveyAudienceMember(UUID id)
     throws SurveyServiceException
@@ -1203,13 +1247,15 @@ public class SurveyService
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
    *
    * @return the survey audiences for the organisation
+   *
+   * @throws SurveyServiceException
    */
   public List<SurveyAudience> getSurveyAudiencesForOrganisation(UUID id)
     throws SurveyServiceException
   {
     try
     {
-      String sql = "SELECT sa FROM SurveyAudience sa WHERE sa.organisationId = :id";
+      String sql = "SELECT sa FROM SurveyAudience sa WHERE sa.organisation.id = :id";
 
       TypedQuery<SurveyAudience> query = entityManager.createQuery(sql, SurveyAudience.class);
 
@@ -1233,13 +1279,15 @@ public class SurveyService
    *
    * @return the survey definition identified by the specified ID and version or <code>null</code>
    *         if the survey definition could not be found
+   *
+   * @throws SurveyServiceException
    */
   public SurveyDefinition getSurveyDefinition(UUID id, int version)
     throws SurveyServiceException
   {
     try
     {
-      String sql = "SELECT st FROM SurveyDefinition st WHERE st.id = :id AND st.version = :version";
+      String sql = "SELECT sd FROM SurveyDefinition sd WHERE sd.id = :id AND sd.version = :version";
 
       TypedQuery<SurveyDefinition> query = entityManager.createQuery(sql, SurveyDefinition.class);
 
@@ -1259,8 +1307,87 @@ public class SurveyService
     }
     catch (Throwable e)
     {
-      throw new SurveyServiceException("Failed to retrieve the survey definition (" + id + ")", e);
+      throw new SurveyServiceException("Failed to retrieve the version (" + version
+          + ") of the survey definition (" + id + ")", e);
     }
+  }
+
+  /**
+   * Retrieve the summaries for the latest versions of the survey definitions for the organisation.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
+   *
+   * @return the summaries for the latest versions of the survey definitions for the organisation
+   *
+   * @throws SurveyServiceException
+   */
+  public List<SurveyDefinitionSummary> getSurveyDefinitionSummariesForOrganisation(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT SD.ID, SD.VERSION, SD.NAME FROM SURVEY.SURVEY_DEFINITIONS SD"
+          + " JOIN (SELECT ID, MAX(VERSION) AS LATEST_VERSION FROM SURVEY.SURVEY_DEFINITIONS"
+          + " GROUP BY ID) LATEST ON (SD.VERSION = LATEST.LATEST_VERSION AND SD.ID = LATEST.ID)"
+          + " WHERE SD.ORGANISATION_ID = ?1";
+
+      Query query = entityManager.createNativeQuery(sql, SurveyDefinitionSummary.class);
+
+      query.setParameter(1, id);
+
+      return query.getResultList();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the summaries for the latest versions of the survey definitions for"
+          + " the organisation with ID (" + id + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the summary for the survey definition identified by the specified ID and version.
+   *
+   * @param id      the Universally Unique Identifier (UUID) used to, along with the version of the
+   *                survey definition, uniquely identify the survey definition
+   * @param version the version of the survey definition
+   *
+   * @return the summary for the survey definition identified by the specified ID and version or
+   *         <code>null</code> if the survey definition could not be found
+   *
+   * @throws SurveyServiceException
+   */
+  public SurveyDefinitionSummary getSurveyDefinitionSummary(UUID id, int version)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT sds FROM SurveyDefinitionSummary sds WHERE sds.id = :id"
+          + " AND sd.sversion = :version";
+
+      TypedQuery<SurveyDefinitionSummary> query = entityManager.createQuery(sql,
+          SurveyDefinitionSummary.class);
+
+      query.setParameter("id", id);
+      query.setParameter("version", version);
+
+      List<SurveyDefinitionSummary> surveyDefinitionSummaries = query.getResultList();
+
+      if (surveyDefinitionSummaries.size() == 0)
+      {
+        return null;
+      }
+      else
+      {
+        return surveyDefinitionSummaries.get(0);
+      }
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to retrieve the summary for the version (" + version
+          + ") of the survey definition (" + id + ")", e);
+    }
+
   }
 
   /**
@@ -1270,6 +1397,8 @@ public class SurveyService
    *
    * @return the survey instance identified by the specified ID or <code>null</code> if the survey
    *         instance could not be found
+   *
+   * @throws SurveyServiceException
    */
   public SurveyInstance getSurveyInstance(UUID id)
     throws SurveyServiceException
@@ -1306,6 +1435,8 @@ public class SurveyService
    *               the survey instances are associated with
    *
    * @return the survey instances for all versions of the survey definition
+   *
+   * @throws SurveyServiceException
    */
   public List<SurveyInstance> getSurveyInstancesForSurveyDefinition(UUID id)
     throws SurveyServiceException
@@ -1335,6 +1466,8 @@ public class SurveyService
    *
    * @return the survey request identified by the specified ID or <code>null</code> if the survey
    *         request could not be found
+   *
+   * @throws SurveyServiceException
    */
   public SurveyRequest getSurveyRequest(UUID id)
     throws SurveyServiceException
@@ -1371,6 +1504,8 @@ public class SurveyService
    *           survey requests are associated with
    *
    * @return the survey requests for the survey instance
+   *
+   * @throws SurveyServiceException
    */
   public List<SurveyRequest> getSurveyRequestsForSurveyInstance(UUID id)
     throws SurveyServiceException
@@ -1400,6 +1535,8 @@ public class SurveyService
    *
    * @return the survey response identified by the specified ID or <code>null</code> if the survey
    *         response could not be found
+   *
+   * @throws SurveyServiceException
    */
   public SurveyResponse getSurveyResponse(UUID id)
     throws SurveyServiceException
@@ -1436,6 +1573,8 @@ public class SurveyService
    *           survey responses are associated with
    *
    * @return the survey responses for the survey instance
+   *
+   * @throws SurveyServiceException
    */
   public List<SurveyResponse> getSurveyResponsesForSurveyInstance(UUID id)
     throws SurveyServiceException
@@ -1457,36 +1596,6 @@ public class SurveyService
           e);
     }
   }
-  /**
-   * Save the survey audience member.
-   *
-   * @param surveyAudienceMember the survey audience member
-   *
-   * @return the saved survey response
-   */
-  @Transactional
-  public SurveyAudienceMember saveSurveyAudienceMember(SurveyAudienceMember surveyAudienceMember)
-    throws SurveyServiceException
-  {
-    try
-    {
-      if (!entityManager.contains(surveyAudienceMember))
-      {
-        surveyAudienceMember = entityManager.merge(surveyAudienceMember);
-
-        entityManager.flush();
-
-        entityManager.detach(surveyAudienceMember);
-      }
-
-      return surveyAudienceMember;
-    }
-    catch (Throwable e)
-    {
-      throw new SurveyServiceException("Failed to save the survey audience member with ID ("
-        + surveyAudienceMember.getId() + ")", e);
-    }
-  }
 
   /**
    * Save the survey audience.
@@ -1494,6 +1603,8 @@ public class SurveyService
    * @param surveyAudience the survey audience
    *
    * @return the saved survey audience
+   *
+   * @throws SurveyServiceException
    */
   @Transactional
   public SurveyAudience saveSurveyAudience(SurveyAudience surveyAudience)
@@ -1520,11 +1631,46 @@ public class SurveyService
   }
 
   /**
+   * Save the survey audience member.
+   *
+   * @param surveyAudienceMember the survey audience member
+   *
+   * @return the saved survey response
+   *
+   * @throws SurveyServiceException
+   */
+  @Transactional
+  public SurveyAudienceMember saveSurveyAudienceMember(SurveyAudienceMember surveyAudienceMember)
+    throws SurveyServiceException
+  {
+    try
+    {
+      if (!entityManager.contains(surveyAudienceMember))
+      {
+        surveyAudienceMember = entityManager.merge(surveyAudienceMember);
+
+        entityManager.flush();
+
+        entityManager.detach(surveyAudienceMember);
+      }
+
+      return surveyAudienceMember;
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to save the survey audience member with ID ("
+          + surveyAudienceMember.getId() + ")", e);
+    }
+  }
+
+  /**
    * Save the survey definition.
    *
    * @param surveyDefinition the survey definition
    *
    * @return the saved survey definition
+   *
+   * @throws SurveyServiceException
    */
   @Transactional
   public SurveyDefinition saveSurveyDefinition(SurveyDefinition surveyDefinition)
@@ -1577,6 +1723,8 @@ public class SurveyService
    * @param surveyInstance the survey instance
    *
    * @return the saved survey instance
+   *
+   * @throws SurveyServiceException
    */
   @Transactional
   public SurveyInstance saveSurveyInstance(SurveyInstance surveyInstance)
@@ -1608,6 +1756,8 @@ public class SurveyService
    * @param surveyRequest the survey request
    *
    * @return the saved survey request
+   *
+   * @throws SurveyServiceException
    */
   @Transactional
   public SurveyRequest saveSurveyRequest(SurveyRequest surveyRequest)
@@ -1639,6 +1789,8 @@ public class SurveyService
    * @param surveyResponse the survey response
    *
    * @return the saved survey response
+   *
+   * @throws SurveyServiceException
    */
   @Transactional
   public SurveyResponse saveSurveyResponse(SurveyResponse surveyResponse)

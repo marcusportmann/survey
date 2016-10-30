@@ -19,6 +19,7 @@ package digital.survey.web.pages;
 //~--- non-JDK imports --------------------------------------------------------
 
 import digital.survey.model.ISurveyService;
+import digital.survey.model.SurveyAudience;
 import digital.survey.model.SurveyAudienceMember;
 import digital.survey.web.SurveySecurity;
 import digital.survey.web.components.SurveyAudienceMemberInputPanel;
@@ -59,18 +60,17 @@ public class AddSurveyAudienceMemberPage extends TemplateWebPage
   /**
    * Constructs a new <code>AddSurveyAudienceMemberPage</code>.
    *
-   * @param previousPage     the previous page
-   * @param surveyAudienceId the Universally Unique Identifier (UUID) used to uniquely identify the
-   *                         survey audience the survey audience member is associated with
+   * @param previousPage   the previous page
+   * @param surveyAudience the survey audience the survey audience member is associated with
    */
-  public AddSurveyAudienceMemberPage(PageReference previousPage, UUID surveyAudienceId)
+  public AddSurveyAudienceMemberPage(PageReference previousPage, SurveyAudience surveyAudience)
   {
     super("Add Audience Member");
 
     try
     {
-      Form<SurveyAudienceMember> addForm = new Form<>("addForm", new CompoundPropertyModel<>(new Model<>(
-        new SurveyAudienceMember(UUID.randomUUID(), surveyAudienceId, "", "", ""))));
+      Form<SurveyAudienceMember> addForm = new Form<>("addForm", new CompoundPropertyModel<>(
+          new Model<>(new SurveyAudienceMember(UUID.randomUUID(), surveyAudience, "", "", ""))));
 
       addForm.add(new SurveyAudienceMemberInputPanel("surveyAudienceMember"));
 

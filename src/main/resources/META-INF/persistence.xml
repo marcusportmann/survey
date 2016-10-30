@@ -6,6 +6,7 @@
   <persistence-unit name="Application" transaction-type="JTA">
     <jta-data-source>java:app/jdbc/ApplicationDataSource</jta-data-source>
 
+    <class>guru.mmp.application.security.Organisation</class>
     <class>digital.survey.model.SurveyDefinition</class>
     <class>digital.survey.model.SurveyInstance</class>
     <class>digital.survey.model.SurveyRequest</class>

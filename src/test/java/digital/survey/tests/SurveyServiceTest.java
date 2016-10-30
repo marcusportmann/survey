@@ -14,6 +14,9 @@ package digital.survey.tests;
 //~--- non-JDK imports --------------------------------------------------------
 
 import digital.survey.model.*;
+import guru.mmp.application.security.ISecurityService;
+import guru.mmp.application.security.Organisation;
+import guru.mmp.application.security.OrganisationStatus;
 import guru.mmp.application.test.ApplicationClassRunner;
 import guru.mmp.application.test.ApplicationDataSourceSQLResource;
 import org.junit.Test;
@@ -41,6 +44,8 @@ public class SurveyServiceTest
 {
   @Inject
   private ISurveyService surveyService;
+  @Inject
+  private ISecurityService securityService;
 
   // TODO ADD METHODS TO TEST BOTH TYPES OF DELETE
 
@@ -50,7 +55,7 @@ public class SurveyServiceTest
   @Test
   public void getCTOValuesSurveyDefinitionTest()
   {
-    SurveyDefinition surveyDefinition = getCTOValuesSurveyDefinition();
+    SurveyDefinition surveyDefinition = getCTOValuesSurveyDefinitionDetails();
 
     SurveyInstance surveyInstance = new SurveyInstance(UUID.fromString(
         "b222aa15-715f-4752-923d-8f33ee8a1736"), "CTO ELT Values Survey - September 2016",
@@ -75,12 +80,18 @@ public class SurveyServiceTest
 
   /**
    * Test the remove survey group definition member functionality.
+   *
+   * @throws Exception
    */
   @Test
   public void removeSurveyGroupDefinitionMemberTest()
     throws Exception
   {
-    SurveyDefinition surveyDefinition = getTestSurveyDefinition();
+    Organisation organisation = getTestOrganisationDetails();
+
+    securityService.createOrganisation(organisation, true);
+
+    SurveyDefinition surveyDefinition = getTestSurveyDefinitionDetails(organisation);
 
     surveyDefinition = surveyService.saveSurveyDefinition(surveyDefinition);
 
@@ -104,12 +115,18 @@ public class SurveyServiceTest
 
   /**
    * Test the remove survey group rating item definition functionality.
+   *
+   * @throws Exception
    */
   @Test
   public void removeSurveyGroupDefinitionRatingItem()
     throws Exception
   {
-    SurveyDefinition surveyDefinition = getTestSurveyDefinition();
+    Organisation organisation = getTestOrganisationDetails();
+
+    securityService.createOrganisation(organisation, true);
+
+    SurveyDefinition surveyDefinition = getTestSurveyDefinitionDetails(organisation);
 
     surveyDefinition = surveyService.saveSurveyDefinition(surveyDefinition);
 
@@ -130,12 +147,18 @@ public class SurveyServiceTest
 
   /**
    * Test the remove survey group definition functionality.
+   *
+   * @throws Exception
    */
   @Test
   public void removeSurveyGroupDefinitionTest()
     throws Exception
   {
-    SurveyDefinition surveyDefinition = getTestSurveyDefinition();
+    Organisation organisation = getTestOrganisationDetails();
+
+    securityService.createOrganisation(organisation, true);
+
+    SurveyDefinition surveyDefinition = getTestSurveyDefinitionDetails(organisation);
 
     surveyDefinition = surveyService.saveSurveyDefinition(surveyDefinition);
 
@@ -158,16 +181,18 @@ public class SurveyServiceTest
 
   /**
    * Test the save CTO Values survey response functionality.
+   *
+   * @throws Exception
    */
   @Test
   public void saveCTOValuesSurveyResponseTest()
     throws Exception
   {
-    SurveyDefinition surveyDefinition = getCTOValuesSurveyDefinition();
+    SurveyDefinition surveyDefinition = getCTOValuesSurveyDefinitionDetails();
 
     surveyDefinition = surveyService.saveSurveyDefinition(surveyDefinition);
 
-    SurveyInstance surveyInstance = getCTOValuesSurveyInstance(surveyDefinition);
+    SurveyInstance surveyInstance = getCTOValuesSurveyInstanceDetails(surveyDefinition);
 
     surveyInstance = surveyService.saveSurveyInstance(surveyInstance);
 
@@ -189,12 +214,18 @@ public class SurveyServiceTest
 
   /**
    * Test the save new survey definition functionality.
+   *
+   * @throws Exception
    */
   @Test
   public void saveNewSurveyDefinitionTest()
     throws Exception
   {
-    SurveyDefinition surveyDefinition = getTestSurveyDefinition();
+    Organisation organisation = getTestOrganisationDetails();
+
+    securityService.createOrganisation(organisation, true);
+
+    SurveyDefinition surveyDefinition = getTestSurveyDefinitionDetails(organisation);
 
     surveyDefinition = surveyService.saveSurveyDefinition(surveyDefinition);
 
@@ -208,18 +239,24 @@ public class SurveyServiceTest
 
   /**
    * Test the save new survey definition version functionality.
+   *
+   * @throws Exception
    */
   @Test
   public void saveNewSurveyDefinitionVersionTest()
     throws Exception
   {
-    SurveyDefinition surveyDefinition = getTestSurveyDefinition();
+    Organisation organisation = getTestOrganisationDetails();
+
+    securityService.createOrganisation(organisation, true);
+
+    SurveyDefinition surveyDefinition = getTestSurveyDefinitionDetails(organisation);
 
     SurveyDefinition savedSurveyDefinition = surveyService.saveSurveyDefinition(surveyDefinition);
 
     compareSurveyDefinitions(surveyDefinition, savedSurveyDefinition);
 
-    SurveyInstance surveyInstance = getTestSurveyInstance(surveyDefinition);
+    SurveyInstance surveyInstance = getTestSurveyInstanceDetails(surveyDefinition);
 
     surveyInstance = surveyService.saveSurveyInstance(surveyInstance);
 
@@ -238,47 +275,48 @@ public class SurveyServiceTest
     assertEquals("The version number for the updated survey definition is incorrect", 2,
         surveyService.getLatestVersionNumberForSurveyDefinition(surveyDefinition.getId()));
 
-    retrievedSurveyDefinition = surveyService.getLatestVersionForSurveyDefinition(
-        surveyDefinition.getId());
+    List<SurveyDefinitionSummary> retrievedSurveyDefinitionSummaries =
+        surveyService.getSurveyDefinitionSummariesForOrganisation(organisation.getId());
 
-    compareSurveyDefinitions(savedSurveyDefinition, retrievedSurveyDefinition);
-
-    List<SurveyDefinition> retrievedSurveyDefinitions =
-        surveyService.getLatestSurveyDefinitionsForOrganisation(
-        surveyDefinition.getOrganisationId());
-
-    for (SurveyDefinition tmpSurveyDefinition : retrievedSurveyDefinitions)
+    for (SurveyDefinitionSummary tmpSurveyDefinitionSummary : retrievedSurveyDefinitionSummaries)
     {
-      if (tmpSurveyDefinition.getId().equals(surveyDefinition.getId()))
+      if (tmpSurveyDefinitionSummary.getId().equals(surveyDefinition.getId()))
       {
-        compareSurveyDefinitions(savedSurveyDefinition, tmpSurveyDefinition);
+        assertEquals("The ID for the survey definition summary is incorrect",
+            savedSurveyDefinition.getId(), tmpSurveyDefinitionSummary.getId());
+        assertEquals("The name for the survey definition summary is incorrect",
+            savedSurveyDefinition.getName(), tmpSurveyDefinitionSummary.getName());
+        assertEquals("The version for the survey definition summary is incorrect",
+            savedSurveyDefinition.getVersion(), tmpSurveyDefinitionSummary.getVersion());
       }
     }
 
     assertEquals("The number of latest survey definitions for the organisation is incorrect",
-        retrievedSurveyDefinitions.size(),
-        surveyService.getNumberOfLatestSurveyDefinitionsForOrganisation(
-        surveyDefinition.getOrganisationId()));
-
-    retrievedSurveyDefinitions = surveyService.getFilteredLatestSurveyDefinitionsForOrganisation(
-        surveyDefinition.getOrganisationId(), surveyDefinition.getName());
+        retrievedSurveyDefinitionSummaries.size(),
+        surveyService.getNumberOfSurveyDefinitionsForOrganisation(organisation.getId()));
 
     assertEquals(
         "The number of filtered latest survey definitions for the organisation is incorrect", 1,
-        retrievedSurveyDefinitions.size());
+        surveyService.getNumberOfFilteredSurveyDefinitionsForOrganisation(organisation.getId(),
+        surveyDefinition.getName()));
 
-    for (SurveyDefinition tmpSurveyDefinition : retrievedSurveyDefinitions)
+    retrievedSurveyDefinitionSummaries =
+        surveyService.getFilteredSurveyDefinitionSummariesForOrganisation(organisation.getId(),
+        surveyDefinition.getName());
+
+    for (SurveyDefinitionSummary tmpSurveyDefinitionSummary : retrievedSurveyDefinitionSummaries)
     {
-      if (tmpSurveyDefinition.getId().equals(surveyDefinition.getId()))
+      if (tmpSurveyDefinitionSummary.getId().equals(surveyDefinition.getId()))
       {
-        compareSurveyDefinitions(savedSurveyDefinition, tmpSurveyDefinition);
+        assertEquals("The ID for the filtered survey definition summary is incorrect",
+            savedSurveyDefinition.getId(), tmpSurveyDefinitionSummary.getId());
+        assertEquals("The name for the filtered survey definition summary is incorrect",
+            savedSurveyDefinition.getName(), tmpSurveyDefinitionSummary.getName());
+        assertEquals("The version for filtered the survey definition summary is incorrect",
+            savedSurveyDefinition.getVersion(), tmpSurveyDefinitionSummary.getVersion());
+
       }
     }
-
-    assertEquals(
-        "The number of filtered latest survey definitions for the organisation is incorrect", 1,
-        surveyService.getNumberOfFilteredLatestSurveyDefinitionsForOrganisation(
-        surveyDefinition.getOrganisationId(), surveyDefinition.getName()));
 
     surveyService.deleteSurveyInstance(surveyInstance);
 
@@ -287,12 +325,18 @@ public class SurveyServiceTest
 
   /**
    * Test the save updated survey definition functionality.
+   *
+   * @throws Exception
    */
   @Test
   public void saveUpdatedSurveyDefinitionTest()
     throws Exception
   {
-    SurveyDefinition surveyDefinition = getTestSurveyDefinition();
+    Organisation organisation = getTestOrganisationDetails();
+
+    securityService.createOrganisation(organisation, true);
+
+    SurveyDefinition surveyDefinition = getTestSurveyDefinitionDetails(organisation);
 
     surveyDefinition = surveyService.saveSurveyDefinition(surveyDefinition);
 
@@ -314,12 +358,18 @@ public class SurveyServiceTest
   /**
    * Test the survey audience functionality.
    *
+   *
+   * @throws Exception
    */
   @Test
   public void surveyAudienceTest()
     throws Exception
   {
-    SurveyAudience surveyAudience = getTestSurveyAudience();
+    Organisation organisation = getTestOrganisationDetails();
+
+    securityService.createOrganisation(organisation, true);
+
+    SurveyAudience surveyAudience = getTestSurveyAudienceDetails(organisation);
 
     surveyAudience = surveyService.saveSurveyAudience(surveyAudience);
 
@@ -328,7 +378,8 @@ public class SurveyServiceTest
 
     compareSurveyAudiences(surveyAudience, retrievedSurveyAudience);
 
-    List<SurveyAudienceMember> surveyAudienceMembers = getTestSurveyAudienceMembers(surveyAudience);
+    List<SurveyAudienceMember> surveyAudienceMembers = getTestSurveyAudienceMembersDetails(
+        surveyAudience);
 
     for (SurveyAudienceMember surveyAudienceMember : surveyAudienceMembers)
     {
@@ -336,9 +387,8 @@ public class SurveyServiceTest
     }
 
     assertEquals("Failed to retrieve the correct number of survey audiences for the organisation ("
-        + surveyAudience.getOrganisationId() + ")", 1,
-        surveyService.getNumberOfSurveyAudiencesForOrganisation(
-        surveyAudience.getOrganisationId()));
+        + organisation.getId() + ")", 1, surveyService.getNumberOfSurveyAudiencesForOrganisation(
+        organisation.getId()));
 
     assertEquals(
         "Failed to retrieve the correct number of survey audience members for the survey audience ("
@@ -347,12 +397,12 @@ public class SurveyServiceTest
 
     assertEquals(
         "Failed to retrieve the correct number of filtered survey audiences for the organisation ("
-        + surveyAudience.getOrganisationId() + ")", 1,
-        surveyService.getNumberOfFilteredSurveyAudiencesForOrganisation(
-        surveyAudience.getOrganisationId(), "Test"));
+        + organisation.getId() + ")", 1,
+        surveyService.getNumberOfFilteredSurveyAudiencesForOrganisation(organisation.getId(),
+        "Test"));
 
     retrievedSurveyAudience = surveyService.getFilteredSurveyAudiencesForOrganisation(
-        surveyAudience.getOrganisationId(), "Test").get(0);
+        organisation.getId(), "Test").get(0);
 
     compareSurveyAudiences(surveyAudience, retrievedSurveyAudience);
 
@@ -369,8 +419,7 @@ public class SurveyServiceTest
     compareSurveyAudienceMembers(surveyAudienceMembers.get(0), retrievedSurveyAudienceMember);
 
     SurveyAudienceMember surveyAudienceMember = new SurveyAudienceMember(UUID.randomUUID(),
-        surveyAudience.getId(), "Another Test First Name", "Another Test Last Name",
-        "Another Test E-mail");
+        surveyAudience, "Another Test First Name", "Another Test Last Name", "Another Test E-mail");
 
     surveyService.saveSurveyAudienceMember(surveyAudienceMember);
 
@@ -379,20 +428,26 @@ public class SurveyServiceTest
 
   /**
    * Test the survey request functionality.
+   *
+   * @throws Exception
    */
   @Test
   public void surveyRequestTest()
     throws Exception
   {
-    SurveyDefinition surveyDefinition = getTestSurveyDefinition();
+    Organisation organisation = getTestOrganisationDetails();
+
+    securityService.createOrganisation(organisation, true);
+
+    SurveyDefinition surveyDefinition = getTestSurveyDefinitionDetails(organisation);
 
     surveyDefinition = surveyService.saveSurveyDefinition(surveyDefinition);
 
-    SurveyInstance surveyInstance = getTestSurveyInstance(surveyDefinition);
+    SurveyInstance surveyInstance = getTestSurveyInstanceDetails(surveyDefinition);
 
     surveyInstance = surveyService.saveSurveyInstance(surveyInstance);
 
-    SurveyRequest surveyRequest = getTestSurveyRequest(surveyInstance);
+    SurveyRequest surveyRequest = getTestSurveyRequestDetails(surveyInstance);
 
     surveyRequest = surveyService.saveSurveyRequest(surveyRequest);
 
@@ -432,22 +487,28 @@ public class SurveyServiceTest
 
   /**
    * Test the survey response functionality.
+   *
+   * @throws Exception
    */
   @Test
   public void surveyResponseTest()
     throws Exception
   {
-    SurveyDefinition surveyDefinition = getTestSurveyDefinition();
+    Organisation organisation = getTestOrganisationDetails();
+
+    securityService.createOrganisation(organisation, true);
+
+    SurveyDefinition surveyDefinition = getTestSurveyDefinitionDetails(organisation);
 
     surveyDefinition = surveyService.saveSurveyDefinition(surveyDefinition);
 
     surveyDefinition = surveyService.getSurveyDefinition(surveyDefinition.getId(), 1);
 
-    SurveyInstance surveyInstance = getTestSurveyInstance(surveyDefinition);
+    SurveyInstance surveyInstance = getTestSurveyInstanceDetails(surveyDefinition);
 
     surveyInstance = surveyService.saveSurveyInstance(surveyInstance);
 
-    SurveyRequest surveyRequest = getTestSurveyRequest(surveyInstance);
+    SurveyRequest surveyRequest = getTestSurveyRequestDetails(surveyInstance);
 
     surveyRequest = surveyService.saveSurveyRequest(surveyRequest);
 
@@ -504,11 +565,15 @@ public class SurveyServiceTest
         surveyDefinition.getId(), surveyDefinition.getVersion()));
   }
 
-  private static synchronized SurveyDefinition getCTOValuesSurveyDefinition()
+  private static synchronized SurveyDefinition getCTOValuesSurveyDefinitionDetails()
   {
+    Organisation organisation = new Organisation(UUID.fromString(
+        "d077425e-c75f-4dd8-9d62-81f2d26b8a62"), "BAGL - Africa Technology - CTO",
+        OrganisationStatus.ACTIVE);
+
     SurveyDefinition surveyDefinition = new SurveyDefinition(UUID.fromString(
-        "706fb4a4-8ba8-11e6-ae22-56b6b6499611"), 1, UUID.fromString(
-        "c1685b92-9fe5-453a-995b-89d8c0f29cb5"), "CTO ELT Values Survey", "CTO ELT Values Survey");
+        "706fb4a4-8ba8-11e6-ae22-56b6b6499611"), 1, organisation, "CTO ELT Values Survey",
+        "CTO ELT Values Survey");
 
     SurveyGroupDefinition surveyGroupDefinition = new SurveyGroupDefinition(UUID.randomUUID(),
         "CTO ELT", "CTO ELT");
@@ -592,7 +657,7 @@ public class SurveyServiceTest
     return surveyDefinition;
   }
 
-  private static synchronized SurveyInstance getCTOValuesSurveyInstance(
+  private static synchronized SurveyInstance getCTOValuesSurveyInstanceDetails(
       SurveyDefinition surveyDefinition)
   {
     SurveyInstance surveyInstance = new SurveyInstance(UUID.randomUUID(),
@@ -601,34 +666,44 @@ public class SurveyServiceTest
     return surveyInstance;
   }
 
-  private static synchronized SurveyAudience getTestSurveyAudience()
+  private static synchronized Organisation getTestOrganisationDetails()
   {
-    SurveyAudience surveyAudience = new SurveyAudience(UUID.randomUUID(), UUID.fromString(
-        "c1685b92-9fe5-453a-995b-89d8c0f29cb5"), "Test Survey Audience", "");
+    UUID id = UUID.randomUUID();
+
+    Organisation organisation = new Organisation(id, "Test Organisation (" + id + ")",
+        OrganisationStatus.ACTIVE);
+
+    return organisation;
+  }
+
+  private static synchronized SurveyAudience getTestSurveyAudienceDetails(Organisation organisation)
+  {
+    SurveyAudience surveyAudience = new SurveyAudience(UUID.randomUUID(), organisation,
+        "Test Survey Audience", "");
 
     return surveyAudience;
   }
 
-  private static synchronized List<SurveyAudienceMember> getTestSurveyAudienceMembers(
+  private static synchronized List<SurveyAudienceMember> getTestSurveyAudienceMembersDetails(
       SurveyAudience surveyAudience)
   {
     List<SurveyAudienceMember> surveyAudienceMembers = new ArrayList<>();
 
-    surveyAudienceMembers.add(new SurveyAudienceMember(UUID.randomUUID(), surveyAudience.getId(),
+    surveyAudienceMembers.add(new SurveyAudienceMember(UUID.randomUUID(), surveyAudience,
         "Test First Name 1", "Test Last Name 1", "Test Email 1"));
-    surveyAudienceMembers.add(new SurveyAudienceMember(UUID.randomUUID(), surveyAudience.getId(),
+    surveyAudienceMembers.add(new SurveyAudienceMember(UUID.randomUUID(), surveyAudience,
         "Test First Name 2", "Test Last Name 2", "Test Email 2"));
-    surveyAudienceMembers.add(new SurveyAudienceMember(UUID.randomUUID(), surveyAudience.getId(),
+    surveyAudienceMembers.add(new SurveyAudienceMember(UUID.randomUUID(), surveyAudience,
         "Test First Name 3", "Test Last Name 3", "Test Email 3"));
 
     return surveyAudienceMembers;
   }
 
-  private static synchronized SurveyDefinition getTestSurveyDefinition()
+  private static synchronized SurveyDefinition getTestSurveyDefinitionDetails(
+      Organisation organisation)
   {
-    SurveyDefinition surveyDefinition = new SurveyDefinition(UUID.randomUUID(), 1, UUID.fromString(
-        "c1685b92-9fe5-453a-995b-89d8c0f29cb5"), "Test Survey Template Name",
-        "Test Survey Template Description");
+    SurveyDefinition surveyDefinition = new SurveyDefinition(UUID.randomUUID(), 1, organisation,
+        "Test Survey Template Name", "Test Survey Template Description");
 
     SurveySectionDefinition surveySectionDefinition1 = new SurveySectionDefinition(
         UUID.randomUUID(), "Test Survey Section Definition Name 1",
@@ -681,7 +756,7 @@ public class SurveyServiceTest
     return surveyDefinition;
   }
 
-  private static synchronized SurveyInstance getTestSurveyInstance(
+  private static synchronized SurveyInstance getTestSurveyInstanceDetails(
       SurveyDefinition surveyDefinition)
   {
     SurveyInstance surveyInstance = new SurveyInstance(UUID.randomUUID(), "Test Survey Instance",
@@ -690,7 +765,8 @@ public class SurveyServiceTest
     return surveyInstance;
   }
 
-  private static synchronized SurveyRequest getTestSurveyRequest(SurveyInstance surveyInstance)
+  private static synchronized SurveyRequest getTestSurveyRequestDetails(
+      SurveyInstance surveyInstance)
   {
     SurveyRequest surveyRequest = new SurveyRequest(UUID.randomUUID(), surveyInstance, "Marcus",
         "Portmann", "marcus@mmp.guru");

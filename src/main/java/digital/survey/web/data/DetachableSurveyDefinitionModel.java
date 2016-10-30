@@ -13,10 +13,10 @@ package digital.survey.web.data;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import guru.mmp.application.web.WebApplicationException;
-import guru.mmp.application.web.data.InjectableLoadableDetachableModel;
 import digital.survey.model.ISurveyService;
 import digital.survey.model.SurveyDefinition;
+import guru.mmp.application.web.WebApplicationException;
+import guru.mmp.application.web.data.InjectableLoadableDetachableModel;
 
 import javax.inject.Inject;
 import java.util.UUID;
@@ -27,12 +27,11 @@ import java.util.UUID;
  * The <code>DetachableSurveyDefinitionModel</code> class provides a detachable model
  * implementation for the <code>SurveyDefinition</code> model class.
  *
- * This detachable model implementation retrieves the latest version of a particular survey
- * definition.
+ * This detachable model implementation retrieves a version of a particular survey definition.
  *
  * @author Marcus Portmann
  */
-public class DetachableLatestSurveyDefinitionModel
+public class DetachableSurveyDefinitionModel
     extends InjectableLoadableDetachableModel<SurveyDefinition>
 {
   private static final long serialVersionUID = 1000000;
@@ -42,9 +41,15 @@ public class DetachableLatestSurveyDefinitionModel
   private ISurveyService surveyService;
 
   /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the survey definition.
+   * The Universally Unique Identifier (UUID) used to, along with the version of the survey
+   * definition, uniquely identify the survey definition.
    */
   private UUID id;
+
+  /**
+   * The version of the survey definition.
+   */
+  private int version;
 
   /**
    * Constructs a new <code>DetachableSurveyDefinitionModel</code>.
@@ -52,16 +57,16 @@ public class DetachableLatestSurveyDefinitionModel
    * Hidden default constructor to support CDI.
    */
   @SuppressWarnings("unused")
-  protected DetachableLatestSurveyDefinitionModel() {}
+  protected DetachableSurveyDefinitionModel() {}
 
   /**
    * Constructs a new <code>DetachableSurveyDefinitionModel</code>.
    *
    * @param surveyDefinition the <code>SurveyDefinition</code> instance
    */
-  public DetachableLatestSurveyDefinitionModel(SurveyDefinition surveyDefinition)
+  public DetachableSurveyDefinitionModel(SurveyDefinition surveyDefinition)
   {
-    this(surveyDefinition.getId());
+    this(surveyDefinition.getId(), surveyDefinition.getVersion());
 
     setObject(surveyDefinition);
   }
@@ -69,11 +74,14 @@ public class DetachableLatestSurveyDefinitionModel
   /**
    * Constructs a new <code>DetachableSurveyDefinitionModel</code>.
    *
-   * @param id
+   * @param id      the Universally Unique Identifier (UUID) used to, along with the version of the
+   *                survey definition, uniquely identify the survey definition
+   * @param version the version of the survey definition
    */
-  public DetachableLatestSurveyDefinitionModel(UUID id)
+  public DetachableSurveyDefinitionModel(UUID id, int version)
   {
     this.id = id;
+    this.version = version;
   }
 
   /**
@@ -84,12 +92,12 @@ public class DetachableLatestSurveyDefinitionModel
   {
     try
     {
-      return surveyService.getLatestVersionForSurveyDefinition(id);
+      return surveyService.getSurveyDefinition(id, version);
     }
     catch (Throwable e)
     {
       throw new WebApplicationException(String.format(
-          "Failed to load the latest version of the survey definition (%s)", id), e);
+          "Failed to load the version (%d) of the survey definition (%s)", version, id), e);
     }
   }
 

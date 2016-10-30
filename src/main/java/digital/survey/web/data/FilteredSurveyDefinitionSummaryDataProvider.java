@@ -14,7 +14,7 @@ package digital.survey.web.data;
 //~--- non-JDK imports --------------------------------------------------------
 
 import digital.survey.model.ISurveyService;
-import digital.survey.model.SurveyDefinition;
+import digital.survey.model.SurveyDefinitionSummary;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.data.InjectableDataProvider;
 import guru.mmp.common.util.StringUtil;
@@ -28,16 +28,16 @@ import java.util.UUID;
 //~--- JDK imports ------------------------------------------------------------
 
 /**
- * The <code>FilteredLatestSurveyDefinitionDataProvider</code> class provides an
- * <code>IDataProvider</code> implementation that retrieves <code>SurveyDefinition</code> instances
- * from the database.
+ * The <code>FilteredLatestSurveyDefinitionSummaryDataProvider</code> class provides an
+ * <code>IDataProvider</code> implementation that retrieves <code>SurveyDefinitionSummary</code>
+ * instances from the database.
  *
- * This data provider retrieves the latest versions of the survey definition.
+ * This data provider retrieves the summaries for the latest versions of the survey definitions.
  *
  * @author Marcus Portmann
  */
-public class FilteredLatestSurveyDefinitionDataProvider
-    extends InjectableDataProvider<SurveyDefinition>
+public class FilteredSurveyDefinitionSummaryDataProvider
+    extends InjectableDataProvider<SurveyDefinitionSummary>
 {
   private static final long serialVersionUID = 1000000;
 
@@ -57,20 +57,20 @@ public class FilteredLatestSurveyDefinitionDataProvider
   private String filter;
 
   /**
-   * Constructs a new <code>FilteredLatestSurveyDefinitionDataProvider</code>.
+   * Constructs a new <code>FilteredLatestSurveyDefinitionSummaryDataProvider</code>.
    * <p/>
    * Hidden default constructor to support CDI.
    */
   @SuppressWarnings("unused")
-  protected FilteredLatestSurveyDefinitionDataProvider() {}
+  protected FilteredSurveyDefinitionSummaryDataProvider() {}
 
   /**
-   * Constructs a new <code>FilteredLatestSurveyDefinitionDataProvider</code>.
+   * Constructs a new <code>FilteredLatestSurveyDefinitionSummaryDataProvider</code>.
    *
    * @param organisationId the Universally Unique Identifier (UUID) used to uniquely identify the
    *                       organisation the survey definitions are associated with
    */
-  public FilteredLatestSurveyDefinitionDataProvider(UUID organisationId)
+  public FilteredSurveyDefinitionSummaryDataProvider(UUID organisationId)
   {
     this.organisationId = organisationId;
   }
@@ -102,38 +102,38 @@ public class FilteredLatestSurveyDefinitionDataProvider
    *
    * @see org.apache.wicket.markup.repeater.data.IDataProvider#iterator(long, long)
    */
-  public Iterator<SurveyDefinition> iterator(long first, long count)
+  public Iterator<SurveyDefinitionSummary> iterator(long first, long count)
   {
     try
     {
-      List<SurveyDefinition> allSurveyDefinitions = StringUtil.isNullOrEmpty(filter)
-          ? surveyService.getLatestSurveyDefinitionsForOrganisation(organisationId)
-          : surveyService.getFilteredLatestSurveyDefinitionsForOrganisation(organisationId, filter);
+      List<SurveyDefinitionSummary> allSurveyDefinitionSummarys = StringUtil.isNullOrEmpty(filter)
+          ? surveyService.getSurveyDefinitionSummariesForOrganisation(organisationId)
+          : surveyService.getFilteredSurveyDefinitionSummariesForOrganisation(organisationId,
+              filter);
 
-      return allSurveyDefinitions.subList((int) first, (int) Math.min(first + count,
-          allSurveyDefinitions.size())).iterator();
+      return allSurveyDefinitionSummarys.subList((int) first, (int) Math.min(first + count,
+          allSurveyDefinitionSummarys.size())).iterator();
     }
     catch (Throwable e)
     {
       throw new WebApplicationException(String.format(
-          "Failed to load the filtered latest survey definitions"
-          + " for the organisation (%s) from index (%d) to (%d)", organisationId, first, first
-          + count - 1), e);
+          "Failed to load the summaries for the survey definitions for the organisation (%s) from"
+          + " index (%d) to (%d)", organisationId, first, first + count - 1), e);
     }
   }
 
   /**
-   * Wraps the retrieved <code>SurveyDefinition</code> POJO with a Wicket model.
+   * Wraps the retrieved <code>SurveyDefinitionSummary</code> POJO with a Wicket model.
    *
-   * @param surveyDefinition the <code>SurveyDefinition</code> instance to wrap
+   * @param surveyDefinition the <code>SurveyDefinitionSummary</code> instance to wrap
    *
-   * @return the Wicket model wrapping the <code>SurveyDefinition</code> instance
+   * @return the Wicket model wrapping the <code>SurveyDefinitionSummary</code> instance
    *
    * @see org.apache.wicket.markup.repeater.data.IDataProvider#model(java.lang.Object)
    */
-  public IModel<SurveyDefinition> model(SurveyDefinition surveyDefinition)
+  public IModel<SurveyDefinitionSummary> model(SurveyDefinitionSummary surveyDefinition)
   {
-    return new DetachableLatestSurveyDefinitionModel(surveyDefinition);
+    return new DetachableSurveyDefinitionSummaryModel(surveyDefinition);
   }
 
   /**
@@ -158,14 +158,14 @@ public class FilteredLatestSurveyDefinitionDataProvider
     try
     {
       return StringUtil.isNullOrEmpty(filter)
-          ? surveyService.getNumberOfLatestSurveyDefinitionsForOrganisation(organisationId)
-          : surveyService.getNumberOfFilteredLatestSurveyDefinitionsForOrganisation(organisationId,
+          ? surveyService.getNumberOfSurveyDefinitionsForOrganisation(organisationId)
+          : surveyService.getNumberOfFilteredSurveyDefinitionsForOrganisation(organisationId,
               filter);
     }
     catch (Throwable e)
     {
-      throw new WebApplicationException(String.format("Failed to retrieve the number of filtered"
-          + " latest survey definitions for the organisation (%s)", organisationId), e);
+      throw new WebApplicationException(String.format("Failed to retrieve the number of survey"
+          + " definitions for the organisation (%s)", organisationId), e);
     }
   }
 }

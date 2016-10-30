@@ -22,7 +22,9 @@ import digital.survey.model.ISurveyService;
 import digital.survey.model.SurveyAudience;
 import digital.survey.web.SurveySecurity;
 import digital.survey.web.components.SurveyAudienceInputPanel;
+import guru.mmp.application.security.Organisation;
 import guru.mmp.application.web.WebApplicationException;
+import guru.mmp.application.web.WebSession;
 import guru.mmp.application.web.pages.WebPageSecurity;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
 import org.apache.wicket.PageReference;
@@ -59,18 +61,18 @@ public class AddSurveyAudiencePage extends TemplateWebPage
   /**
    * Constructs a new <code>AddSurveyAudiencePage</code>.
    *
-   * @param previousPage   the previous page
-   * @param organisationId the Universally Unique Identifier (UUID) used to uniquely identify the
-   *                       organisation the survey audience is associated with
+   * @param previousPage the previous page
    */
-  public AddSurveyAudiencePage(PageReference previousPage, UUID organisationId)
+  public AddSurveyAudiencePage(PageReference previousPage)
   {
     super("Add Audience");
 
     try
     {
+      WebSession webSession = getWebApplicationSession();
+
       Form<SurveyAudience> addForm = new Form<>("addForm", new CompoundPropertyModel<>(new Model<>(
-          new SurveyAudience(UUID.randomUUID(), organisationId, "", ""))));
+          new SurveyAudience(UUID.randomUUID(), webSession.getOrganisation(), "", ""))));
 
       addForm.add(new SurveyAudienceInputPanel("surveyAudience", false));
 

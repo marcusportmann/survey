@@ -13,6 +13,7 @@ package digital.survey.web.pages;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import digital.survey.model.SurveyAudience;
 import digital.survey.model.SurveyAudienceMember;
 import digital.survey.web.SurveySecurity;
 import guru.mmp.application.web.WebApplicationException;
@@ -67,15 +68,12 @@ public class SurveyAudienceMemberAdministrationPage extends TemplateWebPage
   /**
    * Constructs a new <code>SurveyAudienceMemberAdministrationPage</code>.
    *
-   * @param previousPage     the previous page
-   * @param surveyAudienceId   the Universally Unique Identifier (UUID) used to uniquely identify
-   *                           the survey audience the survey audience members are associated with
-   * @param surveyAudienceName the name of the survey audience
+   * @param previousPage   the previous page
+   * @param surveyAudience the survey audience the survey audience members are associated with
    */
-  public SurveyAudienceMemberAdministrationPage(PageReference previousPage, UUID surveyAudienceId,
-      String surveyAudienceName)
+  public SurveyAudienceMemberAdministrationPage(PageReference previousPage, SurveyAudience surveyAudience)
   {
-    super("Audience Members", surveyAudienceName);
+    super("Audience Members", surveyAudience.getName());
 
     try
     {
@@ -101,13 +99,13 @@ public class SurveyAudienceMemberAdministrationPage extends TemplateWebPage
         @Override
         public void onClick()
         {
-          setResponsePage(new AddSurveyAudienceMemberPage(getPageReference(), surveyAudienceId));
+          setResponsePage(new AddSurveyAudienceMemberPage(getPageReference(), surveyAudience));
         }
       };
       tableContainer.add(addLink);
 
       FilteredSurveyAudienceMemberDataProvider dataProvider =
-          new FilteredSurveyAudienceMemberDataProvider(surveyAudienceId);
+          new FilteredSurveyAudienceMemberDataProvider(surveyAudience.getId());
 
       // The "filterForm" form
       Form<Void> filterForm = new Form<>("filterForm");
@@ -178,10 +176,10 @@ public class SurveyAudienceMemberAdministrationPage extends TemplateWebPage
             @Override
             public void onClick()
             {
-//            UpdateSurveyAudienceMemberPage page = new UpdateSurveyAudienceMemberPage(
-//              getPageReference(), item.getModel());
-//
-//            setResponsePage(page);
+              UpdateSurveyAudienceMemberPage page = new UpdateSurveyAudienceMemberPage(
+                getPageReference(), item.getModel());
+
+              setResponsePage(page);
             }
           };
           item.add(updateLink);

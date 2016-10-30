@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import guru.mmp.application.security.Organisation;
 
 import javax.persistence.*;
 import java.io.*;
@@ -64,14 +65,6 @@ public class SurveyDefinition
   private String name;
 
   /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the organisation the survey
-   * definition is associated with.
-   */
-  @Column(name = "ORGANISATION_ID", nullable = false)
-  @JsonProperty
-  private UUID organisationId;
-
-  /**
    * The description for the survey definition.
    */
   @Column(name = "DESCRIPTION", nullable = false)
@@ -100,6 +93,14 @@ public class SurveyDefinition
   private List<SurveyGroupRatingItemDefinition> groupRatingItemDefinitions;
 
   /**
+   * The organisation this survey definition is associated with.
+   */
+  @SuppressWarnings("unused")
+  @ManyToOne
+  @JoinColumn(name = "ORGANISATION_ID", referencedColumnName = "ID")
+  protected Organisation organisation;
+
+  /**
    * Constructs a new <code>SurveyDefinition</code>.
    *
    * Default constructor required for JPA.
@@ -110,20 +111,19 @@ public class SurveyDefinition
   /**
    * Constructs a new <code>SurveyDefinition</code>.
    *
-   * @param id             the Universally Unique Identifier (UUID) used to, along with the version
-   *                       of the survey definition, uniquely identify the survey definition
-   * @param version        the version of the survey definition
-   * @param organisationId the Universally Unique Identifier (UUID) used to uniquely identify the
-   *                       organisation the survey definition is associated with
-   * @param name           the name of the survey definition
-   * @param description    the description for the survey definition
+   * @param id           the Universally Unique Identifier (UUID) used to, along with the version
+   *                     of the survey definition, uniquely identify the survey definition
+   * @param version      the version of the survey definition
+   * @param organisation the organisation this survey definition is associated with
+   * @param name         the name of the survey definition
+   * @param description  the description for the survey definition
    */
-  public SurveyDefinition(UUID id, int version, UUID organisationId, String name,
+  public SurveyDefinition(UUID id, int version, Organisation organisation, String name,
       String description)
   {
     this.id = id;
     this.version = version;
-    this.organisationId = organisationId;
+    this.organisation = organisation;
     this.name = name;
     this.description = description;
     this.sectionDefinitions = new ArrayList<>();
@@ -333,18 +333,6 @@ public class SurveyDefinition
   public String getName()
   {
     return name;
-  }
-
-  /**
-   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the organisation the
-   * survey definition is associated with.
-   *
-   * @return the Universally Unique Identifier (UUID) used to uniquely identify the organisation the
-   *         survey definition is associated with
-   */
-  public UUID getOrganisationId()
-  {
-    return organisationId;
   }
 
   /**

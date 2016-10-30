@@ -13,16 +13,16 @@ package digital.survey.web.pages;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import digital.survey.model.ISurveyService;
+import digital.survey.model.SurveyDefinitionSummary;
 import digital.survey.web.SurveySecurity;
+import digital.survey.web.data.FilteredSurveyDefinitionSummaryDataProvider;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.WebSession;
 import guru.mmp.application.web.pages.WebPageSecurity;
 import guru.mmp.application.web.template.components.Dialog;
 import guru.mmp.application.web.template.components.PagingNavigator;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
-import digital.survey.model.ISurveyService;
-import digital.survey.model.SurveyDefinition;
-import digital.survey.web.data.FilteredLatestSurveyDefinitionDataProvider;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -101,8 +101,8 @@ public class SurveyDefinitionAdministrationPage extends TemplateWebPage
       };
       tableContainer.add(addLink);
 
-      FilteredLatestSurveyDefinitionDataProvider dataProvider =
-          new FilteredLatestSurveyDefinitionDataProvider(organisationId);
+      FilteredSurveyDefinitionSummaryDataProvider dataProvider =
+          new FilteredSurveyDefinitionSummaryDataProvider(organisationId);
 
       // The "filterForm" form
       Form<Void> filterForm = new Form<>("filterForm");
@@ -141,13 +141,13 @@ public class SurveyDefinitionAdministrationPage extends TemplateWebPage
       tableContainer.add(filterForm);
 
       // The survey definition data view
-      DataView<SurveyDefinition> dataView = new DataView<SurveyDefinition>("surveyDefinition",
-          dataProvider)
+      DataView<SurveyDefinitionSummary> dataView = new DataView<SurveyDefinitionSummary>(
+          "surveyDefinitionSummary", dataProvider)
       {
         private static final long serialVersionUID = 1000000;
 
         @Override
-        protected void populateItem(Item<SurveyDefinition> item)
+        protected void populateItem(Item<SurveyDefinitionSummary> item)
         {
           item.add(new Label("name", new PropertyModel<String>(item.getModel(), "name")));
           item.add(new Label("version", new PropertyModel<String>(item.getModel(), "version")));
@@ -160,10 +160,10 @@ public class SurveyDefinitionAdministrationPage extends TemplateWebPage
             @Override
             public void onClick()
             {
-              SurveyDefinition surveyDefinition = item.getModelObject();
+              SurveyDefinitionSummary surveyDefinitionSummary = item.getModelObject();
 
               setResponsePage(new SurveyInstanceAdministrationPage(getPageReference(),
-                  surveyDefinition.getId(), surveyDefinition.getName()));
+                  surveyDefinitionSummary.getId(), surveyDefinitionSummary.getName()));
             }
           };
           item.add(membersLink);
@@ -194,11 +194,11 @@ public class SurveyDefinitionAdministrationPage extends TemplateWebPage
             @Override
             public void onClick(AjaxRequestTarget target)
             {
-              SurveyDefinition surveyAudience = item.getModelObject();
+              SurveyDefinitionSummary surveyDefinitionSummary = item.getModelObject();
 
-              if (surveyAudience != null)
+              if (surveyDefinitionSummary != null)
               {
-                removeDialog.show(target, surveyAudience);
+                removeDialog.show(target, surveyDefinitionSummary);
               }
               else
               {
@@ -207,7 +207,7 @@ public class SurveyDefinitionAdministrationPage extends TemplateWebPage
             }
           };
           removeLink.setVisible(session.hasAcccessToFunction(SurveySecurity
-            .FUNCTION_CODE_SURVEY_ADMINISTRATION));
+              .FUNCTION_CODE_SURVEY_ADMINISTRATION));
           item.add(removeLink);
         }
       };
@@ -268,8 +268,8 @@ public class SurveyDefinitionAdministrationPage extends TemplateWebPage
           }
           catch (Throwable e)
           {
-            logger.error(String.format("Failed to remove the survey (%s): %s", id,
-                e.getMessage()), e);
+            logger.error(String.format("Failed to remove the survey (%s): %s", id, e.getMessage()),
+                e);
 
             SurveyDefinitionAdministrationPage.this.error("Failed to remove the survey "
                 + nameLabel.getDefaultModelObjectAsString());
@@ -286,14 +286,14 @@ public class SurveyDefinitionAdministrationPage extends TemplateWebPage
     /**
      * Show the dialog using Ajax.
      *
-     * @param target           the AJAX request target
-     * @param surveyDefinition the survey definition being removed
+     * @param target                  the AJAX request target
+     * @param surveyDefinitionSummary the summary for the survey definition being removed
      */
-    void show(AjaxRequestTarget target, SurveyDefinition surveyDefinition)
+    void show(AjaxRequestTarget target, SurveyDefinitionSummary surveyDefinitionSummary)
     {
-      id = surveyDefinition.getId();
+      id = surveyDefinitionSummary.getId();
 
-      nameLabel.setDefaultModelObject(surveyDefinition.getName());
+      nameLabel.setDefaultModelObject(surveyDefinitionSummary.getName());
 
       target.add(nameLabel);
 

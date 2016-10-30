@@ -28,15 +28,15 @@ import java.util.UUID;
 //~--- JDK imports ------------------------------------------------------------
 
 /**
- * The <code>SurveyResponse</code> class implements the Survey Response entity, which represents
- * a user's response to a survey.
+ * The <code>SurveyResponseSummary</code> class implements the Survey Response Summary entity,
+ * which represents a summary for a user's response to a survey.
  *
  * @author Marcus Portmann
  */
 @Entity
 @Table(schema = "SURVEY", name = "SURVEY_RESPONSES")
 @Access(AccessType.FIELD)
-public class  SurveyResponse
+public class  SurveyResponseSummary
   implements Serializable
 {
   /**
@@ -79,30 +79,30 @@ public class  SurveyResponse
   private Date received;
 
   /**
-   * Constructs a new <code>SurveyResponse</code>.
+   * Constructs a new <code>SurveyResponseSummary</code>.
    *
    * Default constructor required for JPA.
    */
   @SuppressWarnings("unused")
-  SurveyResponse() {}
+  SurveyResponseSummary() {}
 
   /**
-   * Constructs a new <code>SurveyResponse</code>.
+   * Constructs a new <code>SurveyResponseSummary</code>.
    *
    * @param instance the survey instance this survey response is associated with
    */
-  public SurveyResponse(SurveyInstance instance)
+  public SurveyResponseSummary(SurveyInstance instance)
   {
     this(instance, null);
   }
 
   /**
-   * Constructs a new <code>SurveyResponse</code>.
+   * Constructs a new <code>SurveyResponseSummary</code>.
    *
    * @param instance the survey instance this survey response is associated with
    * @param request  the optional survey request this survey response is associated with
    */
-  public SurveyResponse(SurveyInstance instance, SurveyRequest request)
+  public SurveyResponseSummary(SurveyInstance instance, SurveyRequest request)
   {
     this.id = UUID.randomUUID();
     this.instance = instance;
@@ -111,42 +111,42 @@ public class  SurveyResponse
     this.groupRatingItemResponses = new ArrayList<>();
 
     for (SurveyGroupRatingItemDefinition groupRatingItemDefinition : instance.getDefinition()
-        .getGroupRatingItemDefinitions())
+      .getGroupRatingItemDefinitions())
     {
       SurveyGroupDefinition groupDefinition = instance.getDefinition().getGroupDefinition(
-          groupRatingItemDefinition.getGroupDefinitionId());
+        groupRatingItemDefinition.getGroupDefinitionId());
 
       for (SurveyGroupMemberDefinition groupMemberDefinition :
-          groupDefinition.getGroupMemberDefinitions())
+        groupDefinition.getGroupMemberDefinitions())
       {
         groupRatingItemResponses.add(new SurveyGroupRatingItemResponse(groupRatingItemDefinition,
-            groupMemberDefinition));
+          groupMemberDefinition));
       }
     }
   }
 
   /**
-   * Constructs a new <code>SurveyResponse</code>.
+   * Constructs a new <code>SurveyResponseSummary</code>.
    *
    * @param id       the Universally Unique Identifier (UUID) used to uniquely identify the survey
    *                 response
    * @param instance the survey instance this survey response is associated with
    */
-  public SurveyResponse(UUID id, SurveyInstance instance)
+  public SurveyResponseSummary(UUID id, SurveyInstance instance)
   {
     this.id = id;
     this.instance = instance;
   }
 
   /**
-   * Constructs a new <code>SurveyResponse</code>.
+   * Constructs a new <code>SurveyResponseSummary</code>.
    *
    * @param id       the Universally Unique Identifier (UUID) used to uniquely identify the survey
    *                 response
    * @param instance the survey instance this survey response is associated with
    * @param request  the optional survey request this survey response is associated with
    */
-  public SurveyResponse(UUID id, SurveyInstance instance, SurveyRequest request)
+  public SurveyResponseSummary(UUID id, SurveyInstance instance, SurveyRequest request)
   {
     this.id = id;
     this.instance = instance;
@@ -179,7 +179,7 @@ public class  SurveyResponse
       return false;
     }
 
-    SurveyResponse other = (SurveyResponse) obj;
+    SurveyResponseSummary other = (SurveyResponseSummary) obj;
 
     return id.equals(other.id);
   }
@@ -240,13 +240,13 @@ public class  SurveyResponse
    *         item response could not be found
    */
   public SurveyGroupRatingItemResponse getGroupRatingItemResponse(UUID groupRatingItemDefinitionId,
-      UUID groupMemberDefinitionId)
+    UUID groupMemberDefinitionId)
   {
     for (SurveyGroupRatingItemResponse groupRatingItemResponse : groupRatingItemResponses)
     {
       if ((groupRatingItemResponse.getGroupRatingItemDefinitionId().equals(
-          groupRatingItemDefinitionId))
-          && (groupRatingItemResponse.getGroupMemberDefinitionId().equals(groupMemberDefinitionId)))
+        groupRatingItemDefinitionId))
+        && (groupRatingItemResponse.getGroupMemberDefinitionId().equals(groupMemberDefinitionId)))
       {
         return groupRatingItemResponse;
       }
@@ -370,6 +370,6 @@ public class  SurveyResponse
   @Override
   public String toString()
   {
-    return String.format("SurveyResponse {id=\"%s\"}", getId());
+    return String.format("SurveyResponseSummary {id=\"%s\"}", getId());
   }
 }

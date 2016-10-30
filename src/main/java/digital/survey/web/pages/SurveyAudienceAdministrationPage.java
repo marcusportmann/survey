@@ -95,7 +95,7 @@ public class SurveyAudienceAdministrationPage extends TemplateWebPage
         @Override
         public void onClick()
         {
-          setResponsePage(new AddSurveyAudiencePage(getPageReference(), organisationId));
+          setResponsePage(new AddSurveyAudiencePage(getPageReference()));
         }
       };
       tableContainer.add(addLink);
@@ -158,13 +158,8 @@ public class SurveyAudienceAdministrationPage extends TemplateWebPage
             @Override
             public void onClick()
             {
-              SurveyAudience surveyAudience = item.getModelObject();
-
-              UUID surveyAudienceId = surveyAudience.getId();
-              String surveyAudienceName = surveyAudience.getName();
-
               setResponsePage(new SurveyAudienceMemberAdministrationPage(getPageReference(),
-                  surveyAudienceId, surveyAudienceName));
+                  item.getModelObject()));
             }
           };
           item.add(membersLink);

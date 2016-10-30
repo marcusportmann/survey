@@ -166,15 +166,20 @@ public interface ISurveyService
     throws SurveyServiceException;
 
   /**
-   * Retrieve the latest versions of the filtered survey definitions for the organisation.
+   * Retrieve the summaries for the latest versions of the filtered survey definitions for the
+   * organisation.
    *
    * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
    *               organisation
    * @param filter the filter used to limit the matching survey definitions
    *
-   * @return the latest versions of the filtered survey definitions for the organisation
+   * @return the summaries for the latest versions of the filtered survey definitions for the
+   *         organisation
+   *
+   * @throws SurveyServiceException
    */
-  List<SurveyDefinition> getFilteredLatestSurveyDefinitionsForOrganisation(UUID id, String filter)
+  List<SurveyDefinitionSummary> getFilteredSurveyDefinitionSummariesForOrganisation(UUID id,
+      String filter)
     throws SurveyServiceException;
 
   /**
@@ -238,24 +243,15 @@ public interface ISurveyService
     throws SurveyServiceException;
 
   /**
-   * Retrieve the latest versions of the survey definitions for the organisation.
+   * Retrieve the summaries for the latest versions of the survey definitions for the organisation.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
    *
-   * @return the latest versions of the survey definitions for the organisation
-   */
-  List<SurveyDefinition> getLatestSurveyDefinitionsForOrganisation(UUID id)
-    throws SurveyServiceException;
-
-  /**
-   * Retrieve the latest version for the survey definition.
+   * @return the summaries for the latest versions of the survey definitions for the organisation
    *
-   * @param id the Universally Unique Identifier (UUID) used to identify the survey definition
-   *
-   * @return the latest version for the survey definition or <code>null</code> if the survey
-   *         definition could not be found
+   * @throws SurveyServiceException
    */
-  SurveyDefinition getLatestVersionForSurveyDefinition(UUID id)
+  List<SurveyDefinitionSummary> getSurveyDefinitionSummariesForOrganisation(UUID id)
     throws SurveyServiceException;
 
   /**
@@ -281,15 +277,15 @@ public interface ISurveyService
     throws SurveyServiceException;
 
   /**
-   * Retrieve the number of latest versions of the filtered survey definitions for the organisation.
+   * Retrieve the number of filtered survey definitions for the organisation.
    *
    * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
    *               organisation
    * @param filter the filter used to limit the matching survey definitions
    *
-   * @return the number of latest versions of the filtered survey definitions for the organisation
+   * @return the number of filtered survey definitions for the organisation
    */
-  int getNumberOfFilteredLatestSurveyDefinitionsForOrganisation(UUID id, String filter)
+  int getNumberOfFilteredSurveyDefinitionsForOrganisation(UUID id, String filter)
     throws SurveyServiceException;
 
   /**
@@ -353,13 +349,13 @@ public interface ISurveyService
     throws SurveyServiceException;
 
   /**
-   * Retrieve the number of latest versions of the survey definitions for the organisation.
+   * Retrieve the number of survey definitions for the organisation.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
    *
-   * @return the number of latest versions of the survey definitions for the organisation
+   * @return the number of survey definitions for the organisation
    */
-  int getNumberOfLatestSurveyDefinitionsForOrganisation(UUID id)
+  int getNumberOfSurveyDefinitionsForOrganisation(UUID id)
     throws SurveyServiceException;
 
   /**
@@ -461,6 +457,19 @@ public interface ISurveyService
    *         if the survey definition could not be found
    */
   SurveyDefinition getSurveyDefinition(UUID id, int version)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the summary for the survey definition identified by the specified ID and version.
+   *
+   * @param id      the Universally Unique Identifier (UUID) used to, along with the version of the
+   *                survey definition, uniquely identify the survey definition
+   * @param version the version of the survey definition
+   *
+   * @return the summary for the survey definition identified by the specified ID and version or
+   *         <code>null</code> if the survey definition could not be found
+   */
+  SurveyDefinitionSummary getSurveyDefinitionSummary(UUID id, int version)
     throws SurveyServiceException;
 
   /**

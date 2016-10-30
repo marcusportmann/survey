@@ -29,18 +29,17 @@ import org.apache.wicket.PageReference;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.IModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import java.util.UUID;
 
 //~--- JDK imports ------------------------------------------------------------
 
 /**
  * The <code>UpdateSurveyAudienceMemberPage</code> class implements the
- * "Add Survey Audience Member" page for the web application.
+ * "Update Survey Audience Member" page for the web application.
  *
  * @author Marcus Portmann
  */
@@ -49,7 +48,8 @@ import java.util.UUID;
 public class UpdateSurveyAudienceMemberPage extends TemplateWebPage
 {
   /* Logger */
-  private static final Logger logger = LoggerFactory.getLogger(UpdateSurveyAudienceMemberPage.class);
+  private static final Logger logger = LoggerFactory.getLogger(
+      UpdateSurveyAudienceMemberPage.class);
   private static final long serialVersionUID = 1000000;
 
   /* Survey Service */
@@ -59,23 +59,23 @@ public class UpdateSurveyAudienceMemberPage extends TemplateWebPage
   /**
    * Constructs a new <code>UpdateSurveyAudienceMemberPage</code>.
    *
-   * @param previousPage     the previous page
-   * @param surveyAudienceId the Universally Unique Identifier (UUID) used to uniquely identify the
-   *                         survey audience the survey audience member is associated with
+   * @param previousPage              the previous page
+   * @param surveyAudienceMemberModel the model for the survey audience member
    */
-  public UpdateSurveyAudienceMemberPage(PageReference previousPage, UUID surveyAudienceId)
+  public UpdateSurveyAudienceMemberPage(PageReference previousPage,
+      IModel<SurveyAudienceMember> surveyAudienceMemberModel)
   {
-    super("Add Audience Member");
+    super("Update Audience Member");
 
     try
     {
-      Form<SurveyAudienceMember> addForm = new Form<>("addForm", new CompoundPropertyModel<>(new Model<>(
-        new SurveyAudienceMember(UUID.randomUUID(), surveyAudienceId, "", "", ""))));
+      Form<SurveyAudienceMember> updateForm = new Form<>("updateForm", new CompoundPropertyModel<>(
+          surveyAudienceMemberModel));
 
-      addForm.add(new SurveyAudienceMemberInputPanel("surveyAudienceMember"));
+      updateForm.add(new SurveyAudienceMemberInputPanel("surveyAudienceMember"));
 
-      // The "addButton" button
-      Button addButton = new Button("addButton")
+      // The "updateButton" button
+      Button updateButton = new Button("updateButton")
       {
         private static final long serialVersionUID = 1000000;
 
@@ -84,19 +84,20 @@ public class UpdateSurveyAudienceMemberPage extends TemplateWebPage
         {
           try
           {
-            surveyService.saveSurveyAudienceMember(addForm.getModelObject());
+            surveyService.saveSurveyAudienceMember(updateForm.getModelObject());
 
             setResponsePage(previousPage.getPage());
           }
           catch (Throwable e)
           {
-            logger.error("Failed to add the survey audience: " + e.getMessage(), e);
-            UpdateSurveyAudienceMemberPage.this.error("Failed to add the survey audience");
+            logger.error("Failed to update the survey audience member: " + e.getMessage(), e);
+            UpdateSurveyAudienceMemberPage.this.error(
+                "Failed to update the survey audience member");
           }
         }
       };
-      addButton.setDefaultFormProcessing(true);
-      addForm.add(addButton);
+      updateButton.setDefaultFormProcessing(true);
+      updateForm.add(updateButton);
 
       // The "cancelButton" button
       Button cancelButton = new Button("cancelButton")
@@ -110,13 +111,14 @@ public class UpdateSurveyAudienceMemberPage extends TemplateWebPage
         }
       };
       cancelButton.setDefaultFormProcessing(false);
-      addForm.add(cancelButton);
+      updateForm.add(cancelButton);
 
-      add(addForm);
+      add(updateForm);
     }
     catch (Throwable e)
     {
-      throw new WebApplicationException("Failed to initialise the UpdateSurveyAudienceMemberPage", e);
+      throw new WebApplicationException("Failed to initialise the UpdateSurveyAudienceMemberPage",
+          e);
     }
   }
 }

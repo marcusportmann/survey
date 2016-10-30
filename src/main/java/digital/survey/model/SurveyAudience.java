@@ -11,14 +11,15 @@
 
 package digital.survey.model;
 
-//~--- JDK imports ------------------------------------------------------------
+//~--- non-JDK imports --------------------------------------------------------
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import guru.mmp.application.security.Organisation;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.UUID;
+
+//~--- JDK imports ------------------------------------------------------------
 
 /**
  * The <code>SurveyAudience</code> class implements the Survey Audience entity, which represents a
@@ -39,11 +40,12 @@ public class SurveyAudience
   private UUID id;
 
   /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the organisation the survey
-   * audience is associated with.
+   * The organisation this survey definition is associated with.
    */
-  @Column(name = "ORGANISATION_ID", nullable = false)
-  private UUID organisationId;
+  @SuppressWarnings("unused")
+  @ManyToOne
+  @JoinColumn(name = "ORGANISATION_ID", referencedColumnName = "ID")
+  protected Organisation organisation;
 
   /**
    * The name of the survey audience.
@@ -68,17 +70,16 @@ public class SurveyAudience
   /**
    * Constructs a new <code>SurveyAudience</code>.
    *
-   * @param id             the Universally Unique Identifier (UUID) used to uniquely identify the
-   *                       survey audience
-   * @param organisationId the Universally Unique Identifier (UUID) used to uniquely identify the
-   *                       organisation the survey audience is associated with
-   * @param name           the name of the survey audience
-   * @param description    the description for the survey audience
+   * @param id           the Universally Unique Identifier (UUID) used to uniquely identify the
+   *                     survey audience
+   * @param organisation the organisation the survey audience is associated with
+   * @param name         the name of the survey audience
+   * @param description  the description for the survey audience
    */
-  public SurveyAudience(UUID id, UUID organisationId, String name, String description)
+  public SurveyAudience(UUID id, Organisation organisation, String name, String description)
   {
     this.id = id;
-    this.organisationId = organisationId;
+    this.organisation = organisation;
     this.name = name;
     this.description = description;
   }
@@ -142,18 +143,6 @@ public class SurveyAudience
   public String getName()
   {
     return name;
-  }
-
-  /**
-   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the organisation the
-   * survey audience is associated with.
-   *
-   * @return the Universally Unique Identifier (UUID) used to uniquely identify the organisation the
-   *         survey audience is associated with
-   */
-  public UUID getOrganisationId()
-  {
-    return organisationId;
   }
 
   /**
