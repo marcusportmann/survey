@@ -36,7 +36,7 @@ import java.util.UUID;
 @Entity
 @Table(schema = "SURVEY", name = "SURVEY_RESPONSES")
 @Access(AccessType.FIELD)
-public class  SurveyResponse
+public class SurveyResponse
   implements Serializable
 {
   /**
@@ -75,8 +75,9 @@ public class  SurveyResponse
   /**
    * The date and time the survey response was received.
    */
-  @Column(name = "RECEIVED", nullable = false)
-  private Date received;
+  @Column(name = "RESPONDED", nullable = false)
+  @JsonIgnore
+  private Date responded;
 
   /**
    * Constructs a new <code>SurveyResponse</code>.
@@ -132,20 +133,20 @@ public class  SurveyResponse
     this.id = id;
     this.instance = instance;
     this.request = request;
-    this.received = new Date();
+    this.responded = new Date();
     this.groupRatingItemResponses = new ArrayList<>();
 
     for (SurveyGroupRatingItemDefinition groupRatingItemDefinition : instance.getDefinition()
-      .getGroupRatingItemDefinitions())
+        .getGroupRatingItemDefinitions())
     {
       SurveyGroupDefinition groupDefinition = instance.getDefinition().getGroupDefinition(
-        groupRatingItemDefinition.getGroupDefinitionId());
+          groupRatingItemDefinition.getGroupDefinitionId());
 
       for (SurveyGroupMemberDefinition groupMemberDefinition :
-        groupDefinition.getGroupMemberDefinitions())
+          groupDefinition.getGroupMemberDefinitions())
       {
         groupRatingItemResponses.add(new SurveyGroupRatingItemResponse(groupRatingItemDefinition,
-          groupMemberDefinition));
+            groupMemberDefinition));
       }
     }
   }
@@ -292,7 +293,7 @@ public class  SurveyResponse
   {
     if (request == null)
     {
-      return String.format("Anonymous on %s", DateUtil.getYYYYMMDDFormat().format(getReceived()));
+      return String.format("Anonymous on %s", DateUtil.getYYYYMMDDFormat().format(getResponded()));
     }
     else
     {
@@ -305,9 +306,9 @@ public class  SurveyResponse
    *
    * @return the date and time the survey response was received
    */
-  public Date getReceived()
+  public Date getResponded()
   {
-    return received;
+    return responded;
   }
 
   /**
@@ -316,20 +317,9 @@ public class  SurveyResponse
    * @return the date and time the survey response was received as a <code>String</code>
    */
   @JsonIgnore
-  public String getReceivedAsString()
+  public String getRespondedAsString()
   {
-    return DateUtil.getYYYYMMDDFormat().format(received);
-  }
-
-  /**
-   * Returns the optional survey request this survey response is associated with.
-   *
-   * @return the optional survey request this survey response is associated with
-   */
-  @JsonIgnore
-  public SurveyRequest getRequest()
-  {
-    return request;
+    return DateUtil.getYYYYMMDDWithTimeFormat().format(responded);
   }
 
   /**
@@ -352,11 +342,11 @@ public class  SurveyResponse
   /**
    * Set the date and time the survey response was received.
    *
-   * @param received the date and time the survey response was received
+   * @param responded the date and time the survey response was received
    */
-  public void setReceived(Date received)
+  public void setResponded(Date responded)
   {
-    this.received = received;
+    this.responded = responded;
   }
 
   /**
@@ -367,6 +357,7 @@ public class  SurveyResponse
   @Override
   public String toString()
   {
-    return String.format("SurveyResponse {id=\"%s\"}", getId());
+    return String.format("SurveyResponse {id=\"%s\", responded=\"%s\"}", getId(),
+        DateUtil.getYYYYMMDDWithTimeFormat().format(getResponded()));
   }
 }

@@ -11,15 +11,11 @@
 
 package digital.survey.model;
 
-//~--- non-JDK imports --------------------------------------------------------
-
-import guru.mmp.application.security.Organisation;
+//~--- JDK imports ------------------------------------------------------------
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.UUID;
-
-//~--- JDK imports ------------------------------------------------------------
 
 /**
  * The <code>SurveyDefinitionSummary</code> class implements the Survey Definition Summary entity,
@@ -59,22 +55,6 @@ public class SurveyDefinitionSummary
    */
   @SuppressWarnings("unused")
   SurveyDefinitionSummary() {}
-
-  /**
-   * Constructs a new <code>SurveyDefinitionSummary</code>.
-   *
-   * @param id      the Universally Unique Identifier (UUID) used to, along with the version of the
-   *                survey definition, uniquely identify the survey definition
-   * @param version the version of the survey definition
-   * @param name    the name of the survey definition
-   */
-  @SuppressWarnings("unused")
-  public SurveyDefinitionSummary(UUID id, int version, String name)
-  {
-    this.id = id;
-    this.version = version;
-    this.name = name;
-  }
 
   /**
    * Indicates whether some other object is "equal to" this one.
@@ -158,13 +138,5 @@ public class SurveyDefinitionSummary
     buffer.append("}");
 
     return buffer.toString();
-  }
-
-  /**
-   * Increment the version of the survey definition.
-   */
-  void incrementVersion()
-  {
-    version++;
   }
 }

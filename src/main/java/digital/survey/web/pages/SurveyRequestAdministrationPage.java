@@ -15,6 +15,8 @@ package digital.survey.web.pages;
 
 import digital.survey.model.ISurveyService;
 import digital.survey.model.SurveyRequest;
+import digital.survey.model.SurveyRequestToSurveyResponseMapping;
+import digital.survey.model.SurveyResponse;
 import digital.survey.web.SurveySecurity;
 import digital.survey.web.data.FilteredSurveyRequestDataProvider;
 import guru.mmp.application.web.WebApplicationException;
@@ -23,6 +25,7 @@ import guru.mmp.application.web.pages.WebPageSecurity;
 import guru.mmp.application.web.template.components.Dialog;
 import guru.mmp.application.web.template.components.PagingNavigator;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
+import guru.mmp.common.util.DateUtil;
 import org.apache.wicket.PageReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -41,6 +44,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 //~--- JDK imports ------------------------------------------------------------
@@ -53,12 +59,12 @@ import java.util.UUID;
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 @WebPageSecurity({ SurveySecurity.FUNCTION_CODE_SURVEY_ADMINISTRATION,
-  SurveySecurity.FUNCTION_CODE_VIEW_SURVEY_RESPONSE })
+    SurveySecurity.FUNCTION_CODE_VIEW_SURVEY_RESPONSE })
 public class SurveyRequestAdministrationPage extends TemplateWebPage
 {
   /* Logger */
   private static final Logger logger = LoggerFactory.getLogger(
-    SurveyRequestAdministrationPage.class);
+      SurveyRequestAdministrationPage.class);
   private static final long serialVersionUID = 1000000;
 
   /* Survey Service */
@@ -74,13 +80,27 @@ public class SurveyRequestAdministrationPage extends TemplateWebPage
    * @param surveyInstanceName the name of the survey request
    */
   public SurveyRequestAdministrationPage(PageReference previousPage, UUID surveyInstanceId,
-    String surveyInstanceName)
+      String surveyInstanceName)
   {
     super("Survey Requests", surveyInstanceName);
 
     try
     {
       WebSession session = getWebApplicationSession();
+
+      /*
+       * Retrieve the mappings for the survey requests to the survey responses for the survey
+       * instance so that we can display whether a survey request has an associated response.
+       */
+      Map<UUID, Date> surveyRequestIdToSurveyResponseReceivedMap = new HashMap<>();
+
+      for (SurveyRequestToSurveyResponseMapping surveyRequestToSurveyResponseMapping :
+          surveyService.getRequestToResponseMappingsForSurveyInstance(surveyInstanceId))
+      {
+        surveyRequestIdToSurveyResponseReceivedMap.put(
+            surveyRequestToSurveyResponseMapping.getRequestId(),
+            surveyRequestToSurveyResponseMapping.getResponded());
+      }
 
       /*
        * The table container, which allows the table and its associated navigator to be updated
@@ -107,8 +127,8 @@ public class SurveyRequestAdministrationPage extends TemplateWebPage
       };
       tableContainer.add(addLink);
 
-      FilteredSurveyRequestDataProvider dataProvider =
-        new FilteredSurveyRequestDataProvider(surveyInstanceId);
+      FilteredSurveyRequestDataProvider dataProvider = new FilteredSurveyRequestDataProvider(
+          surveyInstanceId);
 
       // The "filterForm" form
       Form<Void> filterForm = new Form<>("filterForm");
@@ -117,7 +137,7 @@ public class SurveyRequestAdministrationPage extends TemplateWebPage
 
       // The "filter" field
       TextField<String> filterField = new TextField<>("filter", new PropertyModel<>(dataProvider,
-        "filter"));
+          "filter"));
       filterForm.add(filterField);
 
       // The "filterButton" button
@@ -160,8 +180,7 @@ public class SurveyRequestAdministrationPage extends TemplateWebPage
       tableContainer.add(backLink);
 
       // The survey request data view
-      DataView<SurveyRequest> dataView = new DataView<SurveyRequest>(
-        "surveyRequest", dataProvider)
+      DataView<SurveyRequest> dataView = new DataView<SurveyRequest>("surveyRequest", dataProvider)
       {
         private static final long serialVersionUID = 1000000;
 
@@ -170,9 +189,60 @@ public class SurveyRequestAdministrationPage extends TemplateWebPage
         {
           SurveyRequest surveyRequest = item.getModelObject();
 
+          Date responded = surveyRequestIdToSurveyResponseReceivedMap.get(
+              surveyRequest.getId())
+          ;
+
           item.add(new Label("name", new PropertyModel<String>(item.getModel(), "fullName")));
           item.add(new Label("email", new PropertyModel<String>(item.getModel(), "email")));
-          item.add(new Label("sent", new PropertyModel<String>(item.getModel(), "sentAsString")));
+          item.add(new Label("requested", new PropertyModel<String>(item.getModel(), "requestedAsString")));
+          item.add(new Label("responded",
+              (responded != null)
+              ? DateUtil.getYYYYMMDDWithTimeFormat().format(responded)
+              : "-"));
+
+          // The "surveyResponseLink" link
+          Link<Void> surveyResponseLink = new Link<Void>("surveyResponseLink")
+          {
+            private static final long serialVersionUID = 1000000;
+
+            @Override
+            public void onClick()
+            {
+              SurveyRequest surveyRequest = item.getModelObject();
+
+              try
+              {
+                SurveyResponse surveyResponse = surveyService.getSurveyResponseForSurveyRequest(
+                    surveyRequest.getId());
+
+                if (surveyResponse == null)
+                {
+                  SurveyRequestAdministrationPage.this.info("No survey response found for "
+                      + surveyRequest.getFullName());
+                }
+                else
+                {
+                  ViewSurveyResponsePage page = new ViewSurveyResponsePage(getPageReference(),
+                      new Model<>(surveyResponse));
+
+                  setResponsePage(page);
+                }
+              }
+              catch (Throwable e)
+              {
+                logger.error("Failed to retrieve the survey response for the survey request ("
+                    + surveyRequest.getId() + "): " + e.getMessage(), e);
+                SurveyRequestAdministrationPage.this.error(
+                    "Failed to retrieve the survey response for " + surveyRequest.getFullName());
+              }
+            }
+          };
+          surveyResponseLink.setVisible(((responded != null)
+              && (session.hasAcccessToFunction(SurveySecurity.FUNCTION_CODE_SURVEY_ADMINISTRATION)
+                  || session.hasAcccessToFunction(SurveySecurity
+                  .FUNCTION_CODE_VIEW_SURVEY_RESPONSE))));
+          item.add(surveyResponseLink);
 
           // The "updateLink" link
           Link<Void> updateLink = new Link<Void>("updateLink")
@@ -189,7 +259,7 @@ public class SurveyRequestAdministrationPage extends TemplateWebPage
             }
           };
           updateLink.setVisible(session.hasAcccessToFunction(SurveySecurity
-            .FUNCTION_CODE_SURVEY_ADMINISTRATION));
+              .FUNCTION_CODE_SURVEY_ADMINISTRATION));
           item.add(updateLink);
 
           // The "removeLink" link
@@ -213,7 +283,7 @@ public class SurveyRequestAdministrationPage extends TemplateWebPage
             }
           };
           removeLink.setVisible(session.hasAcccessToFunction(SurveySecurity
-            .FUNCTION_CODE_SURVEY_ADMINISTRATION));
+              .FUNCTION_CODE_SURVEY_ADMINISTRATION));
           item.add(removeLink);
         }
       };
@@ -225,8 +295,8 @@ public class SurveyRequestAdministrationPage extends TemplateWebPage
     }
     catch (Throwable e)
     {
-      throw new WebApplicationException(
-        "Failed to initialise the SurveyRequestAdministrationPage", e);
+      throw new WebApplicationException("Failed to initialise the SurveyRequestAdministrationPage",
+          e);
     }
   }
 
@@ -270,16 +340,15 @@ public class SurveyRequestAdministrationPage extends TemplateWebPage
             target.add(tableContainer);
 
             SurveyRequestAdministrationPage.this.info(
-              "Successfully removed the survey request for "
+                "Successfully removed the survey request for "
                 + nameLabel.getDefaultModelObjectAsString());
           }
           catch (Throwable e)
           {
             logger.error(String.format("Failed to remove the survey request (%s): %s", id,
-              e.getMessage()), e);
+                e.getMessage()), e);
 
-            SurveyRequestAdministrationPage.this.error(
-              "Failed to remove the survey request for "
+            SurveyRequestAdministrationPage.this.error("Failed to remove the survey request for "
                 + nameLabel.getDefaultModelObjectAsString());
           }
 

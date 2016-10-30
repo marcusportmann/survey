@@ -28,7 +28,9 @@ import java.util.UUID;
  *
  * @author Marcus Portmann
  */
-@JsonPropertyOrder({ "id", "groupRatingItemDefinitionId",  "groupRatingItemDefinitionName", "groupRatingItemDefinitionRatingType", "groupMemberDefinitionId", "groupMemberDefinitionName", "rating" })
+@JsonPropertyOrder({ "id", "groupRatingItemDefinitionId", "groupRatingItemDefinitionName",
+    "groupRatingItemDefinitionRatingType", "groupMemberDefinitionId", "groupMemberDefinitionName",
+    "rating" })
 public class SurveyGroupRatingItemResponse
   implements Serializable
 {
@@ -61,7 +63,7 @@ public class SurveyGroupRatingItemResponse
 
   /**
    * The type of survey group rating item.
-  */
+   */
   @JsonProperty
   private SurveyGroupRatingItemType groupRatingItemDefinitionRatingType;
 
@@ -70,7 +72,6 @@ public class SurveyGroupRatingItemResponse
    */
   @JsonProperty
   private int rating;
-
 
   /**
    * The name of the survey group member definition.

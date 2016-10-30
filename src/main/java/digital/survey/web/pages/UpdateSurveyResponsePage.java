@@ -25,8 +25,11 @@ import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.util.Date;
 
 //~--- JDK imports ------------------------------------------------------------
 
@@ -40,6 +43,9 @@ import javax.inject.Inject;
 @WebPageSecurity(SurveySecurity.FUNCTION_CODE_SURVEY_ADMINISTRATION)
 public class UpdateSurveyResponsePage extends TemplateWebPage
 {
+  /* Logger */
+  private static final Logger logger = LoggerFactory.getLogger(UpdateSurveyResponsePage.class);
+
   private static final long serialVersionUID = 1000000;
 
   /**
@@ -73,10 +79,21 @@ public class UpdateSurveyResponsePage extends TemplateWebPage
         @Override
         public void onSubmit()
         {
+          try
+          {
+            SurveyResponse surveyResponse = updateForm.getModelObject();
 
-          int xxx = 0;
-          xxx++;
+            surveyResponse.setResponded(new Date());
 
+            surveyService.saveSurveyResponse(surveyResponse);
+
+            setResponsePage(previousPage.getPage());
+          }
+          catch (Throwable e)
+          {
+            logger.error("Failed to update the survey response: " + e.getMessage(), e);
+            UpdateSurveyResponsePage.this.error("Failed to update the survey response");
+          }
         }
       };
       updateButton.setDefaultFormProcessing(true);

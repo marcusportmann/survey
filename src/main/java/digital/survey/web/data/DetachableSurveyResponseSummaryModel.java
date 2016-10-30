@@ -14,9 +14,9 @@ package digital.survey.web.data;
 //~--- non-JDK imports --------------------------------------------------------
 
 import digital.survey.model.ISurveyService;
+import digital.survey.model.SurveyResponseSummary;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.data.InjectableLoadableDetachableModel;
-import digital.survey.model.SurveyResponse;
 
 import javax.inject.Inject;
 import java.util.UUID;
@@ -25,11 +25,12 @@ import java.util.UUID;
 
 /**
  * The <code>DetachableSurveyResponseModel</code> class provides a detachable model
- * implementation for the <code>SurveyResponse</code> model class.
+ * implementation for the <code>SurveyResponseSummary</code> model class.
  *
  * @author Marcus Portmann
  */
-public class DetachableSurveyResponseModel extends InjectableLoadableDetachableModel<SurveyResponse>
+public class DetachableSurveyResponseSummaryModel
+    extends InjectableLoadableDetachableModel<SurveyResponseSummary>
 {
   private static final long serialVersionUID = 1000000;
 
@@ -48,18 +49,18 @@ public class DetachableSurveyResponseModel extends InjectableLoadableDetachableM
    * Hidden default constructor to support CDI.
    */
   @SuppressWarnings("unused")
-  protected DetachableSurveyResponseModel() {}
+  protected DetachableSurveyResponseSummaryModel() {}
 
   /**
    * Constructs a new <code>DetachableSurveyResponseModel</code>.
    *
-   * @param surveyAudience the <code>SurveyResponse</code> instance
+   * @param surveyResponseSummary the <code>SurveyResponse</code> instance
    */
-  public DetachableSurveyResponseModel(SurveyResponse surveyAudience)
+  public DetachableSurveyResponseSummaryModel(SurveyResponseSummary surveyResponseSummary)
   {
-    this(surveyAudience.getId());
+    this(surveyResponseSummary.getId());
 
-    setObject(surveyAudience);
+    setObject(surveyResponseSummary);
   }
 
   /**
@@ -68,7 +69,7 @@ public class DetachableSurveyResponseModel extends InjectableLoadableDetachableM
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the
    *           survey response
    */
-  public DetachableSurveyResponseModel(UUID id)
+  public DetachableSurveyResponseSummaryModel(UUID id)
   {
     this.id = id;
   }
@@ -77,16 +78,16 @@ public class DetachableSurveyResponseModel extends InjectableLoadableDetachableM
    * @see org.apache.wicket.model.LoadableDetachableModel#load()
    */
   @Override
-  protected SurveyResponse load()
+  protected SurveyResponseSummary load()
   {
     try
     {
-      return surveyService.getSurveyResponse(id);
+      return surveyService.getSurveyResponseSummary(id);
     }
     catch (Throwable e)
     {
-      throw new WebApplicationException(String.format("Failed to load the survey response (%s)",
-          id), e);
+      throw new WebApplicationException(String.format(
+          "Failed to load the summary for the survey response (%s)", id), e);
     }
   }
 

@@ -24,12 +24,18 @@ import java.util.UUID;
 
 /**
  * The <code>SurveyRequest</code> class implements the Survey Request entity, which represents
- * a request that was sent to a person asking them to complete a survey
+ * a request that was requested to a person asking them to complete a survey
  *
  * @author Marcus Portmann
  */
 @Entity
 @Table(schema = "SURVEY", name = "SURVEY_REQUESTS")
+@SqlResultSetMapping(name = "SurveyRequestToSurveyResponseMapping",
+    classes = { @ConstructorResult(targetClass = SurveyRequestToSurveyResponseMapping.class,
+        columns = { @ColumnResult(name = "REQUEST_ID", type = UUID.class) ,
+            @ColumnResult(name = "REQUESTED", type = Date.class) ,
+            @ColumnResult(name = "RESPONSE_ID", type = UUID.class) ,
+            @ColumnResult(name = "RESPONDED", type = Date.class) }) })
 public class SurveyRequest
   implements Serializable
 {
@@ -61,8 +67,8 @@ public class SurveyRequest
   /**
    * The date and time the request to complete the survey was last sent.
    */
-  @Column(name = "SENT", nullable = false)
-  private Date sent;
+  @Column(name = "REQUESTED", nullable = false)
+  private Date requested;
 
   /**
    * The survey instance this survey request is associated with.
@@ -95,7 +101,7 @@ public class SurveyRequest
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
-    this.sent = new Date();
+    this.requested = new Date();
   }
 
   /**
@@ -116,7 +122,7 @@ public class SurveyRequest
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
-    this.sent = new Date();
+    this.requested = new Date();
   }
 
   /**
@@ -206,9 +212,9 @@ public class SurveyRequest
    *
    * @return the date and time the request to complete the survey was last sent
    */
-  public Date getSent()
+  public Date getRequested()
   {
-    return sent;
+    return requested;
   }
 
   /**
@@ -218,9 +224,9 @@ public class SurveyRequest
    * @return the date and time the request to complete the survey was last sent as a
    *         <code>String</code>.
    */
-  public String getSentAsString()
+  public String getRequestedAsString()
   {
-    return DateUtil.getYYYYMMDDFormat().format(sent);
+    return DateUtil.getYYYYMMDDWithTimeFormat().format(requested);
   }
 
   /**
@@ -256,11 +262,11 @@ public class SurveyRequest
   /**
    * Set the date and time the request to complete the survey was last sent.
    *
-   * @param sent the date and time the request to complete the survey was last sent
+   * @param requested the date and time the request to complete the survey was last sent
    */
-  public void setSent(Date sent)
+  public void setRequested(Date requested)
   {
-    this.sent = sent;
+    this.requested = requested;
   }
 
   /**
@@ -272,7 +278,8 @@ public class SurveyRequest
   public String toString()
   {
     return String.format(
-        "SurveyRequest {id=\"%s\", firstName=\"%s\", lastName=\"%s\", email=\"%s\"}", getId(),
-        getFirstName(), getLastName(), getEmail());
+        "SurveyRequest {id=\"%s\", firstName=\"%s\", lastName=\"%s\", email=\"%s\", requested=\"%s\"}",
+        getId(), getFirstName(), getLastName(), getEmail(), DateUtil.getYYYYMMDDWithTimeFormat()
+        .format(getRequested()));
   }
 }

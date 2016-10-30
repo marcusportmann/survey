@@ -13,11 +13,11 @@ package digital.survey.web.data;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import digital.survey.model.ISurveyService;
+import digital.survey.model.SurveyResponseSummary;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.data.InjectableDataProvider;
 import guru.mmp.common.util.StringUtil;
-import digital.survey.model.ISurveyService;
-import digital.survey.model.SurveyResponse;
 import org.apache.wicket.model.IModel;
 
 import javax.inject.Inject;
@@ -33,9 +33,15 @@ import java.util.UUID;
  *
  * @author Marcus Portmann
  */
-public class FilteredSurveyResponseDataProvider extends InjectableDataProvider<SurveyResponse>
+public class FilteredSurveyResponseSummaryDataProvider
+    extends InjectableDataProvider<SurveyResponseSummary>
 {
   private static final long serialVersionUID = 1000000;
+
+  /**
+   * The filter used to limit the matching survey responses.
+   */
+  private String filter = "";
 
   /* Survey Service */
   @Inject
@@ -48,17 +54,12 @@ public class FilteredSurveyResponseDataProvider extends InjectableDataProvider<S
   private UUID surveyInstanceId;
 
   /**
-   * The filter used to limit the matching survey responses.
-   */
-  private String filter = "";
-
-  /**
    * Constructs a new <code>FilteredSurveyResponseDataProvider</code>.
    * <p/>
    * Hidden default constructor to support CDI.
    */
   @SuppressWarnings("unused")
-  protected FilteredSurveyResponseDataProvider() {}
+  protected FilteredSurveyResponseSummaryDataProvider() {}
 
   /**
    * Constructs a new <code>FilteredSurveyResponseDataProvider</code>.
@@ -66,7 +67,7 @@ public class FilteredSurveyResponseDataProvider extends InjectableDataProvider<S
    * @param surveyInstanceId the Universally Unique Identifier (UUID) used to identify the survey
    *                         instance the survey responses are associated with
    */
-  public FilteredSurveyResponseDataProvider(UUID surveyInstanceId)
+  public FilteredSurveyResponseSummaryDataProvider(UUID surveyInstanceId)
   {
     this.surveyInstanceId = surveyInstanceId;
   }
@@ -99,38 +100,38 @@ public class FilteredSurveyResponseDataProvider extends InjectableDataProvider<S
    *
    * @see org.apache.wicket.markup.repeater.data.IDataProvider#iterator(long, long)
    */
-  public Iterator<SurveyResponse> iterator(long first, long count)
+  public Iterator<SurveyResponseSummary> iterator(long first, long count)
   {
     try
     {
-      List<SurveyResponse> allSurveyResponses = StringUtil.isNullOrEmpty(filter)
-        ? surveyService.getSurveyResponsesForSurveyInstance(surveyInstanceId)
-        : surveyService.getFilteredSurveyResponsesForSurveyInstance(surveyInstanceId, filter);
+      List<SurveyResponseSummary> allSurveyResponses = StringUtil.isNullOrEmpty(filter)
+          ? surveyService.getSurveyResponseSummariesForSurveyInstance(surveyInstanceId)
+          : surveyService.getFilteredSurveyResponseSummariesForSurveyInstance(surveyInstanceId, filter);
 
       return allSurveyResponses.subList((int) first, (int) Math.min(first + count,
-        allSurveyResponses.size())).iterator();
+          allSurveyResponses.size())).iterator();
     }
     catch (Throwable e)
     {
       throw new WebApplicationException(String.format(
-        "Failed to load the survey responses for the survey instance (%s)"
+          "Failed to load the summaries for the survey responses for the survey instance (%s)"
           + " matching the filter (%s) from index (%d) to (%d)", surveyInstanceId, filter, first,
-        first + count - 1), e);
+          first + count - 1), e);
     }
   }
 
   /**
-   * Wraps the retrieved <code>SurveyResponse</code> POJO with a Wicket model.
+   * Wraps the retrieved <code>SurveyResponseSummary</code> POJO with a Wicket model.
    *
-   * @param surveyResponse the <code>SurveyResponse</code> instance to wrap
+   * @param surveyResponseSummary the <code>SurveyResponseSummary</code> instance to wrap
    *
    * @return the Wicket model wrapping the <code>SurveyResponse</code> instance
    *
    * @see org.apache.wicket.markup.repeater.data.IDataProvider#model(java.lang.Object)
    */
-  public IModel<SurveyResponse> model(SurveyResponse surveyResponse)
+  public IModel<SurveyResponseSummary> model(SurveyResponseSummary surveyResponseSummary)
   {
-    return new DetachableSurveyResponseModel(surveyResponse);
+    return new DetachableSurveyResponseSummaryModel(surveyResponseSummary);
   }
 
   /**
@@ -155,14 +156,14 @@ public class FilteredSurveyResponseDataProvider extends InjectableDataProvider<S
     try
     {
       return StringUtil.isNullOrEmpty(filter)
-        ? surveyService.getNumberOfSurveyResponsesForSurveyInstance(surveyInstanceId)
-        : surveyService.getNumberOfFilteredSurveyResponsesForSurveyInstance(surveyInstanceId,
-          filter);
+          ? surveyService.getNumberOfSurveyResponsesForSurveyInstance(surveyInstanceId)
+          : surveyService.getNumberOfFilteredSurveyResponsesForSurveyInstance(surveyInstanceId,
+              filter);
     }
     catch (Throwable e)
     {
       throw new WebApplicationException(
-        "Failed to retrieve the number of survey responses for the survey instance ("
+          "Failed to retrieve the number of survey responses for the survey instance ("
           + surveyInstanceId + ") matching the filter (" + filter + ")", e);
     }
   }

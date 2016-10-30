@@ -15,8 +15,9 @@ package digital.survey.web.pages;
 
 import digital.survey.model.ISurveyService;
 import digital.survey.model.SurveyResponse;
+import digital.survey.model.SurveyResponseSummary;
 import digital.survey.web.SurveySecurity;
-import digital.survey.web.data.FilteredSurveyResponseDataProvider;
+import digital.survey.web.data.FilteredSurveyResponseSummaryDataProvider;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.WebSession;
 import guru.mmp.application.web.pages.WebPageSecurity;
@@ -107,8 +108,8 @@ public class SurveyResponseAdministrationPage extends TemplateWebPage
       };
       tableContainer.add(addLink);
 
-      FilteredSurveyResponseDataProvider dataProvider = new FilteredSurveyResponseDataProvider(
-          surveyInstanceId);
+      FilteredSurveyResponseSummaryDataProvider dataProvider =
+          new FilteredSurveyResponseSummaryDataProvider(surveyInstanceId);
 
       // The "filterForm" form
       Form<Void> filterForm = new Form<>("filterForm");
@@ -160,17 +161,17 @@ public class SurveyResponseAdministrationPage extends TemplateWebPage
       tableContainer.add(backLink);
 
       // The survey response data view
-      DataView<SurveyResponse> dataView = new DataView<SurveyResponse>("surveyResponse",
-          dataProvider)
+      DataView<SurveyResponseSummary> dataView = new DataView<SurveyResponseSummary>(
+          "surveyResponseSummary", dataProvider)
       {
         private static final long serialVersionUID = 1000000;
 
         @Override
-        protected void populateItem(Item<SurveyResponse> item)
+        protected void populateItem(Item<SurveyResponseSummary> item)
         {
           item.add(new Label("name", new PropertyModel<String>(item.getModel(), "name")));
-          item.add(new Label("received", new PropertyModel<String>(item.getModel(),
-              "receivedAsString")));
+          item.add(new Label("responded", new PropertyModel<String>(item.getModel(),
+              "respondedAsString")));
 
           // The "viewLink" link
           Link<Void> viewLink = new Link<Void>("viewLink")
@@ -180,12 +181,26 @@ public class SurveyResponseAdministrationPage extends TemplateWebPage
             @Override
             public void onClick()
             {
-              SurveyResponse surveyResponse = item.getModelObject();
+              SurveyResponseSummary surveyResponseSummary = item.getModelObject();
 
-              ViewSurveyResponsePage page = new ViewSurveyResponsePage(getPageReference(),
-                  item.getModel());
+              try
+              {
+                SurveyResponse surveyResponse = surveyService.getSurveyResponse(
+                    surveyResponseSummary.getId());
 
-              setResponsePage(page);
+                ViewSurveyResponsePage page = new ViewSurveyResponsePage(getPageReference(),
+                    new Model<>(surveyResponse));
+
+                setResponsePage(page);
+              }
+              catch (Throwable e)
+              {
+                logger.error("Failed to retrieve the survey response ("
+                    + surveyResponseSummary.getId() + ")", e);
+                SurveyResponseAdministrationPage.this.error(
+                    "Failed to retrieve the survey response (" + surveyResponseSummary.getName()
+                    + ")");
+              }
             }
           };
           item.add(viewLink);
@@ -198,10 +213,27 @@ public class SurveyResponseAdministrationPage extends TemplateWebPage
             @Override
             public void onClick()
             {
-              UpdateSurveyResponsePage page = new UpdateSurveyResponsePage(getPageReference(),
-                  item.getModel());
+              SurveyResponseSummary surveyResponseSummary = item.getModelObject();
 
-              setResponsePage(page);
+              try
+              {
+                SurveyResponse surveyResponse = surveyService.getSurveyResponse(
+                    surveyResponseSummary.getId());
+
+                UpdateSurveyResponsePage page = new UpdateSurveyResponsePage(getPageReference(),
+                    new Model<>(surveyResponse));
+
+                setResponsePage(page);
+              }
+              catch (Throwable e)
+              {
+                logger.error("Failed to retrieve the survey response ("
+                    + surveyResponseSummary.getId() + ")", e);
+                SurveyResponseAdministrationPage.this.error(
+                    "Failed to retrieve the survey response (" + surveyResponseSummary.getName()
+                    + ")");
+
+              }
             }
           };
           updateLink.setVisible(session.hasAcccessToFunction(SurveySecurity
@@ -216,11 +248,11 @@ public class SurveyResponseAdministrationPage extends TemplateWebPage
             @Override
             public void onClick(AjaxRequestTarget target)
             {
-              SurveyResponse surveyInstance = item.getModelObject();
+              SurveyResponseSummary surveyResponseSummary = item.getModelObject();
 
-              if (surveyInstance != null)
+              if (surveyResponseSummary != null)
               {
-                removeDialog.show(target, surveyInstance);
+                removeDialog.show(target, surveyResponseSummary);
               }
               else
               {
@@ -309,14 +341,14 @@ public class SurveyResponseAdministrationPage extends TemplateWebPage
     /**
      * Show the dialog using Ajax.
      *
-     * @param target         the AJAX request target
-     * @param surveyResponse the survey response being removed
+     * @param target                the AJAX request target
+     * @param surveyResponseSummary the survey response being removed
      */
-    public void show(AjaxRequestTarget target, SurveyResponse surveyResponse)
+    public void show(AjaxRequestTarget target, SurveyResponseSummary surveyResponseSummary)
     {
-      id = surveyResponse.getId();
+      id = surveyResponseSummary.getId();
 
-      nameLabel.setDefaultModelObject(surveyResponse.getName());
+      nameLabel.setDefaultModelObject(surveyResponseSummary.getName());
 
       target.add(nameLabel);
 

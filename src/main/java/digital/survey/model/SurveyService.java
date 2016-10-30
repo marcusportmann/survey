@@ -58,8 +58,6 @@ public class SurveyService
    * @param surveyAudience the survey audience to delete
    *
    * @return <code>true</code> if the survey audience was deleted or <code>false</code> otherwise
-   *
-   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyAudience(SurveyAudience surveyAudience)
@@ -93,8 +91,6 @@ public class SurveyService
    *            audience
    *
    * @return <code>true</code> if the survey audience was deleted or <code>false</code> otherwise
-   *
-   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyAudience(UUID id)
@@ -120,9 +116,8 @@ public class SurveyService
    *
    * @param surveyAudienceMember the survey audience member to delete
    *
-   * @return
-   *
-   * @throws SurveyServiceException
+   * @return <code>true</code> if the survey audience member was deleted or <code>false</code>
+   *         otherwise
    */
   @Transactional
   public boolean deleteSurveyAudienceMember(SurveyAudienceMember surveyAudienceMember)
@@ -158,8 +153,6 @@ public class SurveyService
    *
    * @return <code>true</code> if the survey audience member was deleted or <code>false</code>
    *         otherwise
-   *
-   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyAudienceMember(UUID id)
@@ -187,8 +180,6 @@ public class SurveyService
    * @param surveyDefinition the survey definition to delete
    *
    * @return <code>true</code> if the survey definition was deleted or <code>false</code> otherwise
-   *
-   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyDefinition(SurveyDefinition surveyDefinition)
@@ -223,8 +214,6 @@ public class SurveyService
    *
    * @return <code>true</code> if all versions of the survey definition were deleted or
    *        <code>false</code> otherwise
-   *
-   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyDefinition(UUID id)
@@ -253,8 +242,6 @@ public class SurveyService
    * @param version the version of the survey definition
    *
    * @return <code>true</code> if the survey definition was deleted or <code>false</code> otherwise
-   *
-   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyDefinition(UUID id, int version)
@@ -283,8 +270,6 @@ public class SurveyService
    * @param surveyInstance the survey instance to delete
    *
    * @return <code>true</code> if the survey instance was deleted or <code>false</code> otherwise
-   *
-   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyInstance(SurveyInstance surveyInstance)
@@ -318,8 +303,6 @@ public class SurveyService
    *            instance
    *
    * @return <code>true</code> if the survey instance was deleted or <code>false</code> otherwise
-   *
-   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyInstance(UUID id)
@@ -346,8 +329,6 @@ public class SurveyService
    * @param surveyRequest the survey request to delete
    *
    * @return <code>true</code> if the survey request was deleted or <code>false</code> otherwise
-   *
-   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyRequest(SurveyRequest surveyRequest)
@@ -381,8 +362,6 @@ public class SurveyService
    *            request
    *
    * @return <code>true</code> if the survey request was deleted or <code>false</code> otherwise
-   *
-   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyRequest(UUID id)
@@ -409,8 +388,6 @@ public class SurveyService
    * @param surveyResponse the survey response to delete
    *
    * @return <code>true</code> if the survey response was deleted or <code>false</code> otherwise
-   *
-   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyResponse(SurveyResponse surveyResponse)
@@ -444,8 +421,6 @@ public class SurveyService
    *            response
    *
    * @return <code>true</code> if the survey response was deleted or <code>false</code> otherwise
-   *
-   * @throws SurveyServiceException
    */
   @Transactional
   public boolean deleteSurveyResponse(UUID id)
@@ -474,8 +449,6 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey audience members
    *
    * @return the filtered survey audiences members for the survey audience
-   *
-   * @throws SurveyServiceException
    */
   public List<SurveyAudienceMember> getFilteredMembersForSurveyAudience(UUID id, String filter)
     throws SurveyServiceException
@@ -510,8 +483,6 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey audiences
    *
    * @return the filtered survey audiences for the organisation
-   *
-   * @throws SurveyServiceException
    */
   public List<SurveyAudience> getFilteredSurveyAudiencesForOrganisation(UUID id, String filter)
     throws SurveyServiceException
@@ -546,9 +517,8 @@ public class SurveyService
    *
    * @return the summaries for the latest versions of the filtered survey definitions for the
    *         organisation
-   *
-   * @throws SurveyServiceException
    */
+  @SuppressWarnings("unchecked")
   public List<SurveyDefinitionSummary> getFilteredSurveyDefinitionSummariesForOrganisation(UUID id,
       String filter)
     throws SurveyServiceException
@@ -583,8 +553,6 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey definitions
    *
    * @return the filtered survey instances for all versions of the survey definition
-   *
-   * @throws SurveyServiceException
    */
   public List<SurveyInstance> getFilteredSurveyInstancesForSurveyDefinition(UUID id, String filter)
     throws SurveyServiceException
@@ -617,8 +585,6 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey requests
    *
    * @return the filtered survey requests for the survey instance
-   *
-   * @throws SurveyServiceException
    */
   public List<SurveyRequest> getFilteredSurveyRequestsForSurveyInstance(UUID id, String filter)
     throws SurveyServiceException
@@ -645,26 +611,26 @@ public class SurveyService
   }
 
   /**
-   * Retrieve the filtered survey responses for the survey instance.
+   * Retrieve the summaries for the filtered survey responses for the survey instance.
    *
    * @param id     the Universally Unique Identifier (UUID) used to identify the survey instance
    *               the survey responses are associated with
    * @param filter the filter used to limit the matching survey responses
    *
-   * @return the filtered survey responses for the survey instance
-   *
-   * @throws SurveyServiceException
+   * @return the summaries for the filtered survey responses for the survey instance
    */
-  public List<SurveyResponse> getFilteredSurveyResponsesForSurveyInstance(UUID id, String filter)
+  public List<SurveyResponseSummary> getFilteredSurveyResponseSummariesForSurveyInstance(UUID id,
+      String filter)
     throws SurveyServiceException
   {
     try
     {
-      String sql = "SELECT sr FROM SurveyResponse sr JOIN sr.instance si"
-          + " JOIN sr.request req WHERE si.id = :id AND ((UPPER(req.firstName) LIKE :filter)"
+      String sql = "SELECT srs FROM SurveyResponseSummary srs JOIN srs.instance si"
+          + " JOIN srs.request req WHERE si.id = :id AND ((UPPER(req.firstName) LIKE :filter)"
           + " OR (UPPER(req.lastName) LIKE :filter) OR (UPPER(req.email) LIKE :filter))";
 
-      TypedQuery<SurveyResponse> query = entityManager.createQuery(sql, SurveyResponse.class);
+      TypedQuery<SurveyResponseSummary> query = entityManager.createQuery(sql,
+          SurveyResponseSummary.class);
 
       query.setParameter("id", id);
       query.setParameter("filter", "%" + filter.toUpperCase() + "%");
@@ -673,9 +639,8 @@ public class SurveyService
     }
     catch (Throwable e)
     {
-      throw new SurveyServiceException(
-          "Failed to retrieve the filtered survey responses for the survey instance with ID (" + id
-          + ")", e);
+      throw new SurveyServiceException("Failed to retrieve the summaries for the filtered survey"
+          + " responses for the survey instance with ID (" + id + ")", e);
     }
   }
 
@@ -686,8 +651,6 @@ public class SurveyService
    *
    * @return the latest version number for the survey definition or 0 if the survey definition
    *         could not be found
-   *
-   * @throws SurveyServiceException
    */
   public int getLatestVersionNumberForSurveyDefinition(UUID id)
     throws SurveyServiceException
@@ -717,8 +680,6 @@ public class SurveyService
    *           audience
    *
    * @return the survey audiences members for the survey audience
-   *
-   * @throws SurveyServiceException
    */
   public List<SurveyAudienceMember> getMembersForSurveyAudience(UUID id)
     throws SurveyServiceException
@@ -750,8 +711,6 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey audience members
    *
    * @return the number of filtered survey audience members for the survey audience
-   *
-   * @throws SurveyServiceException
    */
   public int getNumberOfFilteredMembersForSurveyAudience(UUID id, String filter)
     throws SurveyServiceException
@@ -783,8 +742,6 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey audiences
    *
    * @return the number of filtered survey audiences for the organisation
-   *
-   * @throws SurveyServiceException
    */
   public int getNumberOfFilteredSurveyAudiencesForOrganisation(UUID id, String filter)
     throws SurveyServiceException
@@ -815,8 +772,6 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey definitions
    *
    * @return the number of filtered survey definitions for the organisation
-   *
-   * @throws SurveyServiceException
    */
   public int getNumberOfFilteredSurveyDefinitionsForOrganisation(UUID id, String filter)
     throws SurveyServiceException
@@ -848,8 +803,6 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey definitions
    *
    * @return the number of filtered survey instances for all versions of the survey definition
-   *
-   * @throws SurveyServiceException
    */
   public int getNumberOfFilteredSurveyInstancesForSurveyDefinition(UUID id, String filter)
     throws SurveyServiceException
@@ -882,8 +835,6 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey requests
    *
    * @return the number of filtered survey requests for the survey instance
-   *
-   * @throws SurveyServiceException
    */
   public int getNumberOfFilteredSurveyRequestsForSurveyInstance(UUID id, String filter)
     throws SurveyServiceException
@@ -918,8 +869,6 @@ public class SurveyService
    * @param filter the filter used to limit the matching survey responses
    *
    * @return the number of filtered survey responses for the survey instance
-   *
-   * @throws SurveyServiceException
    */
   public int getNumberOfFilteredSurveyResponsesForSurveyInstance(UUID id, String filter)
     throws SurveyServiceException
@@ -952,8 +901,6 @@ public class SurveyService
    *           audience
    *
    * @return the number of members for the survey audience
-   *
-   * @throws SurveyServiceException
    */
   public int getNumberOfMembersForSurveyAudience(UUID id)
     throws SurveyServiceException
@@ -981,8 +928,6 @@ public class SurveyService
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
    *
    * @return the number of survey audiences for the organisation
-   *
-   * @throws SurveyServiceException
    */
   public int getNumberOfSurveyAudiencesForOrganisation(UUID id)
     throws SurveyServiceException
@@ -1010,8 +955,6 @@ public class SurveyService
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
    *
    * @return the number of survey definitions for the organisation
-   *
-   * @throws SurveyServiceException
    */
   public int getNumberOfSurveyDefinitionsForOrganisation(UUID id)
     throws SurveyServiceException
@@ -1025,9 +968,7 @@ public class SurveyService
 
       query.setParameter(1, id);
 
-      int result =  ((Number) query.getSingleResult()).intValue();
-
-      return result;
+      return ((Number) query.getSingleResult()).intValue();
     }
     catch (Throwable e)
     {
@@ -1043,8 +984,6 @@ public class SurveyService
    *               the survey instances are associated with
    *
    * @return the number of survey instances for all versions of the survey definition
-   *
-   * @throws SurveyServiceException
    */
   public int getNumberOfSurveyInstancesForSurveyDefinition(UUID id)
     throws SurveyServiceException
@@ -1075,8 +1014,6 @@ public class SurveyService
    *           survey requests are associated with
    *
    * @return the number of survey requests for the survey instance
-   *
-   * @throws SurveyServiceException
    */
   public int getNumberOfSurveyRequestsForSurveyInstance(UUID id)
     throws SurveyServiceException
@@ -1107,8 +1044,6 @@ public class SurveyService
    *           survey responses are associated with
    *
    * @return the number of survey responses for the survey instance
-   *
-   * @throws SurveyServiceException
    */
   public int getNumberOfSurveyResponsesForSurveyInstance(UUID id)
     throws SurveyServiceException
@@ -1133,6 +1068,40 @@ public class SurveyService
   }
 
   /**
+   * Retrieve the survey request to survey response mappings for the survey instance.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to identify the survey instance the
+   *           survey requests and survey responses are associated with
+   *
+   * @return the the survey request to survey response mappings for the survey instance
+   */
+  public List<SurveyRequestToSurveyResponseMapping> getRequestToResponseMappingsForSurveyInstance(
+      UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT REQUEST.ID AS REQUEST_ID, REQUEST.REQUESTED AS REQUESTED,"
+          + " RESPONSE.ID AS RESPONSE_ID, RESPONSE.RESPONDED AS RESPONDED"
+          + " FROM SURVEY.SURVEY_REQUESTS REQUEST"
+          + " JOIN SURVEY.SURVEY_RESPONSES RESPONSE ON REQUEST.ID = RESPONSE.SURVEY_REQUEST_ID"
+          + " JOIN SURVEY.SURVEY_INSTANCES INSTANCE ON REQUEST.SURVEY_INSTANCE_ID = INSTANCE.ID"
+          + " WHERE INSTANCE.ID = ?1";
+
+      Query query = entityManager.createNativeQuery(sql, "SurveyRequestToSurveyResponseMapping");
+
+      query.setParameter(1, id);
+
+      return query.getResultList();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to retrieve the survey request to survey response"
+          + " mappings for the survey instance with ID (" + id + ")", e);
+    }
+  }
+
+  /**
    * Retrieve the survey audience identified by the specified ID.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
@@ -1140,8 +1109,6 @@ public class SurveyService
    *
    * @return the survey audience identified by the specified ID or <code>null</code> if the survey
    *         audience could not be found
-   *
-   * @throws SurveyServiceException
    */
   public SurveyAudience getSurveyAudience(UUID id)
     throws SurveyServiceException
@@ -1179,8 +1146,6 @@ public class SurveyService
    *
    * @return the survey audience member identified by the specified ID or <code>null</code> if the
    *         survey audience member could not be found
-   *
-   * @throws SurveyServiceException
    */
   public SurveyAudienceMember getSurveyAudienceMember(UUID id)
     throws SurveyServiceException
@@ -1218,8 +1183,6 @@ public class SurveyService
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
    *
    * @return the survey audiences for the organisation
-   *
-   * @throws SurveyServiceException
    */
   public List<SurveyAudience> getSurveyAudiencesForOrganisation(UUID id)
     throws SurveyServiceException
@@ -1250,8 +1213,6 @@ public class SurveyService
    *
    * @return the survey definition identified by the specified ID and version or <code>null</code>
    *         if the survey definition could not be found
-   *
-   * @throws SurveyServiceException
    */
   public SurveyDefinition getSurveyDefinition(UUID id, int version)
     throws SurveyServiceException
@@ -1289,9 +1250,8 @@ public class SurveyService
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
    *
    * @return the summaries for the latest versions of the survey definitions for the organisation
-   *
-   * @throws SurveyServiceException
    */
+  @SuppressWarnings("unchecked")
   public List<SurveyDefinitionSummary> getSurveyDefinitionSummariesForOrganisation(UUID id)
     throws SurveyServiceException
   {
@@ -1325,8 +1285,6 @@ public class SurveyService
    *
    * @return the summary for the survey definition identified by the specified ID and version or
    *         <code>null</code> if the survey definition could not be found
-   *
-   * @throws SurveyServiceException
    */
   public SurveyDefinitionSummary getSurveyDefinitionSummary(UUID id, int version)
     throws SurveyServiceException
@@ -1368,8 +1326,6 @@ public class SurveyService
    *
    * @return the survey instance identified by the specified ID or <code>null</code> if the survey
    *         instance could not be found
-   *
-   * @throws SurveyServiceException
    */
   public SurveyInstance getSurveyInstance(UUID id)
     throws SurveyServiceException
@@ -1406,8 +1362,6 @@ public class SurveyService
    *               the survey instances are associated with
    *
    * @return the survey instances for all versions of the survey definition
-   *
-   * @throws SurveyServiceException
    */
   public List<SurveyInstance> getSurveyInstancesForSurveyDefinition(UUID id)
     throws SurveyServiceException
@@ -1437,8 +1391,6 @@ public class SurveyService
    *
    * @return the survey request identified by the specified ID or <code>null</code> if the survey
    *         request could not be found
-   *
-   * @throws SurveyServiceException
    */
   public SurveyRequest getSurveyRequest(UUID id)
     throws SurveyServiceException
@@ -1475,8 +1427,6 @@ public class SurveyService
    *           survey requests are associated with
    *
    * @return the survey requests for the survey instance
-   *
-   * @throws SurveyServiceException
    */
   public List<SurveyRequest> getSurveyRequestsForSurveyInstance(UUID id)
     throws SurveyServiceException
@@ -1506,8 +1456,6 @@ public class SurveyService
    *
    * @return the survey response identified by the specified ID or <code>null</code> if the survey
    *         response could not be found
-   *
-   * @throws SurveyServiceException
    */
   public SurveyResponse getSurveyResponse(UUID id)
     throws SurveyServiceException
@@ -1538,23 +1486,63 @@ public class SurveyService
   }
 
   /**
-   * Retrieve the survey responses for the survey instance.
+   * Retrieve the survey response associated with the survey request with the specified ID.
    *
-   * @param id the Universally Unique Identifier (UUID) used to identify the survey instance the
-   *           survey responses are associated with
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           request the survey response is associated with
    *
-   * @return the survey responses for the survey instance
+   * @return the survey response associated with the survey request or <code>nul</code> if an
+   *         associated survey response could not be found
    *
    * @throws SurveyServiceException
    */
-  public List<SurveyResponse> getSurveyResponsesForSurveyInstance(UUID id)
+  public SurveyResponse getSurveyResponseForSurveyRequest(UUID id)
     throws SurveyServiceException
   {
     try
     {
-      String sql = "SELECT sr FROM SurveyResponse sr JOIN sr.instance si WHERE si.id = :id";
+      String sql = "SELECT sr FROM SurveyResponse sr WHERE sr.request.id = :id";
 
       TypedQuery<SurveyResponse> query = entityManager.createQuery(sql, SurveyResponse.class);
+
+      query.setParameter("id", id);
+
+      List<SurveyResponse> surveyResponses = query.getResultList();
+
+      if (surveyResponses.size() == 0)
+      {
+        return null;
+      }
+      else
+      {
+        return surveyResponses.get(0);
+      }
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the survey response for the survey request (" + id + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the summaries for the survey responses for the survey instance.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to identify the survey instance the
+   *           survey responses are associated with
+   *
+   * @return the summaries for the survey responses for the survey instance
+   */
+  public List<SurveyResponseSummary> getSurveyResponseSummariesForSurveyInstance(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql =
+          "SELECT srs FROM SurveyResponseSummary srs JOIN srs.instance si WHERE si.id = :id";
+
+      TypedQuery<SurveyResponseSummary> query = entityManager.createQuery(sql,
+          SurveyResponseSummary.class);
 
       query.setParameter("id", id);
 
@@ -1562,9 +1550,47 @@ public class SurveyService
     }
     catch (Throwable e)
     {
-      throw new SurveyServiceException(
-          "Failed to retrieve the survey responses for the survey instance with ID (" + id + ")",
-          e);
+      throw new SurveyServiceException("Failed to retrieve the summaries for the survey responses"
+          + " for the survey instance with ID (" + id + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the summary for the survey response identified by the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           response
+   *
+   * @return the summary for the survey response identified by the specified ID or <code>null</code>
+   *         if the survey response could not be found
+   */
+  public SurveyResponseSummary getSurveyResponseSummary(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT srs FROM SurveyResponseSummary srs WHERE srs.id = :id";
+
+      TypedQuery<SurveyResponseSummary> query = entityManager.createQuery(sql,
+          SurveyResponseSummary.class);
+
+      query.setParameter("id", id);
+
+      List<SurveyResponseSummary> surveyResponseSummaries = query.getResultList();
+
+      if (surveyResponseSummaries.size() == 0)
+      {
+        return null;
+      }
+      else
+      {
+        return surveyResponseSummaries.get(0);
+      }
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to retrieve the summary for the survey response ("
+          + id + ")", e);
     }
   }
 
@@ -1574,8 +1600,6 @@ public class SurveyService
    * @param surveyAudience the survey audience
    *
    * @return the saved survey audience
-   *
-   * @throws SurveyServiceException
    */
   @Transactional
   public SurveyAudience saveSurveyAudience(SurveyAudience surveyAudience)
@@ -1607,8 +1631,6 @@ public class SurveyService
    * @param surveyAudienceMember the survey audience member
    *
    * @return the saved survey response
-   *
-   * @throws SurveyServiceException
    */
   @Transactional
   public SurveyAudienceMember saveSurveyAudienceMember(SurveyAudienceMember surveyAudienceMember)
@@ -1640,8 +1662,6 @@ public class SurveyService
    * @param surveyDefinition the survey definition
    *
    * @return the saved survey definition
-   *
-   * @throws SurveyServiceException
    */
   @Transactional
   public SurveyDefinition saveSurveyDefinition(SurveyDefinition surveyDefinition)
@@ -1694,8 +1714,6 @@ public class SurveyService
    * @param surveyInstance the survey instance
    *
    * @return the saved survey instance
-   *
-   * @throws SurveyServiceException
    */
   @Transactional
   public SurveyInstance saveSurveyInstance(SurveyInstance surveyInstance)
@@ -1727,8 +1745,6 @@ public class SurveyService
    * @param surveyRequest the survey request
    *
    * @return the saved survey request
-   *
-   * @throws SurveyServiceException
    */
   @Transactional
   public SurveyRequest saveSurveyRequest(SurveyRequest surveyRequest)
@@ -1760,8 +1776,6 @@ public class SurveyService
    * @param surveyResponse the survey response
    *
    * @return the saved survey response
-   *
-   * @throws SurveyServiceException
    */
   @Transactional
   public SurveyResponse saveSurveyResponse(SurveyResponse surveyResponse)

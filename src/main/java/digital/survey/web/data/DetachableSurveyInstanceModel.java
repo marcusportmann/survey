@@ -53,13 +53,13 @@ public class DetachableSurveyInstanceModel extends InjectableLoadableDetachableM
   /**
    * Constructs a new <code>DetachableSurveyInstanceModel</code>.
    *
-   * @param surveyAudience the <code>SurveyInstance</code> instance
+   * @param surveyInstance the <code>SurveyInstance</code> instance
    */
-  public DetachableSurveyInstanceModel(SurveyInstance surveyAudience)
+  public DetachableSurveyInstanceModel(SurveyInstance surveyInstance)
   {
-    this(surveyAudience.getId());
+    this(surveyInstance.getId());
 
-    setObject(surveyAudience);
+    setObject(surveyInstance);
   }
 
   /**

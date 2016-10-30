@@ -26379,7 +26379,7 @@
 											"isDerived": false
 										}
 									],
-									"documentation": "The Survey Request entity represents a request that was sent to a person asking them to complete a survey.\n\nNOTE: A survey request can be associated with an internal person represented by a user linked to one of the user directories configured for the system, or to an external person represented by a survey audience member. The details of the internal or external person are copied to the request for history purposes.",
+									"documentation": "The Survey Request entity represents a request that was requested to a person asking them to complete a survey.\n\nNOTE: A survey request can be associated with an internal person represented by a user linked to one of the user directories configured for the system, or to an external person represented by a survey audience member. The details of the internal or external person are copied to the request for history purposes.",
 									"stereotype": {
 										"$ref": "AAAAAAFFwLR8CF8G68k="
 									},

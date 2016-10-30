@@ -166,23 +166,6 @@ public interface ISurveyService
     throws SurveyServiceException;
 
   /**
-   * Retrieve the summaries for the latest versions of the filtered survey definitions for the
-   * organisation.
-   *
-   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
-   *               organisation
-   * @param filter the filter used to limit the matching survey definitions
-   *
-   * @return the summaries for the latest versions of the filtered survey definitions for the
-   *         organisation
-   *
-   * @throws SurveyServiceException
-   */
-  List<SurveyDefinitionSummary> getFilteredSurveyDefinitionSummariesForOrganisation(UUID id,
-      String filter)
-    throws SurveyServiceException;
-
-  /**
    * Retrieve the filtered survey audience members for the survey audience.
    *
    * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the survey
@@ -204,6 +187,21 @@ public interface ISurveyService
    * @return the filtered survey audiences for the organisation
    */
   List<SurveyAudience> getFilteredSurveyAudiencesForOrganisation(UUID id, String filter)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the summaries for the latest versions of the filtered survey definitions for the
+   * organisation.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
+   *               organisation
+   * @param filter the filter used to limit the matching survey definitions
+   *
+   * @return the summaries for the latest versions of the filtered survey definitions for the
+   *         organisation
+   */
+  List<SurveyDefinitionSummary> getFilteredSurveyDefinitionSummariesForOrganisation(UUID id,
+      String filter)
     throws SurveyServiceException;
 
   /**
@@ -231,27 +229,16 @@ public interface ISurveyService
     throws SurveyServiceException;
 
   /**
-   * Retrieve the filtered survey responses for the survey instance.
+   * Retrieve the summaries for the filtered survey responses for the survey instance.
    *
    * @param id     the Universally Unique Identifier (UUID) used to identify the survey instance
    *               the survey responses are associated with
    * @param filter the filter used to limit the matching survey responses
    *
-   * @return the filtered survey responses for the survey instance
+   * @return the summaries for the filtered survey responses for the survey instance
    */
-  List<SurveyResponse> getFilteredSurveyResponsesForSurveyInstance(UUID id, String filter)
-    throws SurveyServiceException;
-
-  /**
-   * Retrieve the summaries for the latest versions of the survey definitions for the organisation.
-   *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
-   *
-   * @return the summaries for the latest versions of the survey definitions for the organisation
-   *
-   * @throws SurveyServiceException
-   */
-  List<SurveyDefinitionSummary> getSurveyDefinitionSummariesForOrganisation(UUID id)
+  List<SurveyResponseSummary> getFilteredSurveyResponseSummariesForSurveyInstance(UUID id,
+      String filter)
     throws SurveyServiceException;
 
   /**
@@ -277,18 +264,6 @@ public interface ISurveyService
     throws SurveyServiceException;
 
   /**
-   * Retrieve the number of filtered survey definitions for the organisation.
-   *
-   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
-   *               organisation
-   * @param filter the filter used to limit the matching survey definitions
-   *
-   * @return the number of filtered survey definitions for the organisation
-   */
-  int getNumberOfFilteredSurveyDefinitionsForOrganisation(UUID id, String filter)
-    throws SurveyServiceException;
-
-  /**
    * Returns the number of filtered survey audience members for the survey audience.
    *
    * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the survey
@@ -310,6 +285,18 @@ public interface ISurveyService
    * @return the number of filtered survey audiences for the organisation
    */
   int getNumberOfFilteredSurveyAudiencesForOrganisation(UUID id, String filter)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the number of filtered survey definitions for the organisation.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the
+   *               organisation
+   * @param filter the filter used to limit the matching survey definitions
+   *
+   * @return the number of filtered survey definitions for the organisation
+   */
+  int getNumberOfFilteredSurveyDefinitionsForOrganisation(UUID id, String filter)
     throws SurveyServiceException;
 
   /**
@@ -349,16 +336,6 @@ public interface ISurveyService
     throws SurveyServiceException;
 
   /**
-   * Retrieve the number of survey definitions for the organisation.
-   *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
-   *
-   * @return the number of survey definitions for the organisation
-   */
-  int getNumberOfSurveyDefinitionsForOrganisation(UUID id)
-    throws SurveyServiceException;
-
-  /**
    * Returns the number of members for the survey audience.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
@@ -377,6 +354,16 @@ public interface ISurveyService
    * @return the number of survey audiences for the organisation
    */
   int getNumberOfSurveyAudiencesForOrganisation(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the number of survey definitions for the organisation.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
+   *
+   * @return the number of survey definitions for the organisation
+   */
+  int getNumberOfSurveyDefinitionsForOrganisation(UUID id)
     throws SurveyServiceException;
 
   /**
@@ -410,6 +397,17 @@ public interface ISurveyService
    * @return the number of survey responses for the survey instance
    */
   int getNumberOfSurveyResponsesForSurveyInstance(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the survey request to survey response mappings for the survey instance.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to identify the survey instance the
+   *           survey requests and survey responses are associated with
+   *
+   * @return the the survey request to survey response mappings for the survey instance
+   */
+  List<SurveyRequestToSurveyResponseMapping> getRequestToResponseMappingsForSurveyInstance(UUID id)
     throws SurveyServiceException;
 
   /**
@@ -457,6 +455,16 @@ public interface ISurveyService
    *         if the survey definition could not be found
    */
   SurveyDefinition getSurveyDefinition(UUID id, int version)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the summaries for the latest versions of the survey definitions for the organisation.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the organisation
+   *
+   * @return the summaries for the latest versions of the survey definitions for the organisation
+   */
+  List<SurveyDefinitionSummary> getSurveyDefinitionSummariesForOrganisation(UUID id)
     throws SurveyServiceException;
 
   /**
@@ -530,14 +538,40 @@ public interface ISurveyService
     throws SurveyServiceException;
 
   /**
-   * Retrieve the survey responses for the survey instance.
+   * Retrieve the survey response associated with the survey request with the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           request the survey response is associated with
+   *
+   * @return the survey response associated with the survey request or <code>nul</code> if an
+   *         associated survey response could not be found
+   *
+   * @throws SurveyServiceException
+   */
+  SurveyResponse getSurveyResponseForSurveyRequest(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the summaries for the survey responses for the survey instance.
    *
    * @param id the Universally Unique Identifier (UUID) used to identify the survey instance the
    *           survey responses are associated with
    *
-   * @return the survey responses for the survey instance
+   * @return the summaries for the survey responses for the survey instance
    */
-  List<SurveyResponse> getSurveyResponsesForSurveyInstance(UUID id)
+  List<SurveyResponseSummary> getSurveyResponseSummariesForSurveyInstance(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the summary for the survey response identified by the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           response
+   *
+   * @return the summary for the survey response identified by the specified ID or <code>null</code>
+   *         if the survey response could not be found
+   */
+  SurveyResponseSummary getSurveyResponseSummary(UUID id)
     throws SurveyServiceException;
 
   /**

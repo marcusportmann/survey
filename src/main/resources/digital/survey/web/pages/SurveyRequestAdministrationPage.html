@@ -108,17 +108,20 @@
                   <tr>
                     <th>Name</th>
                     <th>E-mail</th>
-                    <th class="fixed-width-100 center">Sent</th>
-                    <th class="two-actions center">Actions</th>
+                    <th class="fixed-width-150 center">Requested</th>
+                    <th class="fixed-width-150 center">Responded</th>
+                    <th class="three-actions center">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr wicket:id="surveyRequest">
                     <td><span wicket:id="name">[Name]</span></td>
                     <td><span wicket:id="email">[E-mail]</span></td>
-                    <td class="center"><span wicket:id="sent">[Sent]</span></td>
-                    <td class="two-actions">
+                    <td class="center"><span wicket:id="requested">[Requested]</span></td>
+                    <td class="center"><span wicket:id="responded">[Responded]</span></td>
+                    <td class="three-actions">
                       <div class="btn-group">
+                        <a wicket:id="surveyResponseLink" class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="" data-original-title="Survey Response"><i class="fa fa-check-circle-o"></i></a>
                         <a wicket:id="updateLink" class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="" data-original-title="Update Survey Request"><i class="fa fa-edit"></i></a>
                         <a wicket:id="removeLink" class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="" data-original-title="Remove Survey Request"><i class="fa fa-times"></i></a>
                       </div>
