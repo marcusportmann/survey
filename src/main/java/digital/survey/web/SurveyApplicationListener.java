@@ -123,6 +123,15 @@ public class SurveyApplicationListener
         configurationService.setValue(SurveyApplication.MAIL_FROM_ADDRESS_CONFIGURATION_KEY,
             "no-reply@mlogic.biz", "The from e-mail address for the mail helper");
       }
+
+      if (!configurationService.keyExists(SurveyApplication
+          .MAXIMUM_SURVEY_REQUEST_SEND_ATTEMPTS_CONFIGURATION_KEY))
+      {
+        configurationService.setValue(SurveyApplication
+            .MAXIMUM_SURVEY_REQUEST_SEND_ATTEMPTS_CONFIGURATION_KEY, 10,
+            "The maximum number of attempts to send a survey request");
+      }
+
     }
     catch (Throwable e)
     {

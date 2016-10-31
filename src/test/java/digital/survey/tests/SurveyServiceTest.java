@@ -24,6 +24,7 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -264,7 +265,7 @@ public class SurveyServiceTest
         surveyService.getLatestVersionNumberForSurveyDefinition(surveyDefinition.getId()));
 
     retrievedSurveyDefinition = surveyService.getLatestVersionOfSurveyDefinition(
-      surveyDefinition.getId());
+        surveyDefinition.getId());
 
     compareSurveyDefinitions(savedSurveyDefinition, retrievedSurveyDefinition);
 
@@ -463,6 +464,18 @@ public class SurveyServiceTest
         1, surveyRequests.size());
 
     compareSurveyRequests(surveyRequest, surveyRequests.get(0));
+
+    surveyRequest.setRequested(new Date());
+    surveyRequest.setLockName("LOCK NAME");
+    surveyRequest.setLastProcessed(new Date());
+    surveyRequest.setStatus(SurveyRequestStatus.FAILED);
+    surveyRequest.setSendAttempts(666);
+
+    surveyService.saveSurveyRequest(surveyRequest);
+
+    retrievedSurveyRequest = surveyService.getSurveyRequest(surveyRequest.getId());
+
+    compareSurveyRequests(surveyRequest, retrievedSurveyRequest);
 
     surveyService.deleteSurveyRequest(surveyRequest);
 
@@ -946,7 +959,7 @@ public class SurveyServiceTest
     assertEquals("The name values for the two survey instances do not match",
         surveyInstance1.getName(), surveyInstance2.getName());
     assertEquals("The description values for the two survey instances do not match",
-      surveyInstance1.getDescription(), surveyInstance2.getDescription());
+        surveyInstance1.getDescription(), surveyInstance2.getDescription());
   }
 
   private void compareSurveyRequests(SurveyRequest surveyRequest1, SurveyRequest surveyRequest2)
@@ -954,13 +967,25 @@ public class SurveyServiceTest
     assertEquals("The ID values for the two survey requests do not match", surveyRequest1.getId(),
         surveyRequest2.getId());
     assertEquals("The status values for the two survey requests do not match",
-      surveyRequest1.getStatus(), surveyRequest2.getStatus());
+        surveyRequest1.getStatus(), surveyRequest2.getStatus());
     assertEquals("The first name values for the two survey requests do not match",
         surveyRequest1.getFirstName(), surveyRequest2.getFirstName());
     assertEquals("The last name values for the two survey requests do not match",
         surveyRequest1.getLastName(), surveyRequest2.getLastName());
     assertEquals("The e-mail values for the two survey requests do not match",
         surveyRequest1.getEmail(), surveyRequest2.getEmail());
+    assertEquals("The requested values for the two survey requests do not match",
+      surveyRequest1.getRequested(), surveyRequest2.getRequested());
+    assertEquals("The requested as string values for the two survey requests do not match",
+      surveyRequest1.getRequestedAsString(), surveyRequest2.getRequestedAsString());
+    assertEquals("The status values for the two survey requests do not match",
+        surveyRequest1.getStatus(), surveyRequest2.getStatus());
+    assertEquals("The send attempts values for the two survey requests do not match",
+        surveyRequest1.getSendAttempts(), surveyRequest2.getSendAttempts());
+    assertEquals("The lock name attempts values for the two survey requests do not match",
+        surveyRequest1.getLockName(), surveyRequest2.getLockName());
+    assertEquals("The last processed values for the two survey requests do not match",
+        surveyRequest1.getLastProcessed(), surveyRequest2.getLastProcessed());
   }
 
   private void compareSurveyResponses(SurveyResponse surveyResponse1,

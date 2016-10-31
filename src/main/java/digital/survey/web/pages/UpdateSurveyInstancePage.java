@@ -71,7 +71,7 @@ public class UpdateSurveyInstancePage extends TemplateWebPage
       Form<SurveyInstance> updateForm = new Form<>("updateForm", new CompoundPropertyModel<>(
           surveyInstanceModel));
 
-      updateForm.add(new SurveyInstanceInputPanel("surveyInstance"));
+      updateForm.add(new SurveyInstanceInputPanel("surveyInstance", surveyInstanceModel));
 
       // The "updateButton" button
       Button updateButton = new Button("updateButton")

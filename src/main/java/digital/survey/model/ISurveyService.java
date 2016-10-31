@@ -264,6 +264,14 @@ public interface ISurveyService
     throws SurveyServiceException;
 
   /**
+   * Returns the maximum number of times that sending of a survey request will be attempted.
+   *
+   * @return the maximum number of times that sending of a survey request will be attempted
+   */
+  int getMaximumSurveyRequestSendAttempts()
+    throws SurveyServiceException;
+
+  /**
    * Retrieve the survey audience members for the survey audience.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
@@ -272,6 +280,17 @@ public interface ISurveyService
    * @return the survey audiences members for the survey audience
    */
   List<SurveyAudienceMember> getMembersForSurveyAudience(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the next survey request that has been queued for sending.
+   * <p/>
+   * The survey request will be locked to prevent duplicate sending.
+   *
+   * @return the next survey request that has been queued for sending or <code>null</code> if no
+   *         survey requests are currently queued for sending
+   */
+  SurveyRequest getNextSurveyRequestQueuedForSending()
     throws SurveyServiceException;
 
   /**
@@ -598,6 +617,25 @@ public interface ISurveyService
     throws SurveyServiceException;
 
   /**
+   * Increment the send attempts for the survey request.
+   *
+   * @param surveyRequest the survey request
+   *
+   * @throws SurveyServiceException
+   */
+  void incrementSurveyRequestSendAttempts(SurveyRequest surveyRequest)
+    throws SurveyServiceException;
+
+  /**
+   * Reset the survey request locks.
+   *
+   * @param status    the current status of the survey requests that have been locked
+   * @param newStatus the new status for the survey requests that have been unlocked
+   */
+  void resetSurveyRequestLocks(SurveyRequestStatus status, SurveyRequestStatus newStatus)
+    throws SurveyServiceException;
+
+  /**
    * Save the survey audience.
    *
    * @param surveyAudience the survey audience
@@ -691,5 +729,19 @@ public interface ISurveyService
    */
   void sendSurveyRequestToPerson(UUID surveyInstanceId, String firstName, String lastName,
       String email)
+    throws SurveyServiceException;
+
+  /**
+   * Send all the survey requests queued for sending asynchronously.
+   */
+  void sendSurveyRequests();
+
+  /**
+   * Unlock the survey request.
+   *
+   * @param id     the Universally Unique Identifier (UUID) used to identify the survey request
+   * @param status the new status for the unlocked survey request
+   */
+  void unlockSurveyRequest(UUID id, SurveyRequestStatus status)
     throws SurveyServiceException;
 }

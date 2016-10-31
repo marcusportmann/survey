@@ -14,6 +14,7 @@ package digital.survey.web.pages;
 //~--- non-JDK imports --------------------------------------------------------
 
 import digital.survey.model.ISurveyService;
+import digital.survey.model.SurveyInstance;
 import digital.survey.model.SurveyResponse;
 import digital.survey.model.SurveyResponseSummary;
 import digital.survey.web.SurveySecurity;
@@ -83,6 +84,8 @@ public class SurveyResponseAdministrationPage extends TemplateWebPage
     {
       WebSession session = getWebApplicationSession();
 
+      SurveyInstance surveyInstance = surveyService.getSurveyInstance(surveyInstanceId);
+
       /*
        * The table container, which allows the table and its associated navigator to be updated
        * using AJAX.
@@ -94,6 +97,21 @@ public class SurveyResponseAdministrationPage extends TemplateWebPage
       // The dialog used to confirm the removal of a survey response
       RemoveDialog removeDialog = new RemoveDialog(tableContainer);
       add(removeDialog);
+
+      // The "addLink" used to add a new survey response for anonymous surveys only
+      Link<Void> addLink = new Link<Void>("addLink")
+      {
+        private static final long serialVersionUID = 1000000;
+
+        @Override
+        public void onClick()
+        {
+          // TODO: IMPLEMENT THIS
+          // setResponsePage(new AddSurveyResponsePage(getPageReference(), surveyInstanceId));
+        }
+      };
+      addLink.setVisible(surveyInstance.getDefinition().isAnonymous());
+      tableContainer.add(addLink);
 
       FilteredSurveyResponseSummaryDataProvider dataProvider =
           new FilteredSurveyResponseSummaryDataProvider(surveyInstanceId);

@@ -102,6 +102,13 @@ public class SurveyDefinition
   protected Organisation organisation;
 
   /**
+   * Is the survey definition anonymous?
+   */
+  @Column(name = "ANONYMOUS", nullable = false)
+  @JsonIgnore
+  private boolean isAnonymous;
+
+  /**
    * Constructs a new <code>SurveyDefinition</code>.
    *
    * Default constructor required for JPA.
@@ -379,6 +386,17 @@ public class SurveyDefinition
   }
 
   /**
+   * Is the survey definition anonymous?
+   *
+   * @return <code>true</code> if the survey definition is anonymous or <code>false</code> otherwise
+   */
+  @JsonIgnore
+  public boolean isAnonymous()
+  {
+    return isAnonymous;
+  }
+
+  /**
    * Remove the survey group definition from the survey definition.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
@@ -433,6 +451,18 @@ public class SurveyDefinition
         return;
       }
     }
+  }
+
+  /**
+   * Set whether the survey definition is anonymous.
+   *
+   * @param isAnonymous <code>true</code> if the survey definition is anonymous or
+   *                    <code>false</code> otherwise
+   */
+  @JsonIgnore
+  public void setAnonymous(boolean isAnonymous)
+  {
+    this.isAnonymous = isAnonymous;
   }
 
   /**

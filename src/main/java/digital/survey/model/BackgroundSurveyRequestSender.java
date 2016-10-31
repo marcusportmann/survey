@@ -116,7 +116,7 @@ public class BackgroundSurveyRequestSender
       // Retrieve the next survey request that is queued for sending
       try
       {
-        surveyRequest = surveyRequest.getNextSurveyRequestQueuedForSending();
+        surveyRequest = surveyService.getNextSurveyRequestQueuedForSending();
 
         if (surveyRequest == null)
         {
@@ -143,58 +143,59 @@ public class BackgroundSurveyRequestSender
           logger.debug(String.format("Sending the survey request (%s)", surveyRequest.getId()));
         }
 
-        if (surveyService.sendSurveyRequest(surveyRequest));
+        if (surveyService.sendSurveyRequest(surveyRequest))
         {
-          // Delete the SMS
-          smsService.deleteSMS(sms.getId());
+          // Unlock the survey request and mark it as sent
+          surveyService.unlockSurveyRequest(surveyRequest.getId(), SurveyRequestStatus.SENT);
         }
         else
         {
-          // Unlock the SMS and mark it as failed
-          smsService.unlockSMS(sms.getId(), SMS.Status.FAILED);
+          // Unlock the survey request and mark it as failed
+          surveyService.unlockSurveyRequest(surveyRequest.getId(), SurveyRequestStatus.FAILED);
         }
       }
       catch (Throwable e)
       {
-        logger.error(String.format("Failed to send the queued survy request (%s)",
+        logger.error(String.format("Failed to send the survey request (%s)",
             surveyRequest.getId()), e);
 
-        // Increment the send attempts for the SMS
+        // Increment the send attempts for the survey request
         try
         {
-          smsService.incrementSMSSendAttempts(sms);
+          surveyService.incrementSurveyRequestSendAttempts(surveyRequest);
         }
         catch (Throwable f)
         {
           logger.error(String.format(
-              "Failed to increment the send attempts for the queued survey request (%s)",
+              "Failed to increment the send attempts for the survey request (%s)",
               surveyRequest.getId()), f);
         }
 
         try
         {
           /*
-           * If the SMS has exceeded the maximum number of processing attempts then unlock it
+           * If the survey request has exceeded the maximum number of send attempts then unlock it
            * and set its status to "Failed" otherwise unlock it and set its status to
            * "QueuedForSending".
            */
-          if (sms.getSendAttempts() >= smsService.getMaximumSendAttempts())
+          if (surveyRequest.getSendAttempts()
+              >= surveyService.getMaximumSurveyRequestSendAttempts())
           {
-            logger.warn(String.format(
-                "The queued survey request (%s) has exceeded the maximum number of send attempts"
-                + " and will be marked as \"Failed\"", surveyRequest.getId()));
+            logger.warn(String.format("The survey request (%s) has exceeded the maximum number of"
+                + " send attempts and will be marked as \"Failed\"", surveyRequest.getId()));
 
-            smsService.unlockSMS(sms.getId(), SMS.Status.FAILED);
+            surveyService.unlockSurveyRequest(surveyRequest.getId(), SurveyRequestStatus.FAILED);
           }
           else
           {
-            smsService.unlockSMS(sms.getId(), SMS.Status.QUEUED_FOR_SENDING);
+            surveyService.unlockSurveyRequest(surveyRequest.getId(), SurveyRequestStatus
+                .QUEUED_FOR_SENDING);
           }
         }
         catch (Throwable f)
         {
           logger.error(String.format(
-              "Failed to unlock and set the status for the queued survey request (%s)",
+              "Failed to unlock and set the status for the survey request (%s)",
               surveyRequest.getId()), f);
         }
       }

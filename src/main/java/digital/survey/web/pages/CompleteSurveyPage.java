@@ -75,6 +75,10 @@ public class CompleteSurveyPage extends TemplateWebPage
         surveyRequest = surveyService.getSurveyRequest(UUID.fromString(pageParameters.get(
             "surveyRequestId").toString()));
       }
+      else
+      {
+        // TODO: Check if the survey definition associated with the survey request allows anonymous responses -- MARCUS
+      }
 
       SurveyResponse surveyResponse = new SurveyResponse(surveyInstance, surveyRequest);
 

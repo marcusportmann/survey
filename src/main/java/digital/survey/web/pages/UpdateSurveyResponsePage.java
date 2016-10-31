@@ -58,7 +58,7 @@ public class UpdateSurveyResponsePage extends TemplateWebPage
    * Constructs a new <code>UpdateSurveyResponsePage</code>.
    *
    * @param previousPage        the previous page
-   * @param surveyResponseModel the model for the code
+   * @param surveyResponseModel the model for the survey response
    */
   public UpdateSurveyResponsePage(PageReference previousPage, IModel<SurveyResponse> surveyResponseModel)
   {

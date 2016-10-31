@@ -30,6 +30,7 @@ import org.apache.wicket.PageReference;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,10 +74,13 @@ class AddSurveyInstancePage extends TemplateWebPage
       SurveyDefinition surveyDefinition = surveyService.getLatestVersionOfSurveyDefinition(
           surveyDefinitionId);
 
-      Form<SurveyInstance> addForm = new Form<>("addForm", new CompoundPropertyModel<>(new Model<>(
-          new SurveyInstance(UUID.randomUUID(), "", "", surveyDefinition))));
+      IModel<SurveyInstance> surveyInstanceModel = new Model<>(new SurveyInstance(
+          UUID.randomUUID(), "", "", surveyDefinition));
 
-      addForm.add(new SurveyInstanceInputPanel("surveyInstance"));
+      Form<SurveyInstance> addForm = new Form<>("addForm", new CompoundPropertyModel<>(
+          surveyInstanceModel));
+
+      addForm.add(new SurveyInstanceInputPanel("surveyInstance", surveyInstanceModel));
 
       // The "addButton" button
       Button addButton = new Button("addButton")

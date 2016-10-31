@@ -59,6 +59,12 @@ public class SurveyApplication extends TemplateWebApplication
   public static final String MAIL_PASSWORD_CONFIGURATION_KEY = "Survey.Mail.Password";
 
   /**
+   * The "Survey.Mail.Password" configuration key.
+   */
+  public static final String MAXIMUM_SURVEY_REQUEST_SEND_ATTEMPTS_CONFIGURATION_KEY =
+      "Survey.BackgroundSurveyRequestSender.MaximumSendAttempts";
+
+  /**
    * The "Survey.Mail.IsSecure" configuration key.
    */
   public static final String MAIL_IS_SECURE_CONFIGURATION_KEY = "Survey.Mail.IsSecure";

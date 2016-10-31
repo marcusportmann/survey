@@ -86,6 +86,24 @@ public class SurveyRequest
   private SurveyRequestStatus status;
 
   /**
+   * The number of times that the sending of the survey request was attempted.
+   */
+  @Column(name = "SEND_ATTEMPTS", nullable = false)
+  private int sendAttempts;
+
+  /**
+   * The name of the entity that has locked the survey request for sending.
+   */
+  @Column(name = "LOCK_NAME")
+  private String lockName;
+
+  /**
+   * The date and time the last attempt was made to send the survey request.
+   */
+  @Column(name = "LAST_PROCESSED")
+  private Date lastProcessed;
+
+  /**
    * Constructs a new <code>SurveyRequest</code>.
    *
    * Default constructor required for JPA.
@@ -221,6 +239,26 @@ public class SurveyRequest
   }
 
   /**
+   * Returns the date and time the last attempt was made to send the survey request.
+   *
+   * @return the date and time the last attempt was made to send the survey request
+   */
+  public Date getLastProcessed()
+  {
+    return lastProcessed;
+  }
+
+  /**
+   * Returns the name of the entity that has locked the survey request for sending.
+   *
+   * @return the name of the entity that has locked the survey request for sending
+   */
+  public String getLockName()
+  {
+    return lockName;
+  }
+
+  /**
    * Returns the date and time the request to complete the survey was last sent.
    *
    * @return the date and time the request to complete the survey was last sent
@@ -240,6 +278,16 @@ public class SurveyRequest
   public String getRequestedAsString()
   {
     return DateUtil.getYYYYMMDDWithTimeFormat().format(requested);
+  }
+
+  /**
+   * Returns the number of times that the sending of the survey request was attempted.
+   *
+   * @return the number of times that the sending of the survey request was attempted
+   */
+  public int getSendAttempts()
+  {
+    return sendAttempts;
   }
 
   /**
@@ -283,6 +331,26 @@ public class SurveyRequest
   }
 
   /**
+   * Set the date and time the last attempt was made to send the survey request.
+   *
+   * @param lastProcessed the date and time the last attempt was made to send the survey request
+   */
+  public void setLastProcessed(Date lastProcessed)
+  {
+    this.lastProcessed = lastProcessed;
+  }
+
+  /**
+   * Set the name of the entity that has locked the survey request for sending.
+   *
+   * @param lockName the name of the entity that has locked the survey request for sending
+   */
+  public void setLockName(String lockName)
+  {
+    this.lockName = lockName;
+  }
+
+  /**
    * Set the date and time the request to complete the survey was last sent.
    *
    * @param requested the date and time the request to complete the survey was last sent
@@ -290,6 +358,16 @@ public class SurveyRequest
   public void setRequested(Date requested)
   {
     this.requested = requested;
+  }
+
+  /**
+   * Set the number of times that the sending of the survey request was attempted.
+   *
+   * @param sendAttempts the number of times that the sending of the survey request was attempted
+   */
+  public void setSendAttempts(int sendAttempts)
+  {
+    this.sendAttempts = sendAttempts;
   }
 
   /**
@@ -311,8 +389,14 @@ public class SurveyRequest
   public String toString()
   {
     return String.format(
-        "SurveyRequest {id=\"%s\", firstName=\"%s\", lastName=\"%s\", email=\"%s\", requested=\"%s\"}",
-        getId(), getFirstName(), getLastName(), getEmail(), DateUtil.getYYYYMMDDWithTimeFormat()
-        .format(getRequested()));
+        "SurveyRequest {id=\"%s\", firstName=\"%s\", lastName=\"%s\", email=\"%s\","
+        + " requested=\"%s\", status=\"%s\", sendAttempts=\"%d\", lockName=\"%s\","
+        + " lastProcessed=\"%s\"}", getId(), getFirstName(), getLastName(), getEmail(),
+        DateUtil.getYYYYMMDDWithTimeFormat().format(getRequested()), getStatus().description(),
+        getSendAttempts(), (getLockName() == null)
+        ? ""
+        : getLockName(), (getLastProcessed() == null)
+        ? "Never"
+        : DateUtil.getYYYYMMDDWithTimeFormat().format(getLastProcessed()));
   }
 }
