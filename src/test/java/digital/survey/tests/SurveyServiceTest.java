@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -62,21 +63,89 @@ public class SurveyServiceTest
         "b222aa15-715f-4752-923d-8f33ee8a1736"), "CTO ELT Values - September 2016",
         "CTO ELT Values - September 2016", surveyDefinition);
 
-    SurveyRequest surveyRequest = new SurveyRequest(UUID.fromString(
+    SurveyResult marcusSurveyRequest = new SurveyResult(UUID.fromString(
         "54a751f6-0f32-48bd-8c6c-665e3ac1906b"), surveyInstance, "Marcus", "Portmann",
         "marcus@mmp.guru");
 
     SurveyResponse marcusSurveyResponse = new SurveyResponse(UUID.fromString(
-        "18f3fcc1-06b2-4dc4-90ea-7a8904009488"), surveyInstance, surveyRequest);
+        "18f3fcc1-06b2-4dc4-90ea-7a8904009488"), surveyInstance, marcusSurveyRequest);
 
-    SurveyResponse anonymousSurveyResponse = new SurveyResponse(UUID.fromString(
-        "9271229e-0824-4098-8477-1a564c0acca1"), surveyInstance);
+    randomizeSurveyResponse(marcusSurveyResponse);
+
+    SurveyResult aidenSurveyRequest = new SurveyResult(UUID.fromString(
+        "215640fd-ee60-4f66-82bc-d173955b2228"), surveyInstance, "Aiden", "Portmann",
+        "aiden@mmp.guru");
+
+    SurveyResponse aidenSurveyResponse = new SurveyResponse(UUID.fromString(
+        "f2aab238-9d79-4272-bd3e-0085f2f86a9a"), surveyInstance, aidenSurveyRequest);
+
+    randomizeSurveyResponse(aidenSurveyResponse);
 
     System.out.println("Survey Definition: " + surveyDefinition.getData());
 
     System.out.println("Survey Response (Marcus Portmann): " + marcusSurveyResponse.getData());
 
-    System.out.println("Survey Response (Anonymous): " + anonymousSurveyResponse.getData());
+    System.out.println("Survey Response (Aiden Portmann): " + aidenSurveyResponse.getData());
+
+    System.out.println("\n");
+
+    System.out.printf(
+      "INSERT INTO SURVEY.SURVEY_DEFINITIONS (ID, VERSION, ORGANISATION_ID, NAME, DESCRIPTION, ANONYMOUS, DATA) VALUES ('%s', %d, '%s', '%s', '%s', FALSE, '%s');%n",
+      surveyDefinition.getId(), surveyDefinition.getVersion(),
+      surveyDefinition.getOrganisation().getId(), surveyDefinition.getName(),
+      surveyDefinition.getDescription(), surveyDefinition.getData());
+
+    System.out.println();
+
+    System.out.printf(
+      "INSERT INTO SURVEY.SURVEY_INSTANCES(ID, SURVEY_DEFINITION_ID, SURVEY_DEFINITION_VERSION, NAME, DESCRIPTION) VALUES ('%s', '%s', %d, '%s', '%s');%n",
+      surveyInstance.getId(), surveyInstance.getDefinition().getId(),
+      surveyInstance.getDefinition().getVersion(), surveyInstance.getName(),
+      surveyInstance.getDescription());
+
+    System.out.println();
+
+    System.out.printf(
+        "INSERT INTO SURVEY.SURVEY_REQUESTS(ID, SURVEY_INSTANCE_ID, FIRST_NAME, LAST_NAME, EMAIL, REQUESTED, STATUS) VALUES\n ('%s', '%s', '%s', '%s', '%s', NOW(), 3);%n",
+        marcusSurveyRequest.getId(), marcusSurveyRequest.getInstance().getId(),
+        marcusSurveyRequest.getFirstName(), marcusSurveyRequest.getLastName(),
+        marcusSurveyRequest.getEmail());
+    System.out.printf(
+      "INSERT INTO SURVEY.SURVEY_REQUESTS(ID, SURVEY_INSTANCE_ID, FIRST_NAME, LAST_NAME, EMAIL, REQUESTED, STATUS) VALUES\n ('%s', '%s', '%s', '%s', '%s', NOW(), 3);%n",
+      aidenSurveyRequest.getId(), aidenSurveyRequest.getInstance().getId(),
+      aidenSurveyRequest.getFirstName(), aidenSurveyRequest.getLastName(),
+      aidenSurveyRequest.getEmail());
+
+    System.out.println();
+
+    System.out.printf(
+      "INSERT INTO SURVEY.SURVEY_RESPONSES (ID, SURVEY_INSTANCE_ID, SURVEY_REQUEST_ID, RESPONDED, DATA) VALUES\n ('%s', '%s', '%s', NOW(), '%s');%n",
+      marcusSurveyResponse.getId(), marcusSurveyResponse.getInstance().getId(),
+      marcusSurveyRequest.getId(), marcusSurveyResponse.getData());
+
+    System.out.printf(
+      "INSERT INTO SURVEY.SURVEY_RESPONSES (ID, SURVEY_INSTANCE_ID, SURVEY_REQUEST_ID, RESPONDED, DATA) VALUES\n ('%s', '%s', '%s', NOW(), '%s');%n",
+      aidenSurveyResponse.getId(), aidenSurveyResponse.getInstance().getId(),
+      aidenSurveyRequest.getId(), aidenSurveyResponse.getData());
+
+    System.out.println();
+    System.out.println();
+
+  }
+
+  private void randomizeSurveyResponse(SurveyResponse surveyResponse)
+  {
+    for (SurveyGroupRatingItemResponse groupRatingItemResponse : surveyResponse.getGroupRatingItemResponses())
+    {
+      if (groupRatingItemResponse.getGroupRatingItemDefinitionRatingType() == SurveyGroupRatingItemType.ONE_TO_TEN)
+      {
+        groupRatingItemResponse.setRating(ThreadLocalRandom.current().nextInt(1, 10 + 1));
+      }
+      else if (groupRatingItemResponse.getGroupRatingItemDefinitionRatingType() == SurveyGroupRatingItemType.YES_NO_NA)
+      {
+        groupRatingItemResponse.setRating(ThreadLocalRandom.current().nextInt(-1, 2));
+      }
+    }
   }
 
   /**
@@ -434,18 +503,18 @@ public class SurveyServiceTest
 
     surveyInstance = surveyService.saveSurveyInstance(surveyInstance);
 
-    SurveyRequest surveyRequest = getTestSurveyRequestDetails(surveyInstance);
+    SurveyResult surveyRequest = getTestSurveyRequestDetails(surveyInstance);
 
     surveyRequest = surveyService.saveSurveyRequest(surveyRequest);
 
-    SurveyRequest retrievedSurveyRequest = surveyService.getSurveyRequest(surveyRequest.getId());
+    SurveyResult retrievedSurveyRequest = surveyService.getSurveyRequest(surveyRequest.getId());
 
     compareSurveyRequests(surveyRequest, retrievedSurveyRequest);
 
     assertEquals("The number of survey requests for the survey instance is not correct", 1,
         surveyService.getNumberOfSurveyRequestsForSurveyInstance(surveyInstance.getId()));
 
-    List<SurveyRequest> surveyRequests = surveyService.getSurveyRequestsForSurveyInstance(
+    List<SurveyResult> surveyRequests = surveyService.getSurveyRequestsForSurveyInstance(
         surveyInstance.getId());
 
     assertEquals("The number of survey requests for the survey instance is not correct", 1,
@@ -505,7 +574,7 @@ public class SurveyServiceTest
 
     surveyInstance = surveyService.saveSurveyInstance(surveyInstance);
 
-    SurveyRequest surveyRequest = getTestSurveyRequestDetails(surveyInstance);
+    SurveyResult surveyRequest = getTestSurveyRequestDetails(surveyInstance);
 
     surveyRequest = surveyService.saveSurveyRequest(surveyRequest);
 
@@ -770,10 +839,10 @@ public class SurveyServiceTest
         surveyDefinition);
   }
 
-  private static synchronized SurveyRequest getTestSurveyRequestDetails(
+  private static synchronized SurveyResult getTestSurveyRequestDetails(
       SurveyInstance surveyInstance)
   {
-    return new SurveyRequest(UUID.randomUUID(), surveyInstance, "Marcus", "Portmann",
+    return new SurveyResult(UUID.randomUUID(), surveyInstance, "Marcus", "Portmann",
         "marcus@mmp.guru");
   }
 
@@ -962,7 +1031,7 @@ public class SurveyServiceTest
         surveyInstance1.getDescription(), surveyInstance2.getDescription());
   }
 
-  private void compareSurveyRequests(SurveyRequest surveyRequest1, SurveyRequest surveyRequest2)
+  private void compareSurveyRequests(SurveyResult surveyRequest1, SurveyResult surveyRequest2)
   {
     assertEquals("The ID values for the two survey requests do not match", surveyRequest1.getId(),
         surveyRequest2.getId());
@@ -975,9 +1044,9 @@ public class SurveyServiceTest
     assertEquals("The e-mail values for the two survey requests do not match",
         surveyRequest1.getEmail(), surveyRequest2.getEmail());
     assertEquals("The requested values for the two survey requests do not match",
-      surveyRequest1.getRequested(), surveyRequest2.getRequested());
+        surveyRequest1.getRequested(), surveyRequest2.getRequested());
     assertEquals("The requested as string values for the two survey requests do not match",
-      surveyRequest1.getRequestedAsString(), surveyRequest2.getRequestedAsString());
+        surveyRequest1.getRequestedAsString(), surveyRequest2.getRequestedAsString());
     assertEquals("The status values for the two survey requests do not match",
         surveyRequest1.getStatus(), surveyRequest2.getStatus());
     assertEquals("The send attempts values for the two survey requests do not match",

@@ -36,7 +36,7 @@ import java.util.UUID;
             @ColumnResult(name = "REQUESTED", type = Date.class) ,
             @ColumnResult(name = "RESPONSE_ID", type = UUID.class) ,
             @ColumnResult(name = "RESPONDED", type = Date.class) }) })
-public class SurveyRequest
+public class SurveyResult
   implements Serializable
 {
   /**
@@ -109,7 +109,7 @@ public class SurveyRequest
    * Default constructor required for JPA.
    */
   @SuppressWarnings("unused")
-  SurveyRequest() {}
+  SurveyResult() {}
 
   /**
    * Constructs a new <code>SurveyRequest</code>.
@@ -119,7 +119,7 @@ public class SurveyRequest
    * @param lastName  the last name for the person who was requested to complete the survey
    * @param email     the e-mail address for the person who was requested to complete the survey
    */
-  public SurveyRequest(SurveyInstance instance, String firstName, String lastName, String email)
+  public SurveyResult(SurveyInstance instance, String firstName, String lastName, String email)
   {
     this(UUID.randomUUID(), instance, firstName, lastName, email);
   }
@@ -134,7 +134,7 @@ public class SurveyRequest
    * @param lastName  the last name for the person who was requested to complete the survey
    * @param email     the e-mail address for the person who was requested to complete the survey
    */
-  public SurveyRequest(UUID id, SurveyInstance instance, String firstName, String lastName,
+  public SurveyResult(UUID id, SurveyInstance instance, String firstName, String lastName,
       String email)
   {
     this.id = id;
@@ -172,7 +172,7 @@ public class SurveyRequest
       return false;
     }
 
-    SurveyRequest other = (SurveyRequest) obj;
+    SurveyResult other = (SurveyResult) obj;
 
     return id.equals(other.id);
   }

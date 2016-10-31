@@ -109,7 +109,7 @@ public class BackgroundSurveyRequestSender
 
   private void sendSurveyRequests()
   {
-    SurveyRequest surveyRequest;
+    SurveyResult surveyRequest;
 
     while (true)
     {

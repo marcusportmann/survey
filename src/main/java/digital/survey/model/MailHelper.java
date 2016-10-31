@@ -57,7 +57,7 @@ public class MailHelper
    *
    * @param surveyRequest the survey request
    */
-  public void sendSurveyRequestMail(SurveyRequest surveyRequest)
+  public void sendSurveyRequestMail(SurveyResult surveyRequest)
     throws MailHelperException
   {
     try

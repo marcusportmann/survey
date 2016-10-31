@@ -15,7 +15,7 @@ package digital.survey.web.pages;
 
 import digital.survey.model.ISurveyService;
 import digital.survey.model.SurveyInstance;
-import digital.survey.model.SurveyRequest;
+import digital.survey.model.SurveyResult;
 import digital.survey.model.SurveyResponse;
 import digital.survey.web.components.SurveyResponseInputPanel;
 import guru.mmp.application.web.WebApplicationException;
@@ -67,7 +67,7 @@ public class CompleteSurveyPage extends TemplateWebPage
       SurveyInstance surveyInstance = surveyService.getSurveyInstance(UUID.fromString(
           pageParameters.get("surveyInstanceId").toString()));
 
-      SurveyRequest surveyRequest = null;
+      SurveyResult surveyRequest = null;
 
       if ((!pageParameters.get("surveyRequestId").isNull())
           && (!pageParameters.get("surveyRequestId").isEmpty()))

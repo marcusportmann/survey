@@ -9,7 +9,7 @@
     <class>guru.mmp.application.security.Organisation</class>
     <class>digital.survey.model.SurveyDefinition</class>
     <class>digital.survey.model.SurveyInstance</class>
-    <class>digital.survey.model.SurveyRequest</class>
+    <class>digital.survey.model.SurveyResult</class>
     <class>digital.survey.model.SurveyResponse</class>
 
     <properties>

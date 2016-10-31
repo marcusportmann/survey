@@ -130,7 +130,7 @@ public interface ISurveyService
    *
    * @return <code>true</code> if the survey request was deleted or <code>false</code> otherwise
    */
-  boolean deleteSurveyRequest(SurveyRequest surveyRequest)
+  boolean deleteSurveyRequest(SurveyResult surveyRequest)
     throws SurveyServiceException;
 
   /**
@@ -225,7 +225,7 @@ public interface ISurveyService
    *
    * @return the filtered survey requests for the survey instance
    */
-  List<SurveyRequest> getFilteredSurveyRequestsForSurveyInstance(UUID id, String filter)
+  List<SurveyResult> getFilteredSurveyRequestsForSurveyInstance(UUID id, String filter)
     throws SurveyServiceException;
 
   /**
@@ -290,7 +290,7 @@ public interface ISurveyService
    * @return the next survey request that has been queued for sending or <code>null</code> if no
    *         survey requests are currently queued for sending
    */
-  SurveyRequest getNextSurveyRequestQueuedForSending()
+  SurveyResult getNextSurveyRequestQueuedForSending()
     throws SurveyServiceException;
 
   /**
@@ -541,7 +541,7 @@ public interface ISurveyService
    * @return the survey request identified by the specified ID or <code>null</code> if the survey
    *         request could not be found
    */
-  SurveyRequest getSurveyRequest(UUID id)
+  SurveyResult getSurveyRequest(UUID id)
     throws SurveyServiceException;
 
   /**
@@ -555,7 +555,7 @@ public interface ISurveyService
    * @return the survey request with the specified e-mail address for the survey instance with
    *         the specified ID or <code>null</code> if no matching service request could be found
    */
-  SurveyRequest getSurveyRequestForSurveyInstanceByEmail(UUID id, String email)
+  SurveyResult getSurveyRequestForSurveyInstanceByEmail(UUID id, String email)
     throws SurveyServiceException;
 
   /**
@@ -566,7 +566,7 @@ public interface ISurveyService
    *
    * @return the survey requests for the survey instance
    */
-  List<SurveyRequest> getSurveyRequestsForSurveyInstance(UUID id)
+  List<SurveyResult> getSurveyRequestsForSurveyInstance(UUID id)
     throws SurveyServiceException;
 
   /**
@@ -623,7 +623,7 @@ public interface ISurveyService
    *
    * @throws SurveyServiceException
    */
-  void incrementSurveyRequestSendAttempts(SurveyRequest surveyRequest)
+  void incrementSurveyRequestSendAttempts(SurveyResult surveyRequest)
     throws SurveyServiceException;
 
   /**
@@ -682,7 +682,7 @@ public interface ISurveyService
    *
    * @return the saved survey request
    */
-  SurveyRequest saveSurveyRequest(SurveyRequest surveyRequest)
+  SurveyResult saveSurveyRequest(SurveyResult surveyRequest)
     throws SurveyServiceException;
 
   /**
@@ -703,7 +703,7 @@ public interface ISurveyService
    * @return <code>true</code> if the survey request was sent successfully or <code>false</code>
    *         otherwise
    */
-  boolean sendSurveyRequest(SurveyRequest surveyRequest)
+  boolean sendSurveyRequest(SurveyResult surveyRequest)
     throws SurveyServiceException;
 
   /**

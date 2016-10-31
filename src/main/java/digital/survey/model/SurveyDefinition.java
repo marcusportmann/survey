@@ -344,6 +344,16 @@ public class SurveyDefinition
   }
 
   /**
+   * Returns the organisation this survey definition is associated with.
+   *
+   * @return the organisation this survey definition is associated with
+   */
+  public Organisation getOrganisation()
+  {
+    return organisation;
+  }
+
+  /**
    * Retrieve the survey section definition.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey section

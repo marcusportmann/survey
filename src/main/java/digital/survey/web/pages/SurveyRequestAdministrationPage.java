@@ -14,7 +14,7 @@ package digital.survey.web.pages;
 //~--- non-JDK imports --------------------------------------------------------
 
 import digital.survey.model.ISurveyService;
-import digital.survey.model.SurveyRequest;
+import digital.survey.model.SurveyResult;
 import digital.survey.model.SurveyRequestToSurveyResponseMapping;
 import digital.survey.model.SurveyResponse;
 import digital.survey.web.SurveySecurity;
@@ -180,14 +180,14 @@ public class SurveyRequestAdministrationPage extends TemplateWebPage
       tableContainer.add(backLink);
 
       // The survey request data view
-      DataView<SurveyRequest> dataView = new DataView<SurveyRequest>("surveyRequest", dataProvider)
+      DataView<SurveyResult> dataView = new DataView<SurveyResult>("surveyRequest", dataProvider)
       {
         private static final long serialVersionUID = 1000000;
 
         @Override
-        protected void populateItem(Item<SurveyRequest> item)
+        protected void populateItem(Item<SurveyResult> item)
         {
-          SurveyRequest surveyRequest = item.getModelObject();
+          SurveyResult surveyRequest = item.getModelObject();
 
           Date responded = surveyRequestIdToSurveyResponseReceivedMap.get(surveyRequest.getId())
           ;
@@ -209,7 +209,7 @@ public class SurveyRequestAdministrationPage extends TemplateWebPage
             @Override
             public void onClick()
             {
-              SurveyRequest surveyRequest = item.getModelObject();
+              SurveyResult surveyRequest = item.getModelObject();
 
               try
               {
@@ -252,7 +252,7 @@ public class SurveyRequestAdministrationPage extends TemplateWebPage
             @Override
             public void onClick()
             {
-              SurveyRequest surveyRequest = item.getModelObject();
+              SurveyResult surveyRequest = item.getModelObject();
 
               try
               {
@@ -300,7 +300,7 @@ public class SurveyRequestAdministrationPage extends TemplateWebPage
             @Override
             public void onClick(AjaxRequestTarget target)
             {
-              SurveyRequest surveyInstance = item.getModelObject();
+              SurveyResult surveyInstance = item.getModelObject();
 
               if (surveyInstance != null)
               {
@@ -396,7 +396,7 @@ public class SurveyRequestAdministrationPage extends TemplateWebPage
      * @param target         the AJAX request target
      * @param surveyRequest the survey request being removed
      */
-    public void show(AjaxRequestTarget target, SurveyRequest surveyRequest)
+    public void show(AjaxRequestTarget target, SurveyResult surveyRequest)
     {
       id = surveyRequest.getId();
 
