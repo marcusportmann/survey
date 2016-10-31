@@ -15,17 +15,16 @@ package digital.survey.web.pages;
 
 import digital.survey.model.ISurveyService;
 import digital.survey.model.SendSurveyRequestType;
+import digital.survey.model.SurveyAudience;
 import digital.survey.model.SurveyInstance;
 import digital.survey.web.SurveySecurity;
 import digital.survey.web.components.SendSurveyRequestTypeChoiceRenderer;
+import digital.survey.web.components.SurveyAudienceChoiceRenderer;
 import digital.survey.web.data.FilteredSurveyInstanceDataProvider;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.WebSession;
 import guru.mmp.application.web.pages.WebPageSecurity;
-import guru.mmp.application.web.template.components.Dialog;
-import guru.mmp.application.web.template.components.DropDownChoiceWithFeedback;
-import guru.mmp.application.web.template.components.FormDialog;
-import guru.mmp.application.web.template.components.PagingNavigator;
+import guru.mmp.application.web.template.components.*;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
 import org.apache.wicket.PageReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -43,6 +42,7 @@ import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -373,16 +373,24 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
   private class SendSurveyRequestDialog extends FormDialog
   {
     private static final long serialVersionUID = 1000000;
+    private SurveyAudience audience = null;
+    private String firstName = null;
+    private String lastName = null;
+    private String email = null;
     @SuppressWarnings("unused")
     private SendSurveyRequestType sendSurveyRequestType;
     private DropDownChoice<SendSurveyRequestType> sendSurveyRequestTypeField;
     private WebMarkupContainer toPersonContainer;
     private WebMarkupContainer toAudienceContainer;
+    private DropDownChoice<SurveyAudience> audienceField;
+    private TextField<String> firstNameField;
+    private TextField<String> lastNameField;
+    private TextField<String> emailField;
 
     /**
      * Constructs a new <code>SendSurveyRequestDialog</code>.
      */
-    public SendSurveyRequestDialog()
+    SendSurveyRequestDialog()
     {
       super("sendSurveyRequestDialog", "Send Survey Request", "Send", "Cancel");
 
@@ -461,14 +469,45 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
     {
       try
       {
-        resetDialog(target);
+        if (SendSurveyRequestType.TO_AUDIENCE.getCodeAsString().equals(
+            sendSurveyRequestTypeField.getValue()))
+        {
+          // surveyService.sendSurveyRequestToAudience(audience);
+
+          SurveyInstanceAdministrationPage.this.info(String.format(
+              "Successfully sent the survey request to %s", audience.getName()));
+        }
+        else
+        {
+          // surveyService.sendSurveyRequestToPerson(firstName, lastName, email);
+
+          SurveyInstanceAdministrationPage.this.info(String.format(
+              "Successfully sent the survey request to %s %s", firstName, lastName));
+        }
+
       }
       catch (Throwable e)
       {
-        logger.error("Failed to send the survey request(s)", e);
+        logger.error("Failed to send the survey request", e);
 
-        error(target, "Failed to send the survey request(s)");
+        if (SendSurveyRequestType.TO_AUDIENCE.getCodeAsString().equals(
+            sendSurveyRequestTypeField.getValue()))
+        {
+          SurveyInstanceAdministrationPage.this.error(String.format(
+              "Failed to the survey request to %s", audience.getName()));
+        }
+        else
+        {
+          SurveyInstanceAdministrationPage.this.info(String.format(
+              "Failed to send the survey request to %s %s", firstName, lastName));
+        }
       }
+
+      resetDialog(target);
+
+      target.add(getAlerts());
+
+      hide(target);
     }
 
     /**
@@ -479,8 +518,24 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
       sendSurveyRequestType = null;
     }
 
+    private List<SurveyAudience> getAudienceOptions()
+      throws WebApplicationException
+    {
+      WebSession session = getWebApplicationSession();
+
+      try
+      {
+        return surveyService.getSurveyAudiencesForOrganisation(session.getOrganisation().getId());
+      }
+      catch (Throwable e)
+      {
+        throw new WebApplicationException(
+            "Failed to retrieve the survey audiences for the organisation ("
+            + session.getOrganisation().getId() + ")", e);
+      }
+    }
+
     private List<SendSurveyRequestType> getSendSurveyRequestTypeOptions()
-      throws SecurityException
     {
       List<SendSurveyRequestType> sendSurveyRequestTypes = new ArrayList<>();
 
@@ -493,16 +548,14 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
     private void resetContainers(AjaxRequestTarget target)
     {
       // Reset the "toPersonContainer"
-      // codeDataField.setModelObject(null);
+      firstNameField.setModelObject(null);
+      lastNameField.setModelObject(null);
+      emailField.setModelObject(null);
 
       target.add(toPersonContainer);
 
       // Reset the "toAudienceContainer"
-      // endPointField.setModelObject(null);
-
-      // isEndPointSecureField.setModelObject(false);
-      // isCacheableField.setModelObject(false);
-      // cacheExpiryField.setModelObject(null);
+      audienceField.setModelObject(null);
 
       target.add(toAudienceContainer);
     }
@@ -527,19 +580,24 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
       toAudienceContainer.setOutputMarkupPlaceholderTag(true);
       getForm().add(toAudienceContainer);
 
-//    // The "codeData" field
-//    codeDataField = new TextAreaWithFeedback<String>("codeData")
-//    {
-//      @Override
-//      protected void onConfigure()
-//      {
-//        super.onConfigure();
-//
-//        setRequired(CodeCategoryType.LOCAL_CUSTOM.getCodeAsString().equals(
-//          categoryTypeField.getValue()));
-//      }
-//    };
-//    codeDataContainer.add(codeDataField);
+      SurveyAudienceChoiceRenderer surveyAudienceChoiceRenderer =
+          new SurveyAudienceChoiceRenderer();
+
+      // The "audience" field
+      audienceField = new DropDownChoiceWithFeedback<SurveyAudience>("audience",
+          new PropertyModel<>(this, "audience"), getAudienceOptions(), surveyAudienceChoiceRenderer)
+      {
+        @Override
+        protected void onConfigure()
+        {
+          super.onConfigure();
+
+          setRequired(SendSurveyRequestType.TO_AUDIENCE.getCodeAsString().equals(
+              sendSurveyRequestTypeField.getValue()));
+        }
+      };
+      audienceField.setOutputMarkupId(true);
+      toAudienceContainer.add(audienceField);
     }
 
     private void setupToPersonContainer()
@@ -561,6 +619,54 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
       toPersonContainer.setOutputMarkupId(true);
       toPersonContainer.setOutputMarkupPlaceholderTag(true);
       getForm().add(toPersonContainer);
+
+      // The "firstName" field
+      firstNameField = new TextFieldWithFeedback<String>("firstName", new PropertyModel<>(this,
+          "firstName"))
+      {
+        @Override
+        protected void onConfigure()
+        {
+          super.onConfigure();
+
+          setRequired(SendSurveyRequestType.TO_PERSON.getCodeAsString().equals(
+              sendSurveyRequestTypeField.getValue()));
+        }
+      };
+      firstNameField.setOutputMarkupId(true);
+      toPersonContainer.add(firstNameField);
+
+      // The "lastName" field
+      lastNameField = new TextFieldWithFeedback<String>("lastName", new PropertyModel<>(this,
+          "lastName"))
+      {
+        @Override
+        protected void onConfigure()
+        {
+          super.onConfigure();
+
+          setRequired(SendSurveyRequestType.TO_PERSON.getCodeAsString().equals(
+              sendSurveyRequestTypeField.getValue()));
+        }
+      };
+      lastNameField.setOutputMarkupId(true);
+      toPersonContainer.add(lastNameField);
+
+      // The "email" field
+      emailField = new TextFieldWithFeedback<String>("email", new PropertyModel<>(this, "email"))
+      {
+        @Override
+        protected void onConfigure()
+        {
+          super.onConfigure();
+
+          setRequired(SendSurveyRequestType.TO_PERSON.getCodeAsString().equals(
+              sendSurveyRequestTypeField.getValue()));
+        }
+      };
+      emailField.add(EmailAddressValidator.getInstance());
+      emailField.setOutputMarkupId(true);
+      toPersonContainer.add(emailField);
     }
   }
 }

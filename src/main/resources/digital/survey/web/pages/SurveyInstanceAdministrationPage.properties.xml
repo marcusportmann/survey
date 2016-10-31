@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+  <entry key="sendSurveyRequestType.Required">The type of survey request to send is required.</entry>
+  <entry key="audience.Required">The audience to send the survey request to is required.</entry>
+  <entry key="firstName.Required">A first name is required.</entry>
+  <entry key="lastName.Required">A last name is required.</entry>
+  <entry key="email.Required">An e-mail address is required.</entry>
+</properties>
