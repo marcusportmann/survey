@@ -29,6 +29,7 @@ import guru.mmp.application.web.template.components.PagingNavigator;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
 import org.apache.wicket.PageReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -374,6 +375,9 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
     private static final long serialVersionUID = 1000000;
     @SuppressWarnings("unused")
     private SendSurveyRequestType sendSurveyRequestType;
+    private DropDownChoice<SendSurveyRequestType> sendSurveyRequestTypeField;
+    private WebMarkupContainer toPersonContainer;
+    private WebMarkupContainer toAudienceContainer;
 
     /**
      * Constructs a new <code>SendSurveyRequestDialog</code>.
@@ -388,13 +392,38 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
             new SendSurveyRequestTypeChoiceRenderer();
 
         // The "sendSurveyRequestType" field
-        DropDownChoice<SendSurveyRequestType> sendSurveyRequestTypeField =
-            new DropDownChoiceWithFeedback<>("sendSurveyRequestType", new PropertyModel<>(this,
-            "sendSurveyRequestType"), getSendSurveyRequestTypeOptions(),
+        sendSurveyRequestTypeField = new DropDownChoiceWithFeedback<>("sendSurveyRequestType",
+            new PropertyModel<>(this, "sendSurveyRequestType"), getSendSurveyRequestTypeOptions(),
             sendSurveyRequestTypeChoiceRenderer);
         sendSurveyRequestTypeField.setRequired(true);
         sendSurveyRequestTypeField.setOutputMarkupId(true);
         getForm().add(sendSurveyRequestTypeField);
+
+        sendSurveyRequestTypeField.add(new AjaxFormComponentUpdatingBehavior("change")
+            {
+              private static final long serialVersionUID = 1000000;
+
+              @Override
+              protected void onUpdate(AjaxRequestTarget target)
+              {
+                try
+                {
+                  target.add(sendSurveyRequestTypeField);
+
+                  resetContainers(target);
+                }
+                catch (Throwable e)
+                {
+                  throw new RuntimeException("Failed to update the sendSurveyRequestType field", e);
+                }
+              }
+            });
+
+        // The "toAudienceContainer" container
+        setupToAudienceContainer();
+
+        // The "toPersonContainer" container
+        setupToPersonContainer();
       }
       catch (Throwable e)
       {
@@ -455,10 +484,83 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
     {
       List<SendSurveyRequestType> sendSurveyRequestTypes = new ArrayList<>();
 
-      sendSurveyRequestTypes.add(SendSurveyRequestType.TO_PERSON);
       sendSurveyRequestTypes.add(SendSurveyRequestType.TO_AUDIENCE);
+      sendSurveyRequestTypes.add(SendSurveyRequestType.TO_PERSON);
 
       return sendSurveyRequestTypes;
+    }
+
+    private void resetContainers(AjaxRequestTarget target)
+    {
+      // Reset the "toPersonContainer"
+      // codeDataField.setModelObject(null);
+
+      target.add(toPersonContainer);
+
+      // Reset the "toAudienceContainer"
+      // endPointField.setModelObject(null);
+
+      // isEndPointSecureField.setModelObject(false);
+      // isCacheableField.setModelObject(false);
+      // cacheExpiryField.setModelObject(null);
+
+      target.add(toAudienceContainer);
+    }
+
+    private void setupToAudienceContainer()
+    {
+      toAudienceContainer = new WebMarkupContainer("toAudienceContainer")
+      {
+        private static final long serialVersionUID = 1000000;
+
+        @Override
+        protected void onConfigure()
+        {
+          super.onConfigure();
+
+          setVisible(SendSurveyRequestType.TO_AUDIENCE.getCodeAsString().equals(
+              sendSurveyRequestTypeField.getValue()));
+        }
+      };
+
+      toAudienceContainer.setOutputMarkupId(true);
+      toAudienceContainer.setOutputMarkupPlaceholderTag(true);
+      getForm().add(toAudienceContainer);
+
+//    // The "codeData" field
+//    codeDataField = new TextAreaWithFeedback<String>("codeData")
+//    {
+//      @Override
+//      protected void onConfigure()
+//      {
+//        super.onConfigure();
+//
+//        setRequired(CodeCategoryType.LOCAL_CUSTOM.getCodeAsString().equals(
+//          categoryTypeField.getValue()));
+//      }
+//    };
+//    codeDataContainer.add(codeDataField);
+    }
+
+    private void setupToPersonContainer()
+    {
+      toPersonContainer = new WebMarkupContainer("toPersonContainer")
+      {
+        private static final long serialVersionUID = 1000000;
+
+        @Override
+        protected void onConfigure()
+        {
+          super.onConfigure();
+
+          setVisible(SendSurveyRequestType.TO_PERSON.getCodeAsString().equals(
+              sendSurveyRequestTypeField.getValue()));
+        }
+      };
+
+      toPersonContainer.setOutputMarkupId(true);
+      toPersonContainer.setOutputMarkupPlaceholderTag(true);
+      getForm().add(toPersonContainer);
     }
   }
 }

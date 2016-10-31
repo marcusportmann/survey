@@ -13,9 +13,6 @@ package digital.survey.model;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The <code>SendSurveyRequestType</code> enumeration defines the types of survey requests that can
  * be sent.
@@ -42,7 +39,6 @@ public enum SendSurveyRequestType
    *
    * @return the send survey request type given by the specified numeric code value
    */
-  @JsonCreator
   public static SendSurveyRequestType fromCode(int code)
   {
     switch (code)
@@ -63,7 +59,6 @@ public enum SendSurveyRequestType
    *
    * @return the numeric code for the send survey request type
    */
-  @JsonValue
   public int code()
   {
     return code;
@@ -77,5 +72,17 @@ public enum SendSurveyRequestType
   public String description()
   {
     return description;
+  }
+
+  /**
+   * Returns the <code>String</code> representation of the numeric code for the send survey request
+   * type.
+   *
+   * @return the <code>String</code> representation of the numeric code for the send survey request
+   *         type
+   */
+  public String getCodeAsString()
+  {
+    return String.valueOf(code);
   }
 }
