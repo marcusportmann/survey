@@ -13,7 +13,7 @@ package digital.survey.web.components;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import digital.survey.model.SendSurveyRequestType;
+import digital.survey.model.SurveyRequestStatus;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
 
@@ -22,29 +22,29 @@ import java.util.List;
 //~--- JDK imports ------------------------------------------------------------
 
 /**
- * The <code>SendSurveyRequestTypeChoiceRenderer</code> class implements a
- * <code>ChoiceRenderer</code> for <code>SendSurveyRequestType</code> instances.
+ * The <code>SurveyRequestStatusChoiceRenderer</code> class implements a
+ * <code>ChoiceRenderer</code> for <code>SurveyRequestStatus</code> instances.
  *
  * @author Marcus Portmann
  */
-public class SendSurveyRequestTypeChoiceRenderer
-  implements IChoiceRenderer<SendSurveyRequestType>
+public class SurveyRequestStatusChoiceRenderer
+  implements IChoiceRenderer<SurveyRequestStatus>
 {
   private static final long serialVersionUID = 1000000;
 
   /**
-   * Constructs a new <code>SendSurveyRequestTypeChoiceRenderer</code>.
+   * Constructs a new <code>SurveyRequestStatusChoiceRenderer</code>.
    */
-  public SendSurveyRequestTypeChoiceRenderer() {}
+  public SurveyRequestStatusChoiceRenderer() {}
 
   /**
    * Get the value for displaying to an end user.
    *
-   * @param type the send survey request type
+   * @param type the survey request status
    *
    * @return the value meant for displaying to an end user
    */
-  public Object getDisplayValue(SendSurveyRequestType type)
+  public Object getDisplayValue(SurveyRequestStatus type)
   {
     return type.description();
   }
@@ -53,14 +53,14 @@ public class SendSurveyRequestTypeChoiceRenderer
    * This method is called to get the id value of a job status (used as the value attribute
    * of a choice element).
    *
-   * @param type  the send survey request type for which the id should be generated
+   * @param type  the survey request status for which the id should be generated
    * @param index the index of the object in the choices list
    *
    * @return the id value of the object
    */
-  public String getIdValue(SendSurveyRequestType type, int index)
+  public String getIdValue(SurveyRequestStatus type, int index)
   {
-    return String.valueOf(type.code());
+    return type.getCodeAsString();
   }
 
   /**
@@ -73,9 +73,9 @@ public class SendSurveyRequestTypeChoiceRenderer
    *
    * @return a choice from the list that has this id
    */
-  public SendSurveyRequestType getObject(String id,
-      IModel<? extends List<? extends SendSurveyRequestType>> choices)
+  public SurveyRequestStatus getObject(String id,
+      IModel<? extends List<? extends SurveyRequestStatus>> choices)
   {
-    return SendSurveyRequestType.fromCode(Integer.valueOf(id));
+    return SurveyRequestStatus.fromCode(Integer.valueOf(id));
   }
 }

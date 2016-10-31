@@ -13,16 +13,19 @@ package digital.survey.model;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import guru.mmp.application.configuration.IConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,6 +49,10 @@ public class SurveyService
   /* Entity Manager */
   @PersistenceContext(unitName = "Application")
   private EntityManager entityManager;
+
+  /* Configuration Service */
+  @Inject
+  private IConfigurationService configurationService;
 
   /**
    * Constructs a new <code>SurveyService</code>.
@@ -1461,6 +1468,50 @@ public class SurveyService
   }
 
   /**
+   * Retrieve the survey request with the specified e-mail address for the survey instance with
+   * the specified ID.
+   *
+   * @param id    the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *              instance that the survey request is associated with
+   * @param email the e-mail address
+   *
+   * @return the survey request with the specified e-mail address for the survey instance with
+   *         the specified ID or <code>null</code> if no matching service request could be found
+   *
+   * @throws SurveyServiceException
+   */
+  public SurveyRequest getSurveyRequestForSurveyInstanceByEmail(UUID id, String email)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT sr FROM SurveyRequest sr JOIN sr.instance si"
+          + " WHERE si.id = :id AND sr.email = :email";
+
+      TypedQuery<SurveyRequest> query = entityManager.createQuery(sql, SurveyRequest.class);
+
+      query.setParameter("id", id);
+      query.setParameter("email", email.toLowerCase());
+
+      List<SurveyRequest> surveyRequests = query.getResultList();
+
+      if (surveyRequests.size() > 0)
+      {
+        return surveyRequests.get(0);
+      }
+      else
+      {
+        return null;
+      }
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to retrieve the survey request with the e-mail ("
+          + email + ") for the survey instance (" + id + ")", e);
+    }
+  }
+
+  /**
    * Retrieve the survey requests for the survey instance.
    *
    * @param id the Universally Unique Identifier (UUID) used to identify the survey instance the
@@ -1792,6 +1843,8 @@ public class SurveyService
   {
     try
     {
+      surveyRequest.setEmail(surveyRequest.getEmail().toLowerCase());
+
       if (!entityManager.contains(surveyRequest))
       {
         surveyRequest = entityManager.merge(surveyRequest);
@@ -1838,6 +1891,120 @@ public class SurveyService
     {
       throw new SurveyServiceException("Failed to save the survey response with ID ("
           + surveyResponse.getId() + ")", e);
+    }
+  }
+
+  /**
+   * Send the survey request.
+   *
+   * @param surveyRequest the survey request to send
+   *
+   * @return <code>true</code> if the survey request was sent successfully or <code>false</code>
+   *         otherwise
+   */
+  public boolean sendSurveyRequest(SurveyRequest surveyRequest)
+    throws SurveyServiceException
+  {
+    try
+    {
+      MailHelper mailSenderHelper = new MailHelper(configurationService);
+
+      mailSenderHelper.sendSurveyRequestMail(surveyRequest);
+
+      return true;
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to send the survey request ("
+          + surveyRequest.getId() + ")", e);
+    }
+  }
+
+  /**
+   * Send a survey request, for the survey instance with the specified ID, to all survey audience
+   * members for the survey audience.
+   *
+   * @param surveyInstanceId the Universally Unique Identifier (UUID) used to uniquely identify the
+   *                         survey instance that the survey requests should be sent for
+   * @param audience         the survey audience
+   */
+  @Transactional
+  public void sendSurveyRequestToAudience(UUID surveyInstanceId, SurveyAudience audience)
+    throws SurveyServiceException
+  {
+    try
+    {
+      List<SurveyAudienceMember> members = getMembersForSurveyAudience(audience.getId());
+
+      for (SurveyAudienceMember member : members)
+      {
+        SurveyRequest surveyRequest = getSurveyRequestForSurveyInstanceByEmail(surveyInstanceId,
+            member.getEmail());
+
+        if (surveyRequest == null)
+        {
+          SurveyInstance surveyInstance = getSurveyInstance(surveyInstanceId);
+
+          surveyRequest = new SurveyRequest(surveyInstance, member.getFirstName(),
+              member.getLastName(), member.getEmail());
+        }
+
+        surveyRequest.setRequested(new Date());
+        surveyRequest.setStatus(SurveyRequestStatus.QUEUED_FOR_SENDING);
+
+        saveSurveyRequest(surveyRequest);
+      }
+    }
+    catch (SurveyServiceException e)
+    {
+      throw e;
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to send the survey request(s) for the survey instance (" + surveyInstanceId
+          + ") to the audience (" + audience.getId() + ")", e);
+    }
+  }
+
+  /**
+   * Send a survey request, for the survey instance with the specified ID, to the person with the
+   * specified details.
+   *
+   * @param surveyInstanceId the Universally Unique Identifier (UUID) used to uniquely identify the
+   *                         survey instance that the survey request should be sent for
+   * @param firstName        the first name(s) for the person that will be sent the survey request
+   * @param lastName         the last name for the person that will be sent the survey request
+   * @param email            the e-mail address for the person who will be sent the survey request
+   */
+  @Transactional
+  public void sendSurveyRequestToPerson(UUID surveyInstanceId, String firstName, String lastName,
+      String email)
+    throws SurveyServiceException
+  {
+    try
+    {
+      SurveyRequest surveyRequest = getSurveyRequestForSurveyInstanceByEmail(surveyInstanceId,
+          email);
+
+      if (surveyRequest == null)
+      {
+        SurveyInstance surveyInstance = getSurveyInstance(surveyInstanceId);
+
+        surveyRequest = new SurveyRequest(surveyInstance, firstName, lastName, email);
+      }
+
+      surveyRequest.setRequested(new Date());
+      surveyRequest.setStatus(SurveyRequestStatus.QUEUED_FOR_SENDING);
+
+      saveSurveyRequest(surveyRequest);
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to send a survey request for the survey instance ("
+          + surveyInstanceId + ") to the person (" + firstName + " " + lastName + " <" + email
+          + ">)", e);
+
     }
   }
 }

@@ -11,6 +11,8 @@
 
 package digital.survey.web;
 
+//~--- non-JDK imports --------------------------------------------------------
+
 import digital.survey.web.pages.DashboardPage;
 import digital.survey.web.pages.HomePage;
 import digital.survey.web.pages.SurveyAudienceAdministrationPage;
@@ -28,9 +30,45 @@ import org.apache.wicket.request.resource.CssResourceReference;
  *
  * @author Marcus Portmann
  */
-public class SurveyApplication
-  extends TemplateWebApplication
+public class SurveyApplication extends TemplateWebApplication
 {
+  /**
+   * The "Survey.CompleteSurvey.ResponseUrl" configuration key.
+   */
+  public static final String COMPLETE_SURVEY_RESPONSE_URL_CONFIGURATION_KEY =
+      "Survey.CompleteSurvey.ResponseUrl";
+
+  /**
+   * The "Survey.Mail.FromAddress" configuration key.
+   */
+  public static final String MAIL_FROM_ADDRESS_CONFIGURATION_KEY = "Survey.Mail.FromAddress";
+
+  /**
+   * The "Survey.Mail.Host" configuration key.
+   */
+  public static final String MAIL_HOST_CONFIGURATION_KEY = "Survey.Mail.Host";
+
+  /**
+   * The "Survey.Mail.Username" configuration key.
+   */
+  public static final String MAIL_USERNAME_CONFIGURATION_KEY = "Survey.Mail.Username";
+
+  /**
+   * The "Survey.Mail.Password" configuration key.
+   */
+  public static final String MAIL_PASSWORD_CONFIGURATION_KEY = "Survey.Mail.Password";
+
+  /**
+   * The "Survey.Mail.IsSecure" configuration key.
+   */
+  public static final String MAIL_IS_SECURE_CONFIGURATION_KEY = "Survey.Mail.IsSecure";
+
+  /**
+   * The default "Survey.CompleteSurvey.ResponseUrl" configuration value.
+   */
+  public static final String DEFAULT_COMPLETE_SURVEY_RESPONSE_URL =
+      "http://localhost:8080/survey/wicket/bookmarkable/digital.survey.web.pages.CompleteSurveyPage";
+
   /**
    * Constructs a new <code>SurveyApplication</code>.
    */
@@ -80,10 +118,11 @@ public class SurveyApplication
   {
     root.addItem(new NavigationLink("Home", "fa fa-home", HomePage.class));
     root.addItem(new NavigationLink("Dashboard", "fa fa-home", DashboardPage.class));
-    root.addItem(new NavigationLink("Audiences", "fa fa-users", SurveyAudienceAdministrationPage.class));
-    root.addItem(new NavigationLink("Surveys", "fa fa-wpforms", SurveyDefinitionAdministrationPage.class));
+    root.addItem(new NavigationLink("Audiences", "fa fa-users",
+        SurveyAudienceAdministrationPage.class));
+    root.addItem(new NavigationLink("Surveys", "fa fa-wpforms",
+        SurveyDefinitionAdministrationPage.class));
 
     super.initNavigation(root);
   }
 }
-

@@ -24,7 +24,6 @@ import digital.survey.model.SurveyInstance;
 import digital.survey.web.SurveySecurity;
 import digital.survey.web.components.SurveyInstanceInputPanel;
 import guru.mmp.application.web.WebApplicationException;
-import guru.mmp.application.web.WebSession;
 import guru.mmp.application.web.pages.WebPageSecurity;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
 import org.apache.wicket.PageReference;
@@ -48,7 +47,7 @@ import java.util.UUID;
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 @WebPageSecurity(SurveySecurity.FUNCTION_CODE_SURVEY_ADMINISTRATION)
-public class AddSurveyInstancePage extends TemplateWebPage
+class AddSurveyInstancePage extends TemplateWebPage
 {
   /* Logger */
   private static final Logger logger = LoggerFactory.getLogger(AddSurveyInstancePage.class);
@@ -65,14 +64,12 @@ public class AddSurveyInstancePage extends TemplateWebPage
    * @param surveyDefinitionId  the Universally Unique Identifier (UUID) used to identify the survey
    *                            definition for the survey instance
    */
-  public AddSurveyInstancePage(PageReference previousPage, UUID surveyDefinitionId)
+  AddSurveyInstancePage(PageReference previousPage, UUID surveyDefinitionId)
   {
     super("Add Survey Instance");
 
     try
     {
-      WebSession webSession = getWebApplicationSession();
-
       SurveyDefinition surveyDefinition = surveyService.getLatestVersionOfSurveyDefinition(
           surveyDefinitionId);
 

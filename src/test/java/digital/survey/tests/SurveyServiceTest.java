@@ -58,8 +58,8 @@ public class SurveyServiceTest
     SurveyDefinition surveyDefinition = getCTOValuesSurveyDefinitionDetails();
 
     SurveyInstance surveyInstance = new SurveyInstance(UUID.fromString(
-        "b222aa15-715f-4752-923d-8f33ee8a1736"), "CTO ELT Values Survey - September 2016",
-        "CTO ELT Values Survey - September 2016", surveyDefinition);
+        "b222aa15-715f-4752-923d-8f33ee8a1736"), "CTO ELT Values - September 2016",
+        "CTO ELT Values - September 2016", surveyDefinition);
 
     SurveyRequest surveyRequest = new SurveyRequest(UUID.fromString(
         "54a751f6-0f32-48bd-8c6c-665e3ac1906b"), surveyInstance, "Marcus", "Portmann",
@@ -574,8 +574,8 @@ public class SurveyServiceTest
         OrganisationStatus.ACTIVE);
 
     SurveyDefinition surveyDefinition = new SurveyDefinition(UUID.fromString(
-        "706fb4a4-8ba8-11e6-ae22-56b6b6499611"), 1, organisation, "CTO ELT Values Survey",
-        "CTO ELT Values Survey");
+        "706fb4a4-8ba8-11e6-ae22-56b6b6499611"), 1, organisation, "CTO ELT Values",
+        "CTO ELT Values");
 
     SurveyGroupDefinition surveyGroupDefinition = new SurveyGroupDefinition(UUID.randomUUID(),
         "CTO ELT", "CTO ELT");
@@ -662,8 +662,8 @@ public class SurveyServiceTest
   private static synchronized SurveyInstance getCTOValuesSurveyInstanceDetails(
       SurveyDefinition surveyDefinition)
   {
-    return new SurveyInstance(UUID.randomUUID(), "CTO ELT Values Survey - September 2016",
-        "CTO ELT Values Survey - September 2016", surveyDefinition);
+    return new SurveyInstance(UUID.randomUUID(), "CTO ELT Values - September 2016",
+        "CTO ELT Values - September 2016", surveyDefinition);
   }
 
   private static synchronized Organisation getTestOrganisationDetails()
@@ -953,6 +953,8 @@ public class SurveyServiceTest
   {
     assertEquals("The ID values for the two survey requests do not match", surveyRequest1.getId(),
         surveyRequest2.getId());
+    assertEquals("The status values for the two survey requests do not match",
+      surveyRequest1.getStatus(), surveyRequest2.getStatus());
     assertEquals("The first name values for the two survey requests do not match",
         surveyRequest1.getFirstName(), surveyRequest2.getFirstName());
     assertEquals("The last name values for the two survey requests do not match",

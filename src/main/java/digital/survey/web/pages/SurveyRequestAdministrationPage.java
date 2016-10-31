@@ -189,13 +189,13 @@ public class SurveyRequestAdministrationPage extends TemplateWebPage
         {
           SurveyRequest surveyRequest = item.getModelObject();
 
-          Date responded = surveyRequestIdToSurveyResponseReceivedMap.get(
-              surveyRequest.getId())
+          Date responded = surveyRequestIdToSurveyResponseReceivedMap.get(surveyRequest.getId())
           ;
 
           item.add(new Label("name", new PropertyModel<String>(item.getModel(), "fullName")));
           item.add(new Label("email", new PropertyModel<String>(item.getModel(), "email")));
-          item.add(new Label("requested", new PropertyModel<String>(item.getModel(), "requestedAsString")));
+          item.add(new Label("requested", new PropertyModel<String>(item.getModel(),
+              "requestedAsString")));
           item.add(new Label("responded",
               (responded != null)
               ? DateUtil.getYYYYMMDDWithTimeFormat().format(responded)
@@ -243,6 +243,36 @@ public class SurveyRequestAdministrationPage extends TemplateWebPage
                   || session.hasAcccessToFunction(SurveySecurity
                   .FUNCTION_CODE_VIEW_SURVEY_RESPONSE))));
           item.add(surveyResponseLink);
+
+          // The "sendSurveyRequestLink" link
+          Link<Void> sendSurveyRequestLink = new Link<Void>("sendSurveyRequestLink")
+          {
+            private static final long serialVersionUID = 1000000;
+
+            @Override
+            public void onClick()
+            {
+              SurveyRequest surveyRequest = item.getModelObject();
+
+              try
+              {
+                surveyService.sendSurveyRequest(surveyRequest);
+
+                SurveyRequestAdministrationPage.this.info(
+                    "Successfully sent the survey request for " + surveyRequest.getFullName());
+              }
+              catch (Throwable e)
+              {
+                logger.error("Failed to send the survey request (" + surveyRequest.getId() + "): "
+                    + e.getMessage(), e);
+                SurveyRequestAdministrationPage.this.error("Failed to send the survey request for "
+                    + surveyRequest.getFullName());
+              }
+            }
+          };
+          sendSurveyRequestLink.setVisible(session.hasAcccessToFunction(SurveySecurity
+              .FUNCTION_CODE_SURVEY_ADMINISTRATION));
+          item.add(sendSurveyRequestLink);
 
           // The "updateLink" link
           Link<Void> updateLink = new Link<Void>("updateLink")

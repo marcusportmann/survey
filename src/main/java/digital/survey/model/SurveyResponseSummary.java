@@ -129,6 +129,16 @@ public class SurveyResponseSummary
   }
 
   /**
+   * Returns the optional survey request this survey response is associated with.
+   *
+   * @return the optional survey request this survey response is associated with
+   */
+  public SurveyRequest getRequest()
+  {
+    return request;
+  }
+
+  /**
    * Returns the date and time the survey response was received.
    *
    * @return the date and time the survey response was received
@@ -146,16 +156,6 @@ public class SurveyResponseSummary
   public String getRespondedAsString()
   {
     return DateUtil.getYYYYMMDDWithTimeFormat().format(responded);
-  }
-
-  /**
-   * Returns the optional survey request this survey response is associated with.
-   *
-   * @return the optional survey request this survey response is associated with
-   */
-  public SurveyRequest getRequest()
-  {
-    return request;
   }
 
   /**

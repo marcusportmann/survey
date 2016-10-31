@@ -11,8 +11,6 @@
 
 package digital.survey.model;
 
-//~--- non-JDK imports --------------------------------------------------------
-
 /**
  * The <code>SendSurveyRequestType</code> enumeration defines the types of survey requests that can
  * be sent.
@@ -21,7 +19,7 @@ package digital.survey.model;
  */
 public enum SendSurveyRequestType
 {
-  TO_PERSON(1, "To Person"), TO_AUDIENCE(2, "To Audience");
+  PERSON(1, "Person"), AUDIENCE(2, "Audience");
 
   private String description;
   private int code;
@@ -44,13 +42,13 @@ public enum SendSurveyRequestType
     switch (code)
     {
       case 1:
-        return SendSurveyRequestType.TO_PERSON;
+        return SendSurveyRequestType.PERSON;
 
       case 2:
-        return SendSurveyRequestType.TO_AUDIENCE;
+        return SendSurveyRequestType.AUDIENCE;
 
       default:
-        return SendSurveyRequestType.TO_PERSON;
+        return SendSurveyRequestType.PERSON;
     }
   }
 

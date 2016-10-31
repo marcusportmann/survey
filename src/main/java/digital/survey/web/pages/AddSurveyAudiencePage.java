@@ -22,7 +22,6 @@ import digital.survey.model.ISurveyService;
 import digital.survey.model.SurveyAudience;
 import digital.survey.web.SurveySecurity;
 import digital.survey.web.components.SurveyAudienceInputPanel;
-import guru.mmp.application.security.Organisation;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.WebSession;
 import guru.mmp.application.web.pages.WebPageSecurity;
@@ -48,7 +47,7 @@ import java.util.UUID;
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 @WebPageSecurity(SurveySecurity.FUNCTION_CODE_SURVEY_ADMINISTRATION)
-public class AddSurveyAudiencePage extends TemplateWebPage
+class AddSurveyAudiencePage extends TemplateWebPage
 {
   /* Logger */
   private static final Logger logger = LoggerFactory.getLogger(AddSurveyAudiencePage.class);
@@ -63,7 +62,7 @@ public class AddSurveyAudiencePage extends TemplateWebPage
    *
    * @param previousPage the previous page
    */
-  public AddSurveyAudiencePage(PageReference previousPage)
+  AddSurveyAudiencePage(PageReference previousPage)
   {
     super("Add Audience");
 

@@ -232,7 +232,7 @@ public class SurveyAudienceAdministrationPage extends TemplateWebPage
      * @param tableContainer the table container, which allows the survey audience table and its
      *                       associated navigator to be updated using AJAX
      */
-    public RemoveDialog(WebMarkupContainer tableContainer)
+    RemoveDialog(WebMarkupContainer tableContainer)
     {
       super("removeDialog");
 
@@ -281,7 +281,7 @@ public class SurveyAudienceAdministrationPage extends TemplateWebPage
      * @param target         the AJAX request target
      * @param surveyAudience the survey audience being removed
      */
-    public void show(AjaxRequestTarget target, SurveyAudience surveyAudience)
+    void show(AjaxRequestTarget target, SurveyAudience surveyAudience)
     {
       id = surveyAudience.getId();
 

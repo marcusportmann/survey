@@ -41,7 +41,7 @@ public class SurveyAudienceChoiceRenderer
   /**
    * Get the value for displaying to an end user.
    *
-   * @param type the survey group rating item type
+   * @param type the survey audience
    *
    * @return the value meant for displaying to an end user
    */
@@ -54,7 +54,7 @@ public class SurveyAudienceChoiceRenderer
    * This method is called to get the id value of a job status (used as the value attribute
    * of a choice element).
    *
-   * @param type  the survey group rating item type for which the id should be generated
+   * @param type  the survey audience for which the id should be generated
    * @param index the index of the object in the choices list
    *
    * @return the id value of the object

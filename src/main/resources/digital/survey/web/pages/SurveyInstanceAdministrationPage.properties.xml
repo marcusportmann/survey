@@ -6,4 +6,5 @@
   <entry key="firstName.Required">A first name is required.</entry>
   <entry key="lastName.Required">A last name is required.</entry>
   <entry key="email.Required">An e-mail address is required.</entry>
+  <entry key="email.EmailAddressValidator">The e-mail address is invalid.</entry>
 </properties>

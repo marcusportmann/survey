@@ -16,16 +16,18 @@ package digital.survey.web.pages;
 import digital.survey.model.ISurveyService;
 import digital.survey.model.SurveyInstance;
 import digital.survey.model.SurveyRequest;
+import digital.survey.model.SurveyResponse;
 import digital.survey.web.components.SurveyResponseInputPanel;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
-import digital.survey.model.SurveyResponse;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.util.UUID;
@@ -41,6 +43,8 @@ import java.util.UUID;
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public class CompleteSurveyPage extends TemplateWebPage
 {
+  /* Logger */
+  private static final Logger logger = LoggerFactory.getLogger(CompleteSurveyPage.class);
   private static final long serialVersionUID = 1000000;
 
   /**
@@ -89,10 +93,19 @@ public class CompleteSurveyPage extends TemplateWebPage
         @Override
         public void onSubmit()
         {
+          try
+          {
+            surveyService.saveSurveyResponse(completeSurveyForm.getModelObject());
 
-          int xxx = 0;
-          xxx++;
+            setVisible(false);
 
+            CompleteSurveyPage.this.info("Successfully saved the survey response");
+          }
+          catch (Throwable e)
+          {
+            logger.error("Failed to save the survey response: " + e.getMessage(), e);
+            CompleteSurveyPage.this.error("Failed to save the survey response");
+          }
         }
       };
       submitButton.setDefaultFormProcessing(true);

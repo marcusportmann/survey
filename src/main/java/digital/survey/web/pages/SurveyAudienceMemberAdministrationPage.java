@@ -13,17 +13,16 @@ package digital.survey.web.pages;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import digital.survey.model.ISurveyService;
 import digital.survey.model.SurveyAudience;
 import digital.survey.model.SurveyAudienceMember;
 import digital.survey.web.SurveySecurity;
+import digital.survey.web.data.FilteredSurveyAudienceMemberDataProvider;
 import guru.mmp.application.web.WebApplicationException;
-import guru.mmp.application.web.WebSession;
 import guru.mmp.application.web.pages.WebPageSecurity;
 import guru.mmp.application.web.template.components.Dialog;
 import guru.mmp.application.web.template.components.PagingNavigator;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
-import digital.survey.model.ISurveyService;
-import digital.survey.web.data.FilteredSurveyAudienceMemberDataProvider;
 import org.apache.wicket.PageReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -54,7 +53,7 @@ import java.util.UUID;
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 @WebPageSecurity(SurveySecurity.FUNCTION_CODE_SURVEY_AUDIENCE_ADMINISTRATION)
-public class SurveyAudienceMemberAdministrationPage extends TemplateWebPage
+class SurveyAudienceMemberAdministrationPage extends TemplateWebPage
 {
   /* Logger */
   private static final Logger logger = LoggerFactory.getLogger(
@@ -71,14 +70,12 @@ public class SurveyAudienceMemberAdministrationPage extends TemplateWebPage
    * @param previousPage   the previous page
    * @param surveyAudience the survey audience the survey audience members are associated with
    */
-  public SurveyAudienceMemberAdministrationPage(PageReference previousPage, SurveyAudience surveyAudience)
+  SurveyAudienceMemberAdministrationPage(PageReference previousPage, SurveyAudience surveyAudience)
   {
     super("Audience Members", surveyAudience.getName());
 
     try
     {
-      WebSession session = getWebApplicationSession();
-
       /*
        * The table container, which allows the table and its associated navigator to be updated
        * using AJAX.
@@ -177,7 +174,7 @@ public class SurveyAudienceMemberAdministrationPage extends TemplateWebPage
             public void onClick()
             {
               UpdateSurveyAudienceMemberPage page = new UpdateSurveyAudienceMemberPage(
-                getPageReference(), item.getModel());
+                  getPageReference(), item.getModel());
 
               setResponsePage(page);
             }
@@ -236,7 +233,7 @@ public class SurveyAudienceMemberAdministrationPage extends TemplateWebPage
      * @param tableContainer the table container, which allows the survey audience member table and
      *                       its associated navigator to be updated using AJAX
      */
-    public RemoveDialog(WebMarkupContainer tableContainer)
+    RemoveDialog(WebMarkupContainer tableContainer)
     {
       super("removeDialog");
 
@@ -287,7 +284,7 @@ public class SurveyAudienceMemberAdministrationPage extends TemplateWebPage
      * @param target               the AJAX request target
      * @param surveyAudienceMember the survey audience member being removed
      */
-    public void show(AjaxRequestTarget target, SurveyAudienceMember surveyAudienceMember)
+    void show(AjaxRequestTarget target, SurveyAudienceMember surveyAudienceMember)
     {
       id = surveyAudienceMember.getId();
 

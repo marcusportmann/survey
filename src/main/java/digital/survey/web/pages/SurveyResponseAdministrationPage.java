@@ -95,19 +95,6 @@ public class SurveyResponseAdministrationPage extends TemplateWebPage
       RemoveDialog removeDialog = new RemoveDialog(tableContainer);
       add(removeDialog);
 
-      // The "addLink" used to add a new survey response
-      Link<Void> addLink = new Link<Void>("addLink")
-      {
-        private static final long serialVersionUID = 1000000;
-
-        @Override
-        public void onClick()
-        {
-          // setResponsePage(new AddSurveyResponsePage(getPageReference(), surveyInstanceId));
-        }
-      };
-      tableContainer.add(addLink);
-
       FilteredSurveyResponseSummaryDataProvider dataProvider =
           new FilteredSurveyResponseSummaryDataProvider(surveyInstanceId);
 
@@ -196,7 +183,7 @@ public class SurveyResponseAdministrationPage extends TemplateWebPage
               catch (Throwable e)
               {
                 logger.error("Failed to retrieve the survey response ("
-                    + surveyResponseSummary.getId() + ")", e);
+                    + surveyResponseSummary.getId() + "): " + e.getMessage(), e);
                 SurveyResponseAdministrationPage.this.error(
                     "Failed to retrieve the survey response (" + surveyResponseSummary.getName()
                     + ")");
@@ -228,7 +215,7 @@ public class SurveyResponseAdministrationPage extends TemplateWebPage
               catch (Throwable e)
               {
                 logger.error("Failed to retrieve the survey response ("
-                    + surveyResponseSummary.getId() + ")", e);
+                    + surveyResponseSummary.getId() + "): " + e.getMessage(), e);
                 SurveyResponseAdministrationPage.this.error(
                     "Failed to retrieve the survey response (" + surveyResponseSummary.getName()
                     + ")");

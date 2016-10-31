@@ -79,6 +79,13 @@ public class SurveyRequest
   private SurveyInstance instance;
 
   /**
+   * The status of the survey request.
+   */
+  @Column(name = "STATUS", nullable = false)
+  @Convert(converter = SurveyRequestStatusConverter.class)
+  private SurveyRequestStatus status;
+
+  /**
    * Constructs a new <code>SurveyRequest</code>.
    *
    * Default constructor required for JPA.
@@ -96,12 +103,7 @@ public class SurveyRequest
    */
   public SurveyRequest(SurveyInstance instance, String firstName, String lastName, String email)
   {
-    this.id = UUID.randomUUID();
-    this.instance = instance;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.email = email;
-    this.requested = new Date();
+    this(UUID.randomUUID(), instance, firstName, lastName, email);
   }
 
   /**
@@ -118,10 +120,11 @@ public class SurveyRequest
       String email)
   {
     this.id = id;
+    this.status = SurveyRequestStatus.QUEUED_FOR_SENDING;
     this.instance = instance;
     this.firstName = firstName;
     this.lastName = lastName;
-    this.email = email;
+    this.email = email.toLowerCase();
     this.requested = new Date();
   }
 
@@ -198,6 +201,16 @@ public class SurveyRequest
   }
 
   /**
+   * Returns the survey instance this survey request is associated with.
+   *
+   * @return the survey instance this survey request is associated with
+   */
+  public SurveyInstance getInstance()
+  {
+    return instance;
+  }
+
+  /**
    * Returns the last name for the person who was requested to complete the survey.
    *
    * @return the last name for the person who was requested to complete the survey
@@ -227,6 +240,16 @@ public class SurveyRequest
   public String getRequestedAsString()
   {
     return DateUtil.getYYYYMMDDWithTimeFormat().format(requested);
+  }
+
+  /**
+   * Returns the status of the survey request.
+   *
+   * @return the status of the survey request
+   */
+  public SurveyRequestStatus getStatus()
+  {
+    return status;
   }
 
   /**
@@ -267,6 +290,16 @@ public class SurveyRequest
   public void setRequested(Date requested)
   {
     this.requested = requested;
+  }
+
+  /**
+   * Set the status of the survey request.
+   *
+   * @param status the status of the survey request
+   */
+  public void setStatus(SurveyRequestStatus status)
+  {
+    this.status = status;
   }
 
   /**

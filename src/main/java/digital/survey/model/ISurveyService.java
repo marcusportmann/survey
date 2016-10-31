@@ -259,8 +259,6 @@ public interface ISurveyService
    *           survey definition, uniquely identify the survey definition
    *
    * @return the latest version of the survey definition identified by the specified ID
-   *
-   * @throws SurveyServiceException
    */
   SurveyDefinition getLatestVersionOfSurveyDefinition(UUID id)
     throws SurveyServiceException;
@@ -528,6 +526,20 @@ public interface ISurveyService
     throws SurveyServiceException;
 
   /**
+   * Retrieve the survey request with the specified e-mail address for the survey instance with
+   * the specified ID.
+   *
+   * @param id    the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *              instance that the survey request is associated with
+   * @param email the e-mail address
+   *
+   * @return the survey request with the specified e-mail address for the survey instance with
+   *         the specified ID or <code>null</code> if no matching service request could be found
+   */
+  SurveyRequest getSurveyRequestForSurveyInstanceByEmail(UUID id, String email)
+    throws SurveyServiceException;
+
+  /**
    * Retrieve the survey requests for the survey instance.
    *
    * @param id the Universally Unique Identifier (UUID) used to identify the survey instance the
@@ -558,8 +570,6 @@ public interface ISurveyService
    *
    * @return the survey response associated with the survey request or <code>nul</code> if an
    *         associated survey response could not be found
-   *
-   * @throws SurveyServiceException
    */
   SurveyResponse getSurveyResponseForSurveyRequest(UUID id)
     throws SurveyServiceException;
@@ -645,5 +655,41 @@ public interface ISurveyService
    * @return the saved survey response
    */
   SurveyResponse saveSurveyResponse(SurveyResponse surveyResponse)
+    throws SurveyServiceException;
+
+  /**
+   * Send the survey request.
+   *
+   * @param surveyRequest the survey request to send
+   *
+   * @return <code>true</code> if the survey request was sent successfully or <code>false</code>
+   *         otherwise
+   */
+  boolean sendSurveyRequest(SurveyRequest surveyRequest)
+    throws SurveyServiceException;
+
+  /**
+   * Send a survey request, for the survey instance with the specified ID, to all survey audience
+   * members for the survey audience.
+   *
+   * @param surveyInstanceId the Universally Unique Identifier (UUID) used to uniquely identify the
+   *                         survey instance that the survey requests should be sent for
+   * @param audience         the survey audience
+   */
+  void sendSurveyRequestToAudience(UUID surveyInstanceId, SurveyAudience audience)
+    throws SurveyServiceException;
+
+  /**
+   * Send a survey request, for the survey instance with the specified ID, to the person with the
+   * specified details.
+   *
+   * @param surveyInstanceId the Universally Unique Identifier (UUID) used to uniquely identify the
+   *                         survey instance that the survey request should be sent for
+   * @param firstName        the first name(s) for the person that will be sent the survey request
+   * @param lastName         the last name for the person that will be sent the survey request
+   * @param email            the e-mail address for the person who will be sent the survey request
+   */
+  void sendSurveyRequestToPerson(UUID surveyInstanceId, String firstName, String lastName,
+      String email)
     throws SurveyServiceException;
 }

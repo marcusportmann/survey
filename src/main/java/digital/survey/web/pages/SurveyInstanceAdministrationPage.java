@@ -195,7 +195,16 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
             @Override
             public void onClick(AjaxRequestTarget target)
             {
-              sendSurveyRequestDialog.show(target);
+              SurveyInstance surveyInstance = item.getModelObject();
+
+              if (surveyInstance != null)
+              {
+                sendSurveyRequestDialog.show(target, surveyInstance);
+              }
+              else
+              {
+                target.add(tableContainer);
+              }
             }
           };
           item.add(sendSurveyRequestLink);
@@ -386,6 +395,9 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
     private TextField<String> firstNameField;
     private TextField<String> lastNameField;
     private TextField<String> emailField;
+    private UUID id;
+    private String name;
+    private TextField<UUID> nameField;
 
     /**
      * Constructs a new <code>SendSurveyRequestDialog</code>.
@@ -396,6 +408,13 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
 
       try
       {
+        // The "name" field
+        nameField = new TextField<>("name", new PropertyModel<>(this, "name"));
+        nameField.setRequired(false);
+        nameField.setEnabled(false);
+        nameField.setOutputMarkupId(true);
+        getForm().add(nameField);
+
         SendSurveyRequestTypeChoiceRenderer sendSurveyRequestTypeChoiceRenderer =
             new SendSurveyRequestTypeChoiceRenderer();
 
@@ -444,9 +463,15 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
      *
      * @param target the AJAX request target
      */
-    public void show(AjaxRequestTarget target)
+    public void show(AjaxRequestTarget target, SurveyInstance surveyInstance)
     {
       super.show(target);
+
+      id = surveyInstance.getId();
+
+      name = surveyInstance.getName();
+
+      target.add(nameField);
     }
 
     /**
@@ -469,17 +494,17 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
     {
       try
       {
-        if (SendSurveyRequestType.TO_AUDIENCE.getCodeAsString().equals(
+        if (SendSurveyRequestType.AUDIENCE.getCodeAsString().equals(
             sendSurveyRequestTypeField.getValue()))
         {
-          // surveyService.sendSurveyRequestToAudience(audience);
+          surveyService.sendSurveyRequestToAudience(id, audience);
 
           SurveyInstanceAdministrationPage.this.info(String.format(
               "Successfully sent the survey request to %s", audience.getName()));
         }
         else
         {
-          // surveyService.sendSurveyRequestToPerson(firstName, lastName, email);
+          surveyService.sendSurveyRequestToPerson(id, firstName, lastName, email);
 
           SurveyInstanceAdministrationPage.this.info(String.format(
               "Successfully sent the survey request to %s %s", firstName, lastName));
@@ -488,9 +513,9 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
       }
       catch (Throwable e)
       {
-        logger.error("Failed to send the survey request", e);
+        logger.error("Failed to send the survey request: " + e.getMessage(), e);
 
-        if (SendSurveyRequestType.TO_AUDIENCE.getCodeAsString().equals(
+        if (SendSurveyRequestType.AUDIENCE.getCodeAsString().equals(
             sendSurveyRequestTypeField.getValue()))
         {
           SurveyInstanceAdministrationPage.this.error(String.format(
@@ -539,8 +564,8 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
     {
       List<SendSurveyRequestType> sendSurveyRequestTypes = new ArrayList<>();
 
-      sendSurveyRequestTypes.add(SendSurveyRequestType.TO_AUDIENCE);
-      sendSurveyRequestTypes.add(SendSurveyRequestType.TO_PERSON);
+      sendSurveyRequestTypes.add(SendSurveyRequestType.AUDIENCE);
+      sendSurveyRequestTypes.add(SendSurveyRequestType.PERSON);
 
       return sendSurveyRequestTypes;
     }
@@ -571,7 +596,7 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
         {
           super.onConfigure();
 
-          setVisible(SendSurveyRequestType.TO_AUDIENCE.getCodeAsString().equals(
+          setVisible(SendSurveyRequestType.AUDIENCE.getCodeAsString().equals(
               sendSurveyRequestTypeField.getValue()));
         }
       };
@@ -592,7 +617,7 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
         {
           super.onConfigure();
 
-          setRequired(SendSurveyRequestType.TO_AUDIENCE.getCodeAsString().equals(
+          setRequired(SendSurveyRequestType.AUDIENCE.getCodeAsString().equals(
               sendSurveyRequestTypeField.getValue()));
         }
       };
@@ -611,7 +636,7 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
         {
           super.onConfigure();
 
-          setVisible(SendSurveyRequestType.TO_PERSON.getCodeAsString().equals(
+          setVisible(SendSurveyRequestType.PERSON.getCodeAsString().equals(
               sendSurveyRequestTypeField.getValue()));
         }
       };
@@ -629,7 +654,7 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
         {
           super.onConfigure();
 
-          setRequired(SendSurveyRequestType.TO_PERSON.getCodeAsString().equals(
+          setRequired(SendSurveyRequestType.PERSON.getCodeAsString().equals(
               sendSurveyRequestTypeField.getValue()));
         }
       };
@@ -645,7 +670,7 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
         {
           super.onConfigure();
 
-          setRequired(SendSurveyRequestType.TO_PERSON.getCodeAsString().equals(
+          setRequired(SendSurveyRequestType.PERSON.getCodeAsString().equals(
               sendSurveyRequestTypeField.getValue()));
         }
       };
@@ -660,7 +685,7 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
         {
           super.onConfigure();
 
-          setRequired(SendSurveyRequestType.TO_PERSON.getCodeAsString().equals(
+          setRequired(SendSurveyRequestType.PERSON.getCodeAsString().equals(
               sendSurveyRequestTypeField.getValue()));
         }
       };

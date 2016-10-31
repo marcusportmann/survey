@@ -47,7 +47,7 @@ import java.util.UUID;
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 @WebPageSecurity(SurveySecurity.FUNCTION_CODE_SURVEY_ADMINISTRATION)
-public class AddSurveyAudienceMemberPage extends TemplateWebPage
+class AddSurveyAudienceMemberPage extends TemplateWebPage
 {
   /* Logger */
   private static final Logger logger = LoggerFactory.getLogger(AddSurveyAudienceMemberPage.class);
@@ -63,7 +63,7 @@ public class AddSurveyAudienceMemberPage extends TemplateWebPage
    * @param previousPage   the previous page
    * @param surveyAudience the survey audience the survey audience member is associated with
    */
-  public AddSurveyAudienceMemberPage(PageReference previousPage, SurveyAudience surveyAudience)
+  AddSurveyAudienceMemberPage(PageReference previousPage, SurveyAudience surveyAudience)
   {
     super("Add Audience Member");
 
