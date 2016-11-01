@@ -381,7 +381,7 @@ public class SurveyService
    * @return <code>true</code> if the survey request was deleted or <code>false</code> otherwise
    */
   @Transactional
-  public boolean deleteSurveyRequest(SurveyResult surveyRequest)
+  public boolean deleteSurveyRequest(SurveyRequest surveyRequest)
     throws SurveyServiceException
   {
     try
@@ -636,7 +636,7 @@ public class SurveyService
    *
    * @return the filtered survey requests for the survey instance
    */
-  public List<SurveyResult> getFilteredSurveyRequestsForSurveyInstance(UUID id, String filter)
+  public List<SurveyRequest> getFilteredSurveyRequestsForSurveyInstance(UUID id, String filter)
     throws SurveyServiceException
   {
     try
@@ -645,7 +645,7 @@ public class SurveyService
           + " AND ((UPPER(sr.firstName) LIKE :filter) OR (UPPER(sr.lastName) LIKE :filter)"
           + " OR (UPPER(sr.email) LIKE :filter))";
 
-      TypedQuery<SurveyResult> query = entityManager.createQuery(sql, SurveyResult.class);
+      TypedQuery<SurveyRequest> query = entityManager.createQuery(sql, SurveyRequest.class);
 
       query.setParameter("id", id);
       query.setParameter("filter", "%" + filter.toUpperCase() + "%");
@@ -1481,18 +1481,18 @@ public class SurveyService
    * @return the survey request identified by the specified ID or <code>null</code> if the survey
    *         request could not be found
    */
-  public SurveyResult getSurveyRequest(UUID id)
+  public SurveyRequest getSurveyRequest(UUID id)
     throws SurveyServiceException
   {
     try
     {
       String sql = "SELECT sr FROM SurveyRequest sr WHERE sr.id = :id";
 
-      TypedQuery<SurveyResult> query = entityManager.createQuery(sql, SurveyResult.class);
+      TypedQuery<SurveyRequest> query = entityManager.createQuery(sql, SurveyRequest.class);
 
       query.setParameter("id", id);
 
-      List<SurveyResult> surveyRequests = query.getResultList();
+      List<SurveyRequest> surveyRequests = query.getResultList();
 
       if (surveyRequests.size() == 0)
       {
@@ -1520,7 +1520,7 @@ public class SurveyService
    * @return the survey request with the specified e-mail address for the survey instance with
    *         the specified ID or <code>null</code> if no matching service request could be found
    */
-  public SurveyResult getSurveyRequestForSurveyInstanceByEmail(UUID id, String email)
+  public SurveyRequest getSurveyRequestForSurveyInstanceByEmail(UUID id, String email)
     throws SurveyServiceException
   {
     try
@@ -1528,12 +1528,12 @@ public class SurveyService
       String sql = "SELECT sr FROM SurveyRequest sr JOIN sr.instance si"
           + " WHERE si.id = :id AND sr.email = :email";
 
-      TypedQuery<SurveyResult> query = entityManager.createQuery(sql, SurveyResult.class);
+      TypedQuery<SurveyRequest> query = entityManager.createQuery(sql, SurveyRequest.class);
 
       query.setParameter("id", id);
       query.setParameter("email", email.toLowerCase());
 
-      List<SurveyResult> surveyRequests = query.getResultList();
+      List<SurveyRequest> surveyRequests = query.getResultList();
 
       if (surveyRequests.size() > 0)
       {
@@ -1559,14 +1559,14 @@ public class SurveyService
    *
    * @return the survey requests for the survey instance
    */
-  public List<SurveyResult> getSurveyRequestsForSurveyInstance(UUID id)
+  public List<SurveyRequest> getSurveyRequestsForSurveyInstance(UUID id)
     throws SurveyServiceException
   {
     try
     {
       String sql = "SELECT sr FROM SurveyRequest sr JOIN sr.instance si WHERE si.id = :id";
 
-      TypedQuery<SurveyResult> query = entityManager.createQuery(sql, SurveyResult.class);
+      TypedQuery<SurveyRequest> query = entityManager.createQuery(sql, SurveyRequest.class);
 
       query.setParameter("id", id);
 
@@ -1876,7 +1876,7 @@ public class SurveyService
    * @return the saved survey request
    */
   @Transactional
-  public SurveyResult saveSurveyRequest(SurveyResult surveyRequest)
+  public SurveyRequest saveSurveyRequest(SurveyRequest surveyRequest)
     throws SurveyServiceException
   {
     try
@@ -1940,7 +1940,7 @@ public class SurveyService
    * @return <code>true</code> if the survey request was sent successfully or <code>false</code>
    *         otherwise
    */
-  public boolean sendSurveyRequest(SurveyResult surveyRequest)
+  public boolean sendSurveyRequest(SurveyRequest surveyRequest)
     throws SurveyServiceException
   {
     try
@@ -1976,14 +1976,14 @@ public class SurveyService
 
       for (SurveyAudienceMember member : members)
       {
-        SurveyResult surveyRequest = getSurveyRequestForSurveyInstanceByEmail(surveyInstanceId,
+        SurveyRequest surveyRequest = getSurveyRequestForSurveyInstanceByEmail(surveyInstanceId,
             member.getEmail());
 
         if (surveyRequest == null)
         {
           SurveyInstance surveyInstance = getSurveyInstance(surveyInstanceId);
 
-          surveyRequest = new SurveyResult(surveyInstance, member.getFirstName(),
+          surveyRequest = new SurveyRequest(surveyInstance, member.getFirstName(),
               member.getLastName(), member.getEmail());
         }
 
@@ -2024,14 +2024,14 @@ public class SurveyService
   {
     try
     {
-      SurveyResult surveyRequest = getSurveyRequestForSurveyInstanceByEmail(surveyInstanceId,
+      SurveyRequest surveyRequest = getSurveyRequestForSurveyInstanceByEmail(surveyInstanceId,
           email);
 
       if (surveyRequest == null)
       {
         SurveyInstance surveyInstance = getSurveyInstance(surveyInstanceId);
 
-        surveyRequest = new SurveyResult(surveyInstance, firstName, lastName, email);
+        surveyRequest = new SurveyRequest(surveyInstance, firstName, lastName, email);
       }
 
       surveyRequest.setRequested(new Date());
@@ -2086,7 +2086,7 @@ public class SurveyService
    * @param surveyRequest the survey request
    */
   @Transactional
-  public void incrementSurveyRequestSendAttempts(SurveyResult surveyRequest)
+  public void incrementSurveyRequestSendAttempts(SurveyRequest surveyRequest)
     throws SurveyServiceException
   {
     try
@@ -2173,7 +2173,7 @@ public class SurveyService
    *         survey requests are currently queued for sending
    */
   @SuppressWarnings("unchecked")
-  public SurveyResult getNextSurveyRequestQueuedForSending()
+  public SurveyRequest getNextSurveyRequestQueuedForSending()
     throws SurveyServiceException
   {
     // Retrieve the Transaction Manager
@@ -2193,16 +2193,16 @@ public class SurveyService
 
       String selectSQL = "SELECT ID, SURVEY_INSTANCE_ID, FIRST_NAME, LAST_NAME, EMAIL, REQUESTED, STATUS, SEND_ATTEMPTS, LOCK_NAME, LAST_PROCESSED FROM SURVEY.SURVEY_REQUESTS WHERE STATUS=?1 AND (LAST_PROCESSED<?2 OR LAST_PROCESSED IS NULL) FETCH FIRST 1 ROWS ONLY FOR UPDATE";
 
-      Query selectQuery = entityManager.createNativeQuery(selectSQL, SurveyResult.class);
+      Query selectQuery = entityManager.createNativeQuery(selectSQL, SurveyRequest.class);
 
       Timestamp processedBefore = new Timestamp(System.currentTimeMillis() - SEND_SURVEY_REQUEST_RETRY_DELAY);
 
       selectQuery.setParameter(1, SurveyRequestStatus.QUEUED_FOR_SENDING.code());
       selectQuery.setParameter(2, processedBefore);
 
-      List<SurveyResult> surveyRequests = selectQuery.getResultList();
+      List<SurveyRequest> surveyRequests = selectQuery.getResultList();
 
-      SurveyResult surveyRequest = null;
+      SurveyRequest surveyRequest = null;
 
       if (surveyRequests.size() > 0)
       {

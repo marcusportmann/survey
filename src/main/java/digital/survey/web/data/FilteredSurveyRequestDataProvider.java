@@ -17,7 +17,7 @@ import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.data.InjectableDataProvider;
 import guru.mmp.common.util.StringUtil;
 import digital.survey.model.ISurveyService;
-import digital.survey.model.SurveyResult;
+import digital.survey.model.SurveyRequest;
 import org.apache.wicket.model.IModel;
 
 import javax.inject.Inject;
@@ -33,7 +33,7 @@ import java.util.UUID;
  *
  * @author Marcus Portmann
  */
-public class FilteredSurveyRequestDataProvider extends InjectableDataProvider<SurveyResult>
+public class FilteredSurveyRequestDataProvider extends InjectableDataProvider<SurveyRequest>
 {
   private static final long serialVersionUID = 1000000;
 
@@ -99,11 +99,11 @@ public class FilteredSurveyRequestDataProvider extends InjectableDataProvider<Su
    *
    * @see org.apache.wicket.markup.repeater.data.IDataProvider#iterator(long, long)
    */
-  public Iterator<SurveyResult> iterator(long first, long count)
+  public Iterator<SurveyRequest> iterator(long first, long count)
   {
     try
     {
-      List<SurveyResult> allSurveyRequests = StringUtil.isNullOrEmpty(filter)
+      List<SurveyRequest> allSurveyRequests = StringUtil.isNullOrEmpty(filter)
         ? surveyService.getSurveyRequestsForSurveyInstance(surveyInstanceId)
         : surveyService.getFilteredSurveyRequestsForSurveyInstance(surveyInstanceId, filter);
 
@@ -128,7 +128,7 @@ public class FilteredSurveyRequestDataProvider extends InjectableDataProvider<Su
    *
    * @see org.apache.wicket.markup.repeater.data.IDataProvider#model(java.lang.Object)
    */
-  public IModel<SurveyResult> model(SurveyResult surveyRequest)
+  public IModel<SurveyRequest> model(SurveyRequest surveyRequest)
   {
     return new DetachableSurveyRequestModel(surveyRequest);
   }

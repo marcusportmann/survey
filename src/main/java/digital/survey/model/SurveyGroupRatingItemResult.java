@@ -17,40 +17,42 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 //~--- JDK imports ------------------------------------------------------------
 
 /**
- * The <code>SurveyGroupRatingItemResponse</code> class implements the Survey Group Rating Item
- * Response entity, which represents the response for a group rating item that forms part of a
- * survey response.
+ * The <code>SurveyGroupRatingItemDefinition</code> class implements the Survey Group Rating Item
+ * Result entity, which represents the result for a group rating item compiled from the users
+ * responses' to a survey.
  *
  * @author Marcus Portmann
  */
 @JsonPropertyOrder({ "id", "groupRatingItemDefinitionId", "groupRatingItemDefinitionName",
     "groupRatingItemDefinitionRatingType", "groupMemberDefinitionId", "groupMemberDefinitionName",
-    "rating" })
-public class SurveyGroupRatingItemResponse
+    "numberOfResponses", "averageRating" })
+public class SurveyGroupRatingItemResult
   implements Serializable
 {
   /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey group rating item
-   * response.
+   * result.
    */
   @JsonProperty
   private UUID id;
 
   /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey group member
-   * definition this survey group rating item response is associated with.
+   * definition this survey group rating item result is associated with.
    */
   @JsonProperty
   private UUID groupMemberDefinitionId;
 
   /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey group rating item
-   * definition this survey group rating item response is associated with.
+   * definition this survey group rating item result is associated with.
    */
   @JsonProperty
   private UUID groupRatingItemDefinitionId;
@@ -68,10 +70,15 @@ public class SurveyGroupRatingItemResponse
   private SurveyGroupRatingItemType groupRatingItemDefinitionRatingType;
 
   /**
-   * The rating for the survey group rating item response e.g. 1=Yes, 0=No and -1=Not Applicable.
+   * The ratings for the survey group rating item result.
    */
   @JsonProperty
-  private int rating;
+  private List<Integer> ratings;
+
+  /**
+   * The number of survey group rating item responses used to determine this result.
+   */
+  private int numberOfResponses;
 
   /**
    * The name of the survey group member definition.
@@ -80,20 +87,20 @@ public class SurveyGroupRatingItemResponse
   private String groupMemberDefinitionName;
 
   /**
-   * Constructs a new <code>SurveyGroupRatingItemResponse</code>.
+   * Constructs a new <code>SurveyGroupRatingItemResult</code>.
    */
   @SuppressWarnings("unused")
-  SurveyGroupRatingItemResponse() {}
+  SurveyGroupRatingItemResult() {}
 
   /**
-   * Constructs a new <code>SurveyGroupRatingItemResponse</code>.
+   * Constructs a new <code>SurveyGroupRatingItemResult</code>.
    *
    * @param groupRatingItemDefinition the survey group rating item definition this survey group
    *                                  rating item response is associated with
    * @param groupMemberDefinition     the survey group member definition this survey group rating
    *                                  item response is associated with
    */
-  public SurveyGroupRatingItemResponse(SurveyGroupRatingItemDefinition groupRatingItemDefinition,
+  public SurveyGroupRatingItemResult(SurveyGroupRatingItemDefinition groupRatingItemDefinition,
       SurveyGroupMemberDefinition groupMemberDefinition)
   {
     this.id = UUID.randomUUID();
@@ -102,15 +109,78 @@ public class SurveyGroupRatingItemResponse
     this.groupRatingItemDefinitionRatingType = groupRatingItemDefinition.getRatingType();
     this.groupMemberDefinitionId = groupMemberDefinition.getId();
     this.groupMemberDefinitionName = groupMemberDefinition.getName();
-    this.rating = groupRatingItemDefinition.getRatingType().defaultRating();
+    this.ratings = new ArrayList<>();
+  }
+
+  /**
+   * Add the rating for the survey group rating item result.
+   *
+   * @param rating the rating for the survey group rating item result
+   */
+  public void addRating(int rating)
+  {
+    ratings.add(rating);
+  }
+
+  /**
+   * Returns the average rating for the survey group rating item result.
+   *
+   * @return the average rating for the survey group rating item result
+   */
+  @JsonProperty
+  public double getAverageRating()
+  {
+    if (groupRatingItemDefinitionRatingType == SurveyGroupRatingItemType.ONE_TO_TEN)
+    {
+      if (ratings.size() == 0)
+      {
+        return 0;
+      }
+
+      int total = 0;
+
+      for (int rating : ratings)
+      {
+        total += rating;
+      }
+
+      return total / ratings.size();
+    }
+    else if (groupRatingItemDefinitionRatingType == SurveyGroupRatingItemType.YES_NO_NA)
+    {
+      if (ratings.size() == 0)
+      {
+        return -1;
+      }
+
+      int numberOfSpecifiedRatings = 0;
+
+      int total = 0;
+
+      for (int rating : ratings)
+      {
+        if (rating != -1)
+        {
+          numberOfSpecifiedRatings++;
+
+          total += rating;
+        }
+      }
+
+      return ((total / numberOfSpecifiedRatings) * 100);
+    }
+    else
+    {
+      return 0;
+    }
   }
 
   /**
    * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   * member definition this survey group rating item response is associated with.
+   * member definition this survey group rating item result is associated with.
    *
    * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   *         member definition this survey group rating item response is associated with
+   *         member definition this survey group rating item result is associated with
    */
   public UUID getGroupMemberDefinitionId()
   {
@@ -129,10 +199,10 @@ public class SurveyGroupRatingItemResponse
 
   /**
    * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   * rating item definition this survey group rating item response is associated with.
+   * rating item definition this survey group rating item result is associated with.
    *
    * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   *         rating item definition this survey group rating item response is associated with
+   *         rating item definition this survey group rating item result is associated with
    */
   public UUID getGroupRatingItemDefinitionId()
   {
@@ -141,10 +211,10 @@ public class SurveyGroupRatingItemResponse
 
   /**
    * Returns the name of the survey group rating item definition this survey group rating item
-   * response is associated with.
+   * result is associated with.
    *
    * @return the name of the survey group rating item definition this survey group rating item
-   *         response is associated with
+   *         result is associated with
    */
   public String getGroupRatingItemDefinitionName()
   {
@@ -163,10 +233,10 @@ public class SurveyGroupRatingItemResponse
 
   /**
    * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   * rating item response.
+   * rating item result.
    *
    * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   *         rating item response
+   *         rating item result
    */
   public UUID getId()
   {
@@ -174,26 +244,41 @@ public class SurveyGroupRatingItemResponse
   }
 
   /**
-   * Returns the rating for the survey group rating item response e.g. 1=Yes, 0=No and
-   * -1=Not Applicable.
+   * Returns the number of survey group rating item responses used to determine this result.
    *
-   * @return the rating for the survey group rating item response e.g. 1=Yes, 0=No and
-   *         -1=Not Applicable
+   * @return the number of survey group rating item responses used to determine this result
    */
-  public int getRating()
+  public int getNumberOfResponses()
   {
-    return rating;
+    return numberOfResponses;
   }
 
   /**
-   * Set the rating for the survey group rating item response e.g.
-   * 1=Yes, 0=No and -1=Not Applicable.
+   * Returns the ratings for the survey group rating item result.
    *
-   * @param rating the rating for the survey group rating item response e.g. 1=Yes, 0=No and
-   *               -1=Not Applicable
+   * @return the ratings for the survey group rating item result
    */
-  public void setRating(int rating)
+  public List<Integer> getRatings()
   {
-    this.rating = rating;
+    return ratings;
+  }
+
+  /**
+   * Increment the number of survey group rating item responses used to determine this result.
+   */
+  public void incrementNumberOfResponses()
+  {
+    this.numberOfResponses++;
+  }
+
+  /**
+   * Set the number of survey group rating item responses used to determine this result.
+   *
+   * @param numberOfResponses the number of survey group rating item responses used to determine
+   *                          this result
+   */
+  public void setNumberOfResponses(int numberOfResponses)
+  {
+    this.numberOfResponses = numberOfResponses;
   }
 }

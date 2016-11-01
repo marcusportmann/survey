@@ -13,98 +13,58 @@ package digital.survey.model;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import guru.mmp.common.util.DateUtil;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 //~--- JDK imports ------------------------------------------------------------
 
 /**
- * The <code>SurveyRequest</code> class implements the Survey Request entity, which represents
- * a request that was requested to a person asking them to complete a survey
+ * The <code>SurveyResult</code> class implements the Survey Result entity, which represents
+ * the results of a survey compiled from the users responses' to a survey.
  *
  * @author Marcus Portmann
  */
 @Entity
-@Table(schema = "SURVEY", name = "SURVEY_REQUESTS")
-@SqlResultSetMapping(name = "SurveyRequestToSurveyResponseMapping",
-    classes = { @ConstructorResult(targetClass = SurveyRequestToSurveyResponseMapping.class,
-        columns = { @ColumnResult(name = "REQUEST_ID", type = UUID.class) ,
-            @ColumnResult(name = "REQUESTED", type = Date.class) ,
-            @ColumnResult(name = "RESPONSE_ID", type = UUID.class) ,
-            @ColumnResult(name = "RESPONDED", type = Date.class) }) })
+@Table(schema = "SURVEY", name = "SURVEY_RESULTS")
+@Access(AccessType.FIELD)
 public class SurveyResult
   implements Serializable
 {
   /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the survey request.
+   * The Universally Unique Identifier (UUID) used to uniquely identify the survey result.
    */
   @Id
   @Column(name = "ID", nullable = false)
+  @JsonProperty
   private UUID id;
 
   /**
-   * The first name(s) for the person who was requested to complete the survey.
-   */
-  @Column(name = "FIRST_NAME", nullable = false)
-  private String firstName;
-
-  /**
-   * The last name for the person who was requested to complete the survey.
-   */
-  @Column(name = "LAST_NAME", nullable = false)
-  private String lastName;
-
-  /**
-   * The e-mail address for the person who was requested to complete the survey.
-   */
-  @Column(name = "EMAIL", nullable = false)
-  private String email;
-
-  /**
-   * The date and time the request to complete the survey was last sent.
-   */
-  @Column(name = "REQUESTED", nullable = false)
-  private Date requested;
-
-  /**
-   * The survey instance this survey request is associated with.
+   * The survey instance this survey result is associated with.
    */
   @SuppressWarnings("unused")
   @ManyToOne
   @JoinColumn(name = "SURVEY_INSTANCE_ID")
+  @JsonIgnore
   private SurveyInstance instance;
 
   /**
-   * The status of the survey request.
+   * The survey group rating item results that are associated with the survey result.
    */
-  @Column(name = "STATUS", nullable = false)
-  @Convert(converter = SurveyRequestStatusConverter.class)
-  private SurveyRequestStatus status;
+  @JsonProperty
+  @Transient
+  private List<SurveyGroupRatingItemResult> groupRatingItemResults;
 
   /**
-   * The number of times that the sending of the survey request was attempted.
-   */
-  @Column(name = "SEND_ATTEMPTS", nullable = false)
-  private int sendAttempts;
-
-  /**
-   * The name of the entity that has locked the survey request for sending.
-   */
-  @Column(name = "LOCK_NAME")
-  private String lockName;
-
-  /**
-   * The date and time the last attempt was made to send the survey request.
-   */
-  @Column(name = "LAST_PROCESSED")
-  private Date lastProcessed;
-
-  /**
-   * Constructs a new <code>SurveyRequest</code>.
+   * Constructs a new <code>SurveyResult</code>.
    *
    * Default constructor required for JPA.
    */
@@ -112,38 +72,42 @@ public class SurveyResult
   SurveyResult() {}
 
   /**
-   * Constructs a new <code>SurveyRequest</code>.
+   * Constructs a new <code>SurveyResult</code>.
    *
-   * @param instance  the survey instance this survey request is associated with
-   * @param firstName the first name(s) for the person who was requested to complete the survey
-   * @param lastName  the last name for the person who was requested to complete the survey
-   * @param email     the e-mail address for the person who was requested to complete the survey
+   * @param instance the survey instance this survey result is associated with
    */
-  public SurveyResult(SurveyInstance instance, String firstName, String lastName, String email)
+  public SurveyResult(SurveyInstance instance)
   {
-    this(UUID.randomUUID(), instance, firstName, lastName, email);
+    this(UUID.randomUUID(), instance);
   }
 
   /**
-   * Constructs a new <code>SurveyRequest</code>.
+   * Constructs a new <code>SurveyResult</code>.
    *
-   * @param id        the Universally Unique Identifier (UUID) used to uniquely identify the survey
-   *                  request
-   * @param instance  the survey instance this survey request is associated with
-   * @param firstName the first name(s) for the person who was requested to complete the survey
-   * @param lastName  the last name for the person who was requested to complete the survey
-   * @param email     the e-mail address for the person who was requested to complete the survey
+   * @param id       the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *                 result
+   * @param instance the survey instance this survey result is associated with
    */
-  public SurveyResult(UUID id, SurveyInstance instance, String firstName, String lastName,
-      String email)
+  public SurveyResult(UUID id, SurveyInstance instance)
   {
     this.id = id;
-    this.status = SurveyRequestStatus.QUEUED_FOR_SENDING;
     this.instance = instance;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.email = email.toLowerCase();
-    this.requested = new Date();
+
+    this.groupRatingItemResults = new ArrayList<>();
+
+    for (SurveyGroupRatingItemDefinition groupRatingItemDefinition : instance.getDefinition()
+      .getGroupRatingItemDefinitions())
+    {
+      SurveyGroupDefinition groupDefinition = instance.getDefinition().getGroupDefinition(
+        groupRatingItemDefinition.getGroupDefinitionId());
+
+      for (SurveyGroupMemberDefinition groupMemberDefinition :
+        groupDefinition.getGroupMemberDefinitions())
+      {
+        groupRatingItemResults.add(new SurveyGroupRatingItemResult(groupRatingItemDefinition,
+          groupMemberDefinition));
+      }
+    }
   }
 
   /**
@@ -178,40 +142,90 @@ public class SurveyResult
   }
 
   /**
-   * Returns the e-mail address for the person who was requested to complete the survey.
+   * Returns the JSON data for the survey result.
    *
-   * @return the e-mail address for the person who was requested to complete the survey
+   * @return the JSON data for the survey result
    */
-  public String getEmail()
+  @Column(name = "DATA", nullable = false)
+  @Access(AccessType.PROPERTY)
+  @JsonIgnore
+  public String getData()
   {
-    return email;
+    try
+    {
+      return new ObjectMapper().writeValueAsString(this);
+    }
+    catch (Throwable e)
+    {
+      throw new RuntimeException("Failed to generate the JSON data for the survey result", e);
+    }
   }
 
   /**
-   * Returns the first name(s) for the person who was requested to complete the survey.
+   * Retrieve the survey group rating item result.
    *
-   * @return the first name(s) for the person who was requested to complete the survey
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   *           rating item result
+   *
+   * @return the survey group rating item result or <code>null</code> if the survey group rating
+   *         item result could not be found
    */
-  public String getFirstName()
+  public SurveyGroupRatingItemResult getGroupRatingItemResult(UUID id)
   {
-    return firstName;
+    for (SurveyGroupRatingItemResult groupRatingItemResult : groupRatingItemResults)
+    {
+      if (groupRatingItemResult.getId().equals(id))
+      {
+        return groupRatingItemResult;
+      }
+    }
+
+    return null;
   }
 
   /**
-   * Returns the full name for the person who was requested to complete the survey.
+   * Retrieve the survey group rating item result.
    *
-   * @return the full name for the person who was requested to complete the survey
+   * @param groupRatingItemDefinitionId the Universally Unique Identifier (UUID) used to uniquely
+   *                                    identify the survey group rating item definition this survey
+   *                                    group rating item result is associated with
+   * @param groupMemberDefinitionId     the Universally Unique Identifier (UUID) used to uniquely
+   *                                    identify the survey group member definition this survey
+   *                                    group rating item result is associated with
+   *
+   * @return the survey group rating item result or <code>null</code> if the survey group rating
+   *         item result could not be found
    */
-
-  public String getFullName()
+  public SurveyGroupRatingItemResult getGroupRatingItemResult(UUID groupRatingItemDefinitionId,
+    UUID groupMemberDefinitionId)
   {
-    return firstName + " " + lastName;
+    for (SurveyGroupRatingItemResult groupRatingItemResult : groupRatingItemResults)
+    {
+      if ((groupRatingItemResult.getGroupRatingItemDefinitionId().equals(
+        groupRatingItemDefinitionId))
+        && (groupRatingItemResult.getGroupMemberDefinitionId().equals(groupMemberDefinitionId)))
+      {
+        return groupRatingItemResult;
+      }
+    }
+
+    return null;
   }
 
   /**
-   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey request.
+   * Returns the survey group rating item results that are associated with the survey result.
    *
-   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey request
+   * @return the survey group rating item results that are associated with the survey result
+   */
+  public List<SurveyGroupRatingItemResult> getGroupRatingItemResults()
+  {
+    return groupRatingItemResults;
+  }
+
+  /**
+   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey result.
+   *
+   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey result
    */
   public UUID getId()
   {
@@ -219,9 +233,9 @@ public class SurveyResult
   }
 
   /**
-   * Returns the survey instance this survey request is associated with.
+   * Returns the survey instance this survey response is associated with.
    *
-   * @return the survey instance this survey request is associated with
+   * @return the survey instance this survey response is associated with
    */
   public SurveyInstance getInstance()
   {
@@ -229,174 +243,30 @@ public class SurveyResult
   }
 
   /**
-   * Returns the last name for the person who was requested to complete the survey.
+   * Set the JSON data for the survey result.
    *
-   * @return the last name for the person who was requested to complete the survey
+   * @param data the JSON data for the survey result
    */
-  public String getLastName()
+  public void setData(String data)
   {
-    return lastName;
+    try
+    {
+      new ObjectMapper().readerForUpdating(this).readValue(data);
+    }
+    catch (Throwable e)
+    {
+      throw new RuntimeException("Failed to populate the survey result using the JSON data", e);
+    }
   }
 
   /**
-   * Returns the date and time the last attempt was made to send the survey request.
+   * Returns the String representation of the survey result.
    *
-   * @return the date and time the last attempt was made to send the survey request
-   */
-  public Date getLastProcessed()
-  {
-    return lastProcessed;
-  }
-
-  /**
-   * Returns the name of the entity that has locked the survey request for sending.
-   *
-   * @return the name of the entity that has locked the survey request for sending
-   */
-  public String getLockName()
-  {
-    return lockName;
-  }
-
-  /**
-   * Returns the date and time the request to complete the survey was last sent.
-   *
-   * @return the date and time the request to complete the survey was last sent
-   */
-  public Date getRequested()
-  {
-    return requested;
-  }
-
-  /**
-   * Returns the date and time the request to complete the survey was last sent as a
-   * <code>String</code>.
-   *
-   * @return the date and time the request to complete the survey was last sent as a
-   *         <code>String</code>.
-   */
-  public String getRequestedAsString()
-  {
-    return DateUtil.getYYYYMMDDWithTimeFormat().format(requested);
-  }
-
-  /**
-   * Returns the number of times that the sending of the survey request was attempted.
-   *
-   * @return the number of times that the sending of the survey request was attempted
-   */
-  public int getSendAttempts()
-  {
-    return sendAttempts;
-  }
-
-  /**
-   * Returns the status of the survey request.
-   *
-   * @return the status of the survey request
-   */
-  public SurveyRequestStatus getStatus()
-  {
-    return status;
-  }
-
-  /**
-   * Set the e-mail address for the person who was requested to complete the survey.
-   *
-   * @param email the e-mail address for the person who was requested to complete the survey
-   */
-  public void setEmail(String email)
-  {
-    this.email = email;
-  }
-
-  /**
-   * Set the first name(s) for the person who was requested to complete the survey.
-   *
-   * @param firstName the first name(s) for the person who was requested to complete the survey
-   */
-  public void setFirstName(String firstName)
-  {
-    this.firstName = firstName;
-  }
-
-  /**
-   * Set the last name for the person who was requested to complete the survey.
-   *
-   * @param lastName the last name for the person who was requested to complete the survey
-   */
-  public void setLastName(String lastName)
-  {
-    this.lastName = lastName;
-  }
-
-  /**
-   * Set the date and time the last attempt was made to send the survey request.
-   *
-   * @param lastProcessed the date and time the last attempt was made to send the survey request
-   */
-  public void setLastProcessed(Date lastProcessed)
-  {
-    this.lastProcessed = lastProcessed;
-  }
-
-  /**
-   * Set the name of the entity that has locked the survey request for sending.
-   *
-   * @param lockName the name of the entity that has locked the survey request for sending
-   */
-  public void setLockName(String lockName)
-  {
-    this.lockName = lockName;
-  }
-
-  /**
-   * Set the date and time the request to complete the survey was last sent.
-   *
-   * @param requested the date and time the request to complete the survey was last sent
-   */
-  public void setRequested(Date requested)
-  {
-    this.requested = requested;
-  }
-
-  /**
-   * Set the number of times that the sending of the survey request was attempted.
-   *
-   * @param sendAttempts the number of times that the sending of the survey request was attempted
-   */
-  public void setSendAttempts(int sendAttempts)
-  {
-    this.sendAttempts = sendAttempts;
-  }
-
-  /**
-   * Set the status of the survey request.
-   *
-   * @param status the status of the survey request
-   */
-  public void setStatus(SurveyRequestStatus status)
-  {
-    this.status = status;
-  }
-
-  /**
-   * Returns the String representation of the survey request.
-   *
-   * @return the String representation of the survey request
+   * @return the String representation of the survey result
    */
   @Override
   public String toString()
   {
-    return String.format(
-        "SurveyRequest {id=\"%s\", firstName=\"%s\", lastName=\"%s\", email=\"%s\","
-        + " requested=\"%s\", status=\"%s\", sendAttempts=\"%d\", lockName=\"%s\","
-        + " lastProcessed=\"%s\"}", getId(), getFirstName(), getLastName(), getEmail(),
-        DateUtil.getYYYYMMDDWithTimeFormat().format(getRequested()), getStatus().description(),
-        getSendAttempts(), (getLockName() == null)
-        ? ""
-        : getLockName(), (getLastProcessed() == null)
-        ? "Never"
-        : DateUtil.getYYYYMMDDWithTimeFormat().format(getLastProcessed()));
+    return String.format("SurveyResult {id=\"%s\"}", getId());
   }
 }

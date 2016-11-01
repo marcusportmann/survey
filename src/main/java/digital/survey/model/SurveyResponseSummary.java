@@ -54,7 +54,7 @@ public class SurveyResponseSummary
   @SuppressWarnings("unused")
   @ManyToOne
   @JoinColumn(name = "SURVEY_REQUEST_ID")
-  private SurveyResult request;
+  private SurveyRequest request;
 
   /**
    * The date and time the survey response was received.
@@ -133,7 +133,7 @@ public class SurveyResponseSummary
    *
    * @return the optional survey request this survey response is associated with
    */
-  public SurveyResult getRequest()
+  public SurveyRequest getRequest()
   {
     return request;
   }

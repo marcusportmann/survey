@@ -63,7 +63,7 @@ public class SurveyResponse
   @ManyToOne
   @JoinColumn(name = "SURVEY_REQUEST_ID")
   @JsonIgnore
-  private SurveyResult request;
+  private SurveyRequest request;
 
   /**
    * The survey group rating item responses that are associated with the survey response.
@@ -103,7 +103,7 @@ public class SurveyResponse
    * @param instance the survey instance this survey response is associated with
    * @param request  the optional survey request this survey response is associated with
    */
-  public SurveyResponse(SurveyInstance instance, SurveyResult request)
+  public SurveyResponse(SurveyInstance instance, SurveyRequest request)
   {
     this(UUID.randomUUID(), instance, request);
   }
@@ -128,7 +128,7 @@ public class SurveyResponse
    * @param instance the survey instance this survey response is associated with
    * @param request  the optional survey request this survey response is associated with
    */
-  public SurveyResponse(UUID id, SurveyInstance instance, SurveyResult request)
+  public SurveyResponse(UUID id, SurveyInstance instance, SurveyRequest request)
   {
     this.id = id;
     this.instance = instance;

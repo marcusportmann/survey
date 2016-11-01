@@ -16,7 +16,7 @@ package digital.survey.web.data;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.data.InjectableLoadableDetachableModel;
 import digital.survey.model.ISurveyService;
-import digital.survey.model.SurveyResult;
+import digital.survey.model.SurveyRequest;
 
 import javax.inject.Inject;
 import java.util.UUID;
@@ -29,7 +29,7 @@ import java.util.UUID;
  *
  * @author Marcus Portmann
  */
-public class DetachableSurveyRequestModel extends InjectableLoadableDetachableModel<SurveyResult>
+public class DetachableSurveyRequestModel extends InjectableLoadableDetachableModel<SurveyRequest>
 {
   private static final long serialVersionUID = 1000000;
 
@@ -55,7 +55,7 @@ public class DetachableSurveyRequestModel extends InjectableLoadableDetachableMo
    *
    * @param surveyAudience the <code>SurveyRequest</code> instance
    */
-  public DetachableSurveyRequestModel(SurveyResult surveyAudience)
+  public DetachableSurveyRequestModel(SurveyRequest surveyAudience)
   {
     this(surveyAudience.getId());
 
@@ -77,7 +77,7 @@ public class DetachableSurveyRequestModel extends InjectableLoadableDetachableMo
    * @see org.apache.wicket.model.LoadableDetachableModel#load()
    */
   @Override
-  protected SurveyResult load()
+  protected SurveyRequest load()
   {
     try
     {

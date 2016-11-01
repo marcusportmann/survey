@@ -63,7 +63,7 @@ public class SurveyServiceTest
         "b222aa15-715f-4752-923d-8f33ee8a1736"), "CTO ELT Values - September 2016",
         "CTO ELT Values - September 2016", surveyDefinition);
 
-    SurveyResult marcusSurveyRequest = new SurveyResult(UUID.fromString(
+    SurveyRequest marcusSurveyRequest = new SurveyRequest(UUID.fromString(
         "54a751f6-0f32-48bd-8c6c-665e3ac1906b"), surveyInstance, "Marcus", "Portmann",
         "marcus@mmp.guru");
 
@@ -72,7 +72,7 @@ public class SurveyServiceTest
 
     randomizeSurveyResponse(marcusSurveyResponse);
 
-    SurveyResult aidenSurveyRequest = new SurveyResult(UUID.fromString(
+    SurveyRequest aidenSurveyRequest = new SurveyRequest(UUID.fromString(
         "215640fd-ee60-4f66-82bc-d173955b2228"), surveyInstance, "Aiden", "Portmann",
         "aiden@mmp.guru");
 
@@ -503,18 +503,18 @@ public class SurveyServiceTest
 
     surveyInstance = surveyService.saveSurveyInstance(surveyInstance);
 
-    SurveyResult surveyRequest = getTestSurveyRequestDetails(surveyInstance);
+    SurveyRequest surveyRequest = getTestSurveyRequestDetails(surveyInstance);
 
     surveyRequest = surveyService.saveSurveyRequest(surveyRequest);
 
-    SurveyResult retrievedSurveyRequest = surveyService.getSurveyRequest(surveyRequest.getId());
+    SurveyRequest retrievedSurveyRequest = surveyService.getSurveyRequest(surveyRequest.getId());
 
     compareSurveyRequests(surveyRequest, retrievedSurveyRequest);
 
     assertEquals("The number of survey requests for the survey instance is not correct", 1,
         surveyService.getNumberOfSurveyRequestsForSurveyInstance(surveyInstance.getId()));
 
-    List<SurveyResult> surveyRequests = surveyService.getSurveyRequestsForSurveyInstance(
+    List<SurveyRequest> surveyRequests = surveyService.getSurveyRequestsForSurveyInstance(
         surveyInstance.getId());
 
     assertEquals("The number of survey requests for the survey instance is not correct", 1,
@@ -574,7 +574,7 @@ public class SurveyServiceTest
 
     surveyInstance = surveyService.saveSurveyInstance(surveyInstance);
 
-    SurveyResult surveyRequest = getTestSurveyRequestDetails(surveyInstance);
+    SurveyRequest surveyRequest = getTestSurveyRequestDetails(surveyInstance);
 
     surveyRequest = surveyService.saveSurveyRequest(surveyRequest);
 
@@ -839,10 +839,10 @@ public class SurveyServiceTest
         surveyDefinition);
   }
 
-  private static synchronized SurveyResult getTestSurveyRequestDetails(
+  private static synchronized SurveyRequest getTestSurveyRequestDetails(
       SurveyInstance surveyInstance)
   {
-    return new SurveyResult(UUID.randomUUID(), surveyInstance, "Marcus", "Portmann",
+    return new SurveyRequest(UUID.randomUUID(), surveyInstance, "Marcus", "Portmann",
         "marcus@mmp.guru");
   }
 
@@ -1031,7 +1031,7 @@ public class SurveyServiceTest
         surveyInstance1.getDescription(), surveyInstance2.getDescription());
   }
 
-  private void compareSurveyRequests(SurveyResult surveyRequest1, SurveyResult surveyRequest2)
+  private void compareSurveyRequests(SurveyRequest surveyRequest1, SurveyRequest surveyRequest2)
   {
     assertEquals("The ID values for the two survey requests do not match", surveyRequest1.getId(),
         surveyRequest2.getId());
