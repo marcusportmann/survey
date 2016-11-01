@@ -49,13 +49,18 @@ table.table-group-definition > tbody > tr > td
   text-align: center;
 }
 
+table.table-group-definition > tbody > tr > td > span.numberOfResults
+{
+  font-size: 8px;
+  color: rgb(120, 120, 120);
+}
+
 table.table-group-definition .form-group
 {
   margin: 0;
   display: inline-block;
 
 }
-
 
 table.table-group-definition .form-group .form-material
 {

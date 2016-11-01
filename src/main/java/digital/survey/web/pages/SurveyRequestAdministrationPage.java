@@ -77,7 +77,7 @@ public class SurveyRequestAdministrationPage extends TemplateWebPage
    * @param previousPage       the previous page
    * @param surveyInstanceId   the Universally Unique Identifier (UUID) used to identify the survey
    *                           instance the survey requests are associated with
-   * @param surveyInstanceName the name of the survey request
+   * @param surveyInstanceName the name of the survey instance
    */
   public SurveyRequestAdministrationPage(PageReference previousPage, UUID surveyInstanceId,
       String surveyInstanceName)

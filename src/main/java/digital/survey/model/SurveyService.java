@@ -55,6 +55,11 @@ public class SurveyService
   /* The name of the Survey Service instance. */
   private String instanceName = ServiceUtil.getServiceInstanceName("Survey Service");
 
+  /**
+   * The delay in milliseconds between attempts to retry sending a survey request.
+   */
+  private long SEND_SURVEY_REQUEST_RETRY_DELAY = 60L * 5L * 1000L;
+
   /* Entity Manager */
   @PersistenceContext(unitName = "Application")
   private EntityManager entityManager;
@@ -66,6 +71,9 @@ public class SurveyService
   /* The result of sending the survey requests. */
   private Future<Boolean> sendSurveyRequestsResult;
 
+  /* Background Survey Request Sender */
+  @Inject
+  BackgroundSurveyRequestSender backgroundSurveyRequestSender;
 
   /**
    * Constructs a new <code>SurveyService</code>.
@@ -73,33 +81,6 @@ public class SurveyService
   public SurveyService()
   {
     sendSurveyRequestsResult = new AsyncResult<>(false);
-  }
-
-  /* Background Survey Request Sender */
-  @Inject
-  BackgroundSurveyRequestSender backgroundSurveyRequestSender;
-
-  /**
-   * Send all the survey requests queued for sending asynchronously.
-   */
-  public synchronized void sendSurveyRequests()
-  {
-    if (sendSurveyRequestsResult.isDone())
-    {
-      /*
-       * Asynchronously inform the Background Survey Request Sender that all pending survey requests
-       * should be sent.
-       */
-      try
-      {
-        sendSurveyRequestsResult = backgroundSurveyRequestSender.send();
-      }
-      catch (Throwable e)
-      {
-        logger.error("Failed to invoke the Background Survey Request Sender to asynchronously send"
-           + " all the survey requests queued for sending", e);
-      }
-    }
   }
 
   /**
@@ -762,6 +743,27 @@ public class SurveyService
   }
 
   /**
+   * Returns the maximum number of times that sending of a survey request will be attempted.
+   *
+   * @return the maximum number of times that sending of a survey request will be attempted
+   */
+  public int getMaximumSurveyRequestSendAttempts()
+    throws SurveyServiceException
+  {
+    try
+    {
+      return configurationService.getInteger(SurveyApplication
+          .MAXIMUM_SURVEY_REQUEST_SEND_ATTEMPTS_CONFIGURATION_KEY);
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the maximum number of survey send attempts", e);
+    }
+
+  }
+
+  /**
    * Retrieve the survey audience members for the survey audience.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
@@ -788,6 +790,107 @@ public class SurveyService
       throw new SurveyServiceException(
           "Failed to retrieve the survey audience members for the survey audience with ID (" + id
           + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the next survey request that has been queued for sending.
+   * <p/>
+   * The survey request will be locked to prevent duplicate sending.
+   *
+   * @return the next survey request that has been queued for sending or <code>null</code> if no
+   *         survey requests are currently queued for sending
+   */
+  @SuppressWarnings("unchecked")
+  public SurveyRequest getNextSurveyRequestQueuedForSending()
+    throws SurveyServiceException
+  {
+    // Retrieve the Transaction Manager
+    TransactionManager transactionManager = TransactionManager.getTransactionManager();
+    javax.transaction.Transaction existingTransaction = null;
+
+    try
+    {
+      if (transactionManager.isTransactionActive())
+      {
+        existingTransaction = transactionManager.beginNew();
+      }
+      else
+      {
+        transactionManager.begin();
+      }
+
+      String selectSQL =
+          "SELECT ID, SURVEY_INSTANCE_ID, FIRST_NAME, LAST_NAME, EMAIL, REQUESTED, STATUS, SEND_ATTEMPTS, LOCK_NAME, LAST_PROCESSED FROM SURVEY.SURVEY_REQUESTS WHERE STATUS=?1 AND (LAST_PROCESSED<?2 OR LAST_PROCESSED IS NULL) FETCH FIRST 1 ROWS ONLY FOR UPDATE";
+
+      Query selectQuery = entityManager.createNativeQuery(selectSQL, SurveyRequest.class);
+
+      Timestamp processedBefore = new Timestamp(System.currentTimeMillis()
+          - SEND_SURVEY_REQUEST_RETRY_DELAY);
+
+      selectQuery.setParameter(1, SurveyRequestStatus.QUEUED_FOR_SENDING.code());
+      selectQuery.setParameter(2, processedBefore);
+
+      List<SurveyRequest> surveyRequests = selectQuery.getResultList();
+
+      SurveyRequest surveyRequest = null;
+
+      if (surveyRequests.size() > 0)
+      {
+        surveyRequest = surveyRequests.get(0);
+
+        surveyRequest.setStatus(SurveyRequestStatus.SENDING);
+        surveyRequest.setLockName(instanceName);
+
+        String lockSQL = "UPDATE SURVEY.SURVEY_REQUESTS SET STATUS=?1, LOCK_NAME=?2 WHERE ID=?3";
+
+        Query lockQuery = entityManager.createNativeQuery(lockSQL);
+
+        lockQuery.setParameter(1, SurveyRequestStatus.SENDING.code());
+        lockQuery.setParameter(2, instanceName);
+        lockQuery.setParameter(3, surveyRequest.getId());
+
+        if (lockQuery.executeUpdate() != 1)
+        {
+          throw new SurveyServiceException(String.format(
+              "No rows were affected as a result of executing the SQL statement (%s)", lockSQL));
+
+        }
+      }
+
+      transactionManager.commit();
+
+      return surveyRequest;
+    }
+    catch (Throwable e)
+    {
+      try
+      {
+        transactionManager.rollback();
+      }
+      catch (Throwable f)
+      {
+        logger.error("Failed to rollback the transaction while retrieving the next survey request"
+            + " that has been queued for sending from the database", f);
+      }
+
+      throw new SurveyServiceException(
+          "Failed to retrieve the next survey request that has been queued for sending", e);
+    }
+    finally
+    {
+      try
+      {
+        if (existingTransaction != null)
+        {
+          transactionManager.resume(existingTransaction);
+        }
+      }
+      catch (Throwable e)
+      {
+        logger.error("Failed to resume the original transaction while retrieving the next survey"
+            + " request that has been queued for sending from the database", e);
+      }
     }
   }
 
@@ -1724,6 +1827,163 @@ public class SurveyService
   }
 
   /**
+   * Retrieve the the survey responses for the survey instance.
+   *
+   * NOTE: This is potentially a resource intensive operation if there are a large number of survey
+   *       responses associated with a survey instance.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to identify the survey instance the
+   *           survey responses are associated with
+   *
+   * @return the survey responses for the survey instance
+   */
+  public List<SurveyResponse> getSurveyResponsesForSurveyInstance(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "SELECT sr FROM SurveyResponse sr JOIN sr.instance si WHERE si.id = :id";
+
+      TypedQuery<SurveyResponse> query = entityManager.createQuery(sql, SurveyResponse.class);
+
+      query.setParameter("id", id);
+
+      return query.getResultList();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException("Failed to retrieve the survey responses for the survey"
+          + " instance with ID (" + id + ")", e);
+    }
+  }
+
+  /**
+   * Retrieve the survey result for the survey instance with the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           instance
+   *
+   * @return the survey result for the survey instance with the specified ID
+   *
+   * @throws SurveyServiceException
+   */
+  public SurveyResult getSurveyResultForSurveyInstance(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      SurveyInstance surveyInstance = getSurveyInstance(id);
+
+      SurveyResult surveyResult = new SurveyResult(surveyInstance);
+
+      // TODO: Check if we have too many survey responses to compile the survey result in real time.
+
+      // TODO: Add caching of survey result in database.
+      // This will require deleting the cached result if a new survey response is received.
+      // It might be worth it to pregenerate the survey result once all the survey responses
+      // have been received for the survey requests. This will only work on surveys that do
+      // not allow anonymous responses where we can track the outstanding responses. Creating
+      // a new survey request for this survey instance will ALSO invalidate the survey result
+
+      // TODO: Make this more efficient by retrieving batches of survey responses rather than all
+      // the survey responses at one time. Might require a list of IDs to be retrieved first
+      // and then retrievals of 10 survey responses based on the next 10 IDs.
+      List<SurveyResponse> surveyResponses = getSurveyResponsesForSurveyInstance(id);
+
+      for (SurveyResponse surveyResponse : surveyResponses)
+      {
+        for (SurveyGroupRatingItemResponse groupRatingItemResponse :
+            surveyResponse.getGroupRatingItemResponses())
+        {
+          SurveyGroupRatingItemResult groupRatingItemResult = surveyResult.getGroupRatingItemResult(
+              groupRatingItemResponse.getGroupRatingItemDefinitionId(),
+              groupRatingItemResponse.getGroupMemberDefinitionId());
+
+          if (groupRatingItemResult != null)
+          {
+            groupRatingItemResult.addRating(groupRatingItemResponse.getRating());
+          }
+          else
+          {
+            throw new SurveyServiceException(
+                "Failed to retrieve the survey result for the survey instance (" + id
+                + "): Failed to find a survey group rating item result for the survey group rating item response ("
+                + groupRatingItemResponse + ")");
+          }
+        }
+      }
+
+      return surveyResult;
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to retrieve the survey result for the survey instance (" + id + ")", e);
+    }
+  }
+
+  /**
+   * Increment the send attempts for the survey request.
+   *
+   * @param surveyRequest the survey request
+   */
+  @Transactional
+  public void incrementSurveyRequestSendAttempts(SurveyRequest surveyRequest)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "UPDATE SURVEY.SURVEY_REQUESTS SET SEND_ATTEMPTS = SEND_ATTEMPTS + 1"
+          + " WHERE ID = ?1";
+
+      Query query = entityManager.createNativeQuery(sql);
+
+      query.setParameter(1, surveyRequest.getId());
+
+      if (query.executeUpdate() > 0)
+      {
+        surveyRequest.setSendAttempts(surveyRequest.getSendAttempts() + 1);
+      }
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(String.format(
+          "Failed to increment the send attempts for the survey request (%s)",
+          surveyRequest.getId()), e);
+    }
+  }
+
+  /**
+   * Reset the survey request locks.
+   *
+   * @param status    the current status of the survey requests that have been locked
+   * @param newStatus the new status for the survey requests that have been unlocked
+   */
+  @Transactional
+  public void resetSurveyRequestLocks(SurveyRequestStatus status, SurveyRequestStatus newStatus)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "UPDATE SURVEY.SURVEY_REQUESTS SET STATUS =?1, LOCK_NAME=NULL"
+          + " WHERE LOCK_NAME=?2 AND STATUS=?3";
+
+      Query query = entityManager.createNativeQuery(sql);
+
+      query.setParameter(1, status.code());
+      query.setParameter(2, instanceName);
+      query.setParameter(3, newStatus.code());
+
+      query.executeUpdate();
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(String.format("Failed to reset the locks for the survey"
+          + " requests with status (%s) locked using the lock name (%s)", status, instanceName), e);
+    }
+  }
+
+  /**
    * Save the survey audience.
    *
    * @param surveyAudience the survey audience
@@ -2051,81 +2311,26 @@ public class SurveyService
   }
 
   /**
-   * Reset the survey request locks.
-   *
-   * @param status    the current status of the survey requests that have been locked
-   * @param newStatus the new status for the survey requests that have been unlocked
+   * Send all the survey requests queued for sending asynchronously.
    */
-  @Transactional
-  public void resetSurveyRequestLocks(SurveyRequestStatus status, SurveyRequestStatus newStatus)
-    throws SurveyServiceException
+  public synchronized void sendSurveyRequests()
   {
-    try
+    if (sendSurveyRequestsResult.isDone())
     {
-      String sql = "UPDATE SURVEY.SURVEY_REQUESTS SET STATUS =?1, LOCK_NAME=NULL"
-       + " WHERE LOCK_NAME=?2 AND STATUS=?3";
-
-      Query query = entityManager.createNativeQuery(sql);
-
-      query.setParameter(1, status.code());
-      query.setParameter(2, instanceName);
-      query.setParameter(3, newStatus.code());
-
-      query.executeUpdate();
-    }
-    catch (Throwable e)
-    {
-      throw new SurveyServiceException(String.format("Failed to reset the locks for the survey"
-          + " requests with status (%s) locked using the lock name (%s)", status, instanceName), e);
-    }
-  }
-
-  /**
-   * Increment the send attempts for the survey request.
-   *
-   * @param surveyRequest the survey request
-   */
-  @Transactional
-  public void incrementSurveyRequestSendAttempts(SurveyRequest surveyRequest)
-    throws SurveyServiceException
-  {
-    try
-    {
-      String sql = "UPDATE SURVEY.SURVEY_REQUESTS SET SEND_ATTEMPTS = SEND_ATTEMPTS + 1"
-        + " WHERE ID = ?1";
-
-      Query query = entityManager.createNativeQuery(sql);
-
-      query.setParameter(1, surveyRequest.getId());
-
-      if (query.executeUpdate() > 0)
+      /*
+       * Asynchronously inform the Background Survey Request Sender that all pending survey requests
+       * should be sent.
+       */
+      try
       {
-        surveyRequest.setSendAttempts(surveyRequest.getSendAttempts() + 1);
+        sendSurveyRequestsResult = backgroundSurveyRequestSender.send();
+      }
+      catch (Throwable e)
+      {
+        logger.error("Failed to invoke the Background Survey Request Sender to asynchronously send"
+            + " all the survey requests queued for sending", e);
       }
     }
-    catch (Throwable e)
-    {
-      throw new SurveyServiceException(String.format("Failed to increment the send attempts for the survey request (%s)", surveyRequest.getId()), e);
-    }
-  }
-
-  /**
-   * Returns the maximum number of times that sending of a survey request will be attempted.
-   *
-   * @return the maximum number of times that sending of a survey request will be attempted
-   */
-  public int getMaximumSurveyRequestSendAttempts()
-    throws SurveyServiceException
-  {
-    try
-    {
-      return configurationService.getInteger(SurveyApplication.MAXIMUM_SURVEY_REQUEST_SEND_ATTEMPTS_CONFIGURATION_KEY);
-    }
-    catch (Throwable e)
-    {
-      throw new SurveyServiceException("Failed to retrieve the maximum number of survey send attempts", e);
-    }
-
   }
 
   /**
@@ -2150,116 +2355,14 @@ public class SurveyService
       if (query.executeUpdate() != 1)
       {
         throw new SurveyServiceException(String.format(
-          "No rows were affected as a result of executing the SQL statement (%s)", sql));
+            "No rows were affected as a result of executing the SQL statement (%s)", sql));
       }
     }
     catch (Throwable e)
     {
-      throw new SurveyServiceException(String.format("Failed to unlock and set the status for the survey request (%s) to (%s)", id, status.description()), e);
+      throw new SurveyServiceException(String.format(
+          "Failed to unlock and set the status for the survey request (%s) to (%s)", id,
+          status.description()), e);
     }
   }
-
-  /**
-   * The delay in milliseconds between attempts to retry sending a survey request.
-   */
-  private long SEND_SURVEY_REQUEST_RETRY_DELAY = 60L * 5L * 1000L;
-
-  /**
-   * Retrieve the next survey request that has been queued for sending.
-   * <p/>
-   * The survey request will be locked to prevent duplicate sending.
-   *
-   * @return the next survey request that has been queued for sending or <code>null</code> if no
-   *         survey requests are currently queued for sending
-   */
-  @SuppressWarnings("unchecked")
-  public SurveyRequest getNextSurveyRequestQueuedForSending()
-    throws SurveyServiceException
-  {
-    // Retrieve the Transaction Manager
-    TransactionManager transactionManager = TransactionManager.getTransactionManager();
-    javax.transaction.Transaction existingTransaction = null;
-
-    try
-    {
-      if (transactionManager.isTransactionActive())
-      {
-        existingTransaction = transactionManager.beginNew();
-      }
-      else
-      {
-        transactionManager.begin();
-      }
-
-      String selectSQL = "SELECT ID, SURVEY_INSTANCE_ID, FIRST_NAME, LAST_NAME, EMAIL, REQUESTED, STATUS, SEND_ATTEMPTS, LOCK_NAME, LAST_PROCESSED FROM SURVEY.SURVEY_REQUESTS WHERE STATUS=?1 AND (LAST_PROCESSED<?2 OR LAST_PROCESSED IS NULL) FETCH FIRST 1 ROWS ONLY FOR UPDATE";
-
-      Query selectQuery = entityManager.createNativeQuery(selectSQL, SurveyRequest.class);
-
-      Timestamp processedBefore = new Timestamp(System.currentTimeMillis() - SEND_SURVEY_REQUEST_RETRY_DELAY);
-
-      selectQuery.setParameter(1, SurveyRequestStatus.QUEUED_FOR_SENDING.code());
-      selectQuery.setParameter(2, processedBefore);
-
-      List<SurveyRequest> surveyRequests = selectQuery.getResultList();
-
-      SurveyRequest surveyRequest = null;
-
-      if (surveyRequests.size() > 0)
-      {
-        surveyRequest = surveyRequests.get(0);
-
-        surveyRequest.setStatus(SurveyRequestStatus.SENDING);
-        surveyRequest.setLockName(instanceName);
-
-        String lockSQL = "UPDATE SURVEY.SURVEY_REQUESTS SET STATUS=?1, LOCK_NAME=?2 WHERE ID=?3";
-
-        Query lockQuery = entityManager.createNativeQuery(lockSQL);
-
-        lockQuery.setParameter(1, SurveyRequestStatus.SENDING.code());
-        lockQuery.setParameter(2, instanceName);
-        lockQuery.setParameter(3, surveyRequest.getId());
-
-        if (lockQuery.executeUpdate() != 1)
-        {
-          throw new SurveyServiceException(String.format(
-            "No rows were affected as a result of executing the SQL statement (%s)", lockSQL));
-
-        }
-      }
-
-      transactionManager.commit();
-
-      return surveyRequest;
-    }
-    catch (Throwable e)
-    {
-      try
-      {
-        transactionManager.rollback();
-      }
-      catch (Throwable f)
-      {
-        logger.error("Failed to rollback the transaction while retrieving the next survey request"
-          + " that has been queued for sending from the database", f);
-      }
-
-      throw new SurveyServiceException("Failed to retrieve the next survey request that has been queued for sending", e);
-    }
-    finally
-    {
-      try
-      {
-        if (existingTransaction != null)
-        {
-          transactionManager.resume(existingTransaction);
-        }
-      }
-      catch (Throwable e)
-      {
-        logger.error("Failed to resume the original transaction while retrieving the next survey"
-          + " request that has been queued for sending from the database", e);
-      }
-    }
-  }
-
 }

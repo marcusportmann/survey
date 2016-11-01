@@ -617,6 +617,33 @@ public interface ISurveyService
     throws SurveyServiceException;
 
   /**
+   * Retrieve the the survey responses for the survey instance.
+   *
+   * NOTE: This is potentially a resource intensive operation if there are a large number of survey
+   *       responses associated with a survey instance.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to identify the survey instance the
+   *           survey responses are associated with
+   *
+   * @return the survey responses for the survey instance
+   */
+  List<SurveyResponse> getSurveyResponsesForSurveyInstance(UUID id)
+    throws SurveyServiceException;
+
+  /**
+   * Retrieve the survey result for the survey instance with the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           instance
+   *
+   * @return the survey result for the survey instance with the specified ID
+   *
+   * @throws SurveyServiceException
+   */
+  SurveyResult getSurveyResultForSurveyInstance(UUID id)
+    throws SurveyServiceException;
+
+  /**
    * Increment the send attempts for the survey request.
    *
    * @param surveyRequest the survey request

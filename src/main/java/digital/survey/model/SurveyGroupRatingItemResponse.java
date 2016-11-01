@@ -49,6 +49,12 @@ public class SurveyGroupRatingItemResponse
   private UUID groupMemberDefinitionId;
 
   /**
+   * The name of the survey group member definition.
+   */
+  @JsonProperty
+  private String groupMemberDefinitionName;
+
+  /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey group rating item
    * definition this survey group rating item response is associated with.
    */
@@ -72,12 +78,6 @@ public class SurveyGroupRatingItemResponse
    */
   @JsonProperty
   private int rating;
-
-  /**
-   * The name of the survey group member definition.
-   */
-  @JsonProperty
-  private String groupMemberDefinitionName;
 
   /**
    * Constructs a new <code>SurveyGroupRatingItemResponse</code>.
@@ -195,5 +195,30 @@ public class SurveyGroupRatingItemResponse
   public void setRating(int rating)
   {
     this.rating = rating;
+  }
+
+  /**
+   * Returns the String representation of the survey definition.
+   *
+   * @return the String representation of the survey definition
+   */
+  @Override
+  public String toString()
+  {
+    StringBuilder buffer = new StringBuilder();
+
+    buffer.append("SurveyGroupRatingItemResponse {");
+    buffer.append("id=\"").append(getId()).append("\", ");
+    buffer.append("groupMemberDefinitionId=\"").append(getGroupMemberDefinitionId()).append("\", ");
+    buffer.append("groupMemberDefinitionName=\"").append(getGroupMemberDefinitionName()).append(
+        "\", ");
+    buffer.append("groupRatingItemDefinitionId=\"").append(getGroupRatingItemDefinitionId()).append(
+        "\", ");
+    buffer.append("groupRatingItemDefinitionName=\"").append(getGroupRatingItemDefinitionName())
+        .append("\", ");
+    buffer.append("groupRatingItemDefinitionRatingType=\"").append(
+        getGroupRatingItemDefinitionRatingType()).append("\"");
+
+    return buffer.toString();
   }
 }

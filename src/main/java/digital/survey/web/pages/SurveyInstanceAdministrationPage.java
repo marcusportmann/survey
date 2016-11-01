@@ -241,6 +241,24 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
           };
           item.add(surveyResponsesLink);
 
+          // The "surveyResultLink" link
+          AjaxLink<Void> surveyResultLink = new AjaxLink<Void>("surveyResultLink")
+          {
+            private static final long serialVersionUID = 1000000;
+
+            @Override
+            public void onClick(AjaxRequestTarget target)
+            {
+              SurveyInstance surveyInstance = item.getModelObject();
+
+              ViewSurveyResultPage page = new ViewSurveyResultPage(getPageReference(),
+                surveyInstance.getId(), surveyInstance.getName());
+
+              setResponsePage(page);
+            }
+          };
+          item.add(surveyResultLink);
+
           // The "updateLink" link
           Link<Void> updateLink = new Link<Void>("updateLink")
           {

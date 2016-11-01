@@ -143,11 +143,6 @@ public class SurveyGroupRatingItemResult
     }
     else if (groupRatingItemDefinitionRatingType == SurveyGroupRatingItemType.YES_NO_NA)
     {
-      if (ratings.size() == 0)
-      {
-        return -1;
-      }
-
       int numberOfSpecifiedRatings = 0;
 
       int total = 0;
@@ -162,7 +157,14 @@ public class SurveyGroupRatingItemResult
         }
       }
 
-      return ((total / numberOfSpecifiedRatings) * 100);
+      if (numberOfSpecifiedRatings == 0)
+      {
+        return -1;
+      }
+      else
+      {
+        return (((double)total / (double)numberOfSpecifiedRatings) * 100);
+      }
     }
     else
     {

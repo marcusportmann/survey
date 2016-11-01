@@ -127,8 +127,6 @@ public class SurveyDefinitionSummary
   @Override
   public String toString()
   {
-    int count;
-
     StringBuilder buffer = new StringBuilder();
 
     buffer.append("SurveyDefinitionSummary {");
