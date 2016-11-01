@@ -32,7 +32,7 @@ import java.util.UUID;
  */
 @JsonPropertyOrder({ "id", "groupRatingItemDefinitionId", "groupRatingItemDefinitionName",
     "groupRatingItemDefinitionRatingType", "groupMemberDefinitionId", "groupMemberDefinitionName",
-    "numberOfResponses", "averageRating" })
+    "averageRating", "ratings" })
 public class SurveyGroupRatingItemResult
   implements Serializable
 {
@@ -76,11 +76,6 @@ public class SurveyGroupRatingItemResult
   private List<Integer> ratings;
 
   /**
-   * The number of survey group rating item responses used to determine this result.
-   */
-  private int numberOfResponses;
-
-  /**
    * The name of the survey group member definition.
    */
   @JsonProperty
@@ -96,9 +91,9 @@ public class SurveyGroupRatingItemResult
    * Constructs a new <code>SurveyGroupRatingItemResult</code>.
    *
    * @param groupRatingItemDefinition the survey group rating item definition this survey group
-   *                                  rating item response is associated with
+   *                                  rating item result is associated with
    * @param groupMemberDefinition     the survey group member definition this survey group rating
-   *                                  item response is associated with
+   *                                  item result is associated with
    */
   public SurveyGroupRatingItemResult(SurveyGroupRatingItemDefinition groupRatingItemDefinition,
       SurveyGroupMemberDefinition groupMemberDefinition)
@@ -244,16 +239,6 @@ public class SurveyGroupRatingItemResult
   }
 
   /**
-   * Returns the number of survey group rating item responses used to determine this result.
-   *
-   * @return the number of survey group rating item responses used to determine this result
-   */
-  public int getNumberOfResponses()
-  {
-    return numberOfResponses;
-  }
-
-  /**
    * Returns the ratings for the survey group rating item result.
    *
    * @return the ratings for the survey group rating item result
@@ -261,24 +246,5 @@ public class SurveyGroupRatingItemResult
   public List<Integer> getRatings()
   {
     return ratings;
-  }
-
-  /**
-   * Increment the number of survey group rating item responses used to determine this result.
-   */
-  public void incrementNumberOfResponses()
-  {
-    this.numberOfResponses++;
-  }
-
-  /**
-   * Set the number of survey group rating item responses used to determine this result.
-   *
-   * @param numberOfResponses the number of survey group rating item responses used to determine
-   *                          this result
-   */
-  public void setNumberOfResponses(int numberOfResponses)
-  {
-    this.numberOfResponses = numberOfResponses;
   }
 }
