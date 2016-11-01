@@ -59,33 +59,7 @@ public class SurveyServiceTest
   {
     SurveyDefinition surveyDefinition = getCTOValuesSurveyDefinitionDetails();
 
-    SurveyInstance surveyInstance = new SurveyInstance(UUID.fromString(
-        "b222aa15-715f-4752-923d-8f33ee8a1736"), "CTO ELT Values - September 2016",
-        "CTO ELT Values - September 2016", surveyDefinition);
-
-    SurveyRequest marcusSurveyRequest = new SurveyRequest(UUID.fromString(
-        "54a751f6-0f32-48bd-8c6c-665e3ac1906b"), surveyInstance, "Marcus", "Portmann",
-        "marcus@mmp.guru");
-
-    SurveyResponse marcusSurveyResponse = new SurveyResponse(UUID.fromString(
-        "18f3fcc1-06b2-4dc4-90ea-7a8904009488"), surveyInstance, marcusSurveyRequest);
-
-    randomizeSurveyResponse(marcusSurveyResponse);
-
-    SurveyRequest aidenSurveyRequest = new SurveyRequest(UUID.fromString(
-        "215640fd-ee60-4f66-82bc-d173955b2228"), surveyInstance, "Aiden", "Portmann",
-        "aiden@mmp.guru");
-
-    SurveyResponse aidenSurveyResponse = new SurveyResponse(UUID.fromString(
-        "f2aab238-9d79-4272-bd3e-0085f2f86a9a"), surveyInstance, aidenSurveyRequest);
-
-    randomizeSurveyResponse(aidenSurveyResponse);
-
     System.out.println("Survey Definition: " + surveyDefinition.getData());
-
-    System.out.println("Survey Response (Marcus Portmann): " + marcusSurveyResponse.getData());
-
-    System.out.println("Survey Response (Aiden Portmann): " + aidenSurveyResponse.getData());
 
     System.out.println("\n");
 
@@ -97,6 +71,10 @@ public class SurveyServiceTest
 
     System.out.println();
 
+    SurveyInstance surveyInstance = new SurveyInstance(UUID.fromString(
+        "b222aa15-715f-4752-923d-8f33ee8a1736"), "CTO ELT Values - September 2016",
+        "CTO ELT Values - September 2016", surveyDefinition);
+
     System.out.printf(
       "INSERT INTO SURVEY.SURVEY_INSTANCES(ID, SURVEY_DEFINITION_ID, SURVEY_DEFINITION_VERSION, NAME, DESCRIPTION) VALUES ('%s', '%s', %d, '%s', '%s');%n",
       surveyInstance.getId(), surveyInstance.getDefinition().getId(),
@@ -105,28 +83,88 @@ public class SurveyServiceTest
 
     System.out.println();
 
-    System.out.printf(
-        "INSERT INTO SURVEY.SURVEY_REQUESTS(ID, SURVEY_INSTANCE_ID, FIRST_NAME, LAST_NAME, EMAIL, REQUESTED, STATUS) VALUES\n ('%s', '%s', '%s', '%s', '%s', NOW(), 3);%n",
-        marcusSurveyRequest.getId(), marcusSurveyRequest.getInstance().getId(),
-        marcusSurveyRequest.getFirstName(), marcusSurveyRequest.getLastName(),
-        marcusSurveyRequest.getEmail());
+
+
+    for (int i = 0; i < 20; i++)
+    {
+      SurveyRequest testUserRequest = new SurveyRequest(UUID.randomUUID(), surveyInstance, "Test First Name " + i, "Test Last Name " + i,
+          "test" + i + "@mmp.guru");
+
+      SurveyResponse testUserResponse = new SurveyResponse(UUID.randomUUID(), surveyInstance, testUserRequest);
+
+      randomizeSurveyResponse(testUserResponse);
+
     System.out.printf(
       "INSERT INTO SURVEY.SURVEY_REQUESTS(ID, SURVEY_INSTANCE_ID, FIRST_NAME, LAST_NAME, EMAIL, REQUESTED, STATUS) VALUES\n ('%s', '%s', '%s', '%s', '%s', NOW(), 3);%n",
-      aidenSurveyRequest.getId(), aidenSurveyRequest.getInstance().getId(),
-      aidenSurveyRequest.getFirstName(), aidenSurveyRequest.getLastName(),
-      aidenSurveyRequest.getEmail());
+      testUserRequest.getId(), testUserRequest.getInstance().getId(),
+      testUserRequest.getFirstName(), testUserRequest.getLastName(),
+      testUserRequest.getEmail());
 
-    System.out.println();
+      System.out.printf(
+        "INSERT INTO SURVEY.SURVEY_RESPONSES (ID, SURVEY_INSTANCE_ID, SURVEY_REQUEST_ID, RESPONDED, DATA) VALUES\n ('%s', '%s', '%s', NOW(), '%s');%n",
+        testUserResponse.getId(), testUserResponse.getInstance().getId(),
+        testUserRequest.getId(), testUserResponse.getData());
 
-    System.out.printf(
-      "INSERT INTO SURVEY.SURVEY_RESPONSES (ID, SURVEY_INSTANCE_ID, SURVEY_REQUEST_ID, RESPONDED, DATA) VALUES\n ('%s', '%s', '%s', NOW(), '%s');%n",
-      marcusSurveyResponse.getId(), marcusSurveyResponse.getInstance().getId(),
-      marcusSurveyRequest.getId(), marcusSurveyResponse.getData());
+      System.out.println();
 
-    System.out.printf(
-      "INSERT INTO SURVEY.SURVEY_RESPONSES (ID, SURVEY_INSTANCE_ID, SURVEY_REQUEST_ID, RESPONDED, DATA) VALUES\n ('%s', '%s', '%s', NOW(), '%s');%n",
-      aidenSurveyResponse.getId(), aidenSurveyResponse.getInstance().getId(),
-      aidenSurveyRequest.getId(), aidenSurveyResponse.getData());
+    }
+
+
+
+//    SurveyRequest marcusSurveyRequest = new SurveyRequest(UUID.fromString(
+//        "54a751f6-0f32-48bd-8c6c-665e3ac1906b"), surveyInstance, "Marcus", "Portmann",
+//        "marcus@mmp.guru");
+//
+//    SurveyResponse marcusSurveyResponse = new SurveyResponse(UUID.fromString(
+//        "18f3fcc1-06b2-4dc4-90ea-7a8904009488"), surveyInstance, marcusSurveyRequest);
+//
+//    randomizeSurveyResponse(marcusSurveyResponse);
+//
+//    SurveyRequest aidenSurveyRequest = new SurveyRequest(UUID.fromString(
+//        "215640fd-ee60-4f66-82bc-d173955b2228"), surveyInstance, "Aiden", "Portmann",
+//        "aiden@mmp.guru");
+//
+//    SurveyResponse aidenSurveyResponse = new SurveyResponse(UUID.fromString(
+//        "f2aab238-9d79-4272-bd3e-0085f2f86a9a"), surveyInstance, aidenSurveyRequest);
+//
+//    randomizeSurveyResponse(aidenSurveyResponse);
+
+
+
+
+
+
+
+
+
+
+    //System.out.println("Survey Response (Marcus Portmann): " + marcusSurveyResponse.getData());
+
+    //System.out.println("Survey Response (Aiden Portmann): " + aidenSurveyResponse.getData());
+
+
+//    System.out.printf(
+//        "INSERT INTO SURVEY.SURVEY_REQUESTS(ID, SURVEY_INSTANCE_ID, FIRST_NAME, LAST_NAME, EMAIL, REQUESTED, STATUS) VALUES\n ('%s', '%s', '%s', '%s', '%s', NOW(), 3);%n",
+//        marcusSurveyRequest.getId(), marcusSurveyRequest.getInstance().getId(),
+//        marcusSurveyRequest.getFirstName(), marcusSurveyRequest.getLastName(),
+//        marcusSurveyRequest.getEmail());
+//    System.out.printf(
+//      "INSERT INTO SURVEY.SURVEY_REQUESTS(ID, SURVEY_INSTANCE_ID, FIRST_NAME, LAST_NAME, EMAIL, REQUESTED, STATUS) VALUES\n ('%s', '%s', '%s', '%s', '%s', NOW(), 3);%n",
+//      aidenSurveyRequest.getId(), aidenSurveyRequest.getInstance().getId(),
+//      aidenSurveyRequest.getFirstName(), aidenSurveyRequest.getLastName(),
+//      aidenSurveyRequest.getEmail());
+//
+//    System.out.println();
+//
+//    System.out.printf(
+//      "INSERT INTO SURVEY.SURVEY_RESPONSES (ID, SURVEY_INSTANCE_ID, SURVEY_REQUEST_ID, RESPONDED, DATA) VALUES\n ('%s', '%s', '%s', NOW(), '%s');%n",
+//      marcusSurveyResponse.getId(), marcusSurveyResponse.getInstance().getId(),
+//      marcusSurveyRequest.getId(), marcusSurveyResponse.getData());
+//
+//    System.out.printf(
+//      "INSERT INTO SURVEY.SURVEY_RESPONSES (ID, SURVEY_INSTANCE_ID, SURVEY_REQUEST_ID, RESPONDED, DATA) VALUES\n ('%s', '%s', '%s', NOW(), '%s');%n",
+//      aidenSurveyResponse.getId(), aidenSurveyResponse.getInstance().getId(),
+//      aidenSurveyRequest.getId(), aidenSurveyResponse.getData());
 
     System.out.println();
     System.out.println();

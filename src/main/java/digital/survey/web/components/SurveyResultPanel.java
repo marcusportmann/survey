@@ -14,8 +14,8 @@ package digital.survey.web.components;
 //~--- non-JDK imports --------------------------------------------------------
 
 import digital.survey.model.*;
-import guru.mmp.application.web.components.StringSelectOption;
 import guru.mmp.application.web.template.components.InputPanel;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -103,17 +103,37 @@ public class SurveyResultPanel extends InputPanel
                     if (groupRatingItemResult.getGroupRatingItemDefinitionRatingType().equals(
                         SurveyGroupRatingItemType.YES_NO_NA))
                     {
-                      double averageRating = groupRatingItemResult.getAverageRating();
+                      float averageRating = groupRatingItemResult.getAverageRating();
 
                       if (averageRating == -1)
                       {
                         item.add(new Label("rating", "-"));
-                        item.add(new Label("numberOfResults", ""));
                       }
                       else
                       {
-                        item.add(new Label("rating", String.format("%3.0f%%", averageRating)));
-                        item.add(new Label("numberOfResults", String.format("(%d)", groupRatingItemResult.getRatings().size())));
+                        int maxNumberOfRatings = groupRatingItemResult.getRatings().size();
+
+                        int grad = ((int)(averageRating / 5)) * 5;
+
+                        Label ratingLabel = new Label("rating", String.format("%3.0f%%<br><span class=\"num-ratings\">%d/%d</span>",
+                            averageRating, groupRatingItemResult.getNumberOfRatings(), maxNumberOfRatings));
+                        ratingLabel.setEscapeModelStrings(false);
+                        ratingLabel.add(new AttributeAppender("class", "grad-" + grad));
+
+                        item.add(ratingLabel);
+
+//                        ratingLabel.add(new AttributeAppender("style", getColor(0, 100,
+//                            averageRating)));
+//                        item.add(ratingLabel);
+//
+//                        Label numberOfRatingsLabel = new Label("numberOfRatings", String.format(
+//                            "%d/%d", groupRatingItemResult.getNumberOfRatings(),
+//                            groupRatingItemResult.getRatings().size()));
+//                        numberOfRatingsLabel.add(new AttributeAppender("style", getColor(0,
+//                            groupRatingItemResult.getRatings().size(),
+//                            groupRatingItemResult.getNumberOfRatings())));
+//
+//                        item.add(numberOfRatingsLabel);
                       }
                     }
                     else
@@ -127,5 +147,27 @@ public class SurveyResultPanel extends InputPanel
             });
           }
         });
+  }
+
+  private String getColor(float min, float max, float value)
+  {
+    float green_max = 220;
+    float red_max = 220;
+    float red = 0;
+    float green = 0;
+    float blue = 0;
+
+    if (value < max / 2)
+    {
+      red = red_max;
+      green = Math.round((value / ((max - min) / 2)) * green_max);
+    }
+    else
+    {
+      green = green_max;
+      red = Math.round((1 - ((value - ((max - min) / 2)) / ((max - min) / 2))) * red_max);
+    }
+
+    return String.format("color: rgb(%d, %d, %d);", (int) red, (int) green, (int) blue);
   }
 }

@@ -123,7 +123,7 @@ public class SurveyGroupRatingItemResult
    * @return the average rating for the survey group rating item result
    */
   @JsonProperty
-  public double getAverageRating()
+  public float getAverageRating()
   {
     if (groupRatingItemDefinitionRatingType == SurveyGroupRatingItemType.ONE_TO_TEN)
     {
@@ -139,11 +139,11 @@ public class SurveyGroupRatingItemResult
         total += rating;
       }
 
-      return total / ratings.size();
+      return ((float)total / (float)ratings.size());
     }
     else if (groupRatingItemDefinitionRatingType == SurveyGroupRatingItemType.YES_NO_NA)
     {
-      int numberOfSpecifiedRatings = 0;
+      int numberOfRatings = 0;
 
       int total = 0;
 
@@ -151,19 +151,19 @@ public class SurveyGroupRatingItemResult
       {
         if (rating != -1)
         {
-          numberOfSpecifiedRatings++;
+          numberOfRatings++;
 
           total += rating;
         }
       }
 
-      if (numberOfSpecifiedRatings == 0)
+      if (numberOfRatings == 0)
       {
         return -1;
       }
       else
       {
-        return (((double)total / (double)numberOfSpecifiedRatings) * 100);
+        return (((float) total / (float) numberOfRatings) * 100);
       }
     }
     else
@@ -238,6 +238,37 @@ public class SurveyGroupRatingItemResult
   public UUID getId()
   {
     return id;
+  }
+
+  /**
+   * Returns the number of ratings.
+   *
+   * @return the number of ratings
+   */
+  public int getNumberOfRatings()
+  {
+    if (groupRatingItemDefinitionRatingType == SurveyGroupRatingItemType.ONE_TO_TEN)
+    {
+      return ratings.size();
+    }
+    else if (groupRatingItemDefinitionRatingType == SurveyGroupRatingItemType.YES_NO_NA)
+    {
+      int numberOfRatings = 0;
+
+      for (int rating : ratings)
+      {
+        if (rating != -1)
+        {
+          numberOfRatings++;
+        }
+      }
+
+      return numberOfRatings;
+    }
+    else
+    {
+      return ratings.size();
+    }
   }
 
   /**

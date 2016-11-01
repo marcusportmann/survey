@@ -36,8 +36,8 @@ import java.util.UUID;
  * @author Marcus Portmann
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-//@WebPageSecurity({ SurveySecurity.FUNCTION_CODE_SURVEY_ADMINISTRATION,
-//    SurveySecurity.FUNCTION_CODE_VIEW_SURVEY_RESPONSE })
+@WebPageSecurity({ SurveySecurity.FUNCTION_CODE_SURVEY_ADMINISTRATION,
+    SurveySecurity.FUNCTION_CODE_VIEW_SURVEY_RESPONSE })
 public class ViewSurveyResultPage extends TemplateWebPage
 {
   private static final long serialVersionUID = 1000000;
