@@ -121,19 +121,6 @@ public class SurveyResultPanel extends InputPanel
                         ratingLabel.add(new AttributeAppender("class", "grad-" + grad));
 
                         item.add(ratingLabel);
-
-//                        ratingLabel.add(new AttributeAppender("style", getColor(0, 100,
-//                            averageRating)));
-//                        item.add(ratingLabel);
-//
-//                        Label numberOfRatingsLabel = new Label("numberOfRatings", String.format(
-//                            "%d/%d", groupRatingItemResult.getNumberOfRatings(),
-//                            groupRatingItemResult.getRatings().size()));
-//                        numberOfRatingsLabel.add(new AttributeAppender("style", getColor(0,
-//                            groupRatingItemResult.getRatings().size(),
-//                            groupRatingItemResult.getNumberOfRatings())));
-//
-//                        item.add(numberOfRatingsLabel);
                       }
                     }
                     else
