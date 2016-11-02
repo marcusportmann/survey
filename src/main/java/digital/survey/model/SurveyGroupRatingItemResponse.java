@@ -28,9 +28,7 @@ import java.util.UUID;
  *
  * @author Marcus Portmann
  */
-@JsonPropertyOrder({ "id", "groupRatingItemDefinitionId", "groupRatingItemDefinitionName",
-    "groupRatingItemDefinitionRatingType", "groupMemberDefinitionId", "groupMemberDefinitionName",
-    "rating" })
+@JsonPropertyOrder({ "id", "groupRatingItemDefinitionId", "groupMemberDefinitionId", "rating" })
 public class SurveyGroupRatingItemResponse
   implements Serializable
 {
@@ -49,29 +47,11 @@ public class SurveyGroupRatingItemResponse
   private UUID groupMemberDefinitionId;
 
   /**
-   * The name of the survey group member definition.
-   */
-  @JsonProperty
-  private String groupMemberDefinitionName;
-
-  /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey group rating item
    * definition this survey group rating item response is associated with.
    */
   @JsonProperty
   private UUID groupRatingItemDefinitionId;
-
-  /**
-   * The name of the survey group rating item definition.
-   */
-  @JsonProperty
-  private String groupRatingItemDefinitionName;
-
-  /**
-   * The type of survey group rating item.
-   */
-  @JsonProperty
-  private SurveyGroupRatingItemType groupRatingItemDefinitionRatingType;
 
   /**
    * The rating for the survey group rating item response e.g. 1=Yes, 0=No and -1=Not Applicable.
@@ -98,10 +78,7 @@ public class SurveyGroupRatingItemResponse
   {
     this.id = UUID.randomUUID();
     this.groupRatingItemDefinitionId = groupRatingItemDefinition.getId();
-    this.groupRatingItemDefinitionName = groupRatingItemDefinition.getName();
-    this.groupRatingItemDefinitionRatingType = groupRatingItemDefinition.getRatingType();
     this.groupMemberDefinitionId = groupMemberDefinition.getId();
-    this.groupMemberDefinitionName = groupMemberDefinition.getName();
     this.rating = groupRatingItemDefinition.getRatingType().defaultRating();
   }
 
@@ -118,16 +95,6 @@ public class SurveyGroupRatingItemResponse
   }
 
   /**
-   * Returns the name of the survey group member definition.
-   *
-   * @return the name of the survey group member definition
-   */
-  public String getGroupMemberDefinitionName()
-  {
-    return groupMemberDefinitionName;
-  }
-
-  /**
    * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey group
    * rating item definition this survey group rating item response is associated with.
    *
@@ -137,28 +104,6 @@ public class SurveyGroupRatingItemResponse
   public UUID getGroupRatingItemDefinitionId()
   {
     return groupRatingItemDefinitionId;
-  }
-
-  /**
-   * Returns the name of the survey group rating item definition this survey group rating item
-   * response is associated with.
-   *
-   * @return the name of the survey group rating item definition this survey group rating item
-   *         response is associated with
-   */
-  public String getGroupRatingItemDefinitionName()
-  {
-    return groupRatingItemDefinitionName;
-  }
-
-  /**
-   * Returns the type of survey group rating item.
-   *
-   * @return the type of survey group rating item
-   */
-  public SurveyGroupRatingItemType getGroupRatingItemDefinitionRatingType()
-  {
-    return groupRatingItemDefinitionRatingType;
   }
 
   /**
@@ -210,14 +155,10 @@ public class SurveyGroupRatingItemResponse
     buffer.append("SurveyGroupRatingItemResponse {");
     buffer.append("id=\"").append(getId()).append("\", ");
     buffer.append("groupMemberDefinitionId=\"").append(getGroupMemberDefinitionId()).append("\", ");
-    buffer.append("groupMemberDefinitionName=\"").append(getGroupMemberDefinitionName()).append(
-        "\", ");
     buffer.append("groupRatingItemDefinitionId=\"").append(getGroupRatingItemDefinitionId()).append(
-        "\", ");
-    buffer.append("groupRatingItemDefinitionName=\"").append(getGroupRatingItemDefinitionName())
-        .append("\", ");
-    buffer.append("groupRatingItemDefinitionRatingType=\"").append(
-        getGroupRatingItemDefinitionRatingType()).append("\"");
+        "\"");
+
+    buffer.append("}");
 
     return buffer.toString();
   }

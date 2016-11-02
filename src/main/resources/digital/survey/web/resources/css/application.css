@@ -70,8 +70,6 @@ table.table-group-definition .form-group
 {
   margin: 0;
   display: inline-block;
-  background-color: red;
-
 }
 
 table.table-group-definition .form-group .form-material
@@ -141,25 +139,25 @@ table.table-group-definition .group-rating-item-response:after
 }
 
 
-div.grad-100 {background-color: rgb(7,255,0)}
-div.grad-95 {background-color: rgb(43,255,0)}
-div.grad-90 {background-color: rgb(80,255,0)}
-div.grad-85 {background-color: rgb(116,255,0)}
-div.grad-80 {background-color: rgb(153,255,0)}
-div.grad-75 {background-color: rgb(189,255,0)}
-div.grad-70 {background-color: rgb(225,255,0)}
-div.grad-65 {background-color: rgb(255,255,0)}
-div.grad-60 {background-color: rgb(255,218,0)}
-div.grad-55 {background-color: rgb(255,182,0)}
-div.grad-50 {background-color: rgb(255,145,0)}
-div.grad-45 {background-color: rgb(255,109,0)}
-div.grad-40 {background-color: rgb(255,72,0)}
-div.grad-35 {background-color: rgb(255,36,0)}
-div.grad-30 {background-color: rgb(255,30,0)}
-div.grad-25 {background-color: rgb(255,25,0)}
-div.grad-20 {background-color: rgb(255,20,0)}
-div.grad-15 {background-color: rgb(255,15,0)}
-div.grad-10 {background-color: rgb(255,10,0)}
-div.grad-5 {background-color: rgb(255,5,0)}
-div.grad-0 {background-color: rgb(255,0,0)}
+div.grad-100 {background-color: rgba(7,255,0,0.5)}
+div.grad-95 {background-color: rgba(43,255,0,0.5)}
+div.grad-90 {background-color: rgba(80,255,0,0.5)}
+div.grad-85 {background-color: rgba(116,255,0,0.5)}
+div.grad-80 {background-color: rgba(153,255,0,0.5)}
+div.grad-75 {background-color: rgba(189,255,0,0.5)}
+div.grad-70 {background-color: rgba(225,255,0,0.5)}
+div.grad-65 {background-color: rgba(255,255,0,0.5)}
+div.grad-60 {background-color: rgba(255,218,0,0.5)}
+div.grad-55 {background-color: rgba(255,182,0,0.5)}
+div.grad-50 {background-color: rgba(255,145,0,0.5)}
+div.grad-45 {background-color: rgba(255,109,0,0.5)}
+div.grad-40 {background-color: rgba(255,72,0,0.5)}
+div.grad-35 {background-color: rgba(255,36,0,0.5)}
+div.grad-30 {background-color: rgba(255,30,0,0.5)}
+div.grad-25 {background-color: rgba(255,25,0,0.5)}
+div.grad-20 {background-color: rgba(255,20,0,0.5)}
+div.grad-15 {background-color: rgba(255,15,0,0.5)}
+div.grad-10 {background-color: rgba(255,10,0,0.5)}
+div.grad-5 {background-color: rgba(255,5,0,0.5)}
+div.grad-0 {background-color: rgba(255,0,0,0.5)}
 

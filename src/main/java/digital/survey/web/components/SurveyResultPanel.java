@@ -21,7 +21,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 //~--- JDK imports ------------------------------------------------------------
@@ -83,50 +82,70 @@ public class SurveyResultPanel extends InputPanel
 
                 item.add(new Label("name", groupMemberDefinition.getName()));
 
-                List<SurveyGroupRatingItemResult> groupRatingItemResults = new ArrayList<>();
+                List<SurveyGroupRatingItemDefinition> groupRatingItemDefinitions =
+                    surveyDefinition.getGroupRatingItemDefinitionsForGroupDefinition(
+                    groupDefinition.getId());
 
-                for (SurveyGroupRatingItemDefinition groupRatingItemDefinition :
+                item.add(new ListView<SurveyGroupRatingItemDefinition>("groupRatingItemResult",
                     groupRatingItemDefinitions)
                 {
-                  groupRatingItemResults.add(surveyResult.getGroupRatingItemResult(
-                      groupRatingItemDefinition.getId(), groupMemberDefinition.getId()));
-                }
-
-                item.add(new ListView<SurveyGroupRatingItemResult>("groupRatingItemResult",
-                    groupRatingItemResults)
-                {
                   @Override
-                  protected void populateItem(ListItem<SurveyGroupRatingItemResult> item)
+                  protected void populateItem(ListItem<SurveyGroupRatingItemDefinition> item)
                   {
-                    SurveyGroupRatingItemResult groupRatingItemResult = item.getModelObject();
+                    SurveyGroupRatingItemDefinition groupRatingItemDefinition =
+                        item.getModelObject();
 
-                    if (groupRatingItemResult.getGroupRatingItemDefinitionRatingType().equals(
-                        SurveyGroupRatingItemType.YES_NO_NA))
+                    if (groupRatingItemDefinition.getRatingType() == SurveyGroupRatingItemType
+                        .YES_NO_NA)
                     {
-                      float averageRating = groupRatingItemResult.getAverageRating();
-
-                      if (averageRating == -1)
+                      if (groupRatingItemDefinition.isTotal())
                       {
-                        item.add(new Label("rating", "-"));
+                        // TODO: Calculate and display rating
+                        item.add(new Label("rating", "TBD"));
                       }
                       else
                       {
-                        int maxNumberOfRatings = groupRatingItemResult.getRatings().size();
+                        SurveyGroupRatingItemResult groupRatingItemResult =
+                            surveyResult.getGroupRatingItemResult(
+                            groupRatingItemDefinition.getId(), groupMemberDefinition.getId());
 
-                        int grad = ((int)(averageRating / 5)) * 5;
+                        float averageRating = groupRatingItemResult.getAverageRating();
 
-                        Label ratingLabel = new Label("rating", String.format("%3.0f%%<br><span class=\"num-ratings\">%d/%d</span>",
-                            averageRating, groupRatingItemResult.getNumberOfRatings(), maxNumberOfRatings));
-                        ratingLabel.setEscapeModelStrings(false);
-                        ratingLabel.add(new AttributeAppender("class", "grad-" + grad));
+                        if (averageRating == -1)
+                        {
+                          Label ratingLabel = new Label("rating", "-");
 
-                        item.add(ratingLabel);
+                          if (groupRatingItemDefinition.getDisplayRatingUsingGradient())
+                          {
+                            //ratingLabel.add(new AttributeAppender("class", "grad-" + grad));
+                          }
+
+                          item.add(ratingLabel);
+                        }
+                        else
+                        {
+                          int maxNumberOfRatings = groupRatingItemResult.getRatings().size();
+
+                          int grad = ((int) (averageRating / 5)) * 5;
+
+                          Label ratingLabel = new Label("rating", String.format(
+                              "%3.0f%%<br><span class=\"num-ratings\">%d/%d</span>", averageRating,
+                              groupRatingItemResult.getNumberOfRatings(), maxNumberOfRatings));
+                          ratingLabel.setEscapeModelStrings(false);
+
+                          if (groupRatingItemDefinition.getDisplayRatingUsingGradient())
+                          {
+                            ratingLabel.add(new AttributeAppender("class", "grad-" + grad));
+                          }
+
+                          item.add(ratingLabel);
+                        }
                       }
                     }
                     else
                     {
                       throw new RuntimeException("Unsupported survey group rating item type ("
-                          + groupRatingItemResult.getGroupRatingItemDefinitionRatingType() + ")");
+                          + groupRatingItemDefinition.getRatingType() + ")");
                     }
                   }
                 });
@@ -158,3 +177,17 @@ public class SurveyResultPanel extends InputPanel
     return String.format("color: rgb(%d, %d, %d);", (int) red, (int) green, (int) blue);
   }
 }
+
+
+
+// TODO
+//
+//            REMEMBER TO CALCULATE WEIGHTED TOTAL
+//
+//
+//            ADD AN ATTRIBUTE TO THE SURVEY GROUP DEFINITION TO INDICATE WHETHER TO USE GRADIENTS FOR RATINGS useGradientForGroupRatingItemResults
+//
+//            REMEMBER TO CHECK TOTAL AND GRADIENT FLAGS
+//
+//
+//            REGENERATE SURVEY DEFINITIONS

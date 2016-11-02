@@ -139,14 +139,16 @@ public class SurveyResponse
     for (SurveyGroupRatingItemDefinition groupRatingItemDefinition : instance.getDefinition()
         .getGroupRatingItemDefinitions())
     {
-      SurveyGroupDefinition groupDefinition = instance.getDefinition().getGroupDefinition(
+      if (!groupRatingItemDefinition.isTotal())
+      {
+        SurveyGroupDefinition groupDefinition = instance.getDefinition().getGroupDefinition(
           groupRatingItemDefinition.getGroupDefinitionId());
 
-      for (SurveyGroupMemberDefinition groupMemberDefinition :
-          groupDefinition.getGroupMemberDefinitions())
-      {
-        groupRatingItemResponses.add(new SurveyGroupRatingItemResponse(groupRatingItemDefinition,
-            groupMemberDefinition));
+        for (SurveyGroupMemberDefinition groupMemberDefinition : groupDefinition.getGroupMemberDefinitions())
+        {
+          groupRatingItemResponses.add(
+            new SurveyGroupRatingItemResponse(groupRatingItemDefinition, groupMemberDefinition));
+        }
       }
     }
   }

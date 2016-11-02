@@ -175,11 +175,13 @@ public class SurveyServiceTest
   {
     for (SurveyGroupRatingItemResponse groupRatingItemResponse : surveyResponse.getGroupRatingItemResponses())
     {
-      if (groupRatingItemResponse.getGroupRatingItemDefinitionRatingType() == SurveyGroupRatingItemType.ONE_TO_TEN)
+      SurveyGroupRatingItemDefinition groupRatingItemDefinition =  surveyResponse.getInstance().getDefinition().getGroupRatingItemDefinition(groupRatingItemResponse.getGroupRatingItemDefinitionId());
+
+      if (groupRatingItemDefinition.getRatingType() == SurveyGroupRatingItemType.ONE_TO_TEN)
       {
         groupRatingItemResponse.setRating(ThreadLocalRandom.current().nextInt(1, 10 + 1));
       }
-      else if (groupRatingItemResponse.getGroupRatingItemDefinitionRatingType() == SurveyGroupRatingItemType.YES_NO_NA)
+      else if (groupRatingItemDefinition.getRatingType() == SurveyGroupRatingItemType.YES_NO_NA)
       {
         groupRatingItemResponse.setRating(ThreadLocalRandom.current().nextInt(-1, 2));
       }
@@ -746,35 +748,38 @@ public class SurveyServiceTest
     surveyDefinition.addGroupDefinition(surveyGroupDefinition);
 
     surveyDefinition.addGroupRatingItemDefinition(new SurveyGroupRatingItemDefinition(
-        UUID.randomUUID(), "Accountability", surveyGroupDefinition.getId(),
-        SurveyGroupRatingItemType.YES_NO_NA));
+    UUID.randomUUID(), "Accountability", surveyGroupDefinition.getId(),
+    SurveyGroupRatingItemType.YES_NO_NA, false, true));
     surveyDefinition.addGroupRatingItemDefinition(new SurveyGroupRatingItemDefinition(
-        UUID.randomUUID(), "Competence", surveyGroupDefinition.getId(), SurveyGroupRatingItemType
-        .YES_NO_NA));
+      UUID.randomUUID(), "Competence", surveyGroupDefinition.getId(), SurveyGroupRatingItemType
+      .YES_NO_NA, false, true));
     surveyDefinition.addGroupRatingItemDefinition(new SurveyGroupRatingItemDefinition(
-        UUID.randomUUID(), "Courage", surveyGroupDefinition.getId(), SurveyGroupRatingItemType
-        .YES_NO_NA));
+      UUID.randomUUID(), "Courage", surveyGroupDefinition.getId(), SurveyGroupRatingItemType
+      .YES_NO_NA, false, true));
     surveyDefinition.addGroupRatingItemDefinition(new SurveyGroupRatingItemDefinition(
-        UUID.randomUUID(), "Fairness", surveyGroupDefinition.getId(), SurveyGroupRatingItemType
-        .YES_NO_NA));
+      UUID.randomUUID(), "Fairness", surveyGroupDefinition.getId(), SurveyGroupRatingItemType
+      .YES_NO_NA, false, true));
     surveyDefinition.addGroupRatingItemDefinition(new SurveyGroupRatingItemDefinition(
-        UUID.randomUUID(), "Integrity", surveyGroupDefinition.getId(), SurveyGroupRatingItemType
-        .YES_NO_NA));
+      UUID.randomUUID(), "Integrity", surveyGroupDefinition.getId(), SurveyGroupRatingItemType
+      .YES_NO_NA, false, true));
     surveyDefinition.addGroupRatingItemDefinition(new SurveyGroupRatingItemDefinition(
-        UUID.randomUUID(), "Openness", surveyGroupDefinition.getId(), SurveyGroupRatingItemType
-        .YES_NO_NA));
+      UUID.randomUUID(), "Openness", surveyGroupDefinition.getId(), SurveyGroupRatingItemType
+      .YES_NO_NA, false, true));
     surveyDefinition.addGroupRatingItemDefinition(new SurveyGroupRatingItemDefinition(
-        UUID.randomUUID(), "Positive Attitude", surveyGroupDefinition.getId(),
-        SurveyGroupRatingItemType.YES_NO_NA));
+      UUID.randomUUID(), "Positive Attitude", surveyGroupDefinition.getId(),
+      SurveyGroupRatingItemType.YES_NO_NA, false, true));
     surveyDefinition.addGroupRatingItemDefinition(new SurveyGroupRatingItemDefinition(
-        UUID.randomUUID(), "Teamwork", surveyGroupDefinition.getId(), SurveyGroupRatingItemType
-        .YES_NO_NA));
+      UUID.randomUUID(), "Teamwork", surveyGroupDefinition.getId(), SurveyGroupRatingItemType
+      .YES_NO_NA, false, true));
     surveyDefinition.addGroupRatingItemDefinition(new SurveyGroupRatingItemDefinition(
-        UUID.randomUUID(), "Making a difference", surveyGroupDefinition.getId(),
-        SurveyGroupRatingItemType.YES_NO_NA));
+      UUID.randomUUID(), "Making a difference", surveyGroupDefinition.getId(),
+      SurveyGroupRatingItemType.YES_NO_NA, false, true));
     surveyDefinition.addGroupRatingItemDefinition(new SurveyGroupRatingItemDefinition(
-        UUID.randomUUID(), "Trust", surveyGroupDefinition.getId(), SurveyGroupRatingItemType
-        .YES_NO_NA));
+      UUID.randomUUID(), "Trust", surveyGroupDefinition.getId(), SurveyGroupRatingItemType
+      .YES_NO_NA, false, true));
+    surveyDefinition.addGroupRatingItemDefinition(new SurveyGroupRatingItemDefinition(
+      UUID.randomUUID(), "Total", surveyGroupDefinition.getId(), SurveyGroupRatingItemType
+      .YES_NO_NA, true, true));
 
     return surveyDefinition;
   }
@@ -849,23 +854,23 @@ public class SurveyServiceTest
 
     surveyDefinition.addGroupRatingItemDefinition(new SurveyGroupRatingItemDefinition(
         UUID.randomUUID(), "Test Survey Group Definition Rating Item 1",
-        surveyGroupDefinition.getId(), SurveyGroupRatingItemType.YES_NO_NA));
+        surveyGroupDefinition.getId(), SurveyGroupRatingItemType.YES_NO_NA, false, true));
     surveyDefinition.addGroupRatingItemDefinition(new SurveyGroupRatingItemDefinition(
         UUID.randomUUID(), "Test Survey Group Definition Rating Item 2",
-        surveyGroupDefinition.getId(), SurveyGroupRatingItemType.YES_NO_NA));
+        surveyGroupDefinition.getId(), SurveyGroupRatingItemType.YES_NO_NA, false, true));
     surveyDefinition.addGroupRatingItemDefinition(new SurveyGroupRatingItemDefinition(
         UUID.randomUUID(), "Test Survey Group Definition Rating Item 3",
-        surveyGroupDefinition.getId(), SurveyGroupRatingItemType.YES_NO_NA));
+        surveyGroupDefinition.getId(), SurveyGroupRatingItemType.YES_NO_NA, false, true));
 
     surveySectionDefinition1.addGroupRatingItemDefinition(new SurveyGroupRatingItemDefinition(
         UUID.randomUUID(), "Test Nested Survey Group Definition Rating Item 1",
-        surveyGroupDefinition.getId(), SurveyGroupRatingItemType.YES_NO_NA));
+        surveyGroupDefinition.getId(), SurveyGroupRatingItemType.YES_NO_NA, false, true));
     surveySectionDefinition2.addGroupRatingItemDefinition(new SurveyGroupRatingItemDefinition(
         UUID.randomUUID(), "Test Nested Survey Group Definition Rating Item 2",
-        surveyGroupDefinition.getId(), SurveyGroupRatingItemType.YES_NO_NA));
+        surveyGroupDefinition.getId(), SurveyGroupRatingItemType.YES_NO_NA, false, true));
     surveySectionDefinition3.addGroupRatingItemDefinition(new SurveyGroupRatingItemDefinition(
         UUID.randomUUID(), "Test Nested Survey Group Definition Rating Item 3",
-        surveyGroupDefinition.getId(), SurveyGroupRatingItemType.YES_NO_NA));
+        surveyGroupDefinition.getId(), SurveyGroupRatingItemType.YES_NO_NA, false, true));
 
     return surveyDefinition;
   }
@@ -1039,21 +1044,9 @@ public class SurveyServiceTest
         surveyGroupRatingItemResponse1.getGroupMemberDefinitionId(),
         surveyGroupRatingItemResponse2.getGroupMemberDefinitionId());
     assertEquals(
-        "The survey group member definition name values for the two survey group rating item responses do not match",
-        surveyGroupRatingItemResponse1.getGroupMemberDefinitionName(),
-        surveyGroupRatingItemResponse2.getGroupMemberDefinitionName());
-    assertEquals(
         "The survey group rating item definition ID values for the two survey group rating item responses do not match",
         surveyGroupRatingItemResponse1.getGroupRatingItemDefinitionId(),
         surveyGroupRatingItemResponse2.getGroupRatingItemDefinitionId());
-    assertEquals(
-        "The survey group rating item definition name values for the two survey group rating item responses do not match",
-        surveyGroupRatingItemResponse1.getGroupRatingItemDefinitionName(),
-        surveyGroupRatingItemResponse2.getGroupRatingItemDefinitionName());
-    assertEquals(
-        "The survey group rating item definition rating type values for the two survey group rating item responses do not match",
-        surveyGroupRatingItemResponse1.getGroupRatingItemDefinitionRatingType(),
-        surveyGroupRatingItemResponse2.getGroupRatingItemDefinitionRatingType());
     assertEquals("The rating values for the two survey group rating item responses do not match",
         surveyGroupRatingItemResponse1.getRating(), surveyGroupRatingItemResponse2.getRating());
   }

@@ -24,6 +24,7 @@ import org.apache.wicket.model.Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 //~--- JDK imports ------------------------------------------------------------
 
@@ -84,33 +85,39 @@ public class SurveyResponseReadOnlyPanel extends InputPanel
 
                 item.add(new Label("name", groupMemberDefinition.getName()));
 
-                List<SurveyGroupRatingItemResponse> groupRatingItemResponses = new ArrayList<>();
+                List<SurveyGroupRatingItemDefinition> groupRatingItemDefinitions =
+                    surveyDefinition.getGroupRatingItemDefinitionsForGroupDefinition(
+                    groupDefinition.getId());
 
-                for (SurveyGroupRatingItemDefinition groupRatingItemDefinition :
-                    groupRatingItemDefinitions)
-                {
-                  groupRatingItemResponses.add(surveyResponse.getGroupRatingItemResponse(
-                      groupRatingItemDefinition.getId(), groupMemberDefinition.getId()));
-                }
+                // Filter totals
+                List<SurveyGroupRatingItemDefinition> filteredGroupRatingItemDefinitions =
+                    groupRatingItemDefinitions.stream().filter(
+                    surveyGroupRatingItemDefinition -> (!surveyGroupRatingItemDefinition.isTotal()))
+                    .collect(Collectors.toList());
 
-                item.add(new ListView<SurveyGroupRatingItemResponse>("groupRatingItemResponse",
-                    groupRatingItemResponses)
+                item.add(new ListView<SurveyGroupRatingItemDefinition>("groupRatingItemResponse",
+                    filteredGroupRatingItemDefinitions)
                 {
                   @Override
-                  protected void populateItem(ListItem<SurveyGroupRatingItemResponse> item)
+                  protected void populateItem(ListItem<SurveyGroupRatingItemDefinition> item)
                   {
-                    SurveyGroupRatingItemResponse groupRatingItemResponse = item.getModelObject();
+                    SurveyGroupRatingItemDefinition groupRatingItemDefinition =
+                        item.getModelObject();
 
-                    if (groupRatingItemResponse.getGroupRatingItemDefinitionRatingType().equals(
-                        SurveyGroupRatingItemType.YES_NO_NA))
+                    if (groupRatingItemDefinition.getRatingType() == SurveyGroupRatingItemType
+                        .YES_NO_NA)
                     {
+                      SurveyGroupRatingItemResponse groupRatingItemResponse =
+                          surveyResponse.getGroupRatingItemResponse(
+                          groupRatingItemDefinition.getId(), groupMemberDefinition.getId());
+
                       item.add(new YesNoNaRatingLabel("rating", new Model<YesNoNaRating>(
                           YesNoNaRating.fromCode(groupRatingItemResponse.getRating()))));
                     }
                     else
                     {
                       throw new RuntimeException("Unsupported survey group rating item type ("
-                          + groupRatingItemResponse.getGroupRatingItemDefinitionRatingType() + ")");
+                          + groupRatingItemDefinition.getRatingType() + ")");
                     }
                   }
                 });
