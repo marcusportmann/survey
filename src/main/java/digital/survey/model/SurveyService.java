@@ -473,6 +473,36 @@ public class SurveyService
   }
 
   /**
+   * Delete the survey response for the survey request with the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to identify the survey request
+   *
+   * @return <code>true</code> if the survey response was deleted successfully or <code>false</code>
+   *         otherwise
+   *
+   * @throws SurveyServiceException
+   */
+  public boolean deleteSurveyResponseForSurveyRequest(UUID id)
+    throws SurveyServiceException
+  {
+    try
+    {
+      String sql = "DELETE FROM SurveyResponse sr WHERE sr.request.id = :id";
+
+      Query query = entityManager.createQuery(sql);
+
+      query.setParameter("id", id);
+
+      return (query.executeUpdate() == 1);
+    }
+    catch (Throwable e)
+    {
+      throw new SurveyServiceException(
+          "Failed to delete the survey response for the survey request (" + id + ")", e);
+    }
+  }
+
+  /**
    * Retrieve the filtered survey audience members for the survey audience.
    *
    * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the survey
@@ -2246,6 +2276,10 @@ public class SurveyService
           surveyRequest = new SurveyRequest(surveyInstance, member.getFirstName(),
               member.getLastName(), member.getEmail());
         }
+        else
+        {
+          deleteSurveyResponseForSurveyRequest(surveyRequest.getId());
+        }
 
         surveyRequest.setRequested(new Date());
         surveyRequest.setStatus(SurveyRequestStatus.QUEUED_FOR_SENDING);
@@ -2292,6 +2326,10 @@ public class SurveyService
         SurveyInstance surveyInstance = getSurveyInstance(surveyInstanceId);
 
         surveyRequest = new SurveyRequest(surveyInstance, firstName, lastName, email);
+      }
+      else
+      {
+        deleteSurveyResponseForSurveyRequest(surveyRequest.getId());
       }
 
       surveyRequest.setRequested(new Date());

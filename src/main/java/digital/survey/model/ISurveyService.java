@@ -166,6 +166,19 @@ public interface ISurveyService
     throws SurveyServiceException;
 
   /**
+   * Delete the survey response for the survey request with the specified ID.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to identify the survey request
+   *
+   * @return <code>true</code> if the survey response was deleted successfully or <code>false</code>
+   *         otherwise
+   *
+   * @throws SurveyServiceException
+   */
+  boolean deleteSurveyResponseForSurveyRequest(UUID id)
+    throws SurveyServiceException;
+
+  /**
    * Retrieve the filtered survey audience members for the survey audience.
    *
    * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the survey
