@@ -59,6 +59,8 @@ table.table-group-definition > tbody > tr > td > div
 {
   color: #000000;
   padding: 5px 5px;
+  min-height: 40px;
+  vertical-align: middle;
 }
 
 table.table-group-definition > tbody > tr > td > div > span.num-ratings

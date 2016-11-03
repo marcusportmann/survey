@@ -91,14 +91,8 @@ public class SurveyResponseInputPanel extends InputPanel
                     surveyDefinition.getGroupRatingItemDefinitionsForGroupDefinition(
                     groupDefinition.getId());
 
-                // Filter totals
-                List<SurveyGroupRatingItemDefinition> filteredGroupRatingItemDefinitions =
-                    groupRatingItemDefinitions.stream().filter(
-                    surveyGroupRatingItemDefinition -> (!surveyGroupRatingItemDefinition.isTotal()))
-                    .collect(Collectors.toList());
-
                 item.add(new ListView<SurveyGroupRatingItemDefinition>("groupRatingItemResponse",
-                    filteredGroupRatingItemDefinitions)
+                  groupRatingItemDefinitions)
                 {
                   @Override
                   protected void populateItem(ListItem<SurveyGroupRatingItemDefinition> item)

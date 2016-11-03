@@ -24,7 +24,6 @@ import org.apache.wicket.model.Model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 //~--- JDK imports ------------------------------------------------------------
 
@@ -89,14 +88,8 @@ public class SurveyResponseReadOnlyPanel extends InputPanel
                     surveyDefinition.getGroupRatingItemDefinitionsForGroupDefinition(
                     groupDefinition.getId());
 
-                // Filter totals
-                List<SurveyGroupRatingItemDefinition> filteredGroupRatingItemDefinitions =
-                    groupRatingItemDefinitions.stream().filter(
-                    surveyGroupRatingItemDefinition -> (!surveyGroupRatingItemDefinition.isTotal()))
-                    .collect(Collectors.toList());
-
                 item.add(new ListView<SurveyGroupRatingItemDefinition>("groupRatingItemResponse",
-                    filteredGroupRatingItemDefinitions)
+                    groupRatingItemDefinitions)
                 {
                   @Override
                   protected void populateItem(ListItem<SurveyGroupRatingItemDefinition> item)
@@ -125,20 +118,5 @@ public class SurveyResponseReadOnlyPanel extends InputPanel
             });
           }
         });
-  }
-
-  private List<StringSelectOption> getGroupRatingItemResponseOptions(
-      SurveyGroupRatingItemType groupRatingItemType)
-  {
-    List<StringSelectOption> options = new ArrayList<>();
-
-    if (groupRatingItemType == SurveyGroupRatingItemType.YES_NO_NA)
-    {
-      options.add(new StringSelectOption("Yes", "1"));
-      options.add(new StringSelectOption("No", "0"));
-      options.add(new StringSelectOption("-", "-1"));
-    }
-
-    return options;
   }
 }

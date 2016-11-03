@@ -30,9 +30,8 @@ import java.util.UUID;
  *
  * @author Marcus Portmann
  */
-@JsonPropertyOrder({ "id", "groupRatingItemDefinitionId", "groupRatingItemDefinitionName",
-    "groupRatingItemDefinitionRatingType", "groupMemberDefinitionId", "groupMemberDefinitionName",
-    "averageRating", "ratings" })
+@JsonPropertyOrder({ "id", "groupRatingItemDefinitionId", "groupRatingItemDefinitionRatingType",
+    "groupMemberDefinitionId", "averageRating", "ratings" })
 public class SurveyGroupRatingItemResult
   implements Serializable
 {
@@ -58,12 +57,6 @@ public class SurveyGroupRatingItemResult
   private UUID groupRatingItemDefinitionId;
 
   /**
-   * The name of the survey group rating item definition.
-   */
-  @JsonProperty
-  private String groupRatingItemDefinitionName;
-
-  /**
    * The type of survey group rating item.
    */
   @JsonProperty
@@ -74,12 +67,6 @@ public class SurveyGroupRatingItemResult
    */
   @JsonProperty
   private List<Integer> ratings;
-
-  /**
-   * The name of the survey group member definition.
-   */
-  @JsonProperty
-  private String groupMemberDefinitionName;
 
   /**
    * Constructs a new <code>SurveyGroupRatingItemResult</code>.
@@ -100,10 +87,8 @@ public class SurveyGroupRatingItemResult
   {
     this.id = UUID.randomUUID();
     this.groupRatingItemDefinitionId = groupRatingItemDefinition.getId();
-    this.groupRatingItemDefinitionName = groupRatingItemDefinition.getName();
     this.groupRatingItemDefinitionRatingType = groupRatingItemDefinition.getRatingType();
     this.groupMemberDefinitionId = groupMemberDefinition.getId();
-    this.groupMemberDefinitionName = groupMemberDefinition.getName();
     this.ratings = new ArrayList<>();
   }
 
@@ -139,32 +124,25 @@ public class SurveyGroupRatingItemResult
         total += rating;
       }
 
-      return ((float)total / (float)ratings.size());
+      return ((float) total / (float) ratings.size());
     }
     else if (groupRatingItemDefinitionRatingType == SurveyGroupRatingItemType.YES_NO_NA)
     {
-      int numberOfRatings = 0;
-
-      int total = 0;
+      float total = 0;
 
       for (int rating : ratings)
       {
-        if (rating != -1)
+        if (rating == -1)
         {
-          numberOfRatings++;
-
+          total += 0.5;
+        }
+        else
+        {
           total += rating;
         }
       }
 
-      if (numberOfRatings == 0)
-      {
-        return -1;
-      }
-      else
-      {
-        return (((float) total / (float) numberOfRatings) * 100);
-      }
+      return (((float) total / (float) ratings.size()) * 100);
     }
     else
     {
@@ -185,16 +163,6 @@ public class SurveyGroupRatingItemResult
   }
 
   /**
-   * Returns the name of the survey group member definition.
-   *
-   * @return the name of the survey group member definition
-   */
-  public String getGroupMemberDefinitionName()
-  {
-    return groupMemberDefinitionName;
-  }
-
-  /**
    * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey group
    * rating item definition this survey group rating item result is associated with.
    *
@@ -207,19 +175,7 @@ public class SurveyGroupRatingItemResult
   }
 
   /**
-   * Returns the name of the survey group rating item definition this survey group rating item
-   * result is associated with.
-   *
-   * @return the name of the survey group rating item definition this survey group rating item
-   *         result is associated with
-   */
-  public String getGroupRatingItemDefinitionName()
-  {
-    return groupRatingItemDefinitionName;
-  }
-
-  /**
-   * Returns the type of survey group rating item.
+   * Returns the type of survey group rating igroupRatingItemDefinitionRatingTypetem.
    *
    * @return the type of survey group rating item
    */
@@ -241,11 +197,11 @@ public class SurveyGroupRatingItemResult
   }
 
   /**
-   * Returns the number of ratings.
+   * Returns the number of ratings with a valid score.
    *
-   * @return the number of ratings
+   * @return the number of ratings with a valid score
    */
-  public int getNumberOfRatings()
+  public int getNumberOfRatingsWithValidScore()
   {
     if (groupRatingItemDefinitionRatingType == SurveyGroupRatingItemType.ONE_TO_TEN)
     {

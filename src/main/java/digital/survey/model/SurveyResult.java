@@ -16,14 +16,13 @@ package digital.survey.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import guru.mmp.common.util.DateUtil;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 //~--- JDK imports ------------------------------------------------------------
 
@@ -96,7 +95,7 @@ public class SurveyResult
     this.groupRatingItemResults = new ArrayList<>();
 
     for (SurveyGroupRatingItemDefinition groupRatingItemDefinition : instance.getDefinition()
-      .getGroupRatingItemDefinitions())
+        .getGroupRatingItemDefinitions())
     {
       SurveyGroupDefinition groupDefinition = instance.getDefinition().getGroupDefinition(
         groupRatingItemDefinition.getGroupDefinitionId());
@@ -197,13 +196,13 @@ public class SurveyResult
    *         item result could not be found
    */
   public SurveyGroupRatingItemResult getGroupRatingItemResult(UUID groupRatingItemDefinitionId,
-    UUID groupMemberDefinitionId)
+      UUID groupMemberDefinitionId)
   {
     for (SurveyGroupRatingItemResult groupRatingItemResult : groupRatingItemResults)
     {
       if ((groupRatingItemResult.getGroupRatingItemDefinitionId().equals(
-        groupRatingItemDefinitionId))
-        && (groupRatingItemResult.getGroupMemberDefinitionId().equals(groupMemberDefinitionId)))
+          groupRatingItemDefinitionId))
+          && (groupRatingItemResult.getGroupMemberDefinitionId().equals(groupMemberDefinitionId)))
       {
         return groupRatingItemResult;
       }
@@ -220,6 +219,24 @@ public class SurveyResult
   public List<SurveyGroupRatingItemResult> getGroupRatingItemResults()
   {
     return groupRatingItemResults;
+  }
+
+  /**
+   * Returns the survey group rating item results that are associated with the survey group member
+   * definition with the specified ID.
+   *
+   * @param groupMemberDefinitionId the Universally Unique Identifier (UUID) used to uniquely
+   *                                identify the survey group member definition
+   *
+   * @return the survey group rating item results that are associated with the survey group member
+   *         definition with the specified ID
+   */
+  public List<SurveyGroupRatingItemResult> getGroupRatingItemResultsForGroupMember(
+      UUID groupMemberDefinitionId)
+  {
+    return groupRatingItemResults.stream().filter(
+        surveyGroupRatingItemResult -> surveyGroupRatingItemResult.getGroupMemberDefinitionId()
+        .equals(groupMemberDefinitionId)).collect(Collectors.toList());
   }
 
   /**

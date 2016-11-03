@@ -28,19 +28,11 @@ import java.util.UUID;
  *
  * @author Marcus Portmann
  */
-@JsonPropertyOrder({ "id", "name", "groupDefinitionId", "ratingType", "total",
+@JsonPropertyOrder({ "id", "name", "groupDefinitionId", "ratingType",
     "displayRatingUsingGradient" })
 public class SurveyGroupRatingItemDefinition
   implements Serializable
 {
-  /**
-   * Is the survey group rating item definition a total, e.g. an average or weighted average of all
-   * ratings for the survey group rating item responses for a survey group member associated with a
-   * survey group.
-   */
-  @JsonProperty
-  private boolean total;
-
   /**
    * Should the rating for a survey group rating item response associated with this survey group rating item definition be displayed using a color gradient when viewing the survey result.
    */
@@ -89,23 +81,18 @@ public class SurveyGroupRatingItemDefinition
    *                                   identify the survey group definition this survey group rating
    *                                   item definition is associated with
    * @param ratingType                 the type of survey group rating item
-   * @param total                      is the survey group rating item definition a total, e.g. an
-   *                                   average or weighted average of all ratings for the survey
-   *                                   group rating item responses for a survey group member
-   *                                   associated with a survey group
    * @param displayRatingUsingGradient should the rating for a survey group rating item response
    *                                   associated with this survey group rating item definition be
    *                                   displayed using a color gradient when viewing the survey
    *                                   result
    */
   public SurveyGroupRatingItemDefinition(UUID id, String name, UUID groupDefinitionId,
-      SurveyGroupRatingItemType ratingType, boolean total, boolean displayRatingUsingGradient)
+      SurveyGroupRatingItemType ratingType, boolean displayRatingUsingGradient)
   {
     this.id = id;
     this.name = name;
     this.groupDefinitionId = groupDefinitionId;
     this.ratingType = ratingType;
-    this.total = total;
     this.displayRatingUsingGradient = displayRatingUsingGradient;
   }
 
@@ -199,20 +186,6 @@ public class SurveyGroupRatingItemDefinition
   }
 
   /**
-   * Returns whether the the survey group rating item definition a total, e.g. an average or
-   * weighted average of all ratings for the survey group rating item responses for a survey group
-   * member associated with a survey group.
-   *
-   * @return <code>true</code> if the survey group rating item definition a total, e.g. an average
-   *         or weighted average of all ratings for the survey group rating item responses for a
-   *         survey group member associated with a survey group or <code>false</code> otherwise
-   */
-  public boolean isTotal()
-  {
-    return total;
-  }
-
-  /**
    * Set whether the rating for a survey group rating item response associated with this survey
    * group rating item definition be displayed using a color gradient when viewing the survey
    * result.
@@ -261,20 +234,6 @@ public class SurveyGroupRatingItemDefinition
   }
 
   /**
-   * Set whether whether the the survey group rating item definition a total, e.g. an average or
-   * weighted average of all ratings for the survey group rating item responses for a survey group
-   * member associated with a survey group.
-   *
-   * @param total the whether the the survey group rating item definition a total, e.g. an average
-   *              or weighted average of all ratings for the survey group rating item responses for
-   *              a survey group member associated with a survey group
-   */
-  public void setTotal(boolean total)
-  {
-    this.total = total;
-  }
-
-  /**
    * Returns the String representation of the survey group rating item definition.
    *
    * @return the String representation of the survey group rating item definition
@@ -283,7 +242,7 @@ public class SurveyGroupRatingItemDefinition
   public String toString()
   {
     return String.format(
-        "SurveyDefinitionGroupRatingItem {id=\"%s\", name=\"%s\", ratingType=\"%s\", isTotal"
-        + "=\"%b\"}", getId(), getName(), getRatingType().description(), isTotal());
+        "SurveyDefinitionGroupRatingItem {id=\"%s\", name=\"%s\", ratingType=\"%s\"", getId(),
+        getName(), getRatingType().description());
   }
 }
