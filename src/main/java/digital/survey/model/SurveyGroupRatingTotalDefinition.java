@@ -13,6 +13,8 @@ package digital.survey.model;
 
 //~--- JDK imports ------------------------------------------------------------
 
+import javax.enterprise.inject.Vetoed;
+
 /**
  * The <code>SurveyGroupRatingTotalDefinition</code> class implements the Survey Group Rating Total
  * Definition entity, which represents the definition for a survey group rating total , e.g. an
@@ -21,6 +23,7 @@ package digital.survey.model;
  *
  * @author Marcus Portmann
  */
+@Vetoed
 public class SurveyGroupRatingTotalDefinition extends SurveyGroupRatingItemDefinition
 {
   /**

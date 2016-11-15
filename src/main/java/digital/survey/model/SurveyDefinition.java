@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import guru.mmp.application.security.Organisation;
 
+import javax.enterprise.inject.Vetoed;
 import javax.persistence.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ import java.util.UUID;
 @Access(AccessType.FIELD)
 @JsonPropertyOrder({ "id", "version", "organisationId", "name", "description", "sectionDefinitions",
     "groupDefinitions", "groupRatingItemDefinitions" })
+@Vetoed
 public class SurveyDefinition
   implements Serializable
 {

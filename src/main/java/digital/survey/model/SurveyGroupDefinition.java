@@ -16,6 +16,7 @@ package digital.survey.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import javax.enterprise.inject.Vetoed;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
