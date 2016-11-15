@@ -73,7 +73,7 @@ public class SurveyResponseAdministrationPage extends TemplateWebPage
    * @param previousPage       the previous page
    * @param surveyInstanceId   the Universally Unique Identifier (UUID) used to identify the survey
    *                           instance the survey responses are associated with
-   * @param surveyInstanceName the name of the survey response
+   * @param surveyInstanceName the name of the survey instance
    */
   public SurveyResponseAdministrationPage(PageReference previousPage, UUID surveyInstanceId,
       String surveyInstanceName)
@@ -106,8 +106,8 @@ public class SurveyResponseAdministrationPage extends TemplateWebPage
         @Override
         public void onClick()
         {
-          // TODO: IMPLEMENT THIS
-          // setResponsePage(new AddSurveyResponsePage(getPageReference(), surveyInstanceId));
+          setResponsePage(new AddSurveyResponsePage(getPageReference(), surveyInstanceId,
+              surveyInstanceName));
         }
       };
       addLink.setVisible(surveyInstance.getDefinition().isAnonymous());
