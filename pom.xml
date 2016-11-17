@@ -22,13 +22,11 @@
       <artifactId>mmp-application-wicket</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
-    <!--
     <dependency>
       <groupId>guru.mmp</groupId>
       <artifactId>mmp-application-reporting-wicket</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
-    -->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
@@ -55,31 +53,6 @@
     -->
 
 
-
-    <!--
-    <dependency>
-      <groupId>javax.persistence</groupId>
-      <artifactId>persistence-api</artifactId>
-      <version>1.0.2</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.enterprise</groupId>
-      <artifactId>cdi-api</artifactId>
-      <version>1.2</version>
-      <scope>provided</scope>
-    </dependency>
-    -->
-
-    <!--
-
-    <dependency>
-      <groupId>javax</groupId>
-      <artifactId>javaee-web-api</artifactId>
-      <version>7.0</version>
-    </dependency>
-
-    -->
 
 
     <dependency>
@@ -114,8 +87,6 @@
     </dependency>
 
 
-
-
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>datasources-api</artifactId>
@@ -123,108 +94,6 @@
       <scope>provided</scope>
     </dependency>
 
-
-
-
-    <!--
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>datasources-api</artifactId>
-      <version>LATEST</version>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>*</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>spi-api</artifactId>
-      <version>LATEST</version>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>*</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>config-api</artifactId>
-      <version>LATEST</version>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>*</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--
-        <dependency>
-          <groupId>com.h2database</groupId>
-          <artifactId>h2</artifactId>
-          <version>1.4.193</version>
-        </dependency>
-    -->
-
-
-
-    <!-- WildFly Swarm Fraction Dependencies -->
-    <!--
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>cdi</artifactId>
-      <version>LATEST</version>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>cdi-config</artifactId>
-      <version>LATEST</version>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>datasources</artifactId>
-      <version>LATEST</version>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>ejb</artifactId>
-      <version>LATEST</version>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>h2</artifactId>
-      <version>LATEST</version>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>jpa</artifactId>
-      <version>LATEST</version>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>webservices</artifactId>
-      <version>LATEST</version>
-    </dependency>
-    -->
   </dependencies>
 
   <build>
