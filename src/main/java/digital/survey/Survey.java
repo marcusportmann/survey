@@ -40,46 +40,26 @@ public class Survey
       // Instantiate the container
       Swarm swarm = new Swarm();
 
-      swarm.fraction(new DatasourcesFraction()
-//        .jdbcDriver("h2", (d) -> {
-//          d.driverDatasourceClassName("org.h2.Driver");
-//          d.xaDatasourceClass("org.h2.jdbcx.JdbcDataSource");
-//          d.driverModuleName("com.h2database.h2");
-//        })
-        .dataSource("SurveyDS", (ds) -> {
-          ds.driverName("h2");
-          ds.connectionUrl("jdbc:h2:mem:surveydb;MVCC=true;MODE=DB2;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
-          ds.userName("sa");
-          ds.password("sa");
-          ds.jndiName("java:jboss/datasources/SurveyDS");
-          ds.useJavaContext(true);
-          ds.trackStatements("true");
-          ds.tracking(true);
-        }));
-
-//      swarm.fraction(new DatasourcesFraction().dataSource("SurveyDS",
-//              (ds) ->
-//          {
-//            ds.jndiName("java:jboss/datasources/SurveyDS");
-//            ds.useJavaContext(true);
-//            ds.trackStatements("true");
-//            ds.tracking(true);
-//            ds.driverName("h2");
-//            ds.connectionUrl(
-//                "jdbc:h2:mem:surveydb;MVCC=true;MODE=DB2;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
-//            ds.userName("sa");
-//            ds.password("sa");
-//          }
-//          ));
+      swarm.fraction(new DatasourcesFraction().dataSource("SurveyDS",
+          (ds) ->
+          {
+            ds.driverName("h2");
+            ds.connectionUrl(
+                "jdbc:h2:mem:surveydb;MVCC=true;MODE=DB2;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+            ds.userName("sa");
+            ds.password("sa");
+            ds.jndiName("java:jboss/datasources/SurveyDS");
+            ds.useJavaContext(true);
+            ds.trackStatements("true");
+            ds.tracking(true);
+          }
+          ));
 
       // Start the container
       swarm.start();
 
-
-      //swarm.deploy()
-
+      // Create the default deployment
       swarm.createDefaultDeployment();
-
 
       // Deploy the application
       swarm.deploy();
