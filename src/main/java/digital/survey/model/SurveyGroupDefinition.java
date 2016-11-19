@@ -26,8 +26,8 @@ import java.util.UUID;
 
 /**
  * The <code>SurveyGroupDefinition</code> class implements the Survey Group Definition entity, which
- * represents a version of a definition of a group of entities, e.g. a team, that are associated
- * with a survey definition.
+ * represents a definition of a group of entities, e.g. a team, that are associated with a survey
+ * definition.
  *
  * @author Marcus Portmann
  */

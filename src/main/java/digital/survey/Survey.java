@@ -22,7 +22,7 @@ import org.wildfly.swarm.datasources.DatasourcesFraction;
  * The <code>Survey</code> class initialises the WildFly Swarm container.
  *
  * <xa-datasource jndi-name="java:jboss/datasources/SurveyDS" pool-name="SurveyDS"  enabled="true" use-java-context="true">
- *   <xa-datasource-property name="URL">jdbc:h2:mem:surveydb;MVCC=true;MODE=DB2;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</xa-datasource-property>
+ *   <xa-datasource-property name="URL">jdbc:h2:mem:survey;MVCC=true;MODE=DB2;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</xa-datasource-property>
  *   <security>
  *     <user-name>sa</user-name>
  *     <password>sa</password>
@@ -54,7 +54,7 @@ public class Survey
           {
             ds.driverName("h2");
             ds.connectionUrl(
-                "jdbc:h2:mem:surveydb;MVCC=true;MODE=DB2;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+                "jdbc:h2:mem:survey;MVCC=true;MODE=DB2;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
             ds.userName("sa");
             ds.password("sa");
             ds.jndiName("java:jboss/datasources/SurveyDS");

@@ -39,7 +39,7 @@ import java.util.UUID;
 @Table(schema = "SURVEY", name = "SURVEY_DEFINITIONS")
 @Access(AccessType.FIELD)
 @JsonPropertyOrder({ "id", "version", "organisationId", "name", "description", "sectionDefinitions",
-    "groupDefinitions", "groupRatingItemDefinitions" })
+    "groupDefinitions", "groupRatingsDefinitions" })
 @Vetoed
 public class SurveyDefinition
   implements Serializable
@@ -88,11 +88,11 @@ public class SurveyDefinition
   private List<SurveyGroupDefinition> groupDefinitions;
 
   /**
-   * The survey group rating item definitions that are associated with the survey definition.
+   * The survey group ratings definitions that are associated with the survey definition.
    */
   @JsonProperty
   @Transient
-  private List<SurveyGroupRatingItemDefinition> groupRatingItemDefinitions;
+  private List<SurveyGroupRatingsDefinition> groupRatingsDefinitions;
 
   /**
    * The organisation this survey definition is associated with.
@@ -138,7 +138,7 @@ public class SurveyDefinition
     this.description = description;
     this.sectionDefinitions = new ArrayList<>();
     this.groupDefinitions = new ArrayList<>();
-    this.groupRatingItemDefinitions = new ArrayList<>();
+    this.groupRatingsDefinitions = new ArrayList<>();
   }
 
   /**
@@ -152,14 +152,13 @@ public class SurveyDefinition
   }
 
   /**
-   * Add the survey group rating item definition to the survey definition.
+   * Add the survey group ratings definition to the survey definition.
    *
-   * @param groupRatingItemDefinition the survey group rating item definition
+   * @param groupRatingsDefinition the survey group ratings definition
    */
-  public void addGroupRatingItemDefinition(
-      SurveyGroupRatingItemDefinition groupRatingItemDefinition)
+  public void addGroupRatingsDefinition(SurveyGroupRatingsDefinition groupRatingsDefinition)
   {
-    groupRatingItemDefinitions.add(groupRatingItemDefinition);
+    groupRatingsDefinitions.add(groupRatingsDefinition);
   }
 
   /**
@@ -266,21 +265,41 @@ public class SurveyDefinition
   }
 
   /**
-   * Retrieve the survey group rating item definition.
+   * Retrieve the survey group rating definition.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   *           rating item definition
+   *           rating definition
    *
-   * @return the survey group rating item definition or <code>null</code> if the survey group rating
-   *         item definition could not be found
+   * @return the survey group rating definition or <code>null</code> if the survey group rating
+   *         definition could not be found
    */
-  public SurveyGroupRatingItemDefinition getGroupRatingItemDefinition(UUID id)
+  public SurveyGroupRatingDefinition getGroupRatingDefinition(UUID id)
   {
-    for (SurveyGroupRatingItemDefinition groupRatingItemDefinition : groupRatingItemDefinitions)
+    for (SurveyGroupRatingsDefinition groupRatingsDefinition : groupRatingsDefinitions)
     {
-      if (groupRatingItemDefinition.getId().equals(id))
+      for (SurveyGroupRatingDefinition groupRatingDefinition :
+          groupRatingsDefinition.getGroupRatingDefinitions())
       {
-        return groupRatingItemDefinition;
+        if (groupRatingDefinition.getId().equals(id))
+        {
+          return groupRatingDefinition;
+        }
+      }
+    }
+
+    for (SurveySectionDefinition sectionDefinition : sectionDefinitions)
+    {
+      for (SurveyGroupRatingsDefinition groupRatingsDefinition :
+          sectionDefinition.getGroupRatingsDefinitions())
+      {
+        for (SurveyGroupRatingDefinition groupRatingDefinition :
+            groupRatingsDefinition.getGroupRatingDefinitions())
+        {
+          if (groupRatingDefinition.getId().equals(id))
+          {
+            return groupRatingDefinition;
+          }
+        }
       }
     }
 
@@ -288,39 +307,58 @@ public class SurveyDefinition
   }
 
   /**
-   * Returns the survey group rating item definitions that are associated with the survey
-   * definition.
+   * Retrieve the survey group ratings definition.
    *
-   * @return the survey group rating item definitions that are associated with the survey
-   *         definition
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   *           ratings definition
+   *
+   * @return the survey group ratings definition or <code>null</code> if the survey group ratings
+   *         definition could not be found
    */
-  public List<SurveyGroupRatingItemDefinition> getGroupRatingItemDefinitions()
+  public SurveyGroupRatingsDefinition getGroupRatingsDefinition(UUID id)
   {
-    return groupRatingItemDefinitions;
+    for (SurveyGroupRatingsDefinition groupRatingsDefinition : groupRatingsDefinitions)
+    {
+      if (groupRatingsDefinition.getId().equals(id))
+      {
+        return groupRatingsDefinition;
+      }
+    }
+
+    return null;
   }
 
   /**
-   * Returns the survey group rating item definitions associated with the survey group definition.
+   * Returns the survey group ratings definitions that are associated with the survey definition.
+   *
+   * @return the survey group ratings definitions that are associated with the survey definition
+   */
+  public List<SurveyGroupRatingsDefinition> getGroupRatingsDefinitions()
+  {
+    return groupRatingsDefinitions;
+  }
+
+  /**
+   * Returns the survey group ratings definitions associated with the survey group definition.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
    *           group definition
    *
-   * @return the survey group rating item definitions associated with the survey group definition
+   * @return the survey group ratings definitions associated with the survey group definition
    */
-  public List<SurveyGroupRatingItemDefinition> getGroupRatingItemDefinitionsForGroupDefinition(
-      UUID id)
+  public List<SurveyGroupRatingsDefinition> getGroupRatingsDefinitionsForGroupDefinition(UUID id)
   {
-    List<SurveyGroupRatingItemDefinition> matchingGroupRatingItemDefinitions = new ArrayList<>();
+    List<SurveyGroupRatingsDefinition> matchingGroupRatingsDefinitions = new ArrayList<>();
 
-    for (SurveyGroupRatingItemDefinition groupRatingItemDefinition : groupRatingItemDefinitions)
+    for (SurveyGroupRatingsDefinition groupRatingsDefinition : groupRatingsDefinitions)
     {
-      if (groupRatingItemDefinition.getGroupDefinitionId().equals(id))
+      if (groupRatingsDefinition.getGroupDefinitionId().equals(id))
       {
-        matchingGroupRatingItemDefinitions.add(groupRatingItemDefinition);
+        matchingGroupRatingsDefinitions.add(groupRatingsDefinition);
       }
     }
 
-    return matchingGroupRatingItemDefinitions;
+    return matchingGroupRatingsDefinitions;
   }
 
   /**
@@ -428,18 +466,18 @@ public class SurveyDefinition
   }
 
   /**
-   * Remove the survey group rating item definition from the survey definition.
+   * Remove the survey group ratings definition from the survey section definition.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   *           rating item definition
+   *           ratings definition
    */
-  public void removeGroupRatingItemDefinition(UUID id)
+  public void removeGroupRatingsDefinition(UUID id)
   {
-    for (SurveyGroupRatingItemDefinition groupRatingItemDefinition : groupRatingItemDefinitions)
+    for (SurveyGroupRatingsDefinition groupRatingsDefinition : groupRatingsDefinitions)
     {
-      if (groupRatingItemDefinition.getId().equals(id))
+      if (groupRatingsDefinition.getId().equals(id))
       {
-        groupRatingItemDefinitions.remove(groupRatingItemDefinition);
+        groupRatingsDefinitions.remove(groupRatingsDefinition);
 
         return;
       }
@@ -516,15 +554,14 @@ public class SurveyDefinition
   }
 
   /**
-   * Set the survey group rating item definitions that are associated with the survey definition.
+   * Set the survey group ratings definitions that are associated with the survey definition.
    *
-   * @param groupRatingItemDefinitions the survey group rating item definitions that are associated
-   *                                   with the survey definition
+   * @param groupRatingsDefinitions the survey group ratings definitions that are associated
+   *                                with the survey definition
    */
-  public void setGroupRatingItemDefinitions(
-      List<SurveyGroupRatingItemDefinition> groupRatingItemDefinitions)
+  public void setGroupRatingsDefinitions(List<SurveyGroupRatingsDefinition> groupRatingsDefinitions)
   {
-    this.groupRatingItemDefinitions = groupRatingItemDefinitions;
+    this.groupRatingsDefinitions = groupRatingsDefinitions;
   }
 
   /**
@@ -584,18 +621,18 @@ public class SurveyDefinition
 
     buffer.append("}, ");
 
-    buffer.append("groupRatingItemDefinitions={");
+    buffer.append("groupRatingsDefinitions={");
 
     count = 0;
 
-    for (SurveyGroupRatingItemDefinition groupRatingItem : groupRatingItemDefinitions)
+    for (SurveyGroupRatingsDefinition groupRatingsDefinition : groupRatingsDefinitions)
     {
       if (count > 0)
       {
         buffer.append(", ");
       }
 
-      buffer.append(groupRatingItem);
+      buffer.append(groupRatingsDefinition);
 
       count++;
     }

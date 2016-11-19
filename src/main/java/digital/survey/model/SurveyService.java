@@ -1922,23 +1922,24 @@ public class SurveyService
 
       for (SurveyResponse surveyResponse : surveyResponses)
       {
-        for (SurveyGroupRatingItemResponse groupRatingItemResponse :
-            surveyResponse.getGroupRatingItemResponses())
+        for (SurveyGroupRatingResponse groupRatingResponse :
+            surveyResponse.getGroupRatingResponses())
         {
-          SurveyGroupRatingItemResult groupRatingItemResult = surveyResult.getGroupRatingItemResult(
-              groupRatingItemResponse.getGroupRatingItemDefinitionId(),
-              groupRatingItemResponse.getGroupMemberDefinitionId());
+          SurveyGroupRatingResult groupRatingResult = surveyResult.getGroupRatingResult(
+            groupRatingResponse.getGroupRatingsDefinitionId(),
+            groupRatingResponse.getGroupRatingDefinitionId(),
+            groupRatingResponse.getGroupMemberDefinitionId());
 
-          if (groupRatingItemResult != null)
+          if (groupRatingResult != null)
           {
-            groupRatingItemResult.addRating(groupRatingItemResponse.getRating());
+            groupRatingResult.addRating(groupRatingResponse.getRating());
           }
           else
           {
             throw new SurveyServiceException(
                 "Failed to retrieve the survey result for the survey instance (" + id
-                + "): Failed to find a survey group rating item result for the survey group rating item response ("
-                + groupRatingItemResponse + ")");
+                + "): Failed to find a survey group rating result for the survey group rating response ("
+                + groupRatingResponse + ")");
           }
         }
       }

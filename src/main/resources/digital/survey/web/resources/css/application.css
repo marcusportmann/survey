@@ -80,12 +80,12 @@ table.table-group-definition .form-group .form-material
 }
 
 
-table.table-group-definition .group-rating-item-response
+table.table-group-definition .group-rating-response
 {
   margin-bottom: 0px;
 }
 
-table.table-group-definition .group-rating-item-response select
+table.table-group-definition .group-rating-response select
 {
   -webkit-appearance:none;
   -moz-appearance: none;
@@ -102,27 +102,27 @@ table.table-group-definition .group-rating-item-response select
   /*box-shadow: 0 1px 0 #e6e6e6;*/
 }
 
-table.table-group-definition .group-rating-item-response select:focus
+table.table-group-definition .group-rating-response select:focus
 {
   -webkit-box-shadow:0 2px 0 #5c90d2;box-shadow:0 2px 0 #5c90d2;
 }
 
-table.table-group-definition .has-error .form-material .group-rating-item-response select
+table.table-group-definition .has-error .form-material .group-rating-response select
 {
   -webkit-box-shadow:0 2px 0 #d26a5c;box-shadow:0 1px 0 #d26a5c
 }
 
-table.table-group-definition .has-error .form-material .group-rating-item-response select:focus
+table.table-group-definition .has-error .form-material .group-rating-response select:focus
 {
   -webkit-box-shadow:0 2px 0 #d26a5c;box-shadow:0 2px 0 #d26a5c
 }
 
-table.table-group-definition .group-rating-item-response select option[disabled]:first-child
+table.table-group-definition .group-rating-response select option[disabled]:first-child
 {
   display: none;
 }
 
-table.table-group-definition .group-rating-item-response:after
+table.table-group-definition .group-rating-response:after
 {
   background: none;
   color: #bbb;

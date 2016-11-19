@@ -17,52 +17,51 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * The <code>SurveyGroupRatingItemType</code> class implements the Survey Group Definition Rating
- * Type entity, which represents a type of group rating item that can form part of a survey
- * definition.
+ * The <code>SurveyGroupRatingType</code> class implements the Survey Group Rating Type entity,
+ * which represents a type of group rating that can form part of a survey definition.
  *
  * @author Marcus Portmann
  */
-public enum SurveyGroupRatingItemType
+public enum SurveyGroupRatingType
 {
   ONE_TO_TEN(1, "One To Ten"), YES_NO_NA(2, "Yes/No/NA");
 
   private String description;
   private int code;
 
-  SurveyGroupRatingItemType(int code, String description)
+  SurveyGroupRatingType(int code, String description)
   {
     this.code = code;
     this.description = description;
   }
 
   /**
-   * Returns the survey group rating item type given by the specified numeric code value.
+   * Returns the survey group rating type given by the specified numeric code value.
    *
-   * @param code the numeric code value identifying the survey group rating item type
+   * @param code the numeric code value identifying the survey group rating type
    *
-   * @return the survey group rating item type given by the specified numeric code value
+   * @return the survey group rating type given by the specified numeric code value
    */
   @JsonCreator
-  public static SurveyGroupRatingItemType fromCode(int code)
+  public static SurveyGroupRatingType fromCode(int code)
   {
     switch (code)
     {
       case 1:
-        return SurveyGroupRatingItemType.ONE_TO_TEN;
+        return SurveyGroupRatingType.ONE_TO_TEN;
 
       case 2:
-        return SurveyGroupRatingItemType.YES_NO_NA;
+        return SurveyGroupRatingType.YES_NO_NA;
 
       default:
-        return SurveyGroupRatingItemType.ONE_TO_TEN;
+        return SurveyGroupRatingType.ONE_TO_TEN;
     }
   }
 
   /**
-   * Returns the numeric code for the survey group rating item type.
+   * Returns the numeric code for the survey group rating type.
    *
-   * @return the numeric code for the survey group rating item type
+   * @return the numeric code for the survey group rating type
    */
   @JsonValue
   public int code()
@@ -71,9 +70,9 @@ public enum SurveyGroupRatingItemType
   }
 
   /**
-   * Returns the default rating for the survey group rating item type.
+   * Returns the default rating for the survey group rating type.
    *
-   * @return the default rating for the survey group rating item type
+   * @return the default rating for the survey group rating type
    */
   public int defaultRating()
   {
@@ -91,9 +90,9 @@ public enum SurveyGroupRatingItemType
   }
 
   /**
-   * Returns the description for the survey group rating item type.
+   * Returns the description for the survey group rating type.
    *
-   * @return the description for the survey group rating item type
+   * @return the description for the survey group rating type
    */
   public String description()
   {

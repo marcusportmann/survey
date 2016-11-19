@@ -17,27 +17,29 @@ import javax.enterprise.inject.Vetoed;
 
 /**
  * The <code>SurveyGroupRatingTotalDefinition</code> class implements the Survey Group Rating Total
- * Definition entity, which represents the definition for a survey group rating total , e.g. an
- * average or weighted average of all the ratings for the survey group rating item responses for a
+ * Definition entity, which represents the definition for a survey group rating total, e.g. an
+ * average or weighted average of all the ratings for the survey group rating responses for a
  * survey group member associated with a survey group.
  *
  * @author Marcus Portmann
  */
 @Vetoed
-public class SurveyGroupRatingTotalDefinition extends SurveyGroupRatingItemDefinition
+public class SurveyGroupRatingTotalDefinition extends SurveyGroupRatingDefinition
 {
+  /**
+   * Constructs a new <code>SurveyGroupRatingsDefinition</code>.
+   */
+  @SuppressWarnings("unused")
+  SurveyGroupRatingTotalDefinition() {}
+
   /**
    * Constructs a new <code>SurveyGroupRatingTotalDefinition</code>.
    *
-   * @param name                       the name of the survey group rating total definition
-   * @param ratingType                 the type of survey group rating total
-   * @param displayRatingUsingGradient should the rating for a survey group rating total be
-   *                                   displayed using a color gradient when viewing the survey
-   *                                   result
+   * @param name       the name of the survey group rating total definition
+   * @param ratingType the type of survey group rating total
    */
-  public SurveyGroupRatingTotalDefinition(String name, SurveyGroupRatingItemType ratingType,
-      boolean displayRatingUsingGradient)
+  public SurveyGroupRatingTotalDefinition(String name, SurveyGroupRatingType ratingType)
   {
-    super(null, name, null, ratingType, displayRatingUsingGradient);
+    super(null, name, ratingType);
   }
 }

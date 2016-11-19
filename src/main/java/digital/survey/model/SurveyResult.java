@@ -58,11 +58,11 @@ public class SurveyResult
   private SurveyInstance instance;
 
   /**
-   * The survey group rating item results that are associated with the survey result.
+   * The survey group rating results that are associated with the survey result.
    */
   @JsonProperty
   @Transient
-  private List<SurveyGroupRatingItemResult> groupRatingItemResults;
+  private List<SurveyGroupRatingResult> groupRatingResults;
 
   /**
    * Constructs a new <code>SurveyResult</code>.
@@ -94,19 +94,23 @@ public class SurveyResult
     this.id = id;
     this.instance = instance;
 
-    this.groupRatingItemResults = new ArrayList<>();
+    this.groupRatingResults = new ArrayList<>();
 
-    for (SurveyGroupRatingItemDefinition groupRatingItemDefinition : instance.getDefinition()
-        .getGroupRatingItemDefinitions())
+    for (SurveyGroupRatingsDefinition groupRatingsDefinition : instance.getDefinition()
+        .getGroupRatingsDefinitions())
     {
-      SurveyGroupDefinition groupDefinition = instance.getDefinition().getGroupDefinition(
-        groupRatingItemDefinition.getGroupDefinitionId());
-
-      for (SurveyGroupMemberDefinition groupMemberDefinition :
-        groupDefinition.getGroupMemberDefinitions())
+      for (SurveyGroupRatingDefinition groupRatingDefinition :
+          groupRatingsDefinition.getGroupRatingDefinitions())
       {
-        groupRatingItemResults.add(new SurveyGroupRatingItemResult(groupRatingItemDefinition,
-          groupMemberDefinition));
+        SurveyGroupDefinition groupDefinition = instance.getDefinition().getGroupDefinition(
+            groupRatingsDefinition.getGroupDefinitionId());
+
+        for (SurveyGroupMemberDefinition groupMemberDefinition :
+            groupDefinition.getGroupMemberDefinitions())
+        {
+          groupRatingResults.add(new SurveyGroupRatingResult(groupRatingsDefinition,
+              groupRatingDefinition, groupMemberDefinition));
+        }
       }
     }
   }
@@ -163,21 +167,21 @@ public class SurveyResult
   }
 
   /**
-   * Retrieve the survey group rating item result.
+   * Retrieve the survey group rating result.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   *           rating item result
+   *           rating result
    *
-   * @return the survey group rating item result or <code>null</code> if the survey group rating
-   *         item result could not be found
+   * @return the survey group rating result or <code>null</code> if the survey group rating result
+   *         could not be found
    */
-  public SurveyGroupRatingItemResult getGroupRatingItemResult(UUID id)
+  public SurveyGroupRatingResult getGroupRatingResult(UUID id)
   {
-    for (SurveyGroupRatingItemResult groupRatingItemResult : groupRatingItemResults)
+    for (SurveyGroupRatingResult groupRatingResult : groupRatingResults)
     {
-      if (groupRatingItemResult.getId().equals(id))
+      if (groupRatingResult.getId().equals(id))
       {
-        return groupRatingItemResult;
+        return groupRatingResult;
       }
     }
 
@@ -185,28 +189,31 @@ public class SurveyResult
   }
 
   /**
-   * Retrieve the survey group rating item result.
+   * Retrieve the survey group rating result.
    *
-   * @param groupRatingItemDefinitionId the Universally Unique Identifier (UUID) used to uniquely
-   *                                    identify the survey group rating item definition this survey
-   *                                    group rating item result is associated with
-   * @param groupMemberDefinitionId     the Universally Unique Identifier (UUID) used to uniquely
-   *                                    identify the survey group member definition this survey
-   *                                    group rating item result is associated with
+   * @param groupRatingsDefinitionId the Universally Unique Identifier (UUID) used to uniquely
+   *                                 identify the survey group ratings definition this survey group
+   *                                 rating result is associated with
+   * @param groupRatingDefinitionId the Universally Unique Identifier (UUID) used to uniquely
+   *                                identify the survey group rating definition this survey group
+   *                                rating result is associated with
+   * @param groupMemberDefinitionId the Universally Unique Identifier (UUID) used to uniquely
+   *                                identify the survey group member definition this survey group
+   *                                rating result is associated with
    *
-   * @return the survey group rating item result or <code>null</code> if the survey group rating
-   *         item result could not be found
+   * @return the survey group rating result or <code>null</code> if the survey group rating result
+   *         could not be found
    */
-  public SurveyGroupRatingItemResult getGroupRatingItemResult(UUID groupRatingItemDefinitionId,
-      UUID groupMemberDefinitionId)
+  public SurveyGroupRatingResult getGroupRatingResult(UUID groupRatingsDefinitionId,
+      UUID groupRatingDefinitionId, UUID groupMemberDefinitionId)
   {
-    for (SurveyGroupRatingItemResult groupRatingItemResult : groupRatingItemResults)
+    for (SurveyGroupRatingResult groupRatingResult : groupRatingResults)
     {
-      if ((groupRatingItemResult.getGroupRatingItemDefinitionId().equals(
-          groupRatingItemDefinitionId))
-          && (groupRatingItemResult.getGroupMemberDefinitionId().equals(groupMemberDefinitionId)))
+      if ((groupRatingResult.getGroupRatingsDefinitionId().equals(groupRatingsDefinitionId))
+          && (groupRatingResult.getGroupRatingDefinitionId().equals(groupRatingDefinitionId))
+          && (groupRatingResult.getGroupMemberDefinitionId().equals(groupMemberDefinitionId)))
       {
-        return groupRatingItemResult;
+        return groupRatingResult;
       }
     }
 
@@ -214,30 +221,30 @@ public class SurveyResult
   }
 
   /**
-   * Returns the survey group rating item results that are associated with the survey result.
+   * Returns the survey group rating results that are associated with the survey result.
    *
-   * @return the survey group rating item results that are associated with the survey result
+   * @return the survey group rating results that are associated with the survey result
    */
-  public List<SurveyGroupRatingItemResult> getGroupRatingItemResults()
+  public List<SurveyGroupRatingResult> getGroupRatingResults()
   {
-    return groupRatingItemResults;
+    return groupRatingResults;
   }
 
   /**
-   * Returns the survey group rating item results that are associated with the survey group member
+   * Returns the survey group rating results that are associated with the survey group member
    * definition with the specified ID.
    *
    * @param groupMemberDefinitionId the Universally Unique Identifier (UUID) used to uniquely
    *                                identify the survey group member definition
    *
-   * @return the survey group rating item results that are associated with the survey group member
+   * @return the survey group rating results that are associated with the survey group member
    *         definition with the specified ID
    */
-  public List<SurveyGroupRatingItemResult> getGroupRatingItemResultsForGroupMember(
+  public List<SurveyGroupRatingResult> getGroupRatingResultsForGroupMember(
       UUID groupMemberDefinitionId)
   {
-    return groupRatingItemResults.stream().filter(
-        surveyGroupRatingItemResult -> surveyGroupRatingItemResult.getGroupMemberDefinitionId()
+    return groupRatingResults.stream().filter(
+        surveyGroupRatingResult -> surveyGroupRatingResult.getGroupMemberDefinitionId()
         .equals(groupMemberDefinitionId)).collect(Collectors.toList());
   }
 

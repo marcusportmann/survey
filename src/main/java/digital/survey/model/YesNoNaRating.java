@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * The <code>YesNoNaRating</code> class provides the possible ratings for a Yes/No/NA Rating
- * survey group rating item.
+ * survey group rating.
  *
  * @author Marcus Portmann
  */

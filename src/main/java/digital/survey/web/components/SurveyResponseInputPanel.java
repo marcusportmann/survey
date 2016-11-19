@@ -26,7 +26,6 @@ import org.apache.wicket.model.PropertyModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 //~--- JDK imports ------------------------------------------------------------
 
@@ -53,32 +52,32 @@ public class SurveyResponseInputPanel extends InputPanel
 
     SurveyDefinition surveyDefinition = surveyResponse.getInstance().getDefinition();
 
-    add(new ListView<SurveyGroupDefinition>("groupDefinition",
-        surveyDefinition.getGroupDefinitions())
+    add(new ListView<SurveyGroupRatingsDefinition>("groupRatingsDefinition",
+        surveyDefinition.getGroupRatingsDefinitions())
         {
           @Override
-          protected void populateItem(ListItem<SurveyGroupDefinition> item)
+          protected void populateItem(ListItem<SurveyGroupRatingsDefinition> item)
           {
-            SurveyGroupDefinition groupDefinition = item.getModelObject();
+            SurveyGroupRatingsDefinition groupRatingsDefinition = item.getModelObject();
 
-            List<SurveyGroupRatingItemDefinition> groupRatingItemDefinitions =
-                surveyDefinition.getGroupRatingItemDefinitionsForGroupDefinition(
-                groupDefinition.getId());
+            List<SurveyGroupRatingDefinition> groupRatingDefinitions =
+                groupRatingsDefinition.getGroupRatingDefinitions();
 
-            item.add(new ListView<SurveyGroupRatingItemDefinition>("groupRatingItemDefinition",
-                groupRatingItemDefinitions)
+            item.add(new ListView<SurveyGroupRatingDefinition>("groupRatingDefinition",
+                groupRatingDefinitions)
             {
               @Override
-              protected void populateItem(ListItem<SurveyGroupRatingItemDefinition> item)
+              protected void populateItem(ListItem<SurveyGroupRatingDefinition> item)
               {
-                SurveyGroupRatingItemDefinition groupRatingItemDefinition = item.getModelObject();
+                SurveyGroupRatingDefinition groupRatingDefinition = item.getModelObject();
 
-                item.add(new Label("name", groupRatingItemDefinition.getName()));
+                item.add(new Label("name", groupRatingDefinition.getName()));
               }
             });
 
             item.add(new ListView<SurveyGroupMemberDefinition>("groupMemberDefinition",
-                groupDefinition.getGroupMemberDefinitions())
+                surveyDefinition.getGroupDefinition(groupRatingsDefinition.getGroupDefinitionId())
+                .getGroupMemberDefinitions())
             {
               @Override
               protected void populateItem(ListItem<SurveyGroupMemberDefinition> item)
@@ -87,52 +86,47 @@ public class SurveyResponseInputPanel extends InputPanel
 
                 item.add(new Label("name", groupMemberDefinition.getName()));
 
-                List<SurveyGroupRatingItemDefinition> groupRatingItemDefinitions =
-                    surveyDefinition.getGroupRatingItemDefinitionsForGroupDefinition(
-                    groupDefinition.getId());
-
-                item.add(new ListView<SurveyGroupRatingItemDefinition>("groupRatingItemResponse",
-                  groupRatingItemDefinitions)
+                item.add(new ListView<SurveyGroupRatingDefinition>("groupRatingResponse",
+                    groupRatingDefinitions)
                 {
                   @Override
-                  protected void populateItem(ListItem<SurveyGroupRatingItemDefinition> item)
+                  protected void populateItem(ListItem<SurveyGroupRatingDefinition> item)
                   {
-                    SurveyGroupRatingItemDefinition groupRatingItemDefinition =
-                        item.getModelObject();
+                    SurveyGroupRatingDefinition groupRatingDefinition = item.getModelObject();
 
-                    if (groupRatingItemDefinition.getRatingType() == SurveyGroupRatingItemType
-                        .YES_NO_NA)
+                    if (groupRatingDefinition.getRatingType() == SurveyGroupRatingType.YES_NO_NA)
                     {
-                      SurveyGroupRatingItemResponse groupRatingItemResponse =
-                          surveyResponse.getGroupRatingItemResponse(
-                          groupRatingItemDefinition.getId(), groupMemberDefinition.getId());
+                      SurveyGroupRatingResponse groupRatingResponse =
+                          surveyResponse.getGroupRatingResponse(groupRatingsDefinition.getId(),
+                          groupRatingDefinition.getId(), groupMemberDefinition.getId());
 
                       ChoiceRenderer<StringSelectOption> choiceRenderer = new ChoiceRenderer<>(
                           "name", "value");
 
                       item.add(new DropDownChoiceWithFeedback<>("rating", new PropertyModel<>(
-                          groupRatingItemResponse, "rating"), getGroupRatingItemResponseOptions(
-                          groupRatingItemDefinition.getRatingType()), choiceRenderer));
+                          groupRatingResponse, "rating"), getGroupRatingResponseOptions(
+                          groupRatingDefinition.getRatingType()), choiceRenderer));
                     }
                     else
                     {
                       throw new RuntimeException("Unsupported survey group rating item type ("
-                          + groupRatingItemDefinition.getRatingType() + ")");
+                          + groupRatingDefinition.getRatingType() + ")");
                     }
                   }
                 });
               }
             });
+
           }
         });
   }
 
-  private List<StringSelectOption> getGroupRatingItemResponseOptions(
-      SurveyGroupRatingItemType groupRatingItemType)
+  private List<StringSelectOption> getGroupRatingResponseOptions(
+      SurveyGroupRatingType groupRatingType)
   {
     List<StringSelectOption> options = new ArrayList<>();
 
-    if (groupRatingItemType == SurveyGroupRatingItemType.YES_NO_NA)
+    if (groupRatingType == SurveyGroupRatingType.YES_NO_NA)
     {
       options.add(new StringSelectOption("Yes", "1"));
       options.add(new StringSelectOption("No", "0"));

@@ -22,14 +22,14 @@
 ////~--- JDK imports ------------------------------------------------------------
 //
 ///**
-// * The <code>SurveyAudienceRatingItemDefinition</code> class implements the Survey Audience Rating
+// * The <code>SurveyAudienceRatingDefinition</code> class implements the Survey Audience Rating
 // * Item Definition entity, which represents the definition for an audience rating item that forms
 // * part of a survey definition.
 // *
 // * @author Marcus Portmann
 // */
 //@JsonPropertyOrder({ "id", "name", "groupDefinitionId", "ratingType" })
-//public class SurveyAudienceRatingItemDefinition
+//public class SurveyAudienceRatingDefinition
 //  implements Serializable
 //{
 //  /**
@@ -56,16 +56,16 @@
 //   * The type of survey group rating item.
 //   */
 //  @JsonProperty
-//  private SurveyGroupRatingItemType ratingType;
+//  private SurveyGroupRatingType ratingType;
 //
 //  /**
-//   * Constructs a new <code>SurveyDefinitionGroupRatingItem</code>.
+//   * Constructs a new <code>SurveyDefinitionGroupRating</code>.
 //   */
 //  @SuppressWarnings("unused")
-//  SurveyAudienceRatingItemDefinition() {}
+//  SurveyAudienceRatingDefinition() {}
 //
 //  /**
-//   * Constructs a new <code>SurveyDefinitionGroupRatingItem</code>.
+//   * Constructs a new <code>SurveyDefinitionGroupRating</code>.
 //   *
 //   * @param id                the Universally Unique Identifier (UUID) used to uniquely identify the
 //   *                          survey group rating item definition
@@ -75,8 +75,8 @@
 //   *                          associated with
 //   * @param ratingType        the type of survey group rating item
 //   */
-//  public SurveyAudienceRatingItemDefinition(UUID id, String name, UUID groupDefinitionId,
-//    SurveyGroupRatingItemType ratingType)
+//  public SurveyAudienceRatingDefinition(UUID id, String name, UUID groupDefinitionId,
+//    SurveyGroupRatingType ratingType)
 //  {
 //    this.id = id;
 //    this.name = name;
@@ -110,7 +110,7 @@
 //      return false;
 //    }
 //
-//    SurveyAudienceRatingItemDefinition other = (SurveyAudienceRatingItemDefinition) obj;
+//    SurveyAudienceRatingDefinition other = (SurveyAudienceRatingDefinition) obj;
 //
 //    return id.equals(other.id);
 //  }
@@ -154,7 +154,7 @@
 //   *
 //   * @return the type of survey group rating item
 //   */
-//  public SurveyGroupRatingItemType getRatingType()
+//  public SurveyGroupRatingType getRatingType()
 //  {
 //    return ratingType;
 //  }
@@ -187,7 +187,7 @@
 //   *
 //   * @param ratingType the type of survey group rating item
 //   */
-//  public void setRatingType(SurveyGroupRatingItemType ratingType)
+//  public void setRatingType(SurveyGroupRatingType ratingType)
 //  {
 //    this.ratingType = ratingType;
 //  }
@@ -201,7 +201,7 @@
 //  public String toString()
 //  {
 //    return String.format(
-//      "SurveyDefinitionGroupRatingItem {id=\"%s\", name=\"%s\", ratingType=\"%s\"}", getId(),
+//      "SurveyDefinitionGroupRating {id=\"%s\", name=\"%s\", ratingType=\"%s\"}", getId(),
 //      getName(), getRatingType().description());
 //  }
 //}

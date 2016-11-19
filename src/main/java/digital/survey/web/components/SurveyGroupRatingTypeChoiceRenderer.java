@@ -13,7 +13,7 @@ package digital.survey.web.components;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import digital.survey.model.SurveyGroupRatingItemType;
+import digital.survey.model.SurveyGroupRatingType;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
 
@@ -22,29 +22,29 @@ import java.util.List;
 //~--- JDK imports ------------------------------------------------------------
 
 /**
- * The <code>SurveyGroupRatingItemTypeChoiceRenderer</code> class implements a
- * <code>ChoiceRenderer</code> for <code>SurveyGroupRatingItemType</code> instances.
+ * The <code>SurveyGroupRatingTypeChoiceRenderer</code> class implements a
+ * <code>ChoiceRenderer</code> for <code>SurveyGroupRatingType</code> instances.
  *
  * @author Marcus Portmann
  */
-public class SurveyGroupRatingItemTypeChoiceRenderer
-  implements IChoiceRenderer<SurveyGroupRatingItemType>
+public class SurveyGroupRatingTypeChoiceRenderer
+  implements IChoiceRenderer<SurveyGroupRatingType>
 {
   private static final long serialVersionUID = 1000000;
 
   /**
-   * Constructs a new <code>SurveyGroupRatingItemTypeChoiceRenderer</code>.
+   * Constructs a new <code>SurveyGroupRatingTypeChoiceRenderer</code>.
    */
-  public SurveyGroupRatingItemTypeChoiceRenderer() {}
+  public SurveyGroupRatingTypeChoiceRenderer() {}
 
   /**
    * Get the value for displaying to an end user.
    *
-   * @param type the survey group rating item type
+   * @param type the survey group rating type
    *
    * @return the value meant for displaying to an end user
    */
-  public Object getDisplayValue(SurveyGroupRatingItemType type)
+  public Object getDisplayValue(SurveyGroupRatingType type)
   {
     return type.description();
   }
@@ -53,12 +53,12 @@ public class SurveyGroupRatingItemTypeChoiceRenderer
    * This method is called to get the id value of a job status (used as the value attribute
    * of a choice element).
    *
-   * @param type  the survey group rating item type for which the id should be generated
+   * @param type  the survey group rating type for which the id should be generated
    * @param index the index of the object in the choices list
    *
    * @return the id value of the object
    */
-  public String getIdValue(SurveyGroupRatingItemType type, int index)
+  public String getIdValue(SurveyGroupRatingType type, int index)
   {
     return String.valueOf(type.code());
   }
@@ -73,9 +73,9 @@ public class SurveyGroupRatingItemTypeChoiceRenderer
    *
    * @return a choice from the list that has this id
    */
-  public SurveyGroupRatingItemType getObject(String id,
-      IModel<? extends List<? extends SurveyGroupRatingItemType>> choices)
+  public SurveyGroupRatingType getObject(String id,
+      IModel<? extends List<? extends SurveyGroupRatingType>> choices)
   {
-    return SurveyGroupRatingItemType.fromCode(Integer.valueOf(id));
+    return SurveyGroupRatingType.fromCode(Integer.valueOf(id));
   }
 }
