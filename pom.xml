@@ -17,6 +17,7 @@
   </properties>
 
   <dependencies>
+    <!-- Dependencies -->
     <dependency>
       <groupId>guru.mmp</groupId>
       <artifactId>mmp-application-wicket</artifactId>
@@ -27,6 +28,7 @@
       <artifactId>mmp-application-reporting-wicket</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
+
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
@@ -43,18 +45,7 @@
       <version>2.8.4</version>
     </dependency>
 
-    <!--
-    <dependency>
-      <groupId>guru.mmp</groupId>
-      <artifactId>mmp-application-test</artifactId>
-      <version>2.0.0-SNAPSHOT</version>
-      <scope>test</scope>
-    </dependency>
-    -->
-
-
-
-
+    <!-- Provided Dependencies -->
     <dependency>
       <groupId>javax.ejb</groupId>
       <artifactId>javax.ejb-api</artifactId>
@@ -98,14 +89,21 @@
       <optional>true</optional>
     </dependency>
 
-
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>datasources-api</artifactId>
       <version>LATEST</version>
       <scope>provided</scope>
+      <optional>true</optional>
     </dependency>
 
+    <!-- Test Dependencies -->
+    <dependency>
+      <groupId>guru.mmp</groupId>
+      <artifactId>mmp-application-test</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -118,10 +116,6 @@
         <configuration>
           <mainClass>digital.survey.Survey</mainClass>
           <fractionDetectMode>force</fractionDetectMode>
-
-          <!--<fractionDetectMode>never</fractionDetectMode>-->
-          <!--<additionalFractions>bean-validation:2016.11.0, cdi-config:2016.11.0, cdi-jaxrsapi:2016.11.0, cdi:2016.11.0, connector:2016.11.0, container:2016.11.0, datasources:2016.11.0, ee:2016.11.0, ejb-remote:2016.11.0, ejb:2016.11.0, h2:2016.11.0, hibernate-validator:2016.11.0, io:2016.11.0, jaxrs-cdi:2016.11.0, jaxrs-jaxb:2016.11.0, jaxrs-jsonp:2016.11.0, jaxrs-validator:2016.11.0, jaxrs:2016.11.0, jca:2016.11.0, jgroups-module:2016.11.0, jgroups:2016.11.0, jmx:2016.11.0, jpa:2016.11.0, jsf:2016.11.0, logging:2016.11.0, mail:2016.11.0, messaging:2016.11.0, naming:2016.11.0, remoting:2016.11.0, request-controller:2016.11.0, security:2016.11.0, spring:2016.11.0, transactions:2016.11.0, undertow:2016.11.0, webservices:2016.11.0</additionalFractions>-->
-          <!--<fractions>ejb-remote:2016.11.0, jaxrs-cdi:2016.11.0, jaxrs-jaxb:2016.11.0, jaxrs-jsonp:2016.11.0, jaxrs-validator:2016.11.0, jpa:2016.11.0, jsf:2016.11.0, mail:2016.11.0, messaging:2016.11.0, spring:2016.11.0, webservices:2016.11.0</fractions>-->
         </configuration>
         <executions>
           <execution>
@@ -135,11 +129,3 @@
   </build>
 
 </project>
-
-<!--
-
-[INFO] Detected fractions: ejb-remote:2016.11.0, jaxrs-cdi:2016.11.0, jaxrs-jaxb:2016.11.0, jaxrs-jsonp:2016.11.0, jaxrs-validator:2016.11.0, jpa:2016.11.0, jsf:2016.11.0, mail:2016.11.0, messaging:2016.11.0, spring:2016.11.0, webservices:2016.11.0
-[INFO] Adding fractions: bean-validation:2016.11.0, cdi-config:2016.11.0, cdi-jaxrsapi:2016.11.0, cdi:2016.11.0, connector:2016.11.0, container:2016.11.0, datasources:2016.11.0, ee:2016.11.0, ejb-remote:2016.11.0, ejb:2016.11.0, h2:2016.11.0, hibernate-validator:2016.11.0, io:2016.11.0, jaxrs-cdi:2016.11.0, jaxrs-jaxb:2016.11.0, jaxrs-jsonp:2016.11.0, jaxrs-validator:2016.11.0, jaxrs:2016.11.0, jca:2016.11.0, jgroups-module:2016.11.0, jgroups:2016.11.0, jmx:2016.11.0, jpa:2016.11.0, jsf:2016.11.0, logging:2016.11.0, mail:2016.11.0, messaging:2016.11.0, naming:2016.11.0, remoting:2016.11.0, request-controller:2016.11.0, security:2016.11.0, spring:2016.11.0, transactions:2016.11.0, undertow:2016.11.0, webservices:2016.11.0
-
--->
-
