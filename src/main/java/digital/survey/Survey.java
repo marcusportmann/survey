@@ -16,7 +16,9 @@ package digital.survey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wildfly.swarm.Swarm;
+import org.wildfly.swarm.config.undertow.FilterConfiguration;
 import org.wildfly.swarm.datasources.DatasourcesFraction;
+import org.wildfly.swarm.undertow.UndertowFraction;
 
 /**
  * The <code>Survey</code> class initialises the WildFly Swarm container.
@@ -36,6 +38,7 @@ public class Survey
 {
   /* Logger */
   private static Logger logger = LoggerFactory.getLogger(Survey.class);
+  private static final String GZIP_FILTER_KEY = "gzip";
 
   /**
    * Main.
@@ -49,6 +52,7 @@ public class Survey
       // Instantiate the container
       Swarm swarm = new Swarm();
 
+      // Initialise the application data source
       swarm.fraction(new DatasourcesFraction().dataSource("SurveyDS",
           (ds) ->
           {
@@ -63,6 +67,16 @@ public class Survey
             ds.tracking(true);
           }
           ));
+
+      // Enable gzip compression
+      UndertowFraction undertowFraction = UndertowFraction.createDefaultFraction();
+
+      undertowFraction.filterConfiguration(new FilterConfiguration().gzip(GZIP_FILTER_KEY))
+          .subresources().server("default-server").subresources().host("default-host").filterRef(
+          GZIP_FILTER_KEY, f -> f.predicate(
+          "exists('%{o,Content-Type}') and regex(pattern='(?:application/javascript|text/css|text/html|text/xml|application/json)(;.*)?', value=%{o,Content-Type}, full-match=true)"));
+
+      swarm.fraction(undertowFraction);
 
       // Start the container
       swarm.start();

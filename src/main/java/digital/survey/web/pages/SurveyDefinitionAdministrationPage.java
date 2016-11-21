@@ -14,6 +14,7 @@ package digital.survey.web.pages;
 //~--- non-JDK imports --------------------------------------------------------
 
 import digital.survey.model.ISurveyService;
+import digital.survey.model.SurveyDefinition;
 import digital.survey.model.SurveyDefinitionSummary;
 import digital.survey.web.SurveySecurity;
 import digital.survey.web.data.FilteredSurveyDefinitionSummaryDataProvider;
@@ -96,7 +97,7 @@ public class SurveyDefinitionAdministrationPage extends TemplateWebPage
         @Override
         public void onClick()
         {
-          // setResponsePage(new AddSurveyDefinitionPage(getPageReference(), organisationId));
+          setResponsePage(new AddSurveyDefinitionPage(getPageReference()));
         }
       };
       tableContainer.add(addLink);
@@ -176,10 +177,26 @@ public class SurveyDefinitionAdministrationPage extends TemplateWebPage
             @Override
             public void onClick()
             {
-//            UpdateSurveyDefinitionPage page = new UpdateSurveyDefinitionPage(
-//              getPageReference(), item.getModel());
-//
-//            setResponsePage(page);
+              SurveyDefinitionSummary surveyDefinitionSummary = item.getModelObject();
+
+              try
+              {
+                SurveyDefinition surveyDefinition = surveyService.getSurveyDefinition(
+                    surveyDefinitionSummary.getId(), surveyDefinitionSummary.getVersion());
+
+                UpdateSurveyDefinitionPage page = new UpdateSurveyDefinitionPage(
+                    getPageReference(), new Model<>(surveyDefinition));
+
+                setResponsePage(page);
+              }
+              catch (Throwable e)
+              {
+                logger.error("Failed to retrieve the survey definition ("
+                    + surveyDefinitionSummary.getId() + "): " + e.getMessage(), e);
+                SurveyDefinitionAdministrationPage.this.error(
+                    "Failed to retrieve the survey definition ("
+                    + surveyDefinitionSummary.getName() + ")");
+              }
             }
           };
           updateLink.setVisible(session.hasAcccessToFunction(SurveySecurity

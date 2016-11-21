@@ -1904,6 +1904,9 @@ public class SurveyService
     {
       SurveyInstance surveyInstance = getSurveyInstance(id);
 
+      entityManager.detach(surveyInstance);
+      entityManager.detach(surveyInstance.getDefinition());
+
       SurveyResult surveyResult = new SurveyResult(surveyInstance);
 
       // TODO: Check if we have too many survey responses to compile the survey result in real time.
