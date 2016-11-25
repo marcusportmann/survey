@@ -39,16 +39,16 @@ span.application-tag-line:before
 
 table.table-group-definition > thead > tr > th
 {
-  font-size: 11px;
+  font-size: 12px;
   text-align: center;
   vertical-align: middle;
   padding: 5px 5px;
-  max-width: 80px;
+  white-space: normal !important;
 }
 
 table.table-group-definition > tbody > tr > td
 {
-  font-size: 11px;
+  font-size: 12px;
   white-space: nowrap;
   text-align: center;
   padding: 1px;
@@ -59,7 +59,7 @@ table.table-group-definition > tbody > tr > td > div
 {
   color: #000000;
   padding: 5px 5px;
-  min-height: 40px;
+  min-height: 45px;
   vertical-align: middle;
 }
 
