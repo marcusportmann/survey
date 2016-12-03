@@ -30,23 +30,16 @@ import java.util.UUID;
  *
  * @author Marcus Portmann
  */
-@JsonPropertyOrder({ "id", "name", "groupDefinitionId", "displayRatingsUsingGradient" })
+@JsonPropertyOrder({ "id", "typeId", "name", "label", "description", "groupDefinitionId", "displayRatingsUsingGradient" })
 
-public class SurveyGroupRatingsDefinition
+public class SurveyGroupRatingsDefinition extends SurveyItemDefinition
   implements Serializable
 {
   /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group ratings
-   * definition.
+   * The Universally Unique Identifier (UUID) used to uniquely identify the type of survey item
+   * definition for the survey group ratings definition.
    */
-  @JsonProperty
-  private UUID id;
-
-  /**
-   * The name of the survey group ratings definition.
-   */
-  @JsonProperty
-  private String name;
+  public static final UUID TYPE_ID = UUID.fromString("aded36bd-bc3d-4157-99f6-b4d91825de5d");
 
   /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey group definition
@@ -80,7 +73,11 @@ public class SurveyGroupRatingsDefinition
    *
    * @param id                          the Universally Unique Identifier (UUID) used to uniquely
    *                                    identify the survey group ratings definition
-   * @param name                        the name of the survey group ratings definition
+   * @param name                        the short, unique name for the survey group ratings
+   *                                    definition
+   * @param label                       the user-friendly label for the survey group ratings
+   *                                    definition
+   * @param description                 the description for the survey group ratings definition
    * @param groupDefinitionId           the Universally Unique Identifier (UUID) used to uniquely
    *                                    identify the survey group definition this survey group
    *                                    ratings definition is associated with
@@ -89,11 +86,11 @@ public class SurveyGroupRatingsDefinition
    *                                    displayed using a color gradient when viewing the survey
    *                                    result
    */
-  public SurveyGroupRatingsDefinition(UUID id, String name, UUID groupDefinitionId,
+  public SurveyGroupRatingsDefinition(UUID id, String name, String label, String description, UUID groupDefinitionId,
       boolean displayRatingsUsingGradient)
   {
-    this.id = id;
-    this.name = name;
+    super(id, TYPE_ID, name, label, description);
+
     this.groupDefinitionId = groupDefinitionId;
     this.displayRatingsUsingGradient = displayRatingsUsingGradient;
     this.groupRatingDefinitions = new ArrayList<>();
@@ -107,37 +104,6 @@ public class SurveyGroupRatingsDefinition
   public void addGroupRatingDefinition(SurveyGroupRatingDefinition groupRatingDefinition)
   {
     groupRatingDefinitions.add(groupRatingDefinition);
-  }
-
-  /**
-   * Indicates whether some other object is "equal to" this one.
-   *
-   * @param obj the reference object with which to compare
-   *
-   * @return <code>true</code> if this object is the same as the obj argument otherwise
-   *         <code>false</code>
-   */
-  @Override
-  public boolean equals(Object obj)
-  {
-    if (this == obj)
-    {
-      return true;
-    }
-
-    if (obj == null)
-    {
-      return false;
-    }
-
-    if (getClass() != obj.getClass())
-    {
-      return false;
-    }
-
-    SurveyGroupRatingsDefinition other = (SurveyGroupRatingsDefinition) obj;
-
-    return id.equals(other.id);
   }
 
   /**
@@ -201,28 +167,6 @@ public class SurveyGroupRatingsDefinition
   }
 
   /**
-   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   * ratings definition.
-   *
-   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   *         ratings definition
-   */
-  public UUID getId()
-  {
-    return id;
-  }
-
-  /**
-   * Returns the name of the survey group ratings definition,
-   *
-   * @return the name of the survey group ratings definition
-   */
-  public String getName()
-  {
-    return name;
-  }
-
-  /**
    * Remove the survey group rating definition from the survey group ratings definition.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
@@ -281,31 +225,9 @@ public class SurveyGroupRatingsDefinition
   }
 
   /**
-   * Set the Universally Unique Identifier (UUID) used to uniquely identify the survey group ratings
-   * definition.
+   * Returns the String representation of the survey group ratings definition.
    *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   *           ratings definition
-   */
-  public void setId(UUID id)
-  {
-    this.id = id;
-  }
-
-  /**
-   * Set the name of the survey group ratings definition.
-   *
-   * @param name the name of the survey group ratings definition
-   */
-  public void setName(String name)
-  {
-    this.name = name;
-  }
-
-  /**
-   * Returns the String representation of the survey definition.
-   *
-   * @return the String representation of the survey definition
+   * @return the String representation of the survey group ratings definition
    */
   @Override
   public String toString()
@@ -314,9 +236,11 @@ public class SurveyGroupRatingsDefinition
 
     StringBuilder buffer = new StringBuilder();
 
-    buffer.append("SurveyDefinition {");
+    buffer.append("SurveyGroupRatingsDefinition {");
     buffer.append("id=\"").append(getId()).append("\", ");
+    buffer.append("typeId=\"").append(getTypeId()).append("\", ");
     buffer.append("name=\"").append(getName()).append("\", ");
+    buffer.append("label=\"").append(getLabel()).append("\", ");
 
     buffer.append("groupRatingDefinitions={");
 

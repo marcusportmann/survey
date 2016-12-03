@@ -38,8 +38,8 @@ import java.util.UUID;
 @IdClass(VersionedId.class)
 @Table(schema = "SURVEY", name = "SURVEY_DEFINITIONS")
 @Access(AccessType.FIELD)
-@JsonPropertyOrder({ "id", "version", "organisationId", "name", "description", "sectionDefinitions",
-    "groupDefinitions", "groupRatingsDefinitions" })
+@JsonPropertyOrder({ "id", "version", "organisationId", "name", "description", "groupDefinitions",
+  "itemDefinitions" })
 @Vetoed
 public class SurveyDefinition
   implements Serializable
@@ -74,13 +74,6 @@ public class SurveyDefinition
   private String description;
 
   /**
-   * The survey section definitions that are associated with the survey definition.
-   */
-  @JsonProperty
-  @Transient
-  private List<SurveySectionDefinition> sectionDefinitions;
-
-  /**
    * The survey group definitions that are associated with the survey definition.
    */
   @JsonProperty
@@ -88,11 +81,11 @@ public class SurveyDefinition
   private List<SurveyGroupDefinition> groupDefinitions;
 
   /**
-   * The survey group ratings definitions that are associated with the survey definition.
+   * The survey item definitions that are associated with the survey definition.
    */
   @JsonProperty
   @Transient
-  private List<SurveyGroupRatingsDefinition> groupRatingsDefinitions;
+  private List<SurveyItemDefinition> itemDefinitions;
 
   /**
    * The organisation this survey definition is associated with.
@@ -136,9 +129,8 @@ public class SurveyDefinition
     this.organisation = organisation;
     this.name = name;
     this.description = description;
-    this.sectionDefinitions = new ArrayList<>();
+    this.itemDefinitions = new ArrayList<>();
     this.groupDefinitions = new ArrayList<>();
-    this.groupRatingsDefinitions = new ArrayList<>();
   }
 
   /**
@@ -152,23 +144,13 @@ public class SurveyDefinition
   }
 
   /**
-   * Add the survey group ratings definition to the survey definition.
+   * Add the survey item definition to the survey definition.
    *
-   * @param groupRatingsDefinition the survey group ratings definition
+   * @param itemDefinition the survey item definition
    */
-  public void addGroupRatingsDefinition(SurveyGroupRatingsDefinition groupRatingsDefinition)
+  public void addItemDefinition(SurveyItemDefinition itemDefinition)
   {
-    groupRatingsDefinitions.add(groupRatingsDefinition);
-  }
-
-  /**
-   * Add the survey section definition to the survey definition.
-   *
-   * @param sectionDefinition the survey group definition
-   */
-  public void addSectionDefinition(SurveySectionDefinition sectionDefinition)
-  {
-    sectionDefinitions.add(sectionDefinition);
+    itemDefinitions.add(itemDefinition);
   }
 
   /**
@@ -275,35 +257,7 @@ public class SurveyDefinition
    */
   public SurveyGroupRatingDefinition getGroupRatingDefinition(UUID id)
   {
-    for (SurveyGroupRatingsDefinition groupRatingsDefinition : groupRatingsDefinitions)
-    {
-      for (SurveyGroupRatingDefinition groupRatingDefinition :
-          groupRatingsDefinition.getGroupRatingDefinitions())
-      {
-        if (groupRatingDefinition.getId().equals(id))
-        {
-          return groupRatingDefinition;
-        }
-      }
-    }
-
-    for (SurveySectionDefinition sectionDefinition : sectionDefinitions)
-    {
-      for (SurveyGroupRatingsDefinition groupRatingsDefinition :
-          sectionDefinition.getGroupRatingsDefinitions())
-      {
-        for (SurveyGroupRatingDefinition groupRatingDefinition :
-            groupRatingsDefinition.getGroupRatingDefinitions())
-        {
-          if (groupRatingDefinition.getId().equals(id))
-          {
-            return groupRatingDefinition;
-          }
-        }
-      }
-    }
-
-    return null;
+    return SurveyItemDefinition.getGroupRatingDefinition(itemDefinitions, id);
   }
 
   /**

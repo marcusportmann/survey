@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import javax.enterprise.inject.Vetoed;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,39 +27,28 @@ import java.util.UUID;
 
 /**
  * The <code>SurveySectionDefinition</code> class implements the Survey Section Definition entity,
- * which represents a version of a definition for a survey section.
+ * which represents the definition of a survey section that forms part of a survey definition.
  *
  * @author Marcus Portmann
  */
-@JsonPropertyOrder({ "id", "name", "description", "groupRatingsDefinitions" })
+@JsonPropertyOrder({ "id", "typeId", "name", "label", "description", "itemDefinitions" })
 @Vetoed
-public class SurveySectionDefinition
+public class SurveySectionDefinition extends SurveyItemDefinition
   implements Serializable
 {
   /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the survey section
-   * definition.
+   * The Universally Unique Identifier (UUID) used to uniquely identify the type of survey item
+   * definition for the survey section definition.
    */
-  @JsonProperty
-  private UUID id;
+  public static final UUID TYPE_ID = UUID.fromString("7708438e-b114-43d4-8fe5-b08aa5567e3a");
+
+
 
   /**
-   * The name of the survey section definition.
+   * The survey item definitions that are associated with the survey definition.
    */
   @JsonProperty
-  private String name;
-
-  /**
-   * The description for the survey section definition.
-   */
-  @JsonProperty
-  private String description;
-
-  /**
-   * The survey group ratings definitions that are associated with the survey section definition.
-   */
-  @JsonProperty
-  private List<SurveyGroupRatingsDefinition> groupRatingsDefinitions;
+  private List<SurveyItemDefinition> itemDefinitions;
 
   /**
    * Constructs a new <code>SurveySectionDefinition</code>.
@@ -70,68 +60,43 @@ public class SurveySectionDefinition
    * Constructs a new <code>SurveySectionDefinition</code>.
    *
    * @param id          the Universally Unique Identifier (UUID) used to uniquely identify the
-   *                    survey section definition
-   * @param name        the name of the survey section definition
-   * @param description the description for the survey section definition
+   *                    survey group ratings definition
+   * @param name        the short, unique name for the survey group ratings definition
+   * @param label       the user-friendly label for the survey group ratings definition
+   * @param description the description for the survey group ratings definition
    */
-  public SurveySectionDefinition(UUID id, String name, String description)
+  public SurveySectionDefinition(UUID id, String name, String label, String description)
   {
-    this.id = id;
-    this.name = name;
-    this.description = description;
-    this.groupRatingsDefinitions = new ArrayList<>();
+    super(id, TYPE_ID, name, label, description);
+
+    this.itemDefinitions = new ArrayList<>();
   }
 
   /**
-   * Add the survey group ratings definition to the survey section definition.
+   * Retrieve the survey group rating definition.
    *
-   * @param groupRatingsDefinition the survey group ratings definition
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   *           rating definition
+   *
+   * @return the survey group rating definition or <code>null</code> if the survey group rating
+   *         definition could not be found
    */
-  public void addGroupRatingsDefinition(SurveyGroupRatingsDefinition groupRatingsDefinition)
+  public SurveyGroupRatingDefinition getGroupRatingDefinition(UUID id)
   {
-    groupRatingsDefinitions.add(groupRatingsDefinition);
+    return SurveyItemDefinition.getGroupRatingDefinition(itemDefinitions, id);
   }
 
   /**
-   * Indicates whether some other object is "equal to" this one.
+   * Add the survey item definition to the survey definition.
    *
-   * @param obj the reference object with which to compare
-   *
-   * @return <code>true</code> if this object is the same as the obj argument otherwise
-   *         <code>false</code>
+   * @param itemDefinition the survey item definition
    */
-  @Override
-  public boolean equals(Object obj)
+  public void addItemDefinition(SurveyItemDefinition itemDefinition)
   {
-    if (this == obj)
-    {
-      return true;
-    }
-
-    if (obj == null)
-    {
-      return false;
-    }
-
-    if (getClass() != obj.getClass())
-    {
-      return false;
-    }
-
-    SurveySectionDefinition other = (SurveySectionDefinition) obj;
-
-    return id.equals(other.id);
+    itemDefinitions.add(itemDefinition);
   }
 
-  /**
-   * Returns the description for the survey section definition.
-   *
-   * @return the description for the survey section definition
-   */
-  public String getDescription()
-  {
-    return description;
-  }
+
 
   /**
    * Retrieve the survey group ratings definition.
