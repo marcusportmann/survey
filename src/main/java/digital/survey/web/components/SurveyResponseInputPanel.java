@@ -13,21 +13,14 @@ package digital.survey.web.components;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import digital.survey.model.*;
-import guru.mmp.application.web.components.StringSelectOption;
-import guru.mmp.application.web.template.components.DropDownChoiceWithFeedback;
+import digital.survey.model.SurveyDefinition;
+import digital.survey.model.SurveyGroupRatingsDefinition;
+import digital.survey.model.SurveyItemDefinition;
+import digital.survey.model.SurveyResponse;
 import guru.mmp.application.web.template.components.InputPanel;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.PropertyModel;
-
-import java.util.ArrayList;
-import java.util.List;
-
-//~--- JDK imports ------------------------------------------------------------
 
 /**
  * The <code>SurveyResponseInputPanel</code> class.
@@ -52,87 +45,19 @@ public class SurveyResponseInputPanel extends InputPanel
 
     SurveyDefinition surveyDefinition = surveyResponse.getInstance().getDefinition();
 
-    add(new ListView<SurveyGroupRatingsDefinition>("groupRatingsDefinition",
-        surveyDefinition.getGroupRatingsDefinitions())
+    add(new ListView<SurveyItemDefinition>("itemResponse", surveyDefinition.getItemDefinitions())
         {
           @Override
-          protected void populateItem(ListItem<SurveyGroupRatingsDefinition> item)
+          protected void populateItem(ListItem<SurveyItemDefinition> item)
           {
-            SurveyGroupRatingsDefinition groupRatingsDefinition = item.getModelObject();
+            SurveyItemDefinition itemDefinition = item.getModelObject();
 
-            List<SurveyGroupRatingDefinition> groupRatingDefinitions =
-                groupRatingsDefinition.getGroupRatingDefinitions();
-
-            item.add(new ListView<SurveyGroupRatingDefinition>("groupRatingDefinition",
-                groupRatingDefinitions)
+            if (itemDefinition instanceof SurveyGroupRatingsDefinition)
             {
-              @Override
-              protected void populateItem(ListItem<SurveyGroupRatingDefinition> item)
-              {
-                SurveyGroupRatingDefinition groupRatingDefinition = item.getModelObject();
-
-                item.add(new Label("name", groupRatingDefinition.getName()));
-              }
-            });
-
-            item.add(new ListView<SurveyGroupMemberDefinition>("groupMemberDefinition",
-                surveyDefinition.getGroupDefinition(groupRatingsDefinition.getGroupDefinitionId())
-                .getGroupMemberDefinitions())
-            {
-              @Override
-              protected void populateItem(ListItem<SurveyGroupMemberDefinition> item)
-              {
-                SurveyGroupMemberDefinition groupMemberDefinition = item.getModelObject();
-
-                item.add(new Label("name", groupMemberDefinition.getName()));
-
-                item.add(new ListView<SurveyGroupRatingDefinition>("groupRatingResponse",
-                    groupRatingDefinitions)
-                {
-                  @Override
-                  protected void populateItem(ListItem<SurveyGroupRatingDefinition> item)
-                  {
-                    SurveyGroupRatingDefinition groupRatingDefinition = item.getModelObject();
-
-                    if (groupRatingDefinition.getRatingType() == SurveyGroupRatingType.YES_NO_NA)
-                    {
-                      SurveyGroupRatingResponse groupRatingResponse =
-                          surveyResponse.getGroupRatingResponse(groupRatingsDefinition.getId(),
-                          groupRatingDefinition.getId(), groupMemberDefinition.getId());
-
-                      ChoiceRenderer<StringSelectOption> choiceRenderer = new ChoiceRenderer<>(
-                          "name", "value");
-
-                      item.add(new DropDownChoiceWithFeedback<>("rating", new PropertyModel<>(
-                          groupRatingResponse, "rating"), getGroupRatingResponseOptions(
-                          groupRatingDefinition.getRatingType()), choiceRenderer));
-                    }
-                    else
-                    {
-                      throw new RuntimeException("Unsupported survey group rating item type ("
-                          + groupRatingDefinition.getRatingType() + ")");
-                    }
-                  }
-                });
-              }
-            });
-
+              item.add(new SurveyGroupRatingsResponseInputPanel("itemResponsePanel",
+                  (SurveyGroupRatingsDefinition) itemDefinition, surveyResponseModel));
+            }
           }
         });
-  }
-
-  private List<StringSelectOption> getGroupRatingResponseOptions(
-      SurveyGroupRatingType groupRatingType)
-  {
-    List<StringSelectOption> options = new ArrayList<>();
-
-    if (groupRatingType == SurveyGroupRatingType.YES_NO_NA)
-    {
-      options.add(new StringSelectOption("Yes", "1"));
-      options.add(new StringSelectOption("No", "0"));
-      options.add(new StringSelectOption("-", "-1"));
-    }
-
-    return options;
   }
 }

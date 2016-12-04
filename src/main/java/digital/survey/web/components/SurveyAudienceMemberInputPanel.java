@@ -17,8 +17,6 @@ import guru.mmp.application.web.template.components.InputPanel;
 import guru.mmp.application.web.template.components.TextFieldWithFeedback;
 import org.apache.wicket.markup.html.form.TextField;
 
-//~--- JDK imports ------------------------------------------------------------
-
 /**
  * The <code>SurveyAudienceMemberInputPanel</code> class provides a Wicket component that can
  * be used to capture the information for a <code>SurveyAudienceMember</code>.

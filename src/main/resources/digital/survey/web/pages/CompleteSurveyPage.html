@@ -71,23 +71,16 @@
         </section>
         <section class="content">
           <wicket:extend>
-            <div class="box box-form">
-              <div class="box-body">
+            <form wicket:id="completeSurveyForm" id="completeSurveyForm" class="form-horizontal">
 
-                <form wicket:id="completeSurveyForm" id="completeSurveyForm" class="form-horizontal">
+              <div wicket:id="surveyResponse"></div>
 
-                  <div wicket:id="surveyResponse"></div>
-
-                  <div class="form-group">
-                    <div class="col-xs-12">
-                      <button wicket:id="submitButton" type="submit" class="btn btn-default pull-right">Submit</button>
-                    </div>
-                  </div>
-
-                </form>
-
+              <div class="push-15-t">
+                <button wicket:id="submitButton" type="submit" class="btn btn-primary pull-right">Submit</button>
+                <div class="clear-both"></div>
               </div>
-            </div>
+
+            </form>
           </wicket:extend>
         </section>
       </div>

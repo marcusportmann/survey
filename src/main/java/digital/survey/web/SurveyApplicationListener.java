@@ -14,7 +14,6 @@ package digital.survey.web;
 //~--- non-JDK imports --------------------------------------------------------
 
 import guru.mmp.application.configuration.IConfigurationService;
-//import guru.mmp.application.reporting.IReportingService;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.common.persistence.DAOUtil;
 import org.slf4j.Logger;
@@ -29,6 +28,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.util.List;
 
+//import guru.mmp.application.reporting.IReportingService;
 //~--- JDK imports ------------------------------------------------------------
 
 /**
@@ -42,9 +42,9 @@ public class SurveyApplicationListener
   /* Logger */
   private static final Logger logger = LoggerFactory.getLogger(SurveyApplicationListener.class);
 
-//  /* Reporting Service */
-//  @Inject
-//  private IReportingService reportingService;
+///* Reporting Service */
+//@Inject
+//private IReportingService reportingService;
 
   /* Configuration Service */
   @Inject

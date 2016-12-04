@@ -11,6 +11,8 @@
 
 package digital.survey.web.pages;
 
+//~--- non-JDK imports --------------------------------------------------------
+
 import guru.mmp.application.web.pages.WebPageSecurity;
 import guru.mmp.application.web.template.TemplateSecurity;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
@@ -22,8 +24,7 @@ import guru.mmp.application.web.template.pages.TemplateWebPage;
  * @author Marcus Portmann
  */
 @WebPageSecurity(TemplateSecurity.FUNCTION_CODE_DASHBOARD)
-public class DashboardPage
-  extends TemplateWebPage
+public class DashboardPage extends TemplateWebPage
 {
   private static final long serialVersionUID = 1000000;
 

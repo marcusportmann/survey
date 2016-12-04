@@ -22,7 +22,6 @@ import digital.survey.model.ISurveyService;
 import digital.survey.model.SurveyDefinition;
 import digital.survey.web.SurveySecurity;
 import digital.survey.web.components.SurveyDefinitionInputPanel;
-import digital.survey.web.components.SurveyDefinitionInputPanel;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.pages.WebPageSecurity;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
@@ -63,14 +62,14 @@ public class UpdateSurveyDefinitionPage extends TemplateWebPage
    * @param surveyDefinitionModel the model for the survey definition
    */
   public UpdateSurveyDefinitionPage(PageReference previousPage,
-    IModel<SurveyDefinition> surveyDefinitionModel)
+      IModel<SurveyDefinition> surveyDefinitionModel)
   {
     super("Update Survey Definition");
 
     try
     {
       Form<SurveyDefinition> updateForm = new Form<>("updateForm", new CompoundPropertyModel<>(
-        surveyDefinitionModel));
+          surveyDefinitionModel));
 
       updateForm.add(new SurveyDefinitionInputPanel("surveyDefinition", surveyDefinitionModel));
 

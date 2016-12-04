@@ -260,35 +260,35 @@ public class SurveyDefinition
     return SurveyGroupRatingDefinition.getGroupRatingDefinition(itemDefinitions, id);
   }
 
-// TODO: DELETE THIS -- MARCUS
-//  /**
-//   * Returns the survey group ratings definitions associated with the survey group definition.
-//   *
-//   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
-//   *           group definition
-//   *
-//   * @return the survey group ratings definitions associated with the survey group definition
-//   */
-//  public List<SurveyGroupRatingsDefinition> getGroupRatingsDefinitionsForGroupDefinition(UUID id)
-//  {
-//    List<SurveyGroupRatingsDefinition> matchingGroupRatingsDefinitions = new ArrayList<>();
+//TODO: DELETE THIS -- MARCUS
+// /**
+//  * Returns the survey group ratings definitions associated with the survey group definition.
+//  *
+//  * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+//  *           group definition
+//  *
+//  * @return the survey group ratings definitions associated with the survey group definition
+//  */
+// public List<SurveyGroupRatingsDefinition> getGroupRatingsDefinitionsForGroupDefinition(UUID id)
+// {
+//   List<SurveyGroupRatingsDefinition> matchingGroupRatingsDefinitions = new ArrayList<>();
 //
-//    for (SurveyItemDefinition itemDefinition : itemDefinitions)
-//    {
-//      if (itemDefinition instanceof SurveyGroupRatingsDefinition)
-//      {
-//        SurveyGroupRatingsDefinition groupRatingsDefinition =
-//            (SurveyGroupRatingsDefinition) itemDefinition;
+//   for (SurveyItemDefinition itemDefinition : itemDefinitions)
+//   {
+//     if (itemDefinition instanceof SurveyGroupRatingsDefinition)
+//     {
+//       SurveyGroupRatingsDefinition groupRatingsDefinition =
+//           (SurveyGroupRatingsDefinition) itemDefinition;
 //
-//        if (groupRatingsDefinition.getGroupDefinitionId().equals(id))
-//        {
-//          matchingGroupRatingsDefinitions.add(groupRatingsDefinition);
-//        }
-//      }
-//    }
+//       if (groupRatingsDefinition.getGroupDefinitionId().equals(id))
+//       {
+//         matchingGroupRatingsDefinitions.add(groupRatingsDefinition);
+//       }
+//     }
+//   }
 //
-//    return matchingGroupRatingsDefinitions;
-//  }
+//   return matchingGroupRatingsDefinitions;
+// }
 
   /**
    * Returns the Universally Unique Identifier (UUID) used to, along with the version of the survey

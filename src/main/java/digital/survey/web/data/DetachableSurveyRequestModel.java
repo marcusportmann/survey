@@ -13,10 +13,10 @@ package digital.survey.web.data;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import guru.mmp.application.web.WebApplicationException;
-import guru.mmp.application.web.data.InjectableLoadableDetachableModel;
 import digital.survey.model.ISurveyService;
 import digital.survey.model.SurveyRequest;
+import guru.mmp.application.web.WebApplicationException;
+import guru.mmp.application.web.data.InjectableLoadableDetachableModel;
 
 import javax.inject.Inject;
 import java.util.UUID;
@@ -86,7 +86,7 @@ public class DetachableSurveyRequestModel extends InjectableLoadableDetachableMo
     catch (Throwable e)
     {
       throw new WebApplicationException(String.format("Failed to load the survey request (%s)",
-        id), e);
+          id), e);
     }
   }
 

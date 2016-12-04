@@ -9,12 +9,15 @@
               <thead>
                 <tr>
                   <th></th>
-                  <th wicket:id="groupRatingDefinition"><div><span wicket:id="name"></span></div></th>
+                  <th wicket:id="groupRating"><div><span wicket:id="name"></span></div></th>
                 </tr>
               </thead>
               <tbody>
-                <tr wicket:id="groupMemberDefinition">
-                  <td><span wicket:id="name" style="font-weight: bold;"></span></td>
+                <tr wicket:id="groupMember">
+                  <td><span wicket:id="name"></span></td>
+                  <td wicket:id="groupRatingResponse" class="center">
+                    <span wicket:id="rating">[Rating]</span>
+                  </td>
                 </tr>
               </tbody>
             </table>

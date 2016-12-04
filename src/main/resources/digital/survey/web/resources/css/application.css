@@ -1,3 +1,8 @@
+.clear-both
+{
+  clear: both;
+}
+
 .logo .logo-mini
 {
   display: inline-block;
@@ -53,7 +58,7 @@ span.copyright-name:before
 
 
 
-table.table-group-definition > thead > tr > th
+table.table-group-ratings > thead > tr > th
 {
   font-size: 12px;
   text-align: center;
@@ -62,7 +67,7 @@ table.table-group-definition > thead > tr > th
   white-space: normal !important;
 }
 
-table.table-group-definition > tbody > tr > td
+table.table-group-ratings > tbody > tr > td
 {
   font-size: 12px;
   white-space: nowrap;
@@ -71,7 +76,7 @@ table.table-group-definition > tbody > tr > td
   vertical-align: middle;
 }
 
-table.table-group-definition > tbody > tr > td > div
+table.table-group-ratings > tbody > tr > td > div
 {
   color: #000000;
   padding: 5px 5px;
@@ -79,29 +84,35 @@ table.table-group-definition > tbody > tr > td > div
   vertical-align: middle;
 }
 
-table.table-group-definition > tbody > tr > td > div > span.num-ratings
+table.table-group-ratings > tbody > tr > td > span
+{
+  line-height: 30px;
+}
+
+
+table.table-group-ratings > tbody > tr > td > div > span.num-ratings
 {
   font-size: 8px;
 }
 
-table.table-group-definition .form-group
+table.table-group-ratings .form-group
 {
   margin: 0;
   display: inline-block;
 }
 
-table.table-group-definition .form-group .form-material
+table.table-group-ratings .form-group .form-material
 {
   margin: 0;
 }
 
 
-table.table-group-definition .group-rating-response
+table.table-group-ratings .group-rating-response
 {
   margin-bottom: 0px;
 }
 
-table.table-group-definition .group-rating-response select
+table.table-group-ratings .group-rating-response select
 {
   -webkit-appearance:none;
   -moz-appearance: none;
@@ -118,27 +129,27 @@ table.table-group-definition .group-rating-response select
   /*box-shadow: 0 1px 0 #e6e6e6;*/
 }
 
-table.table-group-definition .group-rating-response select:focus
+table.table-group-ratings .group-rating-response select:focus
 {
   -webkit-box-shadow:0 2px 0 #5c90d2;box-shadow:0 2px 0 #5c90d2;
 }
 
-table.table-group-definition .has-error .form-material .group-rating-response select
+table.table-group-ratings .has-error .form-material .group-rating-response select
 {
   -webkit-box-shadow:0 2px 0 #d26a5c;box-shadow:0 1px 0 #d26a5c
 }
 
-table.table-group-definition .has-error .form-material .group-rating-response select:focus
+table.table-group-ratings .has-error .form-material .group-rating-response select:focus
 {
   -webkit-box-shadow:0 2px 0 #d26a5c;box-shadow:0 2px 0 #d26a5c
 }
 
-table.table-group-definition .group-rating-response select option[disabled]:first-child
+table.table-group-ratings .group-rating-response select option[disabled]:first-child
 {
   display: none;
 }
 
-table.table-group-definition .group-rating-response:after
+table.table-group-ratings .group-rating-response:after
 {
   background: none;
   color: #bbb;

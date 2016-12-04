@@ -41,6 +41,11 @@ public class FilteredSurveyDefinitionSummaryDataProvider
 {
   private static final long serialVersionUID = 1000000;
 
+  /**
+   * The filter used to limit the matching survey definitions.
+   */
+  private String filter = "";
+
   /* Survey Service */
   @Inject
   private ISurveyService surveyService;
@@ -50,11 +55,6 @@ public class FilteredSurveyDefinitionSummaryDataProvider
    * definitions are associated with.
    */
   private UUID organisationId;
-
-  /**
-   * The filter used to limit the matching survey definitions.
-   */
-  private String filter = "";
 
   /**
    * Constructs a new <code>FilteredLatestSurveyDefinitionSummaryDataProvider</code>.

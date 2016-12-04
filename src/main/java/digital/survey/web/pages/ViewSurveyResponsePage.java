@@ -16,10 +16,10 @@ package digital.survey.web.pages;
 import digital.survey.model.ISurveyService;
 import digital.survey.model.SurveyResponse;
 import digital.survey.web.SurveySecurity;
+import digital.survey.web.components.SurveyResponseReadOnlyPanel;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.pages.WebPageSecurity;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
-import digital.survey.web.components.SurveyResponseReadOnlyPanel;
 import org.apache.wicket.PageReference;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
@@ -36,7 +36,7 @@ import javax.inject.Inject;
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 @WebPageSecurity({ SurveySecurity.FUNCTION_CODE_SURVEY_ADMINISTRATION,
-  SurveySecurity.FUNCTION_CODE_VIEW_SURVEY_RESPONSE })
+    SurveySecurity.FUNCTION_CODE_VIEW_SURVEY_RESPONSE })
 public class ViewSurveyResponsePage extends TemplateWebPage
 {
   private static final long serialVersionUID = 1000000;
@@ -53,16 +53,15 @@ public class ViewSurveyResponsePage extends TemplateWebPage
    * @param previousPage        the previous page
    * @param surveyResponseModel the model for the survey response
    */
-  public ViewSurveyResponsePage(PageReference previousPage, IModel<SurveyResponse> surveyResponseModel)
+  public ViewSurveyResponsePage(PageReference previousPage,
+      IModel<SurveyResponse> surveyResponseModel)
   {
     super("View Survey Response", surveyResponseModel.getObject().getName());
 
     try
     {
-      add(new SurveyResponseReadOnlyPanel("surveyResponse", surveyResponseModel));
-
-      // The "backLink" link
-      Link<Void> backLink = new Link<Void>("backLink")
+      // The "backTopLink" link
+      Link<Void> backTopLink = new Link<Void>("backTopLink")
       {
         private static final long serialVersionUID = 1000000;
 
@@ -72,7 +71,23 @@ public class ViewSurveyResponsePage extends TemplateWebPage
           setResponsePage(previousPage.getPage());
         }
       };
-      add(backLink);
+      add(backTopLink);
+
+      // The "surveyResponse" panel
+      add(new SurveyResponseReadOnlyPanel("surveyResponse", surveyResponseModel));
+
+      // The "backBottomLink" link
+      Link<Void> backBottomLink = new Link<Void>("backBottomLink")
+      {
+        private static final long serialVersionUID = 1000000;
+
+        @Override
+        public void onClick()
+        {
+          setResponsePage(previousPage.getPage());
+        }
+      };
+      add(backBottomLink);
     }
     catch (Throwable e)
     {

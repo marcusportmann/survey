@@ -106,7 +106,8 @@ public class FilteredSurveyResponseSummaryDataProvider
     {
       List<SurveyResponseSummary> allSurveyResponses = StringUtil.isNullOrEmpty(filter)
           ? surveyService.getSurveyResponseSummariesForSurveyInstance(surveyInstanceId)
-          : surveyService.getFilteredSurveyResponseSummariesForSurveyInstance(surveyInstanceId, filter);
+          : surveyService.getFilteredSurveyResponseSummariesForSurveyInstance(surveyInstanceId,
+              filter);
 
       return allSurveyResponses.subList((int) first, (int) Math.min(first + count,
           allSurveyResponses.size())).iterator();

@@ -20,7 +20,6 @@ package digital.survey.web.pages;
 
 import digital.survey.model.ISurveyService;
 import digital.survey.model.SurveyDefinition;
-import digital.survey.model.SurveyDefinition;
 import digital.survey.web.SurveySecurity;
 import digital.survey.web.components.SurveyDefinitionInputPanel;
 import guru.mmp.application.web.WebApplicationException;
@@ -73,10 +72,10 @@ class AddSurveyDefinitionPage extends TemplateWebPage
       WebSession webSession = getWebApplicationSession();
 
       IModel<SurveyDefinition> surveyDefinitionModel = new Model<>(new SurveyDefinition(
-        UUID.randomUUID(), 1, webSession.getOrganisation(), "", ""));
+          UUID.randomUUID(), 1, webSession.getOrganisation(), "", ""));
 
       Form<SurveyDefinition> addForm = new Form<>("addForm", new CompoundPropertyModel<>(
-        surveyDefinitionModel));
+          surveyDefinitionModel));
 
       addForm.add(new SurveyDefinitionInputPanel("surveyDefinition", surveyDefinitionModel));
 

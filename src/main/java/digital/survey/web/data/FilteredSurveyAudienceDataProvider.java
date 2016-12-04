@@ -13,11 +13,11 @@ package digital.survey.web.data;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import digital.survey.model.ISurveyService;
+import digital.survey.model.SurveyAudience;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.data.InjectableDataProvider;
 import guru.mmp.common.util.StringUtil;
-import digital.survey.model.ISurveyService;
-import digital.survey.model.SurveyAudience;
 import org.apache.wicket.model.IModel;
 
 import javax.inject.Inject;
@@ -37,6 +37,11 @@ public class FilteredSurveyAudienceDataProvider extends InjectableDataProvider<S
 {
   private static final long serialVersionUID = 1000000;
 
+  /**
+   * The filter used to limit the matching survey audiences.
+   */
+  private String filter = "";
+
   /* Survey Service */
   @Inject
   private ISurveyService surveyService;
@@ -46,11 +51,6 @@ public class FilteredSurveyAudienceDataProvider extends InjectableDataProvider<S
    * audiences are associated with.
    */
   private UUID organisationId;
-
-  /**
-   * The filter used to limit the matching survey audiences.
-   */
-  private String filter = "";
 
   /**
    * Constructs a new <code>FilteredSurveyAudienceDataProvider</code>.

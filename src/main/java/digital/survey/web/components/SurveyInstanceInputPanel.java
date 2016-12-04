@@ -89,8 +89,7 @@ public class SurveyInstanceInputPanel extends InputPanel
     }
 
     // The "url" field
-    TextField<String> urlField = new TextField<>("url", new Model<>(
-        completeSurveyResponseUrl));
+    TextField<String> urlField = new TextField<>("url", new Model<>(completeSurveyResponseUrl));
     urlField.setRequired(false);
     urlField.setEnabled(false);
     urlContainer.add(urlField);

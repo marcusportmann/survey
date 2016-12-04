@@ -40,6 +40,11 @@ public class FilteredSurveyAudienceMemberDataProvider
   private static final long serialVersionUID = 1000000;
 
   /**
+   * The filter used to limit the matching survey audiences.
+   */
+  private String filter = "";
+
+  /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey audience the
    * survey audience members are associated with.
    */
@@ -48,11 +53,6 @@ public class FilteredSurveyAudienceMemberDataProvider
   /* Survey Service */
   @Inject
   private ISurveyService surveyService;
-
-  /**
-   * The filter used to limit the matching survey audiences.
-   */
-  private String filter = "";
 
   /**
    * Constructs a new <code>FilteredSurveyAudienceMemberDataProvider</code>.

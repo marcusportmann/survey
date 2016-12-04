@@ -37,6 +37,11 @@ public class FilteredSurveyInstanceDataProvider extends InjectableDataProvider<S
 {
   private static final long serialVersionUID = 1000000;
 
+  /**
+   * The filter used to limit the matching survey instances.
+   */
+  private String filter = "";
+
   /* Survey Service */
   @Inject
   private ISurveyService surveyService;
@@ -46,11 +51,6 @@ public class FilteredSurveyInstanceDataProvider extends InjectableDataProvider<S
    * instances are associated with.
    */
   private UUID surveyDefinitionId;
-
-  /**
-   * The filter used to limit the matching survey instances.
-   */
-  private String filter = "";
 
   /**
    * Constructs a new <code>FilteredSurveyInstanceDataProvider</code>.

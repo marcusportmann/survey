@@ -96,20 +96,25 @@ public class SurveyResult
 
     this.groupRatingResults = new ArrayList<>();
 
-    for (SurveyGroupRatingsDefinition groupRatingsDefinition : instance.getDefinition()
-        .getGroupRatingsDefinitions())
+    for (SurveyItemDefinition itemDefinition : instance.getDefinition().getItemDefinitions())
     {
-      for (SurveyGroupRatingDefinition groupRatingDefinition :
-          groupRatingsDefinition.getGroupRatingDefinitions())
+      if (itemDefinition instanceof SurveyGroupRatingsDefinition)
       {
-        SurveyGroupDefinition groupDefinition = instance.getDefinition().getGroupDefinition(
-            groupRatingsDefinition.getGroupDefinitionId());
+        SurveyGroupRatingsDefinition groupRatingsDefinition =
+            (SurveyGroupRatingsDefinition) itemDefinition;
 
-        for (SurveyGroupMemberDefinition groupMemberDefinition :
-            groupDefinition.getGroupMemberDefinitions())
+        for (SurveyGroupRatingDefinition groupRatingDefinition :
+            groupRatingsDefinition.getGroupRatingDefinitions())
         {
-          groupRatingResults.add(new SurveyGroupRatingResult(groupRatingsDefinition,
-              groupRatingDefinition, groupMemberDefinition));
+          SurveyGroupDefinition groupDefinition = instance.getDefinition().getGroupDefinition(
+              groupRatingsDefinition.getGroupDefinitionId());
+
+          for (SurveyGroupMemberDefinition groupMemberDefinition :
+              groupDefinition.getGroupMemberDefinitions())
+          {
+            groupRatingResults.add(new SurveyGroupRatingResult(groupRatingsDefinition,
+                groupRatingDefinition, groupMemberDefinition));
+          }
         }
       }
     }
@@ -244,8 +249,8 @@ public class SurveyResult
       UUID groupMemberDefinitionId)
   {
     return groupRatingResults.stream().filter(
-        surveyGroupRatingResult -> surveyGroupRatingResult.getGroupMemberDefinitionId()
-        .equals(groupMemberDefinitionId)).collect(Collectors.toList());
+        surveyGroupRatingResult -> surveyGroupRatingResult.getGroupMemberDefinitionId().equals(
+        groupMemberDefinitionId)).collect(Collectors.toList());
   }
 
   /**

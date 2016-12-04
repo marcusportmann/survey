@@ -13,10 +13,10 @@ package digital.survey.web.data;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import guru.mmp.application.web.WebApplicationException;
-import guru.mmp.application.web.data.InjectableDataProvider;
 import digital.survey.model.ISurveyService;
 import digital.survey.model.SurveyAudience;
+import guru.mmp.application.web.WebApplicationException;
+import guru.mmp.application.web.data.InjectableDataProvider;
 import org.apache.wicket.model.IModel;
 
 import javax.inject.Inject;
@@ -86,7 +86,8 @@ public class SurveyAudienceDataProvider extends InjectableDataProvider<SurveyAud
   {
     try
     {
-      List<SurveyAudience> allSurveyAudiences = surveyService.getSurveyAudiencesForOrganisation(organisationId);
+      List<SurveyAudience> allSurveyAudiences = surveyService.getSurveyAudiencesForOrganisation(
+          organisationId);
 
       return allSurveyAudiences.subList((int) first, (int) Math.min(first + count,
           allSurveyAudiences.size())).iterator();

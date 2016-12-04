@@ -13,13 +13,13 @@ package digital.survey.web.pages;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import digital.survey.model.ISurveyService;
+import digital.survey.model.SurveyResponse;
 import digital.survey.web.SurveySecurity;
 import digital.survey.web.components.SurveyResponseInputPanel;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.pages.WebPageSecurity;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
-import digital.survey.model.ISurveyService;
-import digital.survey.model.SurveyResponse;
 import org.apache.wicket.PageReference;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
@@ -45,7 +45,6 @@ public class UpdateSurveyResponsePage extends TemplateWebPage
 {
   /* Logger */
   private static final Logger logger = LoggerFactory.getLogger(UpdateSurveyResponsePage.class);
-
   private static final long serialVersionUID = 1000000;
 
   /**
@@ -60,14 +59,15 @@ public class UpdateSurveyResponsePage extends TemplateWebPage
    * @param previousPage        the previous page
    * @param surveyResponseModel the model for the survey response
    */
-  public UpdateSurveyResponsePage(PageReference previousPage, IModel<SurveyResponse> surveyResponseModel)
+  public UpdateSurveyResponsePage(PageReference previousPage,
+      IModel<SurveyResponse> surveyResponseModel)
   {
     super("Update Survey Response", surveyResponseModel.getObject().getName());
 
     try
     {
-      Form<SurveyResponse> updateForm = new Form<>("updateForm", new CompoundPropertyModel
-        <SurveyResponse>(surveyResponseModel));
+      Form<SurveyResponse> updateForm = new Form<>("updateForm",
+          new CompoundPropertyModel<SurveyResponse>(surveyResponseModel));
 
       updateForm.add(new SurveyResponseInputPanel("surveyResponse", surveyResponseModel));
 

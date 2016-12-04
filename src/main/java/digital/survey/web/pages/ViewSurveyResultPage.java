@@ -63,12 +63,8 @@ public class ViewSurveyResultPage extends TemplateWebPage
 
     try
     {
-      SurveyResult surveyResult = surveyService.getSurveyResultForSurveyInstance(surveyInstanceId);
-
-      add(new SurveyResultPanel("surveyResult", new Model<>(surveyResult)));
-
-      // The "backLink" link
-      Link<Void> backLink = new Link<Void>("backLink")
+      // The "backTopLink" link
+      Link<Void> backTopLink = new Link<Void>("backTopLink")
       {
         private static final long serialVersionUID = 1000000;
 
@@ -78,7 +74,25 @@ public class ViewSurveyResultPage extends TemplateWebPage
           setResponsePage(previousPage.getPage());
         }
       };
-      add(backLink);
+      add(backTopLink);
+
+      // The "surveyResult" panel
+      SurveyResult surveyResult = surveyService.getSurveyResultForSurveyInstance(surveyInstanceId);
+
+      add(new SurveyResultPanel("surveyResult", new Model<>(surveyResult)));
+
+      // The "backBottomLink" link
+      Link<Void> backBottomLink = new Link<Void>("backBottomLink")
+      {
+        private static final long serialVersionUID = 1000000;
+
+        @Override
+        public void onClick()
+        {
+          setResponsePage(previousPage.getPage());
+        }
+      };
+      add(backBottomLink);
     }
     catch (Throwable e)
     {

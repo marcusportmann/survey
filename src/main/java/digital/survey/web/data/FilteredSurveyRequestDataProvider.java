@@ -13,11 +13,11 @@ package digital.survey.web.data;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import digital.survey.model.ISurveyService;
+import digital.survey.model.SurveyRequest;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.data.InjectableDataProvider;
 import guru.mmp.common.util.StringUtil;
-import digital.survey.model.ISurveyService;
-import digital.survey.model.SurveyRequest;
 import org.apache.wicket.model.IModel;
 
 import javax.inject.Inject;
@@ -37,6 +37,11 @@ public class FilteredSurveyRequestDataProvider extends InjectableDataProvider<Su
 {
   private static final long serialVersionUID = 1000000;
 
+  /**
+   * The filter used to limit the matching survey requests.
+   */
+  private String filter = "";
+
   /* Survey Service */
   @Inject
   private ISurveyService surveyService;
@@ -46,11 +51,6 @@ public class FilteredSurveyRequestDataProvider extends InjectableDataProvider<Su
    * requests are associated with.
    */
   private UUID surveyInstanceId;
-
-  /**
-   * The filter used to limit the matching survey requests.
-   */
-  private String filter = "";
 
   /**
    * Constructs a new <code>FilteredSurveyRequestDataProvider</code>.
@@ -104,18 +104,18 @@ public class FilteredSurveyRequestDataProvider extends InjectableDataProvider<Su
     try
     {
       List<SurveyRequest> allSurveyRequests = StringUtil.isNullOrEmpty(filter)
-        ? surveyService.getSurveyRequestsForSurveyInstance(surveyInstanceId)
-        : surveyService.getFilteredSurveyRequestsForSurveyInstance(surveyInstanceId, filter);
+          ? surveyService.getSurveyRequestsForSurveyInstance(surveyInstanceId)
+          : surveyService.getFilteredSurveyRequestsForSurveyInstance(surveyInstanceId, filter);
 
       return allSurveyRequests.subList((int) first, (int) Math.min(first + count,
-        allSurveyRequests.size())).iterator();
+          allSurveyRequests.size())).iterator();
     }
     catch (Throwable e)
     {
       throw new WebApplicationException(String.format(
-        "Failed to load the survey requests for the survey instance (%s)"
+          "Failed to load the survey requests for the survey instance (%s)"
           + " matching the filter (%s) from index (%d) to (%d)", surveyInstanceId, filter, first,
-        first + count - 1), e);
+          first + count - 1), e);
     }
   }
 
@@ -155,14 +155,14 @@ public class FilteredSurveyRequestDataProvider extends InjectableDataProvider<Su
     try
     {
       return StringUtil.isNullOrEmpty(filter)
-        ? surveyService.getNumberOfSurveyRequestsForSurveyInstance(surveyInstanceId)
-        : surveyService.getNumberOfFilteredSurveyRequestsForSurveyInstance(surveyInstanceId,
-          filter);
+          ? surveyService.getNumberOfSurveyRequestsForSurveyInstance(surveyInstanceId)
+          : surveyService.getNumberOfFilteredSurveyRequestsForSurveyInstance(surveyInstanceId,
+              filter);
     }
     catch (Throwable e)
     {
       throw new WebApplicationException(
-        "Failed to retrieve the number of survey requests for the survey instance ("
+          "Failed to retrieve the number of survey requests for the survey instance ("
           + surveyInstanceId + ") matching the filter (" + filter + ")", e);
     }
   }

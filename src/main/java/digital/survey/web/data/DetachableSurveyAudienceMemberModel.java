@@ -13,10 +13,10 @@ package digital.survey.web.data;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import digital.survey.model.ISurveyService;
 import digital.survey.model.SurveyAudienceMember;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.data.InjectableLoadableDetachableModel;
-import digital.survey.model.ISurveyService;
 
 import javax.inject.Inject;
 import java.util.UUID;

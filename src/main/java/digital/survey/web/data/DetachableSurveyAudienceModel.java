@@ -14,9 +14,9 @@ package digital.survey.web.data;
 //~--- non-JDK imports --------------------------------------------------------
 
 import digital.survey.model.ISurveyService;
+import digital.survey.model.SurveyAudience;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.data.InjectableLoadableDetachableModel;
-import digital.survey.model.SurveyAudience;
 
 import javax.inject.Inject;
 import java.util.UUID;

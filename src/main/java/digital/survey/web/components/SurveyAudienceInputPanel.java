@@ -16,11 +16,6 @@ package digital.survey.web.components;
 import guru.mmp.application.web.template.components.InputPanel;
 import guru.mmp.application.web.template.components.TextFieldWithFeedback;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.form.upload.FileUpload;
-import org.apache.wicket.markup.html.form.upload.FileUploadField;
-import org.apache.wicket.model.PropertyModel;
-
-import java.util.List;
 
 //~--- JDK imports ------------------------------------------------------------
 

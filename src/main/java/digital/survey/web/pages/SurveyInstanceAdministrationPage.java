@@ -252,7 +252,7 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
               SurveyInstance surveyInstance = item.getModelObject();
 
               ViewSurveyResultPage page = new ViewSurveyResultPage(getPageReference(),
-                surveyInstance.getId(), surveyInstance.getName());
+                  surveyInstance.getId(), surveyInstance.getName());
 
               setResponsePage(page);
             }

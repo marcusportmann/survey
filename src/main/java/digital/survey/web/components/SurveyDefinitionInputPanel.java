@@ -13,19 +13,13 @@ package digital.survey.web.components;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import digital.survey.model.*;
-import guru.mmp.application.web.components.StringSelectOption;
-import guru.mmp.application.web.template.components.DropDownChoiceWithFeedback;
+import digital.survey.model.SurveyDefinition;
+import digital.survey.model.SurveyGroupRatingsDefinition;
+import digital.survey.model.SurveyItemDefinition;
 import guru.mmp.application.web.template.components.InputPanel;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-
-import java.util.List;
 
 //~--- JDK imports ------------------------------------------------------------
 
@@ -50,43 +44,19 @@ public class SurveyDefinitionInputPanel extends InputPanel
 
     SurveyDefinition surveyDefinition = surveyDefinitionModel.getObject();
 
-    add(new ListView<SurveyGroupRatingsDefinition>("groupRatingsDefinition",
-      surveyDefinition.getGroupRatingsDefinitions())
-    {
-      @Override
-      protected void populateItem(ListItem<SurveyGroupRatingsDefinition> item)
-      {
-        SurveyGroupRatingsDefinition groupRatingsDefinition = item.getModelObject();
-
-        List<SurveyGroupRatingDefinition> groupRatingDefinitions =
-          groupRatingsDefinition.getGroupRatingDefinitions();
-
-        item.add(new ListView<SurveyGroupRatingDefinition>("groupRatingDefinition",
-          groupRatingDefinitions)
+    add(new ListView<SurveyItemDefinition>("itemDefinition", surveyDefinition.getItemDefinitions())
         {
           @Override
-          protected void populateItem(ListItem<SurveyGroupRatingDefinition> item)
+          protected void populateItem(ListItem<SurveyItemDefinition> item)
           {
-            SurveyGroupRatingDefinition groupRatingDefinition = item.getModelObject();
+            SurveyItemDefinition itemDefinition = item.getModelObject();
 
-            item.add(new Label("name", groupRatingDefinition.getName()));
+            if (itemDefinition instanceof SurveyGroupRatingsDefinition)
+            {
+              item.add(new SurveyGroupRatingsDefinitionInputPanel("itemDefinitionPanel",
+                  (SurveyGroupRatingsDefinition) itemDefinition, surveyDefinitionModel));
+            }
           }
         });
-
-        item.add(new ListView<SurveyGroupMemberDefinition>("groupMemberDefinition",
-          surveyDefinition.getGroupDefinition(groupRatingsDefinition.getGroupDefinitionId())
-            .getGroupMemberDefinitions())
-        {
-          @Override
-          protected void populateItem(ListItem<SurveyGroupMemberDefinition> item)
-          {
-            SurveyGroupMemberDefinition groupMemberDefinition = item.getModelObject();
-
-            item.add(new Label("name", groupMemberDefinition.getName()));
-          }
-        });
-
-      }
-    });
   }
 }

@@ -18,7 +18,6 @@ import digital.survey.model.SurveyInstance;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.pages.AnonymousOnlyWebPage;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.link.Link;
 
 import javax.inject.Inject;
@@ -60,9 +59,11 @@ public class HomePage extends TemplateWebPage
       {
         try
         {
-          SurveyInstance surveyInstance = surveyService.getSurveyInstance(UUID.fromString("b222aa15-715f-4752-923d-8f33ee8a1736"));
+          SurveyInstance surveyInstance = surveyService.getSurveyInstance(UUID.fromString(
+              "b222aa15-715f-4752-923d-8f33ee8a1736"));
 
-          setResponsePage(new ViewSurveyResultPage(getPageReference(), surveyInstance.getId(), surveyInstance.getName()));
+          setResponsePage(new ViewSurveyResultPage(getPageReference(), surveyInstance.getId(),
+              surveyInstance.getName()));
         }
         catch (Throwable e)
         {

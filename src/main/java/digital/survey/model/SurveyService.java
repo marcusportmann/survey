@@ -1929,9 +1929,9 @@ public class SurveyService
             surveyResponse.getGroupRatingResponses())
         {
           SurveyGroupRatingResult groupRatingResult = surveyResult.getGroupRatingResult(
-            groupRatingResponse.getGroupRatingsDefinitionId(),
-            groupRatingResponse.getGroupRatingDefinitionId(),
-            groupRatingResponse.getGroupMemberDefinitionId());
+              groupRatingResponse.getGroupRatingsDefinitionId(),
+              groupRatingResponse.getGroupRatingDefinitionId(),
+              groupRatingResponse.getGroupMemberDefinitionId());
 
           if (groupRatingResult != null)
           {

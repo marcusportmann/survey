@@ -138,20 +138,25 @@ public class SurveyResponse
     this.responded = new Date();
     this.groupRatingResponses = new ArrayList<>();
 
-    for (SurveyGroupRatingsDefinition groupRatingsDefinition : instance.getDefinition()
-        .getGroupRatingsDefinitions())
+    for (SurveyItemDefinition itemDefinition : instance.getDefinition().getItemDefinitions())
     {
-      for (SurveyGroupRatingDefinition groupRatingDefinition :
-          groupRatingsDefinition.getGroupRatingDefinitions())
+      if (itemDefinition instanceof SurveyGroupRatingsDefinition)
       {
-        SurveyGroupDefinition groupDefinition = instance.getDefinition().getGroupDefinition(
-            groupRatingsDefinition.getGroupDefinitionId());
+        SurveyGroupRatingsDefinition groupRatingsDefinition =
+            (SurveyGroupRatingsDefinition) itemDefinition;
 
-        for (SurveyGroupMemberDefinition groupMemberDefinition :
-            groupDefinition.getGroupMemberDefinitions())
+        for (SurveyGroupRatingDefinition groupRatingDefinition :
+            groupRatingsDefinition.getGroupRatingDefinitions())
         {
-          groupRatingResponses.add(new SurveyGroupRatingResponse(groupRatingsDefinition,
-              groupRatingDefinition, groupMemberDefinition));
+          SurveyGroupDefinition groupDefinition = instance.getDefinition().getGroupDefinition(
+              groupRatingsDefinition.getGroupDefinitionId());
+
+          for (SurveyGroupMemberDefinition groupMemberDefinition :
+              groupDefinition.getGroupMemberDefinitions())
+          {
+            groupRatingResponses.add(new SurveyGroupRatingResponse(groupRatingsDefinition,
+                groupRatingDefinition, groupMemberDefinition));
+          }
         }
       }
     }
