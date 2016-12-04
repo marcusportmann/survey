@@ -30,7 +30,8 @@ import java.util.UUID;
  *
  * @author Marcus Portmann
  */
-@JsonPropertyOrder({ "id", "typeId", "name", "label", "description", "groupDefinitionId", "displayRatingsUsingGradient" })
+@JsonPropertyOrder({ "id", "typeId", "name", "label", "description", "groupDefinitionId",
+    "displayRatingsUsingGradient" })
 
 public class SurveyGroupRatingsDefinition extends SurveyItemDefinition
   implements Serializable
@@ -39,7 +40,7 @@ public class SurveyGroupRatingsDefinition extends SurveyItemDefinition
    * The Universally Unique Identifier (UUID) used to uniquely identify the type of survey item
    * definition for the survey group ratings definition.
    */
-  public static final UUID TYPE_ID = UUID.fromString("aded36bd-bc3d-4157-99f6-b4d91825de5d");
+  private static final UUID TYPE_ID = UUID.fromString("aded36bd-bc3d-4157-99f6-b4d91825de5d");
 
   /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey group definition
@@ -86,8 +87,8 @@ public class SurveyGroupRatingsDefinition extends SurveyItemDefinition
    *                                    displayed using a color gradient when viewing the survey
    *                                    result
    */
-  public SurveyGroupRatingsDefinition(UUID id, String name, String label, String description, UUID groupDefinitionId,
-      boolean displayRatingsUsingGradient)
+  public SurveyGroupRatingsDefinition(UUID id, String name, String label, String description,
+      UUID groupDefinitionId, boolean displayRatingsUsingGradient)
   {
     super(id, TYPE_ID, name, label, description);
 

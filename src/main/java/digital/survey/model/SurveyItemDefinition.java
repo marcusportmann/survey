@@ -18,7 +18,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import java.util.List;
 import java.util.UUID;
 
 //~--- JDK imports ------------------------------------------------------------
@@ -136,9 +135,11 @@ public class SurveyItemDefinition
   }
 
   /**
-   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey item definition.
+   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey item
+   * definition.
    *
-   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey item definition
+   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey item
+   *         definition
    */
   public UUID getId()
   {
@@ -166,9 +167,11 @@ public class SurveyItemDefinition
   }
 
   /**
-   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the type of survey item definition.
+   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the type of survey
+   * item definition.
    *
-   * @return the Universally Unique Identifier (UUID) used to uniquely identify the type of survey item definition
+   * @return the Universally Unique Identifier (UUID) used to uniquely identify the type of survey
+   *         item definition
    */
   public UUID getTypeId()
   {
@@ -186,9 +189,11 @@ public class SurveyItemDefinition
   }
 
   /**
-   * Set the Universally Unique Identifier (UUID) used to uniquely identify the survey item definition.
+   * Set the Universally Unique Identifier (UUID) used to uniquely identify the survey item
+   * definition.
    *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey item definition
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey item
+   *           definition
    */
   public void setId(UUID id)
   {
@@ -216,9 +221,11 @@ public class SurveyItemDefinition
   }
 
   /**
-   * Set the Universally Unique Identifier (UUID) used to uniquely identify the type of survey item definition.
+   * Set the Universally Unique Identifier (UUID) used to uniquely identify the type of survey item
+   * definition.
    *
-   * @param typeId the Universally Unique Identifier (UUID) used to uniquely identify the type of survey item definition
+   * @param typeId the Universally Unique Identifier (UUID) used to uniquely identify the type of
+   *               survey item definition
    */
   public void setTypeId(UUID typeId)
   {
@@ -226,45 +233,23 @@ public class SurveyItemDefinition
   }
 
   /**
-   * Retrieve the survey group rating definition.
+   * Returns the String representation of the survey item definition.
    *
-   * @param itemDefinitions the list of survey item definitions
-   * @param id              the Universally Unique Identifier (UUID) used to uniquely identify the
-   *                        survey group rating definition
-   *
-   * @return the survey group rating definition or <code>null</code> if the survey group rating
-   *         definition could not be found
+   * @return the String representation of the survey item definition
    */
-  public static SurveyGroupRatingDefinition getGroupRatingDefinition(List<SurveyItemDefinition> itemDefinitions, UUID id)
+  @Override
+  public String toString()
   {
-    for (SurveyItemDefinition itemDefinition : itemDefinitions)
-    {
-      if (itemDefinition instanceof SurveyGroupRatingsDefinition)
-      {
-        SurveyGroupRatingsDefinition groupRatingsDefinition = (SurveyGroupRatingsDefinition)itemDefinition;
+    int count;
 
-        for (SurveyGroupRatingDefinition groupRatingDefinition : groupRatingsDefinition.getGroupRatingDefinitions())
-        {
-          if (groupRatingDefinition.getId().equals(id))
-          {
-            return groupRatingDefinition;
-          }
-        }
-      }
-      else if (itemDefinition instanceof SurveySectionDefinition)
-      {
-        SurveySectionDefinition sectionDefinition = (SurveySectionDefinition)itemDefinition;
+    StringBuilder buffer = new StringBuilder();
 
-        SurveyGroupRatingDefinition groupRatingDefinition = sectionDefinition.getGroupRatingDefinition(id);
+    buffer.append("SurveyItemDefinition {");
+    buffer.append("id=\"").append(getId()).append("\", ");
+    buffer.append("typeId=\"").append(getTypeId()).append("\", ");
+    buffer.append("name=\"").append(getName()).append("\", ");
+    buffer.append("label=\"").append(getLabel()).append("\"}");
 
-        if (groupRatingDefinition != null)
-        {
-          return groupRatingDefinition;
-        }
-      }
-    }
-
-    return null;
+    return buffer.toString();
   }
-
 }
