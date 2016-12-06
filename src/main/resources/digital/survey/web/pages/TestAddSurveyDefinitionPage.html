@@ -25,7 +25,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body class="hold-transition skin-black sidebar-mini fixed">
+  <body class="hold-transition skin-black sidebar-mini">
     <div class="wrapper">
 
       <header class="main-header">
@@ -70,155 +70,354 @@
             <li class="active">Page</li>
           </ol>
 
-          <div class="surveyEditorActions">
-
-            <a href="#"><i class="fa fa-cogs"></i> Settings</a>
-
-
-          </div>
-
-          <div style="clear: both;"></div>
-
-
 
 
         </section>
+
+
+
+
+
+
+
         <section class="content">
           <wicket:extend>
 
-
-
-
-            <div wicket:id="tableContainer" class="table-container">
-                  <div class="table-header">
-                  </div>
-
-                  <div class="box box-form">
-                    <div class="box-body">
-
-                      <form wicket:id="addForm" id="addForm" class="form-horizontal">
-
-                        <div wicket:id="surveyDefinition"><wicket:panel>
-
-                          <div wicket:id="groupRatingsDefinition">
-                            <div class="table-responsive">
-                              <table class="table table-striped table-group-ratings">
-                                <thead>
-                                  <tr>
-                                    <th></th>
-                                    <th wicket:id="groupRatingDefinition"><div><span wicket:id="name">Accountability</span></div></th><th wicket:id="groupRatingDefinition"><div><span wicket:id="name">Competence</span></div></th><th wicket:id="groupRatingDefinition"><div><span wicket:id="name">Courage</span></div></th><th wicket:id="groupRatingDefinition"><div><span wicket:id="name">Fairness</span></div></th><th wicket:id="groupRatingDefinition"><div><span wicket:id="name">Integrity</span></div></th><th wicket:id="groupRatingDefinition"><div><span wicket:id="name">Openness</span></div></th><th wicket:id="groupRatingDefinition"><div><span wicket:id="name">Positive Attitude</span></div></th><th wicket:id="groupRatingDefinition"><div><span wicket:id="name">Teamwork</span></div></th><th wicket:id="groupRatingDefinition"><div><span wicket:id="name">Making a difference</span></div></th><th wicket:id="groupRatingDefinition"><div><span wicket:id="name">Trust</span></div></th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr wicket:id="groupMemberDefinition">
-                                    <td><span wicket:id="name" style="font-weight: bold;">CTO ELT</span></td>
-
-                                  </tr><tr wicket:id="groupMemberDefinition">
-                                  <td><span wicket:id="name" style="font-weight: bold;">Peter</span></td>
-
-                                </tr><tr wicket:id="groupMemberDefinition">
-                                  <td><span wicket:id="name" style="font-weight: bold;">Adriaan</span></td>
-
-                                </tr><tr wicket:id="groupMemberDefinition">
-                                  <td><span wicket:id="name" style="font-weight: bold;">Alapan</span></td>
-
-                                </tr><tr wicket:id="groupMemberDefinition">
-                                  <td><span wicket:id="name" style="font-weight: bold;">Dan</span></td>
-
-                                </tr><tr wicket:id="groupMemberDefinition">
-                                  <td><span wicket:id="name" style="font-weight: bold;">Daryl</span></td>
-
-                                </tr><tr wicket:id="groupMemberDefinition">
-                                  <td><span wicket:id="name" style="font-weight: bold;">David</span></td>
-
-                                </tr><tr wicket:id="groupMemberDefinition">
-                                  <td><span wicket:id="name" style="font-weight: bold;">Francois</span></td>
-
-                                </tr><tr wicket:id="groupMemberDefinition">
-                                  <td><span wicket:id="name" style="font-weight: bold;">James</span></td>
-
-                                </tr><tr wicket:id="groupMemberDefinition">
-                                  <td><span wicket:id="name" style="font-weight: bold;">Kersh</span></td>
-
-                                </tr><tr wicket:id="groupMemberDefinition">
-                                  <td><span wicket:id="name" style="font-weight: bold;">Kevin</span></td>
-
-                                </tr><tr wicket:id="groupMemberDefinition">
-                                  <td><span wicket:id="name" style="font-weight: bold;">Linde-Marie</span></td>
-
-                                </tr><tr wicket:id="groupMemberDefinition">
-                                  <td><span wicket:id="name" style="font-weight: bold;">Manoj</span></td>
-
-                                </tr><tr wicket:id="groupMemberDefinition">
-                                  <td><span wicket:id="name" style="font-weight: bold;">Marcus</span></td>
-
-                                </tr><tr wicket:id="groupMemberDefinition">
-                                  <td><span wicket:id="name" style="font-weight: bold;">Mercia</span></td>
-
-                                </tr><tr wicket:id="groupMemberDefinition">
-                                  <td><span wicket:id="name" style="font-weight: bold;">Nicole</span></td>
-
-                                </tr><tr wicket:id="groupMemberDefinition">
-                                  <td><span wicket:id="name" style="font-weight: bold;">Lawrence</span></td>
-
-                                </tr><tr wicket:id="groupMemberDefinition">
-                                  <td><span wicket:id="name" style="font-weight: bold;">Richard</span></td>
-
-                                </tr><tr wicket:id="groupMemberDefinition">
-                                  <td><span wicket:id="name" style="font-weight: bold;">Sandra</span></td>
-
-                                </tr><tr wicket:id="groupMemberDefinition">
-                                  <td><span wicket:id="name" style="font-weight: bold;">Tendai</span></td>
-
-                                </tr><tr wicket:id="groupMemberDefinition">
-                                  <td><span wicket:id="name" style="font-weight: bold;">Debbie</span></td>
-
+            <div wicket:id="surveyDefinition" style="overflow-y: auto !important;">
+              <wicket:panel>
+                <div wicket:id="itemResponseReadOnly">
+                  <div wicket:id="itemResponseReadOnlyPanel">
+                    <wicket:panel>
+                      <div class="box box-form">
+                        <div class="box-body">
+                          <div class="table-responsive">
+                            <table class="table table-striped table-group-ratings">
+                              <thead>
+                                <tr>
+                                  <th></th>
+                                  <th wicket:id="groupRating">
+                                    <div><span wicket:id="name">Accountability</span></div>
+                                  </th>
+                                  <th wicket:id="groupRating">
+                                    <div><span wicket:id="name">Competence</span></div>
+                                  </th>
+                                  <th wicket:id="groupRating">
+                                    <div><span wicket:id="name">Courage</span></div>
+                                  </th>
+                                  <th wicket:id="groupRating">
+                                    <div><span wicket:id="name">Fairness</span></div>
+                                  </th>
+                                  <th wicket:id="groupRating">
+                                    <div><span wicket:id="name">Integrity</span></div>
+                                  </th>
+                                  <th wicket:id="groupRating">
+                                    <div><span wicket:id="name">Openness</span></div>
+                                  </th>
+                                  <th wicket:id="groupRating">
+                                    <div><span wicket:id="name">Positive Attitude</span></div>
+                                  </th>
+                                  <th wicket:id="groupRating">
+                                    <div><span wicket:id="name">Teamwork</span></div>
+                                  </th>
+                                  <th wicket:id="groupRating">
+                                    <div><span wicket:id="name">Making a difference</span></div>
+                                  </th>
+                                  <th wicket:id="groupRating">
+                                    <div><span wicket:id="name">Trust</span></div>
+                                  </th>
                                 </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-
-                        </wicket:panel></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        <div class="form-group">
-                          <div class="col-xs-12">
-                            <button wicket:id="addButton" type="submit" class="btn btn-primary pull-right push-10-l">Add</button>
-                            <button wicket:id="cancelButton" type="submit" class="btn btn-default pull-right">Cancel</button>
+                              </thead>
+                              <tbody>
+                                <tr wicket:id="groupMember">
+                                  <td><span wicket:id="name">CTO ELT</span></td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                </tr>
+                                <tr wicket:id="groupMember">
+                                  <td><span wicket:id="name">Peter</span></td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                </tr>
+                                <tr wicket:id="groupMember">
+                                  <td><span wicket:id="name">Adriaan</span></td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                </tr>
+                                <tr wicket:id="groupMember">
+                                  <td><span wicket:id="name">Alapan</span></td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                </tr>
+                                <tr wicket:id="groupMember">
+                                  <td><span wicket:id="name">Dan</span></td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                </tr>
+                                <tr wicket:id="groupMember">
+                                  <td><span wicket:id="name">Daryl</span></td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                </tr>
+                                <tr wicket:id="groupMember">
+                                  <td><span wicket:id="name">David</span></td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                </tr>
+                                <tr wicket:id="groupMember">
+                                  <td><span wicket:id="name">Francois</span></td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                </tr>
+                                <tr wicket:id="groupMember">
+                                  <td><span wicket:id="name">James</span></td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                </tr>
+                                <tr wicket:id="groupMember">
+                                  <td><span wicket:id="name">Kersh</span></td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                </tr>
+                                <tr wicket:id="groupMember">
+                                  <td><span wicket:id="name">Kevin</span></td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                </tr>
+                                <tr wicket:id="groupMember">
+                                  <td><span wicket:id="name">Linde-Marie</span></td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                </tr>
+                                <tr wicket:id="groupMember">
+                                  <td><span wicket:id="name">Manoj</span></td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                </tr>
+                                <tr wicket:id="groupMember">
+                                  <td><span wicket:id="name">Marcus</span></td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                </tr>
+                                <tr wicket:id="groupMember">
+                                  <td><span wicket:id="name">Mercia</span></td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                </tr>
+                                <tr wicket:id="groupMember">
+                                  <td><span wicket:id="name">Nicole</span></td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                </tr>
+                                <tr wicket:id="groupMember">
+                                  <td><span wicket:id="name">Lawrence</span></td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                </tr>
+                                <tr wicket:id="groupMember">
+                                  <td><span wicket:id="name">Richard</span></td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                </tr>
+                                <tr wicket:id="groupMember">
+                                  <td><span wicket:id="name">Sandra</span></td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                </tr>
+                                <tr wicket:id="groupMember">
+                                  <td><span wicket:id="name">Tendai</span></td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                </tr>
+                                <tr wicket:id="groupMember">
+                                  <td><span wicket:id="name">Debbie</span></td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                  <td class="center">-</td>
+                                </tr>
+                              </tbody>
+                            </table>
                           </div>
                         </div>
-
-                      </form>
-              </div>
-
-
-
-              </div>
+                      </div>
+                    </wicket:panel>
+                  </div>
+                </div>
+              </wicket:panel>
             </div>
+
+            <div class="push-15-t">
+            <button wicket:id="addButton" type="submit" class="btn btn-primary pull-right push-10-l">Add</button>
+            <button wicket:id="cancelButton" type="submit" class="btn btn-white pull-right">Cancel</button>
+            <div class="clear-both"></div>
+          </div>
+
           </wicket:extend>
         </section>
       </div>

@@ -60,8 +60,8 @@ public class ViewSurveyResponsePage extends TemplateWebPage
 
     try
     {
-      // The "backTopLink" link
-      Link<Void> backTopLink = new Link<Void>("backTopLink")
+      // The "backLink" link
+      Link<Void> backLink = new Link<Void>("backLink")
       {
         private static final long serialVersionUID = 1000000;
 
@@ -71,23 +71,10 @@ public class ViewSurveyResponsePage extends TemplateWebPage
           setResponsePage(previousPage.getPage());
         }
       };
-      add(backTopLink);
+      add(backLink);
 
       // The "surveyResponse" panel
       add(new SurveyResponseReadOnlyPanel("surveyResponse", surveyResponseModel));
-
-      // The "backBottomLink" link
-      Link<Void> backBottomLink = new Link<Void>("backBottomLink")
-      {
-        private static final long serialVersionUID = 1000000;
-
-        @Override
-        public void onClick()
-        {
-          setResponsePage(previousPage.getPage());
-        }
-      };
-      add(backBottomLink);
     }
     catch (Throwable e)
     {

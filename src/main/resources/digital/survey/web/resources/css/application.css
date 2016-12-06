@@ -206,16 +206,36 @@ div.grad-0 {background-color: rgba(255,0,0,0.5)}
   */
 }
 
+/*
 .surveyEditorActions
 {
+  padding-top: 10px;
+  padding-right: 15px;
+  background-color: #fff;
+}
+
+.surveyEditorActions a
+{
   float: right;
-  padding-top: 15px;
+}
+
+.surveyEditorActions a, .surveyEditorActions a:active, .surveyEditorActions a:focus
+{
+  color: #333;
+  text-decoration: none;
+}
+
+.surveyEditorActions a:hover
+{
+  color: #999;
 }
 
 .surveyEditorActions .fa
 {
   padding-right: 2px;
 }
+*/
+
 
 .surveyEditor
 {
@@ -252,6 +272,10 @@ div.grad-0 {background-color: rgba(255,0,0,0.5)}
   bottom: 0;
   */
 }
+
+
+
+
 
 
 
