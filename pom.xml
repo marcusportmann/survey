@@ -97,6 +97,7 @@
       <optional>true</optional>
     </dependency>
 
+    <!-- WildFly Swarm Dependencies -->
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>datasources-api</artifactId>
