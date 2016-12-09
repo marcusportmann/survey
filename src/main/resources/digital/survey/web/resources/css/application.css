@@ -87,12 +87,16 @@ table.table-group-ratings-definition > tbody > tr:last-child > td:first-child
 }
 
 table.table-group-ratings-definition > tbody > tr > td
+ {
+   font-size: 11px;
+   white-space: nowrap;
+   text-align: center;
+   vertical-align: middle;
+ }
+
+table.table-group-ratings-definition > tbody > tr > td:first-child
 {
-  font-size: 11px;
   font-weight: 600;
-  white-space: nowrap;
-  text-align: center;
-  vertical-align: middle;
 }
 
 table.table-group-ratings-definition > thead > tr > th > div > span, table.table-group-ratings-definition > tbody > tr > td > span

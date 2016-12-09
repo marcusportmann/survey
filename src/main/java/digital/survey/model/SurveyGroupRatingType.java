@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum SurveyGroupRatingType
 {
-  ONE_TO_TEN(1, "One To Ten"), YES_NO_NA(2, "Yes/No/NA");
+  ONE_TO_TEN(1, "One To Ten"), YES_NO_NA(2, "Yes,No,NA");
 
   private String description;
   private int code;

@@ -136,6 +136,19 @@ class SurveyGroupRatingsDefinitionInputPanel extends InputPanel
             }
 
             item.add(shiftDownLink);
+
+            item.add(new ListView<SurveyGroupRatingDefinition>("groupRatingType",
+                new PropertyModel<>(groupRatingsDefinitionModel, "groupRatingDefinitions"))
+            {
+              @Override
+              protected void populateItem(ListItem<SurveyGroupRatingDefinition> item)
+              {
+                SurveyGroupRatingDefinition groupRatingDefinition = item.getModelObject();
+
+                item.add(new Label("ratingType", groupRatingDefinition.getRatingType()
+                    .description()));
+              }
+            });
           }
         });
 
