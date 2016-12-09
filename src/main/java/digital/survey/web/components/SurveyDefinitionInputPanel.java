@@ -26,10 +26,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import java.util.UUID;
-
-//~--- JDK imports ------------------------------------------------------------
-
 /**
  * The <code>SurveyDefinitionInputPanel</code> class.
  *
@@ -40,6 +36,7 @@ public class SurveyDefinitionInputPanel extends InputPanel
   private static final long serialVersionUID = 1000000;
   private RemoveGroupRatingDefinitionDialog removeGroupRatingDefinitionDialog;
   private RemoveGroupMemberDefinitionDialog removeGroupMemberDefinitionDialog;
+  private WebMarkupContainer definitionContainer;
 
   /**
    * Constructs a new <code>SurveyDefinitionInputPanel</code>.
@@ -53,7 +50,7 @@ public class SurveyDefinitionInputPanel extends InputPanel
 
     setOutputMarkupId(true);
 
-    WebMarkupContainer definitionContainer = new WebMarkupContainer("definitionContainer");
+    definitionContainer = new WebMarkupContainer("definitionContainer");
     definitionContainer.setOutputMarkupId(true);
     add(definitionContainer);
 
@@ -78,36 +75,48 @@ public class SurveyDefinitionInputPanel extends InputPanel
         });
 
     // The dialog used to confirm the removal of a survey group rating definition
-    removeGroupRatingDefinitionDialog = new RemoveGroupRatingDefinitionDialog(definitionContainer);
+    removeGroupRatingDefinitionDialog = new RemoveGroupRatingDefinitionDialog();
     add(removeGroupRatingDefinitionDialog);
 
     // The dialog used to confirm the removal of a survey group member definition
-    removeGroupMemberDefinitionDialog = new RemoveGroupMemberDefinitionDialog(definitionContainer);
+    removeGroupMemberDefinitionDialog = new RemoveGroupMemberDefinitionDialog();
     add(removeGroupMemberDefinitionDialog);
+  }
+
+  /**
+   * Refresh the definition container.
+   *
+   * @param target the AJAX request target
+   */
+  void refreshDefinitionContainer(AjaxRequestTarget target)
+  {
+    target.add(definitionContainer);
   }
 
   /**
    * Show the remove survey group member definition dialog using Ajax.
    *
-   * @param target                the AJAX request target
-   * @param groupMemberDefinition the survey group member definition being removed
+   * @param target                     the AJAX request target
+   * @param groupMemberDefinitionModel the model for the survey group member definition being
+   *                                   removed
    */
   void showRemoveGroupMemberDefinitionDialog(AjaxRequestTarget target,
-      SurveyGroupMemberDefinition groupMemberDefinition)
+      IModel<SurveyGroupMemberDefinition> groupMemberDefinitionModel)
   {
-    removeGroupMemberDefinitionDialog.show(target, groupMemberDefinition);
+    removeGroupMemberDefinitionDialog.show(target, groupMemberDefinitionModel);
   }
 
   /**
    * Show the remove survey group rating definition dialog using Ajax.
    *
-   * @param target                the AJAX request target
-   * @param groupRatingDefinition the survey group rating definition being removed
+   * @param target                     the AJAX request target
+   * @param groupRatingDefinitionModel the model for the survey group rating definition being
+   *                                   removed
    */
   void showRemoveGroupRatingDefinitionDialog(AjaxRequestTarget target,
-      SurveyGroupRatingDefinition groupRatingDefinition)
+      IModel<SurveyGroupRatingDefinition> groupRatingDefinitionModel)
   {
-    removeGroupRatingDefinitionDialog.show(target, groupRatingDefinition);
+    removeGroupRatingDefinitionDialog.show(target, groupRatingDefinitionModel);
   }
 
   /**
@@ -116,21 +125,20 @@ public class SurveyDefinitionInputPanel extends InputPanel
   private class RemoveGroupMemberDefinitionDialog extends Dialog
   {
     private static final long serialVersionUID = 1000000;
-    private UUID id;
+    private IModel<SurveyGroupMemberDefinition> groupMemberDefinitionModel;
     private Label nameLabel;
 
     /**
      * Constructs a new <code>RemoveGroupMemberDefinitionDialog</code>.
-     *
-     * @param definitionContainer the survey definition container
      */
-    RemoveGroupMemberDefinitionDialog(WebMarkupContainer definitionContainer)
+    RemoveGroupMemberDefinitionDialog()
     {
       super("removeGroupMemberDefinitionDialog");
 
+      setOutputMarkupId(true);
+
       nameLabel = new Label("name", Model.of(""));
 
-      nameLabel.setOutputMarkupId(true);
       add(nameLabel);
 
       // The "removeLink" link
@@ -144,9 +152,10 @@ public class SurveyDefinitionInputPanel extends InputPanel
           SurveyDefinition surveyDefinition = (SurveyDefinition) SurveyDefinitionInputPanel
               .this.getDefaultModelObject();
 
-          surveyDefinition.removeGroupMemberDefinition(id);
+          surveyDefinition.removeGroupMemberDefinition(groupMemberDefinitionModel.getObject()
+              .getId());
 
-          target.add(definitionContainer);
+          SurveyDefinitionInputPanel.this.refreshDefinitionContainer(target);
 
           hide(target);
         }
@@ -157,16 +166,18 @@ public class SurveyDefinitionInputPanel extends InputPanel
     /**
      * Show the dialog using Ajax.
      *
-     * @param target                the AJAX request target
-     * @param groupMemberDefinition the survey group member definition being removed
+     * @param target                     the AJAX request target
+     * @param groupMemberDefinitionModel the model for the survey group member definition being
+     *                                   removed
      */
-    void show(AjaxRequestTarget target, SurveyGroupMemberDefinition groupMemberDefinition)
+    void show(AjaxRequestTarget target,
+        IModel<SurveyGroupMemberDefinition> groupMemberDefinitionModel)
     {
-      id = groupMemberDefinition.getId();
+      this.groupMemberDefinitionModel = groupMemberDefinitionModel;
 
-      nameLabel.setDefaultModelObject(groupMemberDefinition.getName());
+      nameLabel.setDefaultModel(new PropertyModel<>(groupMemberDefinitionModel, "name"));
 
-      target.add(nameLabel);
+      target.add(this);
 
       super.show(target);
     }
@@ -179,21 +190,19 @@ public class SurveyDefinitionInputPanel extends InputPanel
   private class RemoveGroupRatingDefinitionDialog extends Dialog
   {
     private static final long serialVersionUID = 1000000;
-    private UUID id;
+    private IModel<SurveyGroupRatingDefinition> groupRatingDefinitionModel;
     private Label nameLabel;
 
     /**
      * Constructs a new <code>RemoveGroupRatingDefinitionDialog</code>.
-     *
-     * @param definitionContainer the survey definition container
      */
-    RemoveGroupRatingDefinitionDialog(WebMarkupContainer definitionContainer)
+    RemoveGroupRatingDefinitionDialog()
     {
       super("removeGroupRatingDefinitionDialog");
 
-      nameLabel = new Label("name", Model.of(""));
+      setOutputMarkupId(true);
 
-      nameLabel.setOutputMarkupId(true);
+      nameLabel = new Label("name", Model.of(""));
       add(nameLabel);
 
       // The "removeLink" link
@@ -207,9 +216,10 @@ public class SurveyDefinitionInputPanel extends InputPanel
           SurveyDefinition surveyDefinition = (SurveyDefinition) SurveyDefinitionInputPanel
               .this.getDefaultModelObject();
 
-          surveyDefinition.removeGroupRatingDefinition(id);
+          surveyDefinition.removeGroupRatingDefinition(groupRatingDefinitionModel.getObject()
+              .getId());
 
-          target.add(definitionContainer);
+          SurveyDefinitionInputPanel.this.refreshDefinitionContainer(target);
 
           hide(target);
         }
@@ -220,16 +230,18 @@ public class SurveyDefinitionInputPanel extends InputPanel
     /**
      * Show the dialog using Ajax.
      *
-     * @param target                the AJAX request target
-     * @param groupRatingDefinition the survey group rating definition being removed
+     * @param target                     the AJAX request target
+     * @param groupRatingDefinitionModel the model for the survey group rating definition being
+     *                                   removed
      */
-    void show(AjaxRequestTarget target, SurveyGroupRatingDefinition groupRatingDefinition)
+    void show(AjaxRequestTarget target,
+        IModel<SurveyGroupRatingDefinition> groupRatingDefinitionModel)
     {
-      id = groupRatingDefinition.getId();
+      this.groupRatingDefinitionModel = groupRatingDefinitionModel;
 
-      nameLabel.setDefaultModelObject(groupRatingDefinition.getName());
+      nameLabel.setDefaultModel(new PropertyModel<>(groupRatingDefinitionModel, "name"));
 
-      target.add(nameLabel);
+      target.add(this);
 
       super.show(target);
     }

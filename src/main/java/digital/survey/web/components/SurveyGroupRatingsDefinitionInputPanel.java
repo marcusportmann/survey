@@ -13,10 +13,7 @@ package digital.survey.web.components;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import digital.survey.model.SurveyGroupDefinition;
-import digital.survey.model.SurveyGroupMemberDefinition;
-import digital.survey.model.SurveyGroupRatingDefinition;
-import digital.survey.model.SurveyGroupRatingsDefinition;
+import digital.survey.model.*;
 import guru.mmp.application.web.template.components.InputPanel;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -59,16 +56,16 @@ class SurveyGroupRatingsDefinitionInputPanel extends InputPanel
           @Override
           protected void populateItem(ListItem<SurveyGroupRatingDefinition> item)
           {
+            IModel<SurveyGroupRatingDefinition> groupRatingDefinitionModel = item.getModel();
+
             List<SurveyGroupRatingDefinition> groupRatingDefinitions = getList();
 
-            SurveyGroupRatingDefinition groupRatingDefinition = item.getModelObject();
+            int index = groupRatingDefinitions.indexOf(groupRatingDefinitionModel.getObject());
 
-            int index = groupRatingDefinitions.indexOf(groupRatingDefinition);
-
-            item.add(new Label("name", new PropertyModel(groupRatingDefinition, "name")));
+            item.add(new Label("name", new PropertyModel(groupRatingDefinitionModel, "name")));
 
             ShiftGroupRatingDefinitionLeftLink shiftLeftLink =
-                new ShiftGroupRatingDefinitionLeftLink("shiftLeftLink", groupRatingDefinition);
+                new ShiftGroupRatingDefinitionLeftLink("shiftLeftLink", groupRatingDefinitionModel);
 
             if (index == 0)
             {
@@ -77,10 +74,11 @@ class SurveyGroupRatingsDefinitionInputPanel extends InputPanel
 
             item.add(shiftLeftLink);
 
-            item.add(new RemoveGroupRatingDefinitionLink("removeLink", groupRatingDefinition));
+            item.add(new RemoveGroupRatingDefinitionLink("removeLink", groupRatingDefinitionModel));
 
             ShiftGroupRatingDefinitionRightLink shiftRightLink =
-                new ShiftGroupRatingDefinitionRightLink("shiftRightLink", groupRatingDefinition);
+                new ShiftGroupRatingDefinitionRightLink("shiftRightLink",
+                groupRatingDefinitionModel);
 
             if (index == (groupRatingDefinitions.size() - 1))
             {
@@ -94,7 +92,7 @@ class SurveyGroupRatingsDefinitionInputPanel extends InputPanel
     add(new AjaxLink("addGroupRatingDefinitionLink")
         {
           @Override
-          public void onClick(AjaxRequestTarget ajaxRequestTarget)
+          public void onClick(AjaxRequestTarget target)
           {
             System.out.println("[DEBUG] add survey group rating definition link clicked");
 
@@ -107,16 +105,16 @@ class SurveyGroupRatingsDefinitionInputPanel extends InputPanel
           @Override
           protected void populateItem(ListItem<SurveyGroupMemberDefinition> item)
           {
-            SurveyGroupMemberDefinition groupMemberDefinition = item.getModelObject();
+            IModel<SurveyGroupMemberDefinition> groupMemberDefinitionModel = item.getModel();
 
             List<SurveyGroupMemberDefinition> groupMemberDefinitions = getList();
 
-            int index = groupMemberDefinitions.indexOf(groupMemberDefinition);
+            int index = groupMemberDefinitions.indexOf(groupMemberDefinitionModel.getObject());
 
-            item.add(new Label("name", new PropertyModel(groupMemberDefinition, "name")));
+            item.add(new Label("name", new PropertyModel(groupMemberDefinitionModel, "name")));
 
             ShiftGroupMemberDefinitionUpLink shiftUpLink = new ShiftGroupMemberDefinitionUpLink(
-                "shiftUpLink", groupMemberDefinition);
+                "shiftUpLink", groupMemberDefinitionModel);
 
             if (index == 0)
             {
@@ -125,10 +123,10 @@ class SurveyGroupRatingsDefinitionInputPanel extends InputPanel
 
             item.add(shiftUpLink);
 
-            item.add(new RemoveGroupMemberDefinitionLink("removeLink", groupMemberDefinition));
+            item.add(new RemoveGroupMemberDefinitionLink("removeLink", groupMemberDefinitionModel));
 
             ShiftGroupMemberDefinitionDownLink shiftDownLink =
-                new ShiftGroupMemberDefinitionDownLink("shiftDownLink", groupMemberDefinition);
+                new ShiftGroupMemberDefinitionDownLink("shiftDownLink", item.getModel());
 
             if (index == (groupMemberDefinitions.size() - 1))
             {
@@ -155,7 +153,7 @@ class SurveyGroupRatingsDefinitionInputPanel extends InputPanel
     add(new AjaxLink("addGroupMemberDefinitionLink")
         {
           @Override
-          public void onClick(AjaxRequestTarget ajaxRequestTarget)
+          public void onClick(AjaxRequestTarget target)
           {
             System.out.println("[DEBUG] add survey group member definition link clicked");
 
@@ -180,28 +178,25 @@ class SurveyGroupRatingsDefinitionInputPanel extends InputPanel
     return null;
   }
 
-  class RemoveGroupMemberDefinitionLink extends AjaxLink
+  class RemoveGroupMemberDefinitionLink extends AjaxLink<SurveyGroupMemberDefinition>
   {
-    private SurveyGroupMemberDefinition groupMemberDefinition;
-
     /**
      * Constructs a new <code>RemoveGroupMemberDefinitionLink</code>.
      *
-     * @param id                    the non-null id of this component
-     * @param groupMemberDefinition the survey group member definition this link is associated with
+     * @param id                         the non-null id of this component
+     * @param groupMemberDefinitionModel the model for the survey group member definition this link
+     *                                   is associated with
      */
-    RemoveGroupMemberDefinitionLink(String id, SurveyGroupMemberDefinition groupMemberDefinition)
+    RemoveGroupMemberDefinitionLink(String id,
+        IModel<SurveyGroupMemberDefinition> groupMemberDefinitionModel)
     {
-      super(id);
-
-      this.groupMemberDefinition = groupMemberDefinition;
+      super(id, groupMemberDefinitionModel);
     }
 
     @Override
-    public void onClick(AjaxRequestTarget ajaxRequestTarget)
+    public void onClick(AjaxRequestTarget target)
     {
-      getSurveyDefinitionInputPanel().showRemoveGroupMemberDefinitionDialog(ajaxRequestTarget,
-          groupMemberDefinition);
+      getSurveyDefinitionInputPanel().showRemoveGroupMemberDefinitionDialog(target, getModel());
     }
   }
 
@@ -209,28 +204,25 @@ class SurveyGroupRatingsDefinitionInputPanel extends InputPanel
   /**
    * The <code>RemoveGroupRatingDefinitionLink</code> class.
    */
-  class RemoveGroupRatingDefinitionLink extends AjaxLink
+  class RemoveGroupRatingDefinitionLink extends AjaxLink<SurveyGroupRatingDefinition>
   {
-    private SurveyGroupRatingDefinition groupRatingDefinition;
-
     /**
      * Constructs a new <code>RemoveGroupRatingDefinitionLink</code>.
      *
-     * @param id                    the non-null id of this component
-     * @param groupRatingDefinition the survey group rating definition this link is associated with
+     * @param id                         the non-null id of this component
+     * @param groupRatingDefinitionModel the model for the survey group rating definition this link
+     *                                   is associated with
      */
-    RemoveGroupRatingDefinitionLink(String id, SurveyGroupRatingDefinition groupRatingDefinition)
+    RemoveGroupRatingDefinitionLink(String id,
+        IModel<SurveyGroupRatingDefinition> groupRatingDefinitionModel)
     {
-      super(id);
-
-      this.groupRatingDefinition = groupRatingDefinition;
+      super(id, groupRatingDefinitionModel);
     }
 
     @Override
-    public void onClick(AjaxRequestTarget ajaxRequestTarget)
+    public void onClick(AjaxRequestTarget target)
     {
-      getSurveyDefinitionInputPanel().showRemoveGroupRatingDefinitionDialog(ajaxRequestTarget,
-          groupRatingDefinition);
+      getSurveyDefinitionInputPanel().showRemoveGroupRatingDefinitionDialog(target, getModel());
     }
   }
 
@@ -238,33 +230,32 @@ class SurveyGroupRatingsDefinitionInputPanel extends InputPanel
   /**
    * The <code>ShiftGroupMemberDefinitionDownLink</code> class.
    */
-  class ShiftGroupMemberDefinitionDownLink extends AjaxLink
+  class ShiftGroupMemberDefinitionDownLink extends AjaxLink<SurveyGroupMemberDefinition>
   {
-    private SurveyGroupMemberDefinition groupMemberDefinition;
-
     /**
      * Constructs a new <code>ShiftGroupMemberDefinitionDownLink</code>.
      *
-     * @param id                    the non-null id of this component
-     * @param groupMemberDefinition the survey group member definition this link is associated with
+     * @param id                         the non-null id of this component
+     * @param groupMemberDefinitionModel the model for the survey group member definition this link
+     *                                   is associated with
      */
-    ShiftGroupMemberDefinitionDownLink(String id, SurveyGroupMemberDefinition groupMemberDefinition)
+    ShiftGroupMemberDefinitionDownLink(String id,
+        IModel<SurveyGroupMemberDefinition> groupMemberDefinitionModel)
     {
-      super(id);
-
-      this.groupMemberDefinition = groupMemberDefinition;
+      super(id, groupMemberDefinitionModel);
     }
 
     @Override
-    public void onClick(AjaxRequestTarget ajaxRequestTarget)
+    public void onClick(AjaxRequestTarget target)
     {
-//    SurveyDefinition surveyDefinition =
-//        (SurveyDefinition) getSurveyDefinitionInputPanel().getDefaultModelObject();
+      SurveyDefinitionInputPanel surveyDefinitionInputPanel = getSurveyDefinitionInputPanel();
 
-      // for (SurveyGroupDefinition )
+      SurveyDefinition surveyDefinition =
+          (SurveyDefinition) surveyDefinitionInputPanel.getDefaultModelObject();
 
-      System.out.println("[DEBUG] shift down link clicked for the survey group member definition: "
-          + groupMemberDefinition.getName());
+      // surveyDefinition.shiftGroupMemberDefinitionDown(getModel().getObject());
+
+      surveyDefinitionInputPanel.refreshDefinitionContainer(target);
     }
   }
 
@@ -272,88 +263,68 @@ class SurveyGroupRatingsDefinitionInputPanel extends InputPanel
   /**
    * The <code>ShiftGroupMemberDefinitionUpLink</code> class.
    */
-  class ShiftGroupMemberDefinitionUpLink extends AjaxLink
+  class ShiftGroupMemberDefinitionUpLink extends AjaxLink<SurveyGroupMemberDefinition>
   {
-    private SurveyGroupMemberDefinition groupMemberDefinition;
-
     /**
      * Constructs a new <code>ShiftGroupMemberDefinitionUpLink</code>.
      *
-     * @param id                    the non-null id of this component
-     * @param groupMemberDefinition the survey group member definition this link is associated with
+     * @param id                         the non-null id of this component
+     * @param groupMemberDefinitionModel the model for the survey group member definition this link
+     *                                   is associated with
      */
-    ShiftGroupMemberDefinitionUpLink(String id, SurveyGroupMemberDefinition groupMemberDefinition)
+    ShiftGroupMemberDefinitionUpLink(String id,
+        IModel<SurveyGroupMemberDefinition> groupMemberDefinitionModel)
     {
-      super(id);
-
-      this.groupMemberDefinition = groupMemberDefinition;
+      super(id, groupMemberDefinitionModel);
     }
 
     @Override
-    public void onClick(AjaxRequestTarget ajaxRequestTarget)
-    {
-      System.out.println("[DEBUG] shift up link clicked for the survey group member definition: "
-          + groupMemberDefinition.getName());
-    }
+    public void onClick(AjaxRequestTarget target) {}
   }
 
 
   /**
    * The <code>ShiftGroupRatingDefinitionLeftLink</code> class.
    */
-  class ShiftGroupRatingDefinitionLeftLink extends AjaxLink
+  class ShiftGroupRatingDefinitionLeftLink extends AjaxLink<SurveyGroupRatingDefinition>
   {
-    private SurveyGroupRatingDefinition groupRatingDefinition;
-
     /**
      * Constructs a new <code>ShiftGroupRatingDefinitionLeftLink</code>.
      *
-     * @param id                    the non-null id of this component
-     * @param groupRatingDefinition the survey group rating definition this link is associated with
+     * @param id                         the non-null id of this component
+     * @param groupRatingDefinitionModel the model for the survey group rating definition this link
+     *                                   is associated with
      */
-    ShiftGroupRatingDefinitionLeftLink(String id, SurveyGroupRatingDefinition groupRatingDefinition)
+    ShiftGroupRatingDefinitionLeftLink(String id,
+        IModel<SurveyGroupRatingDefinition> groupRatingDefinitionModel)
     {
-      super(id);
-
-      this.groupRatingDefinition = groupRatingDefinition;
+      super(id, groupRatingDefinitionModel);
     }
 
     @Override
-    public void onClick(AjaxRequestTarget ajaxRequestTarget)
-    {
-      System.out.println("[DEBUG] shift left link clicked for the survey group rating definition: "
-          + groupRatingDefinition.getName());
-    }
+    public void onClick(AjaxRequestTarget target) {}
   }
 
 
   /**
    * The <code>ShiftGroupRatingDefinitionRightLink</code> class.
    */
-  class ShiftGroupRatingDefinitionRightLink extends AjaxLink
+  class ShiftGroupRatingDefinitionRightLink extends AjaxLink<SurveyGroupRatingDefinition>
   {
-    private SurveyGroupRatingDefinition groupRatingDefinition;
-
     /**
      * Constructs a new <code>ShiftGroupRatingDefinitionRightLink</code>.
      *
-     * @param id                    the non-null id of this component
-     * @param groupRatingDefinition the survey group rating definition this link is associated with
+     * @param id                         the non-null id of this component
+     * @param groupRatingDefinitionModel the model for the survey group rating definition this link
+     *                                   is associated with
      */
     ShiftGroupRatingDefinitionRightLink(String id,
-        SurveyGroupRatingDefinition groupRatingDefinition)
+        IModel<SurveyGroupRatingDefinition> groupRatingDefinitionModel)
     {
-      super(id);
-
-      this.groupRatingDefinition = groupRatingDefinition;
+      super(id, groupRatingDefinitionModel);
     }
 
     @Override
-    public void onClick(AjaxRequestTarget ajaxRequestTarget)
-    {
-      System.out.println(
-          "[DEBUG] shift right link clicked for the survey group rating definition: "
-          + groupRatingDefinition.getName());
-    }
+    public void onClick(AjaxRequestTarget target) {}
   }
 }
