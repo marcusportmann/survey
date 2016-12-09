@@ -20,6 +20,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 
 import java.util.List;
 
@@ -30,161 +31,145 @@ import java.util.List;
  *
  * @author Marcus Portmann
  */
-public class SurveyGroupRatingsResultPanel extends InputPanel
+class SurveyGroupRatingsResultPanel extends InputPanel
 {
   /**
    * Constructs a new <code>SurveyGroupRatingsDefinitionInputPanel</code>.
    *
-   * @param id                     the non-null id of this component
-   * @param groupRatingsDefinition the survey group ratings definition
-   * @param surveyResultModel      the model for the survey result
+   * @param id                          the non-null id of this component
+   * @param groupRatingsDefinitionModel the model for the survey group ratings definition
+   * @param groupDefinitionModel        the model for the survey group definition
+   * @param surveyResultModel           the model for the survey result
    */
-  public SurveyGroupRatingsResultPanel(String id,
-      SurveyGroupRatingsDefinition groupRatingsDefinition, IModel<SurveyResult> surveyResultModel)
+  SurveyGroupRatingsResultPanel(String id,
+      IModel<SurveyGroupRatingsDefinition> groupRatingsDefinitionModel,
+      IModel<SurveyGroupDefinition> groupDefinitionModel, IModel<SurveyResult> surveyResultModel)
   {
     super(id);
 
-    SurveyResult surveyResult = surveyResultModel.getObject();
-
-    SurveyDefinition surveyDefinition = surveyResult.getInstance().getDefinition();
-
-    List<SurveyGroupRatingDefinition> groupRatingDefinitions =
-        groupRatingsDefinition.getGroupRatingDefinitions();
-
-    if (groupRatingDefinitions.size() > 0)
-    {
-      SurveyGroupRatingDefinition surveyGroupRatingDefinition = groupRatingDefinitions.get(0);
-
-      groupRatingDefinitions.add(new SurveyGroupRatingTotalDefinition("Total",
-          surveyGroupRatingDefinition.getRatingType()));
-    }
-
-    add(new ListView<SurveyGroupRatingDefinition>("groupRating", groupRatingDefinitions)
+    add(new ListView<SurveyGroupRatingDefinition>("groupRating", new PropertyModel<>(
+        groupRatingsDefinitionModel, "groupRatingDefinitions"))
         {
           @Override
           protected void populateItem(ListItem<SurveyGroupRatingDefinition> item)
           {
             SurveyGroupRatingDefinition groupRatingDefinition = item.getModelObject();
 
-            item.add(new Label("name", groupRatingDefinition.getName()));
+            item.add(new Label("name", new PropertyModel<>(groupRatingDefinition, "name")));
           }
         });
 
-    add(new ListView<SurveyGroupMemberDefinition>("groupMember",
-        surveyDefinition.getGroupDefinition(groupRatingsDefinition.getGroupDefinitionId())
-        .getGroupMemberDefinitions())
+    add(new ListView<SurveyGroupMemberDefinition>("groupMember", new PropertyModel<>(
+        groupDefinitionModel, "groupMemberDefinitions"))
         {
           @Override
           protected void populateItem(ListItem<SurveyGroupMemberDefinition> item)
           {
             SurveyGroupMemberDefinition groupMemberDefinition = item.getModelObject();
 
-            item.add(new Label("name", groupMemberDefinition.getName()));
+            SurveyGroupRatingsDefinition groupRatingsDefinition =
+                groupRatingsDefinitionModel.getObject();
 
-            item.add(new ListView<SurveyGroupRatingDefinition>("groupRatingResult",
-                groupRatingDefinitions)
+            SurveyResult surveyResult = surveyResultModel.getObject();
+
+            item.add(new Label("name", new PropertyModel<>(groupMemberDefinition, "name")));
+
+            item.add(new ListView<SurveyGroupRatingDefinition>("groupRatingResult", new PropertyModel<>(
+                groupRatingsDefinitionModel, "groupRatingDefinitions"))
             {
               @Override
               protected void populateItem(ListItem<SurveyGroupRatingDefinition> item)
               {
                 SurveyGroupRatingDefinition groupRatingDefinition = item.getModelObject();
 
-                if (groupRatingDefinition instanceof SurveyGroupRatingTotalDefinition)
+                if (groupRatingDefinition.getRatingType() == SurveyGroupRatingType.YES_NO_NA)
                 {
-                  List<SurveyGroupRatingResult> groupRatingResults =
-                      surveyResult.getGroupRatingResultsForGroupMember(
+                  SurveyGroupRatingResult groupRatingResult = surveyResult.getGroupRatingResult(
+                      groupRatingsDefinition.getId(), groupRatingDefinition.getId(),
                       groupMemberDefinition.getId());
 
-                  float totalAverageRating = 0;
-                  int totalNumberOfRatingsWithValidScore = 0;
+                  float averageRating = groupRatingResult.getAverageRating();
 
-                  for (SurveyGroupRatingResult groupRatingResult : groupRatingResults)
+                  if (averageRating == -1)
                   {
-                    float averageRating = groupRatingResult.getAverageRating();
+                    Label ratingLabel = new Label("rating", "-");
 
-                    totalAverageRating += (averageRating
-                        * groupRatingResult.getNumberOfRatingsWithValidScore());
-
-                    totalNumberOfRatingsWithValidScore +=
-                        groupRatingResult.getNumberOfRatingsWithValidScore();
-                  }
-
-                  float weightedTotalAverageRating = totalAverageRating
-                      / totalNumberOfRatingsWithValidScore;
-
-                  int grad = ((int) (weightedTotalAverageRating / 5)) * 5;
-
-                  // Label ratingLabel = new Label("rating", String.format(
-                  // "%3.0f%%<br><span class=\"num-ratings\">%d/%d</span>", weightedTotalAverageRating,
-                  // totalNumberOfRatings, maximumTotalNumberOfRatings));
-
-                  Label ratingLabel = new Label("rating", String.format("%3.0f%%",
-                      weightedTotalAverageRating));
-
-                  ratingLabel.setEscapeModelStrings(false);
-
-                  if (groupRatingsDefinition.getDisplayRatingsUsingGradient())
-                  {
-                    ratingLabel.add(new AttributeAppender("class", "grad-" + grad));
-                  }
-
-                  item.add(ratingLabel);
-                }
-                else if (groupRatingDefinition instanceof SurveyGroupRatingDefinition)
-                {
-                  if (groupRatingDefinition.getRatingType() == SurveyGroupRatingType.YES_NO_NA)
-                  {
-                    SurveyGroupRatingResult groupRatingResult = surveyResult.getGroupRatingResult(
-                        groupRatingsDefinition.getId(), groupRatingDefinition.getId(),
-                        groupMemberDefinition.getId());
-
-                    float averageRating = groupRatingResult.getAverageRating();
-
-                    if (averageRating == -1)
-                    {
-                      Label ratingLabel = new Label("rating", "-");
-
-                      item.add(ratingLabel);
-                    }
-                    else
-                    {
-                      int maxNumberOfRatings = groupRatingResult.getRatings().size();
-
-                      int grad = ((int) (averageRating / 5)) * 5;
-
-                      Label ratingLabel = new Label("rating", String.format(
-                          "%3.0f%%<br><span class=\"num-ratings\">%d/%d</span>", averageRating,
-                          groupRatingResult.getNumberOfRatingsWithValidScore(),
-                          maxNumberOfRatings));
-                      ratingLabel.setEscapeModelStrings(false);
-
-                      if (groupRatingsDefinition.getDisplayRatingsUsingGradient())
-                      {
-                        ratingLabel.add(new AttributeAppender("class", "grad-" + grad));
-                      }
-
-                      item.add(ratingLabel);
-                    }
+                    item.add(ratingLabel);
                   }
                   else
                   {
-                    throw new RuntimeException("Unsupported survey group rating item type ("
-                        + groupRatingDefinition.getRatingType() + ")");
+                    int maxNumberOfRatings = groupRatingResult.getRatings().size();
+
+                    int grad = ((int) (averageRating / 5)) * 5;
+
+                    Label ratingLabel = new Label("rating", String.format(
+                        "%3.0f%%<br><span class=\"num-ratings\">%d/%d</span>", averageRating,
+                        groupRatingResult.getNumberOfRatingsWithValidScore(), maxNumberOfRatings));
+                    ratingLabel.setEscapeModelStrings(false);
+
+                    if (groupRatingsDefinition.getDisplayRatingsUsingGradient())
+                    {
+                      ratingLabel.add(new AttributeAppender("class", "grad-" + grad));
+                    }
+
+                    item.add(ratingLabel);
                   }
+                }
+                else
+                {
+                  throw new RuntimeException("Unsupported survey group rating item type ("
+                      + groupRatingDefinition.getRatingType() + ")");
                 }
 
               }
             });
+
+            // Calculate and show the total
+            List<SurveyGroupRatingResult> groupRatingResults =
+                surveyResult.getGroupRatingResultsForGroupMember(groupMemberDefinition.getId());
+
+            float totalAverageRating = 0;
+            int totalNumberOfRatingsWithValidScore = 0;
+
+            for (SurveyGroupRatingResult groupRatingResult : groupRatingResults)
+            {
+              float averageRating = groupRatingResult.getAverageRating();
+
+              totalAverageRating += (averageRating
+                  * groupRatingResult.getNumberOfRatingsWithValidScore());
+
+              totalNumberOfRatingsWithValidScore +=
+                  groupRatingResult.getNumberOfRatingsWithValidScore();
+            }
+
+            float weightedTotalAverageRating = totalAverageRating
+                / totalNumberOfRatingsWithValidScore;
+
+            int grad = ((int) (weightedTotalAverageRating / 5)) * 5;
+
+            Label ratingLabel = new Label("total", String.format("%3.0f%%",
+                weightedTotalAverageRating));
+
+            ratingLabel.setEscapeModelStrings(false);
+
+            if (groupRatingsDefinition.getDisplayRatingsUsingGradient())
+            {
+              ratingLabel.add(new AttributeAppender("class", "grad-" + grad));
+            }
+
+            item.add(ratingLabel);
+
           }
         });
   }
 
+  @SuppressWarnings("unused")
   private String getColor(float min, float max, float value)
   {
     float green_max = 220;
     float red_max = 220;
-    float red = 0;
-    float green = 0;
+    float red;
+    float green;
     float blue = 0;
 
     if (value < max / 2)

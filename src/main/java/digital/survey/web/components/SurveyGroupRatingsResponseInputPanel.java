@@ -34,59 +34,57 @@ import java.util.List;
  *
  * @author Marcus Portmann
  */
-public class SurveyGroupRatingsResponseInputPanel extends InputPanel
+class SurveyGroupRatingsResponseInputPanel extends InputPanel
 {
   private static final long serialVersionUID = 1000000;
 
   /**
    * Constructs a new <code>SurveyGroupRatingsDefinitionInputPanel</code>.
    *
-   * @param id                     the non-null id of this component
-   * @param groupRatingsDefinition the survey group ratings definition
-   * @param surveyResponseModel    the model for the survey response
+   * @param id                          the non-null id of this component
+   * @param groupRatingsDefinitionModel the model for the survey group ratings definition
+   * @param groupDefinitionModel        the model for the survey group definition
+   * @param surveyResponseModel         the model for the survey response
    */
-  public SurveyGroupRatingsResponseInputPanel(String id,
-      SurveyGroupRatingsDefinition groupRatingsDefinition,
+  SurveyGroupRatingsResponseInputPanel(String id,
+      IModel<SurveyGroupRatingsDefinition> groupRatingsDefinitionModel,
+      IModel<SurveyGroupDefinition> groupDefinitionModel,
       IModel<SurveyResponse> surveyResponseModel)
   {
     super(id);
 
-    SurveyResponse surveyResponse = surveyResponseModel.getObject();
-
-    SurveyDefinition surveyDefinition = surveyResponse.getInstance().getDefinition();
-
-    List<SurveyGroupRatingDefinition> groupRatingDefinitions =
-        groupRatingsDefinition.getGroupRatingDefinitions();
-
-    add(new ListView<SurveyGroupRatingDefinition>("groupRating", groupRatingDefinitions)
+    add(new ListView<SurveyGroupRatingDefinition>("groupRating", new PropertyModel<>(
+        groupRatingsDefinitionModel, "groupRatingDefinitions"))
         {
           @Override
           protected void populateItem(ListItem<SurveyGroupRatingDefinition> item)
           {
-            SurveyGroupRatingDefinition groupRatingDefinition = item.getModelObject();
-
-            item.add(new Label("name", groupRatingDefinition.getName()));
+            item.add(new Label("name", new PropertyModel(item.getModel(), "name")));
           }
         });
 
-    add(new ListView<SurveyGroupMemberDefinition>("groupMember",
-        surveyDefinition.getGroupDefinition(groupRatingsDefinition.getGroupDefinitionId())
-        .getGroupMemberDefinitions())
+    add(new ListView<SurveyGroupMemberDefinition>("groupMember", new PropertyModel<>(
+        groupDefinitionModel, "groupMemberDefinitions"))
         {
           @Override
           protected void populateItem(ListItem<SurveyGroupMemberDefinition> item)
           {
             SurveyGroupMemberDefinition groupMemberDefinition = item.getModelObject();
 
-            item.add(new Label("name", groupMemberDefinition.getName()));
+            item.add(new Label("name", new PropertyModel<>(groupMemberDefinition, "name")));
 
             item.add(new ListView<SurveyGroupRatingDefinition>("groupRatingResponse",
-                groupRatingDefinitions)
+                new PropertyModel<>(groupRatingsDefinitionModel, "groupRatingDefinitions"))
             {
               @Override
               protected void populateItem(ListItem<SurveyGroupRatingDefinition> item)
               {
                 SurveyGroupRatingDefinition groupRatingDefinition = item.getModelObject();
+
+                SurveyGroupRatingsDefinition groupRatingsDefinition =
+                    groupRatingsDefinitionModel.getObject();
+
+                SurveyResponse surveyResponse = surveyResponseModel.getObject();
 
                 if (groupRatingDefinition.getRatingType() == SurveyGroupRatingType.YES_NO_NA)
                 {

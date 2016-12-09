@@ -2,8 +2,55 @@
 <html xmlns:wicket="http://wicket.apache.org">
   <body>
     <wicket:panel>
-      <div wicket:id="itemDefinition">
-        <div wicket:id="itemDefinitionPanel"></div>
+
+      <div id="removeGroupRatingDefinitionDialog" wicket:id="removeGroupRatingDefinitionDialog" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title">Remove Survey Group Rating Definition</h4>
+            </div>
+            <div class="modal-body">
+              <p>
+                Are you sure you wish to remove the survey group rating definition <b><span wicket:id="name">[Name]</span></b>?
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+              <a wicket:id="removeLink" class="btn btn-primary">Yes</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="removeGroupMemberDefinitionDialog" wicket:id="removeGroupMemberDefinitionDialog" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title">Remove Survey Group Member Definition</h4>
+            </div>
+            <div class="modal-body">
+              <p>
+                Are you sure you wish to remove the survey group member definition <b><span wicket:id="name">[Name]</span></b>?
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+              <a wicket:id="removeLink" class="btn btn-primary">Yes</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div wicket:id="definitionContainer">
+        <div wicket:id="itemDefinition">
+          <div wicket:id="itemDefinitionPanel"></div>
+        </div>
       </div>
     </wicket:panel>
   </body>

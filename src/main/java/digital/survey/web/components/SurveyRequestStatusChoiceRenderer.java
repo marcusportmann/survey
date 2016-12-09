@@ -27,6 +27,7 @@ import java.util.List;
  *
  * @author Marcus Portmann
  */
+@SuppressWarnings("unused")
 public class SurveyRequestStatusChoiceRenderer
   implements IChoiceRenderer<SurveyRequestStatus>
 {

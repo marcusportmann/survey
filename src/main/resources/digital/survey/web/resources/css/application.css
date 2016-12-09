@@ -55,8 +55,10 @@ span.copyright-name:before
   content: "Marcus Portmann";
 }
 
-
-
+table.table-group-ratings-definition
+{
+  width: auto;
+}
 
 table.table-group-ratings-definition > thead > tr > th, table.table-group-ratings-definition > tbody > tr > td
 {
@@ -70,14 +72,24 @@ table.table-group-ratings-definition > thead > tr > th, table.table-group-rating
 
 table.table-group-ratings-definition > thead > tr > th:last-child
 {
-  min-width: 25px;
-  max-width: 25px;
-  width: 25px;
+  max-width: 30px;
+  width: 30px;
+  border: none;
+  text-align: right;
+}
+
+table.table-group-ratings-definition > tbody > tr:last-child > td:first-child
+{
+  padding-top: 10px;
+  text-align: center;
+  border: none;
+  background-color: #fff;
 }
 
 table.table-group-ratings-definition > tbody > tr > td
 {
   font-size: 11px;
+  font-weight: 600;
   white-space: nowrap;
   text-align: center;
   vertical-align: middle;

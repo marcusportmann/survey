@@ -21,6 +21,8 @@ import guru.mmp.application.web.template.components.InputPanel;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 
 /**
  * The <code>SurveyResultPanel</code> class.
@@ -41,11 +43,11 @@ public class SurveyResultPanel extends InputPanel
   {
     super(id, surveyResultModel);
 
-    SurveyResult surveyResult = surveyResultModel.getObject();
+    IModel<SurveyDefinition> surveyDefinitionModel = new PropertyModel<>(surveyResultModel,
+        "instance.definition");
 
-    SurveyDefinition surveyDefinition = surveyResult.getInstance().getDefinition();
-
-    add(new ListView<SurveyItemDefinition>("itemResult", surveyDefinition.getItemDefinitions())
+    add(new ListView<SurveyItemDefinition>("itemResult", new PropertyModel<>(surveyDefinitionModel,
+        "itemDefinitions"))
         {
           @Override
           protected void populateItem(ListItem<SurveyItemDefinition> item)
@@ -54,8 +56,13 @@ public class SurveyResultPanel extends InputPanel
 
             if (itemDefinition instanceof SurveyGroupRatingsDefinition)
             {
-              item.add(new SurveyGroupRatingsResultPanel("itemResultPanel",
-                  (SurveyGroupRatingsDefinition) itemDefinition, surveyResultModel));
+              SurveyGroupRatingsDefinition groupRatingsDefinition =
+                  (SurveyGroupRatingsDefinition) itemDefinition;
+
+              item.add(new SurveyGroupRatingsResultPanel("itemResultPanel", new Model<>(
+                  groupRatingsDefinition), new Model<>(surveyDefinitionModel.getObject()
+                  .getGroupDefinition(groupRatingsDefinition.getGroupDefinitionId())),
+                  surveyResultModel));
             }
           }
         });
