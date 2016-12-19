@@ -31,7 +31,7 @@ import java.util.UUID;
  * @author Marcus Portmann
  */
 @JsonPropertyOrder({ "id", "typeId", "name", "label", "description", "groupDefinitionId",
-    "displayRatingsUsingGradient" })
+    "groupRatingDefinitions", "displayRatingsUsingGradient" })
 
 public class SurveyGroupRatingsDefinition extends SurveyItemDefinition
   implements Serializable

@@ -107,6 +107,18 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
 }
 
 
+.item-definition .box
+{
+  position: relative;
+  border: 1px solid #e9e9e9;
+  box-shadow: none !important;
+  margin-bottom: 5px;
+}
+
+.item-definition-header
+{
+  position: relative;
+}
 
 
 
@@ -255,86 +267,7 @@ div.grad-0 {background-color: rgba(255,0,0,0.5)}
 
 
 
-.surveyEditor
-{
 
-
-  /*
-  min-height: 250px;
-  padding: 15px;
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 15px;
-  padding-right: 15px
-  */
-}
-
-/*
-.surveyEditorActions
-{
-  padding-top: 10px;
-  padding-right: 15px;
-  background-color: #fff;
-}
-
-.surveyEditorActions a
-{
-  float: right;
-}
-
-.surveyEditorActions a, .surveyEditorActions a:active, .surveyEditorActions a:focus
-{
-  color: #333;
-  text-decoration: none;
-}
-
-.surveyEditorActions a:hover
-{
-  color: #999;
-}
-
-.surveyEditorActions .fa
-{
-  padding-right: 2px;
-}
-*/
-
-
-.surveyEditor
-{
-  /*
-  position: fixed;
-  border: 1px solid blue;
-  top: 57px;
-  left: 0;
-  right: 0;
-  bottom: 60px;
-  */
-}
-
-.surveyEditorHeader
-{
-  /*
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 40px;
-  border: 1px solid red;
-  position: fixed;
-  */
-}
-
-.surveyEditorBody
-{
-  /*
-  border: 1px solid orange;
-  position: relative;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  */
-}
 
 
 
