@@ -129,6 +129,33 @@
                     </div>
                   </div>
 
+
+                  <div class="box box-form">
+                    <div class="box-body">
+
+
+                      <div class="form-group">
+                        <div class="col-xs-12">
+                          <div class="form-material form-material-primary">
+                            <label for="name">Name</label>
+                            <input wicket:id="name" id="name" name="name" type="text" class="form-control" placeholder="Enter a name">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="col-xs-12">
+                          <div class="form-material form-material-primary">
+                            <label for="name">Description</label>
+                            <input wicket:id="description" id="description" name="description" type="text" class="form-control" placeholder="Enter a description">
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+
                   <div wicket:id="definitionContainer">
 
                     <div class="item-definition">
@@ -157,9 +184,10 @@
                                     </div>
                                     <div class="header-actions">
                                       <div class="btn-group">
-                                        <a wicket:id="editLink" class="btn btn-xs btn-white" href="#"><i class="fa fa-pencil-square-o"></i></a>
-                                        <a wicket:id="copyLink" class="btn btn-xs btn-white" href="#"><i class="fa fa-files-o"></i></a>
-                                        <a wicket:id="deleteLink" class="btn btn-xs btn-white" href="#"><i class="fa fa-trash-o"></i></a>
+                                        <a wicket:id="editLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="#"><i class="fa fa-pencil-square-o"></i></a>
+                                        <a wicket:id="helpLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="#"><i class="fa fa-question-circle"></i></a>
+                                        <a wicket:id="copyLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Copy" href="#"><i class="fa fa-files-o"></i></a>
+                                        <a wicket:id="deleteLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Delete" href="#"><i class="fa fa-trash-o"></i></a>
                                       </div>
                                     </div>
                                   </div>
@@ -183,9 +211,8 @@
                                         <div>
                                           <span wicket:id="name">Accountability</span>
                                           <div class="btn-group">
-
-                                            <a wicket:id="removeLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="removeLinka"><i class="fa fa-times-circle"></i></a>
-                                            <a wicket:id="moveRightLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveRightLinkb"><i class="fa fa-arrow-circle-right"></i></a>
+                                            <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLinka"><i class="fa fa-times-circle"></i></a>
+                                            <a wicket:id="moveRightLink" class="btn btn-xs btn-default" href="javascript:;" id="moveRightLinkb"><i class="fa fa-arrow-circle-right"></i></a>
                                           </div>
                                         </div>
                                       </th>
@@ -193,9 +220,9 @@
                                         <div>
                                           <span wicket:id="name">Competence</span>
                                           <div class="btn-group">
-                                            <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveLeftLinkc"><i class="fa fa-arrow-circle-left"></i></a>
-                                            <a wicket:id="removeLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="removeLinkd"><i class="fa fa-times-circle"></i></a>
-                                            <a wicket:id="moveRightLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveRightLinke"><i class="fa fa-arrow-circle-right"></i></a>
+                                            <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLinkc"><i class="fa fa-arrow-circle-left"></i></a>
+                                            <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLinkd"><i class="fa fa-times-circle"></i></a>
+                                            <a wicket:id="moveRightLink" class="btn btn-xs btn-default" href="javascript:;" id="moveRightLinke"><i class="fa fa-arrow-circle-right"></i></a>
                                           </div>
                                         </div>
                                       </th>
@@ -203,9 +230,9 @@
                                         <div>
                                           <span wicket:id="name">Courage</span>
                                           <div class="btn-group">
-                                            <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveLeftLinkf"><i class="fa fa-arrow-circle-left"></i></a>
-                                            <a wicket:id="removeLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="removeLink10"><i class="fa fa-times-circle"></i></a>
-                                            <a wicket:id="moveRightLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveRightLink11"><i class="fa fa-arrow-circle-right"></i></a>
+                                            <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLinkf"><i class="fa fa-arrow-circle-left"></i></a>
+                                            <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink10"><i class="fa fa-times-circle"></i></a>
+                                            <a wicket:id="moveRightLink" class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink11"><i class="fa fa-arrow-circle-right"></i></a>
                                           </div>
                                         </div>
                                       </th>
@@ -213,9 +240,9 @@
                                         <div>
                                           <span wicket:id="name">Fairness</span>
                                           <div class="btn-group">
-                                            <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveLeftLink12"><i class="fa fa-arrow-circle-left"></i></a>
-                                            <a wicket:id="removeLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="removeLink13"><i class="fa fa-times-circle"></i></a>
-                                            <a wicket:id="moveRightLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveRightLink14"><i class="fa fa-arrow-circle-right"></i></a>
+                                            <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink12"><i class="fa fa-arrow-circle-left"></i></a>
+                                            <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink13"><i class="fa fa-times-circle"></i></a>
+                                            <a wicket:id="moveRightLink" class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink14"><i class="fa fa-arrow-circle-right"></i></a>
                                           </div>
                                         </div>
                                       </th>
@@ -223,9 +250,9 @@
                                         <div>
                                           <span wicket:id="name">Integrity</span>
                                           <div class="btn-group">
-                                            <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveLeftLink15"><i class="fa fa-arrow-circle-left"></i></a>
-                                            <a wicket:id="removeLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="removeLink16"><i class="fa fa-times-circle"></i></a>
-                                            <a wicket:id="moveRightLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveRightLink17"><i class="fa fa-arrow-circle-right"></i></a>
+                                            <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink15"><i class="fa fa-arrow-circle-left"></i></a>
+                                            <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink16"><i class="fa fa-times-circle"></i></a>
+                                            <a wicket:id="moveRightLink" class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink17"><i class="fa fa-arrow-circle-right"></i></a>
                                           </div>
                                         </div>
                                       </th>
@@ -233,9 +260,9 @@
                                         <div>
                                           <span wicket:id="name">Openness</span>
                                           <div class="btn-group">
-                                            <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveLeftLink18"><i class="fa fa-arrow-circle-left"></i></a>
-                                            <a wicket:id="removeLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="removeLink19"><i class="fa fa-times-circle"></i></a>
-                                            <a wicket:id="moveRightLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveRightLink1a"><i class="fa fa-arrow-circle-right"></i></a>
+                                            <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink18"><i class="fa fa-arrow-circle-left"></i></a>
+                                            <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink19"><i class="fa fa-times-circle"></i></a>
+                                            <a wicket:id="moveRightLink" class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink1a"><i class="fa fa-arrow-circle-right"></i></a>
                                           </div>
                                         </div>
                                       </th>
@@ -243,9 +270,9 @@
                                         <div>
                                           <span wicket:id="name">Positive Attitude</span>
                                           <div class="btn-group">
-                                            <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveLeftLink1b"><i class="fa fa-arrow-circle-left"></i></a>
-                                            <a wicket:id="removeLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="removeLink1c"><i class="fa fa-times-circle"></i></a>
-                                            <a wicket:id="moveRightLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveRightLink1d"><i class="fa fa-arrow-circle-right"></i></a>
+                                            <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink1b"><i class="fa fa-arrow-circle-left"></i></a>
+                                            <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink1c"><i class="fa fa-times-circle"></i></a>
+                                            <a wicket:id="moveRightLink" class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink1d"><i class="fa fa-arrow-circle-right"></i></a>
                                           </div>
                                         </div>
                                       </th>
@@ -253,9 +280,9 @@
                                         <div>
                                           <span wicket:id="name">Teamwork</span>
                                           <div class="btn-group">
-                                            <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveLeftLink1e"><i class="fa fa-arrow-circle-left"></i></a>
-                                            <a wicket:id="removeLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="removeLink1f"><i class="fa fa-times-circle"></i></a>
-                                            <a wicket:id="moveRightLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveRightLink20"><i class="fa fa-arrow-circle-right"></i></a>
+                                            <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink1e"><i class="fa fa-arrow-circle-left"></i></a>
+                                            <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink1f"><i class="fa fa-times-circle"></i></a>
+                                            <a wicket:id="moveRightLink" class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink20"><i class="fa fa-arrow-circle-right"></i></a>
                                           </div>
                                         </div>
                                       </th>
@@ -263,9 +290,9 @@
                                         <div>
                                           <span wicket:id="name">Making a difference</span>
                                           <div class="btn-group">
-                                            <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveLeftLink21"><i class="fa fa-arrow-circle-left"></i></a>
-                                            <a wicket:id="removeLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="removeLink22"><i class="fa fa-times-circle"></i></a>
-                                            <a wicket:id="moveRightLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveRightLink23"><i class="fa fa-arrow-circle-right"></i></a>
+                                            <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink21"><i class="fa fa-arrow-circle-left"></i></a>
+                                            <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink22"><i class="fa fa-times-circle"></i></a>
+                                            <a wicket:id="moveRightLink" class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink23"><i class="fa fa-arrow-circle-right"></i></a>
                                           </div>
                                         </div>
                                       </th>
@@ -273,15 +300,15 @@
                                         <div>
                                           <span wicket:id="name">Trust</span>
                                           <div class="btn-group">
-                                            <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveLeftLink24"><i class="fa fa-arrow-circle-left"></i></a>
-                                            <a wicket:id="removeLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="removeLink25"><i class="fa fa-times-circle"></i></a>
+                                            <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink24"><i class="fa fa-arrow-circle-left"></i></a>
+                                            <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink25"><i class="fa fa-times-circle"></i></a>
 
                                           </div>
                                         </div>
                                       </th>
                                       <th>
                                         <div>
-                                          <a wicket:id="addGroupRatingDefinitionLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="addGroupRatingDefinitionLink26"><i class="fa fa-plus-circle"></i></a>
+                                          <a wicket:id="addGroupRatingDefinitionLink" class="btn btn-xs btn-default" href="javascript:;" id="addGroupRatingDefinitionLink26"><i class="fa fa-plus-circle"></i></a>
                                         </div>
                                       </th>
                                     </tr>
@@ -292,8 +319,8 @@
                                         <span wicket:id="name">First Name 1</span>
                                         <div class="btn-group">
 
-                                          <a wicket:id="removeLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="removeLink27"><i class="fa fa-times-circle"></i></a>
-                                          <a wicket:id="moveDownLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveDownLink28"><i class="fa fa-arrow-circle-down"></i></a>
+                                          <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink27"><i class="fa fa-times-circle"></i></a>
+                                          <a wicket:id="moveDownLink" class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink28"><i class="fa fa-arrow-circle-down"></i></a>
                                         </div>
                                       </td>
                                       <td wicket:id="groupRatingType" class="center">
@@ -331,9 +358,9 @@
                                       <td>
                                         <span wicket:id="name">First Name 2</span>
                                         <div class="btn-group">
-                                          <a wicket:id="moveUpLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveUpLink29"><i class="fa fa-arrow-circle-up"></i></a>
-                                          <a wicket:id="removeLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="removeLink2a"><i class="fa fa-times-circle"></i></a>
-                                          <a wicket:id="moveDownLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveDownLink2b"><i class="fa fa-arrow-circle-down"></i></a>
+                                          <a wicket:id="moveUpLink" class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink29"><i class="fa fa-arrow-circle-up"></i></a>
+                                          <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink2a"><i class="fa fa-times-circle"></i></a>
+                                          <a wicket:id="moveDownLink" class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink2b"><i class="fa fa-arrow-circle-down"></i></a>
                                         </div>
                                       </td>
                                       <td wicket:id="groupRatingType" class="center">
@@ -371,9 +398,9 @@
                                       <td>
                                         <span wicket:id="name">First Name 3</span>
                                         <div class="btn-group">
-                                          <a wicket:id="moveUpLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveUpLink2c"><i class="fa fa-arrow-circle-up"></i></a>
-                                          <a wicket:id="removeLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="removeLink2d"><i class="fa fa-times-circle"></i></a>
-                                          <a wicket:id="moveDownLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveDownLink2e"><i class="fa fa-arrow-circle-down"></i></a>
+                                          <a wicket:id="moveUpLink" class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink2c"><i class="fa fa-arrow-circle-up"></i></a>
+                                          <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink2d"><i class="fa fa-times-circle"></i></a>
+                                          <a wicket:id="moveDownLink" class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink2e"><i class="fa fa-arrow-circle-down"></i></a>
                                         </div>
                                       </td>
                                       <td wicket:id="groupRatingType" class="center">
@@ -411,9 +438,9 @@
                                       <td>
                                         <span wicket:id="name">First Name 4</span>
                                         <div class="btn-group">
-                                          <a wicket:id="moveUpLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveUpLink2f"><i class="fa fa-arrow-circle-up"></i></a>
-                                          <a wicket:id="removeLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="removeLink30"><i class="fa fa-times-circle"></i></a>
-                                          <a wicket:id="moveDownLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="moveDownLink31"><i class="fa fa-arrow-circle-down"></i></a>
+                                          <a wicket:id="moveUpLink" class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink2f"><i class="fa fa-arrow-circle-up"></i></a>
+                                          <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink30"><i class="fa fa-times-circle"></i></a>
+                                          <a wicket:id="moveDownLink" class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink31"><i class="fa fa-arrow-circle-down"></i></a>
                                         </div>
                                       </td>
                                       <td wicket:id="groupRatingType" class="center">
@@ -449,7 +476,7 @@
                                     </tr>
                                     <tr>
                                       <td>
-                                        <a wicket:id="addGroupMemberDefinitionLink" class="btn btn-xs btn-default" type="button" href="javascript:;" id="addGroupMemberDefinitionLink64"><i class="fa fa-plus-circle"></i></a>
+                                        <a wicket:id="addGroupMemberDefinitionLink" class="btn btn-xs btn-default" href="javascript:;" id="addGroupMemberDefinitionLink64"><i class="fa fa-plus-circle"></i></a>
                                       </td>
                                     </tr>
                                   </tbody>
@@ -479,9 +506,10 @@
                                     </div>
                                     <div class="header-actions">
                                       <div class="btn-group">
-                                        <a wicket:id="editLink" class="btn btn-xs btn-white" href="#"><i class="fa fa-pencil-square-o"></i></a>
-                                        <a wicket:id="copyLink" class="btn btn-xs btn-white" href="#"><i class="fa fa-files-o"></i></a>
-                                        <a wicket:id="deleteLink" class="btn btn-xs btn-white" href="#"><i class="fa fa-trash-o"></i></a>
+                                        <a wicket:id="editLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="#"><i class="fa fa-pencil-square-o"></i></a>
+                                        <a wicket:id="helpLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="#"><i class="fa fa-question-circle"></i></a>
+                                        <a wicket:id="copyLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Copy" href="#"><i class="fa fa-files-o"></i></a>
+                                        <a wicket:id="deleteLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Delete" href="#"><i class="fa fa-trash-o"></i></a>
                                       </div>
                                     </div>
                                   </div>
@@ -503,7 +531,7 @@
                                       <th></th>
                                       <th>
                                         <div>
-                                          <a wicket:id="addGroupRatingDefinitionLink" class="btn btn-xs btn-default" type="button" href="#"><i class="fa fa-plus-circle"></i></a>
+                                          <a wicket:id="addGroupRatingDefinitionLink" class="btn btn-xs btn-default" href="#"><i class="fa fa-plus-circle"></i></a>
                                         </div>
                                       </th>
                                     </tr>
@@ -511,7 +539,7 @@
                                   <tbody>
                                     <tr>
                                       <td>
-                                        <a wicket:id="addGroupMemberDefinitionLink" class="btn btn-xs btn-default" type="button" href="#"><i class="fa fa-plus-circle"></i></a>
+                                        <a wicket:id="addGroupMemberDefinitionLink" class="btn btn-xs btn-default" href="#"><i class="fa fa-plus-circle"></i></a>
                                       </td>
                                     </tr>
                                   </tbody>
