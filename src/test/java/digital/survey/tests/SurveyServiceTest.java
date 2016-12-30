@@ -1066,8 +1066,8 @@ public class SurveyServiceTest
         surveyItemDefinition1.getName(), surveyItemDefinition2.getName());
     assertEquals("The label values for the two survey item definitions do not match",
         surveyItemDefinition1.getLabel(), surveyItemDefinition2.getLabel());
-    assertEquals("The description values for the two survey item definitions do not match",
-        surveyItemDefinition1.getDescription(), surveyItemDefinition2.getDescription());
+    assertEquals("The help values for the two survey item definitions do not match",
+        surveyItemDefinition1.getHelp(), surveyItemDefinition2.getHelp());
 
     if (surveyItemDefinition1 instanceof SurveyGroupRatingsDefinition)
     {

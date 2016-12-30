@@ -33,7 +33,7 @@ import java.util.List;
  *
  * @author Marcus Portmann
  */
-class SurveyGroupRatingsDefinitionInputPanel extends InputPanel
+class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinitionInputPanel
 {
   private static final long serialVersionUID = 1000000;
 
@@ -48,7 +48,7 @@ class SurveyGroupRatingsDefinitionInputPanel extends InputPanel
       IModel<SurveyGroupRatingsDefinition> groupRatingsDefinitionModel,
       IModel<SurveyGroupDefinition> groupDefinitionModel)
   {
-    super(id);
+    super(id, groupRatingsDefinitionModel);
 
     add(new ListView<SurveyGroupRatingDefinition>("groupRatingDefinition", new PropertyModel<>(
         groupRatingsDefinitionModel, "groupRatingDefinitions"))

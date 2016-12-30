@@ -1,55 +1,53 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <html xmlns:wicket="http://wicket.apache.org">
   <body>
-    <wicket:panel>
-      <div class="box box-form">
-        <div class="box-body">
-          <div class="table-responsive">
-            <table class="table table-striped table-group-ratings-definition">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th wicket:id="groupRatingDefinition">
-                    <div>
-                      <span wicket:id="name"></span>
-                      <div class="btn-group">
-                        <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" href="#"><i class="fa fa-arrow-circle-left"></i></a>
-                        <a wicket:id="removeLink" class="btn btn-xs btn-default" href="#"><i class="fa fa-times-circle"></i></a>
-                        <a wicket:id="moveRightLink" class="btn btn-xs btn-default" href="#"><i class="fa fa-arrow-circle-right"></i></a>
-                      </div>
-                    </div>
-                  </th>
-                  <th>
-                    <div>
-                      <a wicket:id="addGroupRatingDefinitionLink" class="btn btn-xs btn-default" href="#"><i class="fa fa-plus-circle"></i></a>
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr wicket:id="groupMemberDefinition">
-                  <td>
-                    <span wicket:id="name"></span>
-                    <div class="btn-group">
-                      <a wicket:id="moveUpLink" class="btn btn-xs btn-default" href="#"><i class="fa fa-arrow-circle-up"></i></a>
-                      <a wicket:id="removeLink" class="btn btn-xs btn-default" href="#"><i class="fa fa-times-circle"></i></a>
-                      <a wicket:id="moveDownLink" class="btn btn-xs btn-default" href="#"><i class="fa fa-arrow-circle-down"></i></a>
-                    </div>
-                  </td>
-                  <td wicket:id="groupRatingType" class="center">
-                    <div wicket:id="ratingType">[Type]</div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a wicket:id="addGroupMemberDefinitionLink" class="btn btn-xs btn-default" href="#"><i class="fa fa-plus-circle"></i></a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+    <wicket:extend>
+
+      <div class="table-responsive">
+        <table class="table table-striped table-group-ratings-definition">
+          <thead>
+            <tr>
+              <th></th>
+              <th wicket:id="groupRatingDefinition">
+                <div>
+                  <span wicket:id="name"></span>
+                  <div class="btn-group">
+                    <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" href="#"><i class="fa fa-arrow-circle-left"></i></a>
+                    <a wicket:id="removeLink" class="btn btn-xs btn-default" href="#"><i class="fa fa-times-circle"></i></a>
+                    <a wicket:id="moveRightLink" class="btn btn-xs btn-default" href="#"><i class="fa fa-arrow-circle-right"></i></a>
+                  </div>
+                </div>
+              </th>
+              <th>
+                <div>
+                  <a wicket:id="addGroupRatingDefinitionLink" class="btn btn-xs btn-default" href="#"><i class="fa fa-plus-circle"></i></a>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr wicket:id="groupMemberDefinition">
+              <td>
+                <span wicket:id="name"></span>
+                <div class="btn-group">
+                  <a wicket:id="moveUpLink" class="btn btn-xs btn-default" href="#"><i class="fa fa-arrow-circle-up"></i></a>
+                  <a wicket:id="removeLink" class="btn btn-xs btn-default" href="#"><i class="fa fa-times-circle"></i></a>
+                  <a wicket:id="moveDownLink" class="btn btn-xs btn-default" href="#"><i class="fa fa-arrow-circle-down"></i></a>
+                </div>
+              </td>
+              <td wicket:id="groupRatingType" class="center">
+                <div wicket:id="ratingType">[Type]</div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a wicket:id="addGroupMemberDefinitionLink" class="btn btn-xs btn-default" href="#"><i class="fa fa-plus-circle"></i></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </wicket:panel>
+
+    </wicket:extend>
   </body>
 </html>

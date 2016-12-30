@@ -16,10 +16,12 @@ package digital.survey.web.components;
 import digital.survey.model.*;
 import guru.mmp.application.web.template.components.Dialog;
 import guru.mmp.application.web.template.components.InputPanel;
+import guru.mmp.application.web.template.components.TextFieldWithFeedback;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
@@ -49,6 +51,16 @@ public class SurveyDefinitionInputPanel extends InputPanel
     super(id, surveyDefinitionModel);
 
     setOutputMarkupId(true);
+
+    // The "name" field
+    TextField<String> nameField = new TextFieldWithFeedback<>("name");
+    nameField.setRequired(true);
+    add(nameField);
+
+    // The "description" field
+    TextField<String> descriptionField = new TextFieldWithFeedback<>("description");
+    descriptionField.setRequired(true);
+    add(descriptionField);
 
     definitionContainer = new WebMarkupContainer("definitionContainer");
     definitionContainer.setOutputMarkupId(true);

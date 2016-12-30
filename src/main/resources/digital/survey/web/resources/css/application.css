@@ -149,7 +149,7 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
   top: 0;
   bottom: 0;
   text-align: center;
-  line-height: 60px;
+  line-height: 70px;
   background-color: #367fa9;
   color: #fff;
   font-size: 13pt;
@@ -166,20 +166,20 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
 .item-definition .header-container .header-table .header-first-row .header-name
 {
   float: left;
-  line-height: 30px;
+  line-height: 35px;
 }
 
 .item-definition .header-container .header-table .header-first-row .header-actions
 {
   display: inline-block;
   float: right;
-  line-height: 30px;
+  line-height: 35px;
 }
 
 .item-definition .header-container .header-table .header-first-row .header-actions .btn-group
 {
   margin: 0;
-  margin-bottom: 3px;
+  margin-bottom: 2px;
   vertical-align: middle;
 }
 

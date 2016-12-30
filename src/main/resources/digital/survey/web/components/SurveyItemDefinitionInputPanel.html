@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns:wicket="http://wicket.apache.org">
+  <body>
+    <wicket:panel>
+      <div class="box">
+
+        <section wicket:id="headerContainer" class="header-container">
+          <div class="header-table">
+            <div class="header-first-row">
+              <div class="header-icon-cell">
+                <i class="fa fa-table"></i>
+              </div>
+              <div class="header-top-cell">
+                <div class="header-name"><span wicket:id="name">[name_of_field]</span></div>
+                <div class="header-actions">
+                  <div class="btn-group">
+                    <a wicket:id="editLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="#"><i class="fa fa-pencil-square-o"></i></a>
+                    <a wicket:id="helpLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="#"><i class="fa fa-question-circle"></i></a>
+                    <a wicket:id="copyLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Copy" href="#"><i class="fa fa-files-o"></i></a>
+                    <a wicket:id="removeLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="#"><i class="fa fa-trash-o"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="header-second-row">
+              <div class="header-padding-cell"></div>
+              <div class="header-bottom-cell"><span wicket:id="label">[Label for Field]</span></div>
+            </div>
+          </div>
+        </section>
+
+        <div class="box-body">
+
+          <wicket:child/>
+
+        </div>
+      </div>
+    </wicket:panel>
+  </body>
+</html>

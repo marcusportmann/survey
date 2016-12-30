@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 //~--- JDK imports ------------------------------------------------------------
@@ -33,14 +34,15 @@ import java.util.UUID;
     value = SurveySectionDefinition.class) ,
     @JsonSubTypes.Type(name = "aded36bd-bc3d-4157-99f6-b4d91825de5d",
         value = SurveyGroupRatingsDefinition.class) })
-@JsonPropertyOrder({ "id", "typeId", "name", "label", "description" })
-public class SurveyItemDefinition
+@JsonPropertyOrder({ "id", "typeId", "name", "label", "help" })
+public abstract class SurveyItemDefinition
+  implements Serializable
 {
   /**
-   * The description for the survey item definition.
+   * The HTML help for the survey item definition.
    */
   @JsonProperty
-  private String description;
+  private String help;
 
   /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the type of survey item
@@ -76,21 +78,21 @@ public class SurveyItemDefinition
   /**
    * Constructs a new <code>SurveyItemDefinition</code>.
    *
-   * @param id          the Universally Unique Identifier (UUID) used to uniquely identify the
-   *                    survey item definition
-   * @param typeId      the Universally Unique Identifier (UUID) used to uniquely identify the type
-   *                    of survey item definition
-   * @param name        the short, unique name for the survey item definition
-   * @param label       the user-friendly label for the survey item definition
-   * @param description the description for the survey item definition
+   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *               item definition
+   * @param typeId the Universally Unique Identifier (UUID) used to uniquely identify the type of
+   *               survey item definition
+   * @param name   the short, unique name for the survey item definition
+   * @param label  the user-friendly label for the survey item definition
+   * @param help   the HTML help for the survey item definition
    */
-  public SurveyItemDefinition(UUID id, UUID typeId, String name, String label, String description)
+  public SurveyItemDefinition(UUID id, UUID typeId, String name, String label, String help)
   {
     this.id = id;
     this.typeId = typeId;
     this.name = name;
     this.label = label;
-    this.description = description;
+    this.help = help;
   }
 
   /**
@@ -125,13 +127,13 @@ public class SurveyItemDefinition
   }
 
   /**
-   * Returns the description for the survey item definition.
+   * Returns the HTML help for the survey item definition.
    *
-   * @return the description for the survey item definition
+   * @return the HTML help for the survey item definition
    */
-  public String getDescription()
+  public String getHelp()
   {
-    return description;
+    return help;
   }
 
   /**
@@ -179,13 +181,13 @@ public class SurveyItemDefinition
   }
 
   /**
-   * Set the description for the survey item definition.
+   * Set the HTML help for the survey item definition.
    *
-   * @param description the description for the survey item definition
+   * @param help the HTML help for the survey item definition
    */
-  public void setDescription(String description)
+  public void setHelp(String help)
   {
-    this.description = description;
+    this.help = help;
   }
 
   /**

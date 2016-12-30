@@ -83,7 +83,9 @@ public class UpdateSurveyDefinitionPage extends TemplateWebPage
         {
           try
           {
-            surveyService.saveSurveyDefinition(updateForm.getModelObject());
+            SurveyDefinition surveyDefinition = updateForm.getModelObject();
+
+            surveyService.saveSurveyDefinition(surveyDefinition);
 
             setResponsePage(previousPage.getPage());
           }

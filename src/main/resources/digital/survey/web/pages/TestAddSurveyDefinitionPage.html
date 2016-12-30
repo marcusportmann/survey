@@ -172,7 +172,7 @@
                         <wicket:panel>
                           <div class="box">
 
-                            <section class="header-container">
+                            <section wicket:id="headerContainer" class="header-container">
                               <div class="header-table">
                                 <div class="header-first-row">
                                   <div class="header-icon-cell">
@@ -187,7 +187,7 @@
                                         <a wicket:id="editLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="#"><i class="fa fa-pencil-square-o"></i></a>
                                         <a wicket:id="helpLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="#"><i class="fa fa-question-circle"></i></a>
                                         <a wicket:id="copyLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Copy" href="#"><i class="fa fa-files-o"></i></a>
-                                        <a wicket:id="deleteLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Delete" href="#"><i class="fa fa-trash-o"></i></a>
+                                        <a wicket:id="RemoveLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="#"><i class="fa fa-trash-o"></i></a>
                                       </div>
                                     </div>
                                   </div>
@@ -195,7 +195,7 @@
                                 <div class="header-second-row">
                                   <div class="header-padding-cell"></div>
                                   <div class="header-bottom-cell">
-                                    Name of Field
+                                    Label for Field
                                   </div>
                                 </div>
                               </div>
@@ -308,7 +308,7 @@
                                       </th>
                                       <th>
                                         <div>
-                                          <a wicket:id="addGroupRatingDefinitionLink" class="btn btn-xs btn-default" href="javascript:;" id="addGroupRatingDefinitionLink26"><i class="fa fa-plus-circle"></i></a>
+                                          <a wicket:id="addGroupRatingDefinitionLink" class="btn btn-xs btn-default" href="javascript:$('#removeGroupRatingDefinitionDialog').modal('show')" id="addGroupRatingDefinitionLink26"><i class="fa fa-plus-circle"></i></a>
                                         </div>
                                       </th>
                                     </tr>
@@ -494,7 +494,7 @@
 
                           <div class="box">
 
-                            <section class="header-container">
+                            <section wicket:id="headerContainer" class="header-container">
                               <div class="header-table">
                                 <div class="header-first-row">
                                   <div class="header-icon-cell">
@@ -509,7 +509,7 @@
                                         <a wicket:id="editLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="#"><i class="fa fa-pencil-square-o"></i></a>
                                         <a wicket:id="helpLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="#"><i class="fa fa-question-circle"></i></a>
                                         <a wicket:id="copyLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Copy" href="#"><i class="fa fa-files-o"></i></a>
-                                        <a wicket:id="deleteLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Delete" href="#"><i class="fa fa-trash-o"></i></a>
+                                        <a wicket:id="RemoveLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="#"><i class="fa fa-trash-o"></i></a>
                                       </div>
                                     </div>
                                   </div>
@@ -517,7 +517,7 @@
                                 <div class="header-second-row">
                                   <div class="header-padding-cell"></div>
                                   <div class="header-bottom-cell">
-                                    Name of Field
+                                    Label for Field
                                   </div>
                                 </div>
                               </div>
