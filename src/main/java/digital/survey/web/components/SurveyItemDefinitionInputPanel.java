@@ -44,6 +44,8 @@ public abstract class SurveyItemDefinitionInputPanel extends InputPanel
   {
     super(id);
 
+    setOutputMarkupId(true);
+
     headerContainer = new WebMarkupContainer("headerContainer");
     headerContainer.setOutputMarkupId(true);
     add(headerContainer);

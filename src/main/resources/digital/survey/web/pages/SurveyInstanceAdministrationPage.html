@@ -105,27 +105,23 @@
                   </div>
                   <div class="modal-body">
                     <div wicket:id="alerts"></div>
-                    <form wicket:id="form" id="form" class="form-horizontal">
+                    <form wicket:id="form" class="form-horizontal form-material">
 
                       <div class="form-group">
                         <div class="col-xs-12">
-                          <div class="form-material form-material-primary">
-                            <label for="name">Name</label>
-                            <input wicket:id="name" id="name" name="name" type="text" class="form-control">
-                          </div>
+                          <label>Name
+                            <input wicket:id="name" name="name" type="text"/>
+                          </label>
                         </div>
                       </div>
 
                       <div class="form-group">
                         <div class="col-xs-12">
-                          <div class="form-material form-material-primary">
-                            <label for="sendSurveyRequestType">Send To</label>
-                            <div class="template-custom-select">
-                              <select wicket:id="sendSurveyRequestType" id="sendSurveyRequestType" name="sendSurveyRequestType" size="1" class="form-control">
-                                <option value="" selected disabled>Select an option</option>
-                              </select>
-                            </div>
-                          </div>
+                          <label class="select-wrapper">Send To
+                            <select wicket:id="sendSurveyRequestType" name="sendSurveyRequestType" size="1">
+                              <option value="" selected disabled>Select an option</option>
+                            </select>
+                          </label>
                         </div>
                       </div>
 
@@ -133,14 +129,11 @@
 
                         <div class="form-group">
                           <div class="col-xs-12">
-                            <div class="form-material form-material-primary">
-                              <label for="audience">Audience</label>
-                              <div class="template-custom-select">
-                                <select wicket:id="audience" id="audience" name="audience" size="1" class="form-control">
-                                  <option value="" selected disabled>Select an option</option>
-                                </select>
-                              </div>
-                            </div>
+                            <label class="select-wrapper">Audience
+                              <select wicket:id="audience" name="audience" size="1">
+                                <option value="" selected disabled>Select an option</option>
+                              </select>
+                            </label>
                           </div>
                         </div>
 
@@ -150,28 +143,25 @@
 
                         <div class="form-group">
                           <div class="col-xs-12">
-                            <div class="form-material form-material-primary">
-                              <label for="firstName">First Name</label>
-                              <input wicket:id="firstName" id="firstName" name="firstName" type="text" class="form-control" placeholder="Enter a first name">
-                            </div>
+                            <label>First Name
+                              <input wicket:id="firstName" name="firstName" type="text" placeholder="Enter a first name"/>
+                            </label>
                           </div>
                         </div>
 
                         <div class="form-group">
                           <div class="col-xs-12">
-                            <div class="form-material form-material-primary">
-                              <label for="lastName">Last Name</label>
-                              <input wicket:id="lastName" id="lastName" name="lastName" type="text" class="form-control" placeholder="Enter a last name">
-                            </div>
+                            <label>Last Name
+                              <input wicket:id="lastName" name="lastName" type="text" placeholder="Enter a last name"/>
+                            </label>
                           </div>
                         </div>
 
                         <div class="form-group">
                           <div class="col-xs-12">
-                            <div class="form-material form-material-primary">
-                              <label for="email">E-mail</label>
-                              <input wicket:id="email" id="email" name="email" type="text" class="form-control" placeholder="Enter an e-mail address">
-                            </div>
+                            <label>E-mail
+                            <input wicket:id="email" name="email" type="text" placeholder="Enter an e-mail address"/>
+                            </label>
                           </div>
                         </div>
 
@@ -180,7 +170,7 @@
                     </form>
                   </div>
                   <div class="modal-footer">
-                    <a wicket:id="cancelLink" id="cancelLink" class="btn btn-default"><span wicket:id="cancelText"></span></a>
+                    <a wicket:id="cancelLink" class="btn btn-default"><span wicket:id="cancelText"></span></a>
                     <button wicket:id="submitButton" type="submit" class="btn btn-primary pull-right"><span wicket:id="submitText"></span></button>
                   </div>
                 </div>

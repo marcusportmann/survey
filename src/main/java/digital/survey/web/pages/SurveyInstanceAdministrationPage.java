@@ -366,7 +366,7 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
                 + nameLabel.getDefaultModelObjectAsString());
           }
 
-          target.add(getAlerts());
+          target.add(SurveyInstanceAdministrationPage.this.getAlerts());
 
           hide(target);
         }
@@ -548,7 +548,7 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
 
       resetDialog(target);
 
-      target.add(getAlerts());
+      target.add(SurveyInstanceAdministrationPage.this.getAlerts());
 
       hide(target);
     }
@@ -556,6 +556,7 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
     /**
      * Reset the model for the dialog.
      */
+    @Override
     protected void resetDialogModel()
     {
       sendSurveyRequestType = null;
