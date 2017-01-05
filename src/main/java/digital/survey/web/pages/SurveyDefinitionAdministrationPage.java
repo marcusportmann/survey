@@ -97,6 +97,8 @@ public class SurveyDefinitionAdministrationPage extends TemplateWebPage
         @Override
         public void onClick()
         {
+          WebSession webSession = getWebApplicationSession();
+
           setResponsePage(new AddSurveyDefinitionPage(getPageReference()));
         }
       };

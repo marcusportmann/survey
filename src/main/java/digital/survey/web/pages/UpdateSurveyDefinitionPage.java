@@ -24,6 +24,7 @@ import digital.survey.web.SurveySecurity;
 import digital.survey.web.components.SurveyDefinitionInputPanel;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.pages.WebPageSecurity;
+import guru.mmp.application.web.template.pages.TemplateDialogWebPage;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
 import org.apache.wicket.PageReference;
 import org.apache.wicket.markup.html.form.Button;
@@ -45,7 +46,7 @@ import javax.inject.Inject;
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 @WebPageSecurity(SurveySecurity.FUNCTION_CODE_SURVEY_ADMINISTRATION)
-public class UpdateSurveyDefinitionPage extends TemplateWebPage
+public class UpdateSurveyDefinitionPage extends TemplateDialogWebPage
 {
   /* Logger */
   private static final Logger logger = LoggerFactory.getLogger(UpdateSurveyDefinitionPage.class);

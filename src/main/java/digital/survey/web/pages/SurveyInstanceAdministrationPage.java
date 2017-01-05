@@ -483,13 +483,11 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
      */
     public void show(AjaxRequestTarget target, SurveyInstance surveyInstance)
     {
-      super.show(target);
-
       id = surveyInstance.getId();
 
       name = surveyInstance.getName();
 
-      target.add(nameField);
+      super.show(target);
     }
 
     /**
@@ -502,13 +500,25 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
     protected void onCancel(AjaxRequestTarget target, Form form) {}
 
     /**
-     * Process the submission of the form associated with the dialog.
+     * Process the errors for the form associated with the dialog.
      *
      * @param target the AJAX request target
      * @param form   the form
      */
     @Override
-    protected void onSubmit(AjaxRequestTarget target, Form form)
+    protected void onError(AjaxRequestTarget target, Form form) {}
+
+    /**
+     * Process the submission of the form associated with the dialog.
+     *
+     * @param target the AJAX request target
+     * @param form   the form
+     *
+     * @return <code>true</code> if the form was submitted successfully without errors or
+     *         <code>false</code> otherwise
+     */
+    @Override
+    protected boolean onSubmit(AjaxRequestTarget target, Form form)
     {
       try
       {
@@ -528,6 +538,7 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
               "Successfully sent the survey request to %s %s", firstName, lastName));
         }
 
+        return true;
       }
       catch (Throwable e)
       {
@@ -536,28 +547,22 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
         if (SendSurveyRequestType.AUDIENCE.getCodeAsString().equals(
             sendSurveyRequestTypeField.getValue()))
         {
-          SurveyInstanceAdministrationPage.this.error(String.format(
-              "Failed to the survey request to %s", audience.getName()));
+          error(String.format("Failed to the survey request to %s", audience.getName()));
         }
         else
         {
-          SurveyInstanceAdministrationPage.this.info(String.format(
-              "Failed to send the survey request to %s %s", firstName, lastName));
+          error(String.format("Failed to send the survey request to %s %s", firstName, lastName));
         }
+
+        return false;
       }
-
-      resetDialog(target);
-
-      target.add(SurveyInstanceAdministrationPage.this.getAlerts());
-
-      hide(target);
     }
 
     /**
      * Reset the model for the dialog.
      */
     @Override
-    protected void resetDialogModel()
+    protected void resetModel()
     {
       sendSurveyRequestType = null;
     }

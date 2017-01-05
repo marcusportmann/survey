@@ -14,7 +14,9 @@ package digital.survey.web.components;
 //~--- non-JDK imports --------------------------------------------------------
 
 import digital.survey.model.SurveyItemDefinition;
+import guru.mmp.application.web.template.components.ExtensibleFormDialog;
 import guru.mmp.application.web.template.components.InputPanel;
+import guru.mmp.application.web.template.pages.TemplateDialogWebPage;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
@@ -30,7 +32,6 @@ import org.apache.wicket.model.PropertyModel;
 public abstract class SurveyItemDefinitionInputPanel extends InputPanel
 {
   private static final long serialVersionUID = 1000000;
-
   private WebMarkupContainer headerContainer;
 
   /**
@@ -50,9 +51,11 @@ public abstract class SurveyItemDefinitionInputPanel extends InputPanel
     headerContainer.setOutputMarkupId(true);
     add(headerContainer);
 
-    headerContainer.add(new Label("name", new PropertyModel<String>(surveyItemDefinitionModel, "name")));
+    headerContainer.add(new Label("name", new PropertyModel<String>(surveyItemDefinitionModel,
+        "name")));
 
-    headerContainer.add(new Label("label", new PropertyModel<String>(surveyItemDefinitionModel, "label")));
+    headerContainer.add(new Label("label", new PropertyModel<String>(surveyItemDefinitionModel,
+        "label")));
 
     // The "editLink" link
     Link<Void> editLink = new Link<Void>("editLink")
@@ -60,9 +63,7 @@ public abstract class SurveyItemDefinitionInputPanel extends InputPanel
       private static final long serialVersionUID = 1000000;
 
       @Override
-      public void onClick()
-      {
-      }
+      public void onClick() {}
     };
     headerContainer.add(editLink);
 
@@ -72,9 +73,7 @@ public abstract class SurveyItemDefinitionInputPanel extends InputPanel
       private static final long serialVersionUID = 1000000;
 
       @Override
-      public void onClick()
-      {
-      }
+      public void onClick() {}
     };
     headerContainer.add(helpLink);
 
@@ -84,9 +83,7 @@ public abstract class SurveyItemDefinitionInputPanel extends InputPanel
       private static final long serialVersionUID = 1000000;
 
       @Override
-      public void onClick()
-      {
-      }
+      public void onClick() {}
     };
     headerContainer.add(copyLink);
 
@@ -96,11 +93,18 @@ public abstract class SurveyItemDefinitionInputPanel extends InputPanel
       private static final long serialVersionUID = 1000000;
 
       @Override
-      public void onClick()
-      {
-      }
+      public void onClick() {}
     };
     headerContainer.add(removeLink);
+  }
 
+  /**
+   * Returns the extensible form dialog associated with the page.
+   *
+   * @return the extensible form dialog associated with the page
+   */
+  public ExtensibleFormDialog getDialog()
+  {
+    return ((TemplateDialogWebPage) getPage()).getDialog();
   }
 }
