@@ -71,47 +71,19 @@
         </section>
         <section class="content">
           <wicket:extend>
-            <div class="box box-form">
-              <div class="box-body">
 
-                <div wicket:id="dialog" class="modal fade" tabindex="-1" role="dialog">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">
-                          <span aria-hidden="true">×</span>
-                        </button>
-                        <h4 class="modal-title"><span wicket:id="title"></span></h4>
-                      </div>
-                      <div class="modal-body">
-                        <div wicket:id="alerts"></div>
-                        <form wicket:id="form" class="form-horizontal form-material">
-                          <wicket:container wicket:id="implementation"/>
-                        </form>
-                      </div>
-                      <div class="modal-footer">
-                        <a wicket:id="cancelLink" class="btn btn-default"><span wicket:id="cancelText"></span></a>
-                        <button wicket:id="submitButton" type="submit" class="btn btn-primary pull-right"><span wicket:id="submitText"></span></button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            <form wicket:id="addForm" id="addForm" class="form-horizontal form-material">
 
-                <form wicket:id="addForm" id="addForm" class="form-horizontal form-material">
+              <div wicket:id="surveyDefinition" class="panel-group"></div>
 
-                  <div wicket:id="surveyDefinition"></div>
-
-                  <div class="form-group">
-                    <div class="col-xs-12">
-                      <button wicket:id="addButton" type="submit" class="btn btn-primary pull-right push-10-l">Add</button>
-                      <button wicket:id="cancelButton" type="submit" class="btn btn-white pull-right">Cancel</button>
-                    </div>
-                  </div>
-
-                </form>
-
+              <div class="push-15-t">
+                <button wicket:id="addButton" type="submit" class="btn btn-primary pull-right push-10-l">Add</button>
+                <button wicket:id="cancelButton" type="submit" class="btn btn-white pull-right">Cancel</button>
+                <div class="clear-both"></div>
               </div>
-            </div>
+
+            </form>
+
           </wicket:extend>
         </section>
       </div>

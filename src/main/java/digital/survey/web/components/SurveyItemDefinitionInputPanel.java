@@ -32,7 +32,7 @@ import org.apache.wicket.model.PropertyModel;
 public abstract class SurveyItemDefinitionInputPanel extends InputPanel
 {
   private static final long serialVersionUID = 1000000;
-  private WebMarkupContainer headerContainer;
+  private WebMarkupContainer itemDefinitionHeader;
 
   /**
    * Constructs a new <code>SurveyItemDefinitionInputPanel</code>.
@@ -47,14 +47,14 @@ public abstract class SurveyItemDefinitionInputPanel extends InputPanel
 
     setOutputMarkupId(true);
 
-    headerContainer = new WebMarkupContainer("headerContainer");
-    headerContainer.setOutputMarkupId(true);
-    add(headerContainer);
+    itemDefinitionHeader = new WebMarkupContainer("itemDefinitionHeader");
+    itemDefinitionHeader.setOutputMarkupId(true);
+    add(itemDefinitionHeader);
 
-    headerContainer.add(new Label("name", new PropertyModel<String>(surveyItemDefinitionModel,
+    itemDefinitionHeader.add(new Label("name", new PropertyModel<String>(surveyItemDefinitionModel,
         "name")));
 
-    headerContainer.add(new Label("label", new PropertyModel<String>(surveyItemDefinitionModel,
+    itemDefinitionHeader.add(new Label("label", new PropertyModel<String>(surveyItemDefinitionModel,
         "label")));
 
     // The "editLink" link
@@ -65,7 +65,7 @@ public abstract class SurveyItemDefinitionInputPanel extends InputPanel
       @Override
       public void onClick() {}
     };
-    headerContainer.add(editLink);
+    itemDefinitionHeader.add(editLink);
 
     // The "helpLink" link
     Link<Void> helpLink = new Link<Void>("helpLink")
@@ -75,7 +75,7 @@ public abstract class SurveyItemDefinitionInputPanel extends InputPanel
       @Override
       public void onClick() {}
     };
-    headerContainer.add(helpLink);
+    itemDefinitionHeader.add(helpLink);
 
     // The "copyLink" link
     Link<Void> copyLink = new Link<Void>("copyLink")
@@ -85,7 +85,31 @@ public abstract class SurveyItemDefinitionInputPanel extends InputPanel
       @Override
       public void onClick() {}
     };
-    headerContainer.add(copyLink);
+    itemDefinitionHeader.add(copyLink);
+
+    // The "moveUpLink" link
+    Link<Void> moveUpLink = new Link<Void>("moveUpLink")
+    {
+      private static final long serialVersionUID = 1000000;
+
+      @Override
+      public void onClick() {}
+    };
+    itemDefinitionHeader.add(moveUpLink);
+
+    // TODO: Hide the moveUpLink if this is the first survey item definition
+
+    // The "moveDownLink" link
+    Link<Void> moveDownLink = new Link<Void>("moveDownLink")
+    {
+      private static final long serialVersionUID = 1000000;
+
+      @Override
+      public void onClick() {}
+    };
+    itemDefinitionHeader.add(moveDownLink);
+
+    // TODO: Hide the moveDownLink if this is the last survey item definition
 
     // The "removeLink" link
     Link<Void> removeLink = new Link<Void>("removeLink")
@@ -95,7 +119,7 @@ public abstract class SurveyItemDefinitionInputPanel extends InputPanel
       @Override
       public void onClick() {}
     };
-    headerContainer.add(removeLink);
+    itemDefinitionHeader.add(removeLink);
   }
 
   /**
