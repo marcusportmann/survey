@@ -38,7 +38,7 @@ public class SurveyDefinitionInputPanel extends InputPanel
    * Constructs a new <code>SurveyDefinitionInputPanel</code>.
    *
    * @param id                    the non-null id of this component
-   * @param surveyDefinitionModel the model for the survey response
+   * @param surveyDefinitionModel the model for the survey definition
    */
   public SurveyDefinitionInputPanel(String id, IModel<SurveyDefinition> surveyDefinitionModel)
   {
@@ -70,8 +70,9 @@ public class SurveyDefinitionInputPanel extends InputPanel
                   (SurveyGroupRatingsDefinition) itemDefinition;
 
               item.add(new SurveyGroupRatingsDefinitionInputPanel("itemDefinitionPanel",
-                  new Model<>(groupRatingsDefinition), new Model<>(surveyDefinitionModel.getObject()
-                  .getGroupDefinition(groupRatingsDefinition.getGroupDefinitionId()))));
+                  surveyDefinitionModel, new Model<>(groupRatingsDefinition), new Model<>(
+                  surveyDefinitionModel.getObject().getGroupDefinition(
+                  groupRatingsDefinition.getGroupDefinitionId()))));
             }
           }
         });

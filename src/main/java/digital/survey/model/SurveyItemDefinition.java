@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 //~--- JDK imports ------------------------------------------------------------
@@ -93,6 +94,57 @@ public abstract class SurveyItemDefinition
     this.name = name;
     this.label = label;
     this.help = help;
+  }
+
+  /**
+   * Returns whether the survey item definition is the first survey item definition for the survey
+   * section definition.
+   *
+   * @param itemDefinitions the survey item definitions
+   * @param itemDefinition  the survey item definition
+   *
+   * @return <code>true</code> if the survey item definition is the first survey item definition or
+   *         <code>false</code> otherwise
+   */
+  public static boolean isFirstItemDefinition(List<SurveyItemDefinition> itemDefinitions,
+      SurveyItemDefinition itemDefinition)
+  {
+    for (int i = 0; i < itemDefinitions.size(); i++)
+    {
+      SurveyItemDefinition tmpItemDefinition = itemDefinitions.get(i);
+
+      if (tmpItemDefinition.getId().equals(itemDefinition.getId()))
+      {
+        return i == 0;
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Returns whether the survey item definition is the last survey item definition.
+   *
+   * @param itemDefinitions the list of survey item definitions
+   * @param itemDefinition  the survey item definition
+   *
+   * @return <code>true</code> if the survey item definition is the last survey item definition or
+   *         <code>false</code> otherwise
+   */
+  public static boolean isLastItemDefinition(List<SurveyItemDefinition> itemDefinitions,
+      SurveyItemDefinition itemDefinition)
+  {
+    for (int i = 0; i < itemDefinitions.size(); i++)
+    {
+      SurveyItemDefinition tmpItemDefinition = itemDefinitions.get(i);
+
+      if (tmpItemDefinition.getId().equals(itemDefinition.getId()))
+      {
+        return i == (itemDefinitions.size() - 1);
+      }
+    }
+
+    return false;
   }
 
   /**

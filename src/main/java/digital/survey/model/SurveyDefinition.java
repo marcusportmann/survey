@@ -346,6 +346,34 @@ public class SurveyDefinition
   }
 
   /**
+   * Returns whether the survey item definition is the first survey item definition for the survey
+   * definition.
+   *
+   * @param itemDefinition the survey item definition
+   *
+   * @return <code>true</code> if the survey item definition is the first survey item definition for
+   *         the survey definition or <code>false</code> otherwise
+   */
+  public boolean isFirstItemDefinition(SurveyItemDefinition itemDefinition)
+  {
+    return SurveyItemDefinition.isFirstItemDefinition(itemDefinitions, itemDefinition);
+  }
+
+  /**
+   * Returns whether the survey item definition is the last survey item definition for the survey
+   * definition.
+   *
+   * @param itemDefinition the survey item definition
+   *
+   * @return <code>true</code> if the survey item definition is the last survey item definition for
+   *         the survey definition or <code>false</code> otherwise
+   */
+  public boolean isLastItemDefinition(SurveyItemDefinition itemDefinition)
+  {
+    return SurveyItemDefinition.isLastItemDefinition(itemDefinitions, itemDefinition);
+  }
+
+  /**
    * Move the specified survey group member definition one step down in the list of survey group
    * member definitions.
    *
@@ -543,8 +571,8 @@ public class SurveyDefinition
   /**
    * Remove the survey item definition.
    *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   *           ratings definition
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey item
+   *           definition
    */
   public void removeItemDefinition(UUID id)
   {

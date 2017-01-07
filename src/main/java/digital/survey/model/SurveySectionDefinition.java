@@ -42,7 +42,7 @@ public class SurveySectionDefinition extends SurveyItemDefinition
   public static final UUID TYPE_ID = UUID.fromString("7708438e-b114-43d4-8fe5-b08aa5567e3a");
 
   /**
-   * The survey item definitions that are associated with the survey definition.
+   * The survey item definitions that are associated with the survey section definition.
    */
   @JsonProperty
   private List<SurveyItemDefinition> itemDefinitions;
@@ -57,10 +57,10 @@ public class SurveySectionDefinition extends SurveyItemDefinition
    * Constructs a new <code>SurveySectionDefinition</code>.
    *
    * @param id          the Universally Unique Identifier (UUID) used to uniquely identify the
-   *                    survey group ratings definition
-   * @param name        the short, unique name for the survey group ratings definition
-   * @param label       the user-friendly label for the survey group ratings definition
-   * @param description the description for the survey group ratings definition
+   *                    survey section definition
+   * @param name        the short, unique name for the survey section definition
+   * @param label       the user-friendly label for the section definition
+   * @param description the description for the survey section definition
    */
   public SurveySectionDefinition(UUID id, String name, String label, String description)
   {
@@ -70,7 +70,7 @@ public class SurveySectionDefinition extends SurveyItemDefinition
   }
 
   /**
-   * Add the survey item definition to the survey definition.
+   * Add the survey item definition to the survey section definition.
    *
    * @param itemDefinition the survey item definition
    */
@@ -126,10 +126,38 @@ public class SurveySectionDefinition extends SurveyItemDefinition
   }
 
   /**
+   * Returns whether the survey item definition is the first survey item definition for the survey
+   * section definition.
+   *
+   * @param itemDefinition the survey item definition
+   *
+   * @return <code>true</code> if the survey item definition is the first survey item definition for
+   *         the survey section definition or <code>false</code> otherwise
+   */
+  public boolean isFirstItemDefinition(SurveyItemDefinition itemDefinition)
+  {
+    return SurveyItemDefinition.isFirstItemDefinition(itemDefinitions, itemDefinition);
+  }
+
+  /**
+   * Returns whether the survey item definition is the first last item definition for the survey
+   * section definition.
+   *
+   * @param itemDefinition the survey item definition
+   *
+   * @return <code>true</code> if the survey item definition is the last survey item definition for
+   *         the survey section definition or <code>false</code> otherwise
+   */
+  public boolean isLastItemDefinition(SurveyItemDefinition itemDefinition)
+  {
+    return SurveyItemDefinition.isLastItemDefinition(itemDefinitions, itemDefinition);
+  }
+
+  /**
    * Remove the survey item definition.
    *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   *           ratings definition
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey item
+   *           definition
    */
   public void removeItemDefinition(UUID id)
   {
@@ -145,9 +173,9 @@ public class SurveySectionDefinition extends SurveyItemDefinition
   }
 
   /**
-   * Returns the String representation of the survey definition.
+   * Returns the String representation of the survey section definition.
    *
-   * @return the String representation of the survey definition
+   * @return the String representation of the survey section definition
    */
   @Override
   public String toString()

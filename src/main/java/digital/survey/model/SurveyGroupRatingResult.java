@@ -36,25 +36,29 @@ public class SurveyGroupRatingResult
   implements Serializable
 {
   /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group rating result.
+   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group rating
+   * result.
    */
   @JsonProperty
   private UUID id;
 
   /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group member definition this survey group rating result is associated with.
+   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group member
+   * definition this survey group rating result is associated with.
    */
   @JsonProperty
   private UUID groupMemberDefinitionId;
 
   /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group ratings definition this survey group rating result is associated with.
+   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group ratings
+   * definition this survey group rating result is associated with.
    */
   @JsonProperty
   private UUID groupRatingsDefinitionId;
 
   /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group rating definition this survey group rating result is associated with.
+   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group rating
+   * definition this survey group rating result is associated with.
    */
   @JsonProperty
   private UUID groupRatingDefinitionId;
@@ -80,9 +84,12 @@ public class SurveyGroupRatingResult
   /**
    * Constructs a new <code>SurveyGroupRatingResult</code>.
    *
-   * @param groupRatingsDefinition the survey group ratings definition this survey group rating result is associated with
-   * @param groupRatingDefinition  the survey group rating definition this survey group rating result is associated with
-   * @param groupMemberDefinition  the survey group member definition this survey group rating result is associated with
+   * @param groupRatingsDefinition the survey group ratings definition this survey group rating
+   *                               result is associated with
+   * @param groupRatingDefinition  the survey group rating definition this survey group rating
+   *                               result is associated with
+   * @param groupMemberDefinition  the survey group member definition this survey group rating
+   *                               result is associated with
    */
   public SurveyGroupRatingResult(SurveyGroupRatingsDefinition groupRatingsDefinition,
       SurveyGroupRatingDefinition groupRatingDefinition,
@@ -155,9 +162,11 @@ public class SurveyGroupRatingResult
   }
 
   /**
-   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey group member definition this survey group rating result is associated with.
+   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   * member definition this survey group rating result is associated with.
    *
-   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey group member definition this survey group rating result is associated with
+   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   *         member definition this survey group rating result is associated with
    */
   public UUID getGroupMemberDefinitionId()
   {
@@ -165,9 +174,11 @@ public class SurveyGroupRatingResult
   }
 
   /**
-   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey group rating definition this survey group rating result is associated with.
+   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   * rating definition this survey group rating result is associated with.
    *
-   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey group rating definition this survey group rating result is associated with
+   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   *         rating definition this survey group rating result is associated with
    */
   public UUID getGroupRatingDefinitionId()
   {
@@ -185,9 +196,11 @@ public class SurveyGroupRatingResult
   }
 
   /**
-   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey group ratings definition this survey group rating result is associated with.
+   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   * ratings definition this survey group rating result is associated with.
    *
-   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey group ratings definition this survey group rating result is associated with
+   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   *         ratings definition this survey group rating result is associated with
    */
   public UUID getGroupRatingsDefinitionId()
   {
@@ -195,9 +208,11 @@ public class SurveyGroupRatingResult
   }
 
   /**
-   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey group rating result.
+   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   * rating result.
    *
-   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey group rating result
+   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   *         rating result
    */
   public UUID getId()
   {

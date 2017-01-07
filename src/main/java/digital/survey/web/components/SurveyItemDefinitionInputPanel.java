@@ -13,6 +13,7 @@ package digital.survey.web.components;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import digital.survey.model.SurveyDefinition;
 import digital.survey.model.SurveyItemDefinition;
 import guru.mmp.application.web.template.components.ExtensibleFormDialog;
 import guru.mmp.application.web.template.components.InputPanel;
@@ -38,14 +39,19 @@ public abstract class SurveyItemDefinitionInputPanel extends InputPanel
    * Constructs a new <code>SurveyItemDefinitionInputPanel</code>.
    *
    * @param id                        the non-null id of this component
+   * @param surveyDefinitionModel     the model for the survey definition
    * @param surveyItemDefinitionModel the model for the survey item definition
    */
-  SurveyItemDefinitionInputPanel(String id,
+  SurveyItemDefinitionInputPanel(String id, IModel<SurveyDefinition> surveyDefinitionModel,
       IModel<? extends SurveyItemDefinition> surveyItemDefinitionModel)
   {
     super(id);
 
     setOutputMarkupId(true);
+
+    SurveyDefinition surveyDefinition = surveyDefinitionModel.getObject();
+
+    SurveyItemDefinition surveyItemDefinition = surveyItemDefinitionModel.getObject();
 
     itemDefinitionHeader = new WebMarkupContainer("itemDefinitionHeader");
     itemDefinitionHeader.setOutputMarkupId(true);
@@ -54,8 +60,8 @@ public abstract class SurveyItemDefinitionInputPanel extends InputPanel
     itemDefinitionHeader.add(new Label("name", new PropertyModel<String>(surveyItemDefinitionModel,
         "name")));
 
-    itemDefinitionHeader.add(new Label("label", new PropertyModel<String>(surveyItemDefinitionModel,
-        "label")));
+    itemDefinitionHeader.add(new Label("label", new PropertyModel<String>(
+        surveyItemDefinitionModel, "label")));
 
     // The "editLink" link
     Link<Void> editLink = new Link<Void>("editLink")
@@ -95,9 +101,10 @@ public abstract class SurveyItemDefinitionInputPanel extends InputPanel
       @Override
       public void onClick() {}
     };
-    itemDefinitionHeader.add(moveUpLink);
 
-    // TODO: Hide the moveUpLink if this is the first survey item definition
+    moveUpLink.setVisible(!surveyDefinition.isFirstItemDefinition(surveyItemDefinition));
+
+    itemDefinitionHeader.add(moveUpLink);
 
     // The "moveDownLink" link
     Link<Void> moveDownLink = new Link<Void>("moveDownLink")
@@ -107,9 +114,10 @@ public abstract class SurveyItemDefinitionInputPanel extends InputPanel
       @Override
       public void onClick() {}
     };
-    itemDefinitionHeader.add(moveDownLink);
 
-    // TODO: Hide the moveDownLink if this is the last survey item definition
+    moveDownLink.setVisible(!surveyDefinition.isLastItemDefinition(surveyItemDefinition));
+
+    itemDefinitionHeader.add(moveDownLink);
 
     // The "removeLink" link
     Link<Void> removeLink = new Link<Void>("removeLink")
