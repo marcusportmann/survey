@@ -108,232 +108,7 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
 }
 
 
-.section-definition
-{
-  position: relative;
-  margin-bottom: 20px;
-  width: 100%;
-  margin-top: 0;
-  margin-bottom: 10px;
-  padding-top: 0px;
-  border-radius: 3px;
-  border: 1px solid #e0e0e0;
-}
 
-.section-definition-header
-{
-  position: relative;
-  background-color: #fff;
-  /* background-color: #b5bbc8 !important; */
-  /*
-  background-color: #fff;
-
-  border-top: 1px solid #d2d6de;
-
-  border-left: 1px solid #d2d6de;
-  border-right: 1px solid #d2d6de;
-  */
-
-}
-
-.section-definition-header .header-table
-{
-  display: table;
-  width: 100%;
-}
-
-.section-definition-header .header-table .header-first-row
-{
-  display: table-row;
-}
-
-.section-definition-header .header-table .header-second-row
-{
-  display: table-row;
-}
-
-.section-definition-header .header-table .header-first-row .header-icon-cell
-{
-  display: table-cell;
-  position: absolute;
-  width: 60px;
-  top: 0;
-  bottom: 0;
-  text-align: center;
-  line-height: 70px;
-  color: #fff;
-  font-size: 13pt;
-  background-color: #d2d6de;
-}
-
-.section-definition-header .header-table .header-first-row .header-top-cell
-{
-  display: table-cell;
-  padding-left: 10px;
-  padding-right: 10px;
-  border-bottom: 1px solid #e9e9e9;
-}
-
-.section-definition-header .header-table .header-first-row .header-name
-{
-  float: left;
-  line-height: 35px;
-}
-
-.section-definition-header .header-table .header-first-row .header-actions
-{
-  display: inline-block;
-  float: right;
-  line-height: 35px;
-}
-
-.section-definition-header .header-table .header-first-row .header-actions .btn-group
-{
-  margin: 0;
-  margin-bottom: 2px;
-  vertical-align: middle;
-}
-
-.section-definition-header .header-table .header-second-row .header-padding-cell
-{
-  display: table-cell;
-  width: 60px;
-}
-
-.section-definition-header .header-table .header-second-row .header-bottom-cell
-{
-  display: table-cell;
-  padding-left: 10px;
-  line-height: 30px;
-}
-
-.section-definition .section-definition-container
-{
-  border-top: 1px solid #e9e9e9;
-  padding-top: 10px;
-  padding-right: 10px;
-  padding-left: 10px;
-  padding-bottom: 0;
-  /*
-  border-left: 1px solid #d2d6de;
-  border-right: 1px solid #d2d6de;
-  border-bottom: 1px solid #d2d6de;
-  */
-}
-
-
-.first-item-definition
-{
-  position: relative;
-  border-radius: 3px;
-  background: #ffffff;
-  border: 1px solid #e9e9e9;
-  margin-bottom: 20px;
-  width: 100%;
-  margin-top: 0px;
-  margin-bottom: 10px;
-  padding: 10px;
-}
-
-
-
-
-.item-definition
-{
-  position: relative;
-  border-radius: 3px;
-  background: #ffffff;
-  border: 1px solid #e9e9e9;
-  margin-bottom: 20px;
-  width: 100%;
-  margin-top: 0px;
-  margin-bottom: 10px;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-.item-definition-header
-{
-  position: relative;
-}
-
-.item-definition-header .header-table
-{
-  display: table;
-  width: 100%;
-}
-
-.item-definition-header .header-table .header-first-row
-{
-  display: table-row;
-}
-
-.item-definition-header .header-table .header-second-row
-{
-  display: table-row;
-}
-
-.item-definition-header .header-table .header-first-row .header-icon-cell
-{
-  display: table-cell;
-  position: absolute;
-  width: 60px;
-  top: 0;
-  bottom: 0;
-  text-align: center;
-  line-height: 70px;
-  background-color: #367fa9;
-  color: #fff;
-  font-size: 13pt;
-}
-
-.item-definition-header .header-table .header-first-row .header-top-cell
-{
-  display: table-cell;
-  padding-left: 10px;
-  padding-right: 10px;
-  border-bottom: 1px solid #e9e9e9;
-}
-
-.item-definition-header .header-table .header-first-row .header-name
-{
-  float: left;
-  line-height: 35px;
-}
-
-.item-definition-header .header-table .header-first-row .header-actions
-{
-  display: inline-block;
-  float: right;
-  line-height: 35px;
-}
-
-.item-definition-header .header-table .header-first-row .header-actions .btn-group
-{
-  margin: 0;
-  margin-bottom: 2px;
-  vertical-align: middle;
-}
-
-.item-definition-header .header-table .header-second-row .header-padding-cell
-{
-  display: table-cell;
-  width: 60px;
-}
-
-.item-definition-header .header-table .header-second-row .header-bottom-cell
-{
-  display: table-cell;
-  padding-left: 10px;
-  line-height: 30px;
-}
-
-.item-definition .item-definition-body
-{
-  padding: 10px;
-  border-top: 1px solid #e9e9e9;
-
-}
 
 
 
@@ -373,13 +148,15 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
   position: relative;
   border-radius: 3px;
   background: #ffffff;
-  border: 1px solid #e9e9e9;
+  border: 1px solid #ddd;
   margin-bottom: 20px;
   width: 100%;
   margin-top: 0px;
   margin-bottom: 10px;
   padding-top: 0;
   padding-bottom: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 
 .survey-definition .panel-heading
@@ -413,17 +190,17 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
   bottom: 0;
   text-align: center;
   line-height: 70px;
-  background-color: #367fa9;
-  color: #fff;
+  background-color: #ddd;
   font-size: 13pt;
+  color: #444;
 }
 
 .survey-definition .panel-heading .heading-table .heading-first-row .heading-top-cell
 {
   display: table-cell;
   padding-left: 10px;
-  padding-right: 10px;
-  border-bottom: 1px solid #e9e9e9;
+  padding-right: 0px;
+  border-bottom: 1px solid #ddd;
 }
 
 .survey-definition .panel-heading .heading-table .heading-first-row .heading-name
@@ -446,6 +223,39 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
   vertical-align: middle;
 }
 
+.survey-definition .panel-heading .heading-table .heading-first-row .heading-collapse
+{
+  display: inline-block;
+  float: right;
+  width: 35px;
+  line-height: 35px;
+  margin-left: 10px;
+  text-align: center;
+  background-color: #f4f4f4;
+  border-left: 1px solid #ddd;
+}
+
+.survey-definition .panel-heading .heading-table .heading-first-row .heading-collapse i
+{
+  font-size: 18px;
+  color: #444;
+  line-height: 35px;
+}
+
+
+/*
+.survey-definition .panel-heading .heading-table .heading-first-row .heading-collapse-cell
+{
+  display: table-cell;
+  text-align: center;
+}
+
+.survey-definition .panel-heading .heading-table .heading-first-row .heading-collapse-cell a
+{
+
+}
+*/
+
 .survey-definition .panel-heading .heading-table .heading-second-row .heading-padding-cell
 {
   display: table-cell;
@@ -457,14 +267,28 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
   display: table-cell;
   padding-left: 10px;
   line-height: 30px;
+  /*border-bottom: 1px solid #ddd;*/
 }
 
-.survey-definition .panel .survey-definition .panel-body
+.survey-definition .panel .first-item-definition
 {
   padding: 10px;
-  border-top: 1px solid #e9e9e9;
-
+  text-align: center;
 }
+
+.survey-definition .panel .item-definition
+{
+  padding: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.survey-definition .panel .section-definition
+{
+  padding: 10px;
+  background-color: #f9fafc;
+  border-top: 1px solid #ddd;
+}
+
 
 
 

@@ -79,7 +79,7 @@ public class SurveyDefinitionInputPanel extends InputPanel
               SurveyGroupRatingsDefinition groupRatingsDefinition =
                   (SurveyGroupRatingsDefinition) itemDefinition;
 
-              item.add(new SurveyGroupRatingsDefinitionInputPanel("itemDefinitionPanel",
+              item.add(new SurveyGroupRatingsDefinitionInputPanel("itemDefinitionBody",
                   surveyDefinitionModel, new Model<>(groupRatingsDefinition), new Model<>(
                   surveyDefinitionModel.getObject().getGroupDefinition(
                   groupRatingsDefinition.getGroupDefinitionId()))));
