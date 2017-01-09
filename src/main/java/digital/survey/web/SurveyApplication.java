@@ -115,6 +115,22 @@ public class SurveyApplication extends TemplateWebApplication
   }
 
   /**
+   * Initialise the application.
+   */
+  @Override
+  protected void init()
+  {
+    super.init();
+
+    /*
+     * Disable rendering of wicket tags e.g. wicket:panel even in debug mode.
+     *
+     * This is done to ensure that things like the Bootstrap collapse component work correctly.
+     */
+    getMarkupSettings().setStripWicketTags(true);
+  }
+
+  /**
    * Setup the navigation hierarchy for the application.
    *
    * @param root the root of the navigation hierarchy

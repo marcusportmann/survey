@@ -64,6 +64,16 @@ public class SurveyDefinitionInputPanel extends InputPanel
           {
             SurveyItemDefinition itemDefinition = item.getModelObject();
 
+
+
+
+
+
+
+
+
+
+
             if (itemDefinition instanceof SurveyGroupRatingsDefinition)
             {
               SurveyGroupRatingsDefinition groupRatingsDefinition =
