@@ -297,7 +297,7 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
 
 .survey-definition .panel .section-definition
 {
-  padding: 10px;
+  padding: 10px 10px 0;
   background-color: #f9fafc;
   border-top: 1px solid #ddd;
 }

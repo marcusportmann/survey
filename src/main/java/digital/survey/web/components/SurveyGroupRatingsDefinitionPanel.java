@@ -25,28 +25,28 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
 /**
- * The <code>SurveyGroupRatingsDefinitionInputPanel</code> class.
+ * The <code>SurveyGroupRatingsDefinitionPanel</code> class.
  *
  * @author Marcus Portmann
  */
-public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinitionInputPanel
+public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
 {
   private static final long serialVersionUID = 1000000;
 
   /**
-   * Constructs a new <code>SurveyGroupRatingsDefinitionInputPanel</code>.
+   * Constructs a new <code>SurveyGroupRatingsDefinitionPanel</code>.
    *
    * @param id                          the non-null id of this component
    * @param surveyDefinitionModel       the model for the survey definition
    * @param groupRatingsDefinitionModel the model for the survey group ratings definition
    * @param groupDefinitionModel        the model for the survey group definition
    */
-  public SurveyGroupRatingsDefinitionInputPanel(String id,
+  public SurveyGroupRatingsDefinitionPanel(String id,
       IModel<SurveyDefinition> surveyDefinitionModel,
       IModel<SurveyGroupRatingsDefinition> groupRatingsDefinitionModel,
       IModel<SurveyGroupDefinition> groupDefinitionModel)
   {
-    super(id, surveyDefinitionModel, groupRatingsDefinitionModel);
+    super(id, surveyDefinitionModel, groupRatingsDefinitionModel, "fa-table", true);
 
     getBodyContainer().add(new ListView<SurveyGroupRatingDefinition>("groupRatingDefinition",
         new PropertyModel<>(groupRatingsDefinitionModel, "groupRatingDefinitions"))
@@ -63,8 +63,7 @@ public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinition
               @Override
               public void onClick(AjaxRequestTarget target)
               {
-                SurveyDefinition surveyDefinition =
-                    (SurveyDefinition) getForm().getDefaultModelObject();
+                SurveyDefinition surveyDefinition = surveyDefinitionModel.getObject();
 
                 surveyDefinition.moveGroupRatingDefinitionUp(item.getModelObject());
 
@@ -87,7 +86,7 @@ public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinition
               public void onClick(AjaxRequestTarget target)
               {
                 getDialog().show(target, new RemoveGroupRatingDialogImplementation(
-                    item.getModel()));
+                    surveyDefinitionModel, item.getModel()));
               }
             });
 
@@ -98,8 +97,7 @@ public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinition
               @Override
               public void onClick(AjaxRequestTarget target)
               {
-                SurveyDefinition surveyDefinition =
-                    (SurveyDefinition) getForm().getDefaultModelObject();
+                SurveyDefinition surveyDefinition = surveyDefinitionModel.getObject();
 
                 surveyDefinition.moveGroupRatingDefinitionDown(item.getModelObject());
 
@@ -128,8 +126,8 @@ public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinition
         });
 
     // The "groupMemberDefinition" list view
-    getBodyContainer().add(new ListView<SurveyGroupMemberDefinition>("groupMemberDefinition", new PropertyModel<>(
-        groupDefinitionModel, "groupMemberDefinitions"))
+    getBodyContainer().add(new ListView<SurveyGroupMemberDefinition>("groupMemberDefinition",
+        new PropertyModel<>(groupDefinitionModel, "groupMemberDefinitions"))
         {
           @Override
           protected void populateItem(ListItem<SurveyGroupMemberDefinition> item)
@@ -143,8 +141,7 @@ public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinition
               @Override
               public void onClick(AjaxRequestTarget target)
               {
-                SurveyDefinition surveyDefinition =
-                    (SurveyDefinition) getForm().getDefaultModelObject();
+                SurveyDefinition surveyDefinition = surveyDefinitionModel.getObject();
 
                 surveyDefinition.moveGroupMemberDefinitionUp(item.getModelObject());
 
@@ -167,7 +164,7 @@ public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinition
               public void onClick(AjaxRequestTarget target)
               {
                 getDialog().show(target, new RemoveGroupMemberDialogImplementation(
-                    item.getModel()));
+                    surveyDefinitionModel, item.getModel()));
               }
             });
 
@@ -178,8 +175,7 @@ public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinition
               @Override
               public void onClick(AjaxRequestTarget target)
               {
-                SurveyDefinition surveyDefinition =
-                    (SurveyDefinition) getForm().getDefaultModelObject();
+                SurveyDefinition surveyDefinition = surveyDefinitionModel.getObject();
 
                 surveyDefinition.moveGroupMemberDefinitionDown(item.getModelObject());
 
@@ -229,18 +225,21 @@ public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinition
   public class RemoveGroupMemberDialogImplementation extends ExtensibleFormDialogImplementation
   {
     private IModel<SurveyGroupMemberDefinition> groupMemberDefinitionModel;
+    private IModel<SurveyDefinition> surveyDefinitionModel;
 
     /**
      * Constructs a new <code>RemoveGroupMemberDialogImplementation</code>.
      *
+     * @param surveyDefinitionModel       the model for the survey definition
      * @param groupMemberDefinitionModel the model for the survey group member definition being
      *                                   removed
      */
-    public RemoveGroupMemberDialogImplementation(
+    public RemoveGroupMemberDialogImplementation(IModel<SurveyDefinition> surveyDefinitionModel,
         IModel<SurveyGroupMemberDefinition> groupMemberDefinitionModel)
     {
       super("Remove Survey Group Member", "Yes", "No");
 
+      this.surveyDefinitionModel = surveyDefinitionModel;
       this.groupMemberDefinitionModel = groupMemberDefinitionModel;
 
       add(new Label("name", new PropertyModel<String>(groupMemberDefinitionModel, "name")));
@@ -255,8 +254,7 @@ public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinition
     @Override
     public boolean onSubmit(AjaxRequestTarget target, Form form)
     {
-      SurveyDefinition surveyDefinition = (SurveyDefinition) SurveyGroupRatingsDefinitionInputPanel
-          .this.getForm().getModelObject();
+      SurveyDefinition surveyDefinition = surveyDefinitionModel.getObject();
 
       surveyDefinition.removeGroupMemberDefinition(groupMemberDefinitionModel.getObject().getId());
 
@@ -278,18 +276,21 @@ public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinition
   public class RemoveGroupRatingDialogImplementation extends ExtensibleFormDialogImplementation
   {
     private IModel<SurveyGroupRatingDefinition> groupRatingDefinitionModel;
+    private IModel<SurveyDefinition> surveyDefinitionModel;
 
     /**
      * Constructs a new <code>RemoveGroupRatingDialogImplementation</code>.
      *
+     * @param surveyDefinitionModel      the model for the survey definition
      * @param groupRatingDefinitionModel the model for the survey group rating definition being
      *                                   removed
      */
-    public RemoveGroupRatingDialogImplementation(
+    public RemoveGroupRatingDialogImplementation(IModel<SurveyDefinition> surveyDefinitionModel,
         IModel<SurveyGroupRatingDefinition> groupRatingDefinitionModel)
     {
       super("Remove Survey Group Rating", "Yes", "No");
 
+      this.surveyDefinitionModel = surveyDefinitionModel;
       this.groupRatingDefinitionModel = groupRatingDefinitionModel;
 
       add(new Label("name", new PropertyModel<String>(groupRatingDefinitionModel, "name")));
@@ -304,8 +305,7 @@ public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinition
     @Override
     public boolean onSubmit(AjaxRequestTarget target, Form form)
     {
-      SurveyDefinition surveyDefinition = (SurveyDefinition) SurveyGroupRatingsDefinitionInputPanel
-          .this.getForm().getModelObject();
+      SurveyDefinition surveyDefinition = surveyDefinitionModel.getObject();
 
       surveyDefinition.removeGroupRatingDefinition(groupRatingDefinitionModel.getObject().getId());
 

@@ -13,12 +13,10 @@ package digital.survey.web.components;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import digital.survey.model.SurveyDefinition;
-import digital.survey.model.SurveyGroupRatingsDefinition;
-import digital.survey.model.SurveyItemDefinition;
-import org.apache.wicket.markup.html.WebMarkupContainer;
+import digital.survey.model.*;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
@@ -27,21 +25,20 @@ import java.util.List;
 //~--- JDK imports ------------------------------------------------------------
 
 /**
- * The <class>SurveyItemDefinitionInputPanelGroup</class>.
+ * The <class>SurveyItemDefinitionPanelGroup</class>.
  *
  * @author Marcus Portmann
  */
-public class SurveyItemDefinitionInputPanelGroup extends WebMarkupContainer
+public class SurveyItemDefinitionPanelGroup extends Panel
 {
   /**
-   * Constructs a new <code>SurveyItemDefinitionInputPanelGroup</code>.
+   * Constructs a new <code>SurveyItemDefinitionPanelGroup</code>.
    *
    * @param id                         the non-null id of this component
    * @param surveyDefinitionModel      the model for the survey definition
    * @param surveyItemDefinitionsModel the model for the survey item definitions
    */
-  public SurveyItemDefinitionInputPanelGroup(String id,
-      IModel<SurveyDefinition> surveyDefinitionModel,
+  public SurveyItemDefinitionPanelGroup(String id, IModel<SurveyDefinition> surveyDefinitionModel,
       IModel<List<SurveyItemDefinition>> surveyItemDefinitionsModel)
   {
     super(id);
@@ -62,11 +59,26 @@ public class SurveyItemDefinitionInputPanelGroup extends WebMarkupContainer
               SurveyGroupRatingsDefinition groupRatingsDefinition =
                   (SurveyGroupRatingsDefinition) itemDefinition;
 
-              item.add(new SurveyGroupRatingsDefinitionInputPanel("itemDefinitionPanel",
+              item.add(new SurveyGroupRatingsDefinitionPanel("itemDefinitionPanel",
                   surveyDefinitionModel, new Model<>(groupRatingsDefinition), new Model<>(
                   surveyDefinitionModel.getObject().getGroupDefinition(
                   groupRatingsDefinition.getGroupDefinitionId()))));
             }
+            else if (itemDefinition instanceof SurveySectionDefinition)
+            {
+              SurveySectionDefinition sectionDefinition = (SurveySectionDefinition) itemDefinition;
+
+              item.add(new SurveySectionDefinitionPanel("itemDefinitionPanel",
+                  surveyDefinitionModel, new Model<>(sectionDefinition)));
+            }
+            else if (itemDefinition instanceof SurveyTextDefinition)
+            {
+              SurveyTextDefinition textDefinition = (SurveyTextDefinition) itemDefinition;
+
+              item.add(new SurveyTextDefinitionPanel("itemDefinitionPanel", surveyDefinitionModel,
+                  new Model<>(textDefinition)));
+            }
+
           }
         });
   }

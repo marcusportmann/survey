@@ -47,14 +47,12 @@ public class SurveyTextDefinition extends SurveyItemDefinition
   /**
    * Constructs a new <code>SurveyTextDefinition</code>.
    *
-   * @param id          the Universally Unique Identifier (UUID) used to uniquely identify the
-   *                    survey text definition
    * @param name        the short, unique name for the survey text definition
    * @param label       the user-friendly label for the survey text definition
    * @param description the description for the survey text definition
    * @param help        the HTML help for the survey text definition
    */
-  public SurveyTextDefinition(UUID id, String name, String label, String description, String help)
+  public SurveyTextDefinition(String name, String label, String description, String help)
   {
     super(TYPE_ID, name, label, description, help);
   }

@@ -51,7 +51,7 @@ public class SurveyDefinitionInputPanel extends InputPanel
     descriptionField.setRequired(true);
     add(descriptionField);
 
-    add(new SurveyItemDefinitionInputPanelGroup("itemDefinitionGroup", surveyDefinitionModel, new PropertyModel<>(
-        surveyDefinitionModel, "itemDefinitions")));
+    add(new SurveyItemDefinitionPanelGroup("itemDefinitionPanelGroup", surveyDefinitionModel,
+        new PropertyModel<>(surveyDefinitionModel, "itemDefinitions")));
   }
 }

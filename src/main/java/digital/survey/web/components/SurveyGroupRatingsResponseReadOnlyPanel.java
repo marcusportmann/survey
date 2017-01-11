@@ -14,10 +14,10 @@ package digital.survey.web.components;
 //~--- non-JDK imports --------------------------------------------------------
 
 import digital.survey.model.*;
-import guru.mmp.application.web.template.components.InputPanel;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -27,10 +27,10 @@ import org.apache.wicket.model.PropertyModel;
  *
  * @author Marcus Portmann
  */
-class SurveyGroupRatingsResponseReadOnlyPanel extends InputPanel
+class SurveyGroupRatingsResponseReadOnlyPanel extends Panel
 {
   /**
-   * Constructs a new <code>SurveyGroupRatingsDefinitionInputPanel</code>.
+   * Constructs a new <code>SurveyGroupRatingsResponseReadOnlyPanel</code>.
    *
    * @param id                          the non-null id of this component
    * @param groupRatingsDefinitionModel the model for the survey group ratings definition

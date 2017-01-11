@@ -727,8 +727,20 @@ public class SurveyServiceTest
     SurveySectionDefinition outerSectionDefinition = new SurveySectionDefinition("outer_section",
         "Outer Section", "Outer Section Description", "Outer Section Help");
 
+    surveyDefinition.addItemDefinition(outerSectionDefinition);
+
+    SurveyTextDefinition outerTextDefinition = new SurveyTextDefinition("outer_text", "Outer Text",
+        "Outer Text Description", "Outer Text Help");
+
+    outerSectionDefinition.addItemDefinition(outerTextDefinition);
+
     SurveySectionDefinition innerSectionDefinition = new SurveySectionDefinition("inner_section",
         "Inner Section", "Inner Section Description", "Inner Section Help");
+
+    SurveyTextDefinition innerTextDefinition = new SurveyTextDefinition("inner_text", "Inner Text",
+        "Inner Text Description", "Inner Text Help");
+
+    innerSectionDefinition.addItemDefinition(innerTextDefinition);
 
     outerSectionDefinition.addItemDefinition(innerSectionDefinition);
 

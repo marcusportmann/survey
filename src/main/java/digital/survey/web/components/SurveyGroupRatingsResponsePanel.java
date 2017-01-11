@@ -16,11 +16,11 @@ package digital.survey.web.components;
 import digital.survey.model.*;
 import guru.mmp.application.web.components.StringSelectOption;
 import guru.mmp.application.web.template.components.DropDownChoiceWithFeedback;
-import guru.mmp.application.web.template.components.InputPanel;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
@@ -30,23 +30,23 @@ import java.util.List;
 //~--- JDK imports ------------------------------------------------------------
 
 /**
- * The <code>SurveyGroupRatingsResponseInputPanel</code> class.
+ * The <code>SurveyGroupRatingsResponsePanel</code> class.
  *
  * @author Marcus Portmann
  */
-class SurveyGroupRatingsResponseInputPanel extends InputPanel
+class SurveyGroupRatingsResponsePanel extends Panel
 {
   private static final long serialVersionUID = 1000000;
 
   /**
-   * Constructs a new <code>SurveyGroupRatingsDefinitionInputPanel</code>.
+   * Constructs a new <code>SurveyGroupRatingsResponsePanel</code>.
    *
    * @param id                          the non-null id of this component
    * @param groupRatingsDefinitionModel the model for the survey group ratings definition
    * @param groupDefinitionModel        the model for the survey group definition
    * @param surveyResponseModel         the model for the survey response
    */
-  SurveyGroupRatingsResponseInputPanel(String id,
+  SurveyGroupRatingsResponsePanel(String id,
       IModel<SurveyGroupRatingsDefinition> groupRatingsDefinitionModel,
       IModel<SurveyGroupDefinition> groupDefinitionModel,
       IModel<SurveyResponse> surveyResponseModel)
