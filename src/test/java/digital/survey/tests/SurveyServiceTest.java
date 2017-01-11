@@ -72,8 +72,7 @@ public class SurveyServiceTest
 
     System.out.println();
 
-    SurveyInstance surveyInstance = new SurveyInstance(UUID.fromString(
-        "b222aa15-715f-4752-923d-8f33ee8a1736"), "CTO ELT Values - September 2016",
+    SurveyInstance surveyInstance = new SurveyInstance("CTO ELT Values - September 2016",
         "CTO ELT Values - September 2016", surveyDefinition);
 
     System.out.printf(
@@ -86,11 +85,10 @@ public class SurveyServiceTest
 
     for (int i = 0; i < 5; i++)
     {
-      SurveyRequest testUserRequest = new SurveyRequest(UUID.randomUUID(), surveyInstance,
-          "Test First Name " + i, "Test Last Name " + i, "test" + i + "@mmp.guru");
+      SurveyRequest testUserRequest = new SurveyRequest(surveyInstance, "Test First Name " + i,
+          "Test Last Name " + i, "test" + i + "@mmp.guru");
 
-      SurveyResponse testUserResponse = new SurveyResponse(UUID.randomUUID(), surveyInstance,
-          testUserRequest);
+      SurveyResponse testUserResponse = new SurveyResponse(surveyInstance, testUserRequest);
 
       randomizeSurveyResponse(testUserResponse);
 
@@ -675,86 +673,64 @@ public class SurveyServiceTest
     SurveyGroupDefinition surveyGroupDefinition = new SurveyGroupDefinition(UUID.fromString(
         "d3cf5bf2-9226-429f-bbbf-126a298e0e57"), "CTO ELT", "CTO ELT");
 
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.fromString(
-        "1dc16425-638b-43ec-82be-7fe2427836e2"), "CTO ELT"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.fromString(
-        "57be5b5e-950e-494f-b0a1-51637c062c5c"), "Peter"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.fromString(
-        "84327d2d-b0d4-4cad-9a00-f2f9c33d1fb6"), "Adriaan"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.fromString(
-        "cd5297cf-7fc6-4b9d-a9dc-6bea68d191a1"), "Alapan"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.fromString(
-        "0e73d1cd-38fa-452b-9490-dac101c04174"), "Dan"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.fromString(
-        "4b6b3950-c15d-491a-92b9-1c4e8000cbb9"), "Daryl"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.fromString(
-        "4bde7d66-afc3-4445-a227-9b5d8d532ae0"), "David"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.fromString(
-        "3129ac0d-1a34-4221-a1ad-a01b51bfcad8"), "Francois"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.fromString(
-        "a704eea9-3f8b-4095-87bb-fd0407c9f309"), "James"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.fromString(
-        "eb90097c-eb8b-411f-ace2-f14e2937d83f"), "Kersh"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.fromString(
-        "e4189470-9449-40d9-8952-c468c1e96aa6"), "Kevin"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.fromString(
-        "1c124329-d138-40ce-b1b9-259f51c12705"), "Linde-Marie"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.fromString(
-        "35efdc8c-e855-4b68-839f-95b00d025c7a"), "Manoj"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.fromString(
-        "2f6008ce-b3bc-47da-bb37-2d18063fe910"), "Marcus"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.fromString(
-        "fd4a21ba-3870-4521-9831-76ddcded3675"), "Mercia"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.fromString(
-        "c83167da-b806-437d-828a-ee786260243b"), "Nicole"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.fromString(
-        "9503ff85-efa5-451d-a48b-02a3491eeebc"), "Lawrence"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.fromString(
-        "4a6d677b-b58f-4db3-9802-c5358a150fc4"), "Richard"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.fromString(
-        "8e094c16-58b1-4707-bf5e-2cf11426d046"), "Sandra"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.fromString(
-        "4ab33e8e-df64-4b79-a46d-c0f9b6ed7a3c"), "Tendai"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(UUID.fromString(
-        "d7681710-e3ab-4716-a5ad-864b5f3a3e4c"), "Debbie"));
+    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("CTO ELT"));
+    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Peter"));
+    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Adriaan"));
+    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Alapan"));
+    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Dan"));
+    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Daryl"));
+    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("David"));
+    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Francois"));
+    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("James"));
+    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Kersh"));
+    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Kevin"));
+    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Linde-Marie"));
+    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Manoj"));
+    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Marcus"));
+    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Mercia"));
+    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Nicole"));
+    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Lawrence"));
+    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Richard"));
+    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Sandra"));
+    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Tendai"));
+    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Debbie"));
 
     surveyDefinition.addGroupDefinition(surveyGroupDefinition);
 
     SurveyGroupRatingsDefinition surveyGroupRatingsDefinition = new SurveyGroupRatingsDefinition(
-        UUID.fromString("d7a16b81-d2a2-4f07-aa56-4846af42eea9"), "cto_values", "CTO Values",
-        "CTO Values", surveyGroupDefinition.getId(), true);
+        "cto_values", "CTO Values", "CTO Values", "CTO Values", surveyGroupDefinition.getId(),
+        true);
 
     surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
-        UUID.fromString("7e5a49ad-1b36-4fb9-9d5d-a639d12b4505"), "Accountability",
+        "Accountability", SurveyGroupRatingType.YES_NO_NA));
+    surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
+        "Competence", SurveyGroupRatingType.YES_NO_NA));
+    surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
+        "Courage", SurveyGroupRatingType.YES_NO_NA));
+    surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
+        "Fairness", SurveyGroupRatingType.YES_NO_NA));
+    surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
+        "Integrity", SurveyGroupRatingType.YES_NO_NA));
+    surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
+        "Openness", SurveyGroupRatingType.YES_NO_NA));
+    surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
+        "Positive Attitude", SurveyGroupRatingType.YES_NO_NA));
+    surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
+        "Teamwork", SurveyGroupRatingType.YES_NO_NA));
+    surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
+        "Making a difference", SurveyGroupRatingType.YES_NO_NA));
+    surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition("Trust",
         SurveyGroupRatingType.YES_NO_NA));
-    surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
-        UUID.fromString("b4450b10-c88b-4b62-9a31-98a64880a96a"), "Competence", SurveyGroupRatingType
-        .YES_NO_NA));
-    surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
-        UUID.fromString("91e05612-d464-4689-8af3-4cf225782f8a"), "Courage", SurveyGroupRatingType
-        .YES_NO_NA));
-    surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
-        UUID.fromString("6cde6e39-aaf8-4f96-9952-d487d2584be7"), "Fairness", SurveyGroupRatingType
-        .YES_NO_NA));
-    surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
-        UUID.fromString("a603e933-913c-4976-8c33-84ecee181648"), "Integrity", SurveyGroupRatingType
-        .YES_NO_NA));
-    surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
-        UUID.fromString("32a851c4-c64c-4873-8ed8-f81e277b470a"), "Openness", SurveyGroupRatingType
-        .YES_NO_NA));
-    surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
-        UUID.fromString("db7abbb0-002f-446a-b3ef-505783040790"), "Positive Attitude",
-        SurveyGroupRatingType.YES_NO_NA));
-    surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
-        UUID.randomUUID(), "Teamwork", SurveyGroupRatingType.YES_NO_NA));
-    surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
-        UUID.fromString("c34977a9-b1e5-4b1c-80e5-bbebf11de725"), "Making a difference",
-        SurveyGroupRatingType.YES_NO_NA));
-    surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
-        UUID.fromString("0dbf6e27-386a-4f3c-aefe-9aec39941efd"), "Trust", SurveyGroupRatingType
-        .YES_NO_NA));
 
     surveyDefinition.addItemDefinition(surveyGroupRatingsDefinition);
+
+    SurveySectionDefinition outerSectionDefinition = new SurveySectionDefinition("outer_section",
+        "Outer Section", "Outer Section Description", "Outer Section Help");
+
+    SurveySectionDefinition innerSectionDefinition = new SurveySectionDefinition("inner_section",
+        "Inner Section", "Inner Section Description", "Inner Section Help");
+
+    outerSectionDefinition.addItemDefinition(innerSectionDefinition);
 
     return surveyDefinition;
   }
@@ -762,8 +738,8 @@ public class SurveyServiceTest
   private static synchronized SurveyInstance getCTOValuesSurveyInstanceDetails(
       SurveyDefinition surveyDefinition)
   {
-    return new SurveyInstance(UUID.randomUUID(), "CTO ELT Values - September 2016",
-        "CTO ELT Values - September 2016", surveyDefinition);
+    return new SurveyInstance("CTO ELT Values - September 2016", "CTO ELT Values - September 2016",
+        surveyDefinition);
   }
 
   private static synchronized Organisation getTestOrganisationDetails()
@@ -800,14 +776,14 @@ public class SurveyServiceTest
         "Test Survey Definition Name", "Test Survey Definition Description");
 
     SurveySectionDefinition surveySectionDefinition1 = new SurveySectionDefinition(
-        UUID.randomUUID(), "test_survey_section_definition_1",
-        "Test Survey Section Definition Name 1", "Test Survey Section Definition Description 1");
+        "test_survey_section_definition_1", "Test Survey Section Definition Name 1",
+        "Test Survey Section Definition Description 1", "Test Survey Section Definition Help 1");
     SurveySectionDefinition surveySectionDefinition2 = new SurveySectionDefinition(
-        UUID.randomUUID(), "test_survey_section_definition_2",
-        "Test Survey Section Definition Name 2", "Test Survey Section Definition Description 2");
+        "test_survey_section_definition_2", "Test Survey Section Definition Name 2",
+        "Test Survey Section Definition Description 2", "Test Survey Section Definition Help 2");
     SurveySectionDefinition surveySectionDefinition3 = new SurveySectionDefinition(
-        UUID.randomUUID(), "test_survey_section_definition_3",
-        "Test Survey Section Definition Name 3", "Test Survey Section Definition Description 3");
+        "test_survey_section_definition_3", "Test Survey Section Definition Name 3",
+        "Test Survey Section Definition Description 3", "Test Survey Section Definition Help 3");
 
     surveyDefinition.addItemDefinition(surveySectionDefinition1);
     surveyDefinition.addItemDefinition(surveySectionDefinition2);
@@ -817,66 +793,60 @@ public class SurveyServiceTest
         "Test Survey Group Definition Name", "Test Survey Group Definition Description");
 
     surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
-        UUID.randomUUID(), "Test Survey Group Member Definition Name 1"));
+        "Test Survey Group Member Definition Name 1"));
     surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
-        UUID.randomUUID(), "Test Survey Group Member Definition Name 2"));
+        "Test Survey Group Member Definition Name 2"));
     surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
-        UUID.randomUUID(), "Test Survey Group Member Definition Name 4"));
+        "Test Survey Group Member Definition Name 4"));
     surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
-        UUID.randomUUID(), "Test Survey Group Member Definition Name 3"));
+        "Test Survey Group Member Definition Name 3"));
 
     surveyDefinition.addGroupDefinition(surveyGroupDefinition);
 
     SurveyGroupRatingsDefinition surveyGroupRatingsDefinition = new SurveyGroupRatingsDefinition(
-        UUID.randomUUID(), "test_survey_group_ratings_definition",
-        "Test Survey Group Ratings Definition", "Test Survey Group Ratings Definition",
-        surveyGroupDefinition.getId(), true);
+        "test_survey_group_ratings_definition", "Test Survey Group Ratings Definition",
+        "Test Survey Group Ratings Definition Description",
+        "Test Survey Group Ratings Definition Help", surveyGroupDefinition.getId(), true);
 
     surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
-        UUID.randomUUID(), "Test Survey Group Rating Definition 1", SurveyGroupRatingType
-        .YES_NO_NA));
+        "Test Survey Group Rating Definition 1", SurveyGroupRatingType.YES_NO_NA));
     surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
-        UUID.randomUUID(), "Test Survey Group Rating Definition 2", SurveyGroupRatingType
-        .YES_NO_NA));
+        "Test Survey Group Rating Definition 2", SurveyGroupRatingType.YES_NO_NA));
     surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
-        UUID.randomUUID(), "Test Survey Group Rating Definition 3", SurveyGroupRatingType
-        .YES_NO_NA));
+        "Test Survey Group Rating Definition 3", SurveyGroupRatingType.YES_NO_NA));
 
     surveyDefinition.addItemDefinition(surveyGroupRatingsDefinition);
 
     SurveyGroupRatingsDefinition surveyNestedGroupRatingsDefinition1 =
-        new SurveyGroupRatingsDefinition(UUID.randomUUID(),
-        "test_nested_survey_group_ratings_definition_1",
+        new SurveyGroupRatingsDefinition("test_nested_survey_group_ratings_definition_1",
         "Test Nested Survey Group Ratings Definition 1",
-        "Test Nested Survey Group Ratings Definition 1", surveyGroupDefinition.getId(), true);
+        "Test Nested Survey Group Ratings Definition Description 1",
+        "Test Nested Survey Group Ratings Definition Help 1", surveyGroupDefinition.getId(), true);
 
     SurveyGroupRatingsDefinition surveyNestedGroupRatingsDefinition2 =
-        new SurveyGroupRatingsDefinition(UUID.randomUUID(),
-        "test_nested_survey_group_ratings_definition_2",
+        new SurveyGroupRatingsDefinition("test_nested_survey_group_ratings_definition_2",
         "Test Nested Survey Group Ratings Definition 2",
-        "Test Nested Survey Group Ratings Definition 2", surveyGroupDefinition.getId(), true);
+        "Test Nested Survey Group Ratings Definition Description 2",
+        "Test Nested Survey Group Ratings Definition Help 2", surveyGroupDefinition.getId(), true);
 
     SurveyGroupRatingsDefinition surveyNestedGroupRatingsDefinition3 =
-        new SurveyGroupRatingsDefinition(UUID.randomUUID(),
-        "test_nested_survey_group_ratings_definition_3",
+        new SurveyGroupRatingsDefinition("test_nested_survey_group_ratings_definition_3",
         "Test Nested Survey Group Ratings Definition 3",
-        "Test Nested Survey Group Ratings Definition 3", surveyGroupDefinition.getId(), true);
+        "Test Nested Survey Group Ratings Definition Description 3",
+        "Test Nested Survey Group Ratings Definition Help 3", surveyGroupDefinition.getId(), true);
 
     surveyNestedGroupRatingsDefinition1.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
-        UUID.randomUUID(), "Test Nested Survey Group Definition Rating Item 1",
-        SurveyGroupRatingType.YES_NO_NA));
+        "Test Nested Survey Group Definition Rating Item 1", SurveyGroupRatingType.YES_NO_NA));
 
     surveySectionDefinition1.addItemDefinition(surveyNestedGroupRatingsDefinition1);
 
     surveyNestedGroupRatingsDefinition2.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
-        UUID.randomUUID(), "Test Nested Survey Group Definition Rating Item 2",
-        SurveyGroupRatingType.YES_NO_NA));
+        "Test Nested Survey Group Definition Rating Item 2", SurveyGroupRatingType.YES_NO_NA));
 
     surveySectionDefinition2.addItemDefinition(surveyNestedGroupRatingsDefinition2);
 
     surveyNestedGroupRatingsDefinition3.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
-        UUID.randomUUID(), "Test Nested Survey Group Definition Rating Item 3",
-        SurveyGroupRatingType.YES_NO_NA));
+        "Test Nested Survey Group Definition Rating Item 3", SurveyGroupRatingType.YES_NO_NA));
 
     surveySectionDefinition3.addItemDefinition(surveyNestedGroupRatingsDefinition3);
 
@@ -886,15 +856,13 @@ public class SurveyServiceTest
   private static synchronized SurveyInstance getTestSurveyInstanceDetails(
       SurveyDefinition surveyDefinition)
   {
-    return new SurveyInstance(UUID.randomUUID(), "Test Survey Instance", "Test Survey Instance",
-        surveyDefinition);
+    return new SurveyInstance("Test Survey Instance", "Test Survey Instance", surveyDefinition);
   }
 
   private static synchronized SurveyRequest getTestSurveyRequestDetails(
       SurveyInstance surveyInstance)
   {
-    return new SurveyRequest(UUID.randomUUID(), surveyInstance, "Marcus", "Portmann",
-        "marcus@mmp.guru");
+    return new SurveyRequest(surveyInstance, "Marcus", "Portmann", "marcus@mmp.guru");
   }
 
   private void compareSurveyAudienceMembers(SurveyAudienceMember surveyAudienceMember1,
@@ -1066,6 +1034,8 @@ public class SurveyServiceTest
         surveyItemDefinition1.getName(), surveyItemDefinition2.getName());
     assertEquals("The label values for the two survey item definitions do not match",
         surveyItemDefinition1.getLabel(), surveyItemDefinition2.getLabel());
+    assertEquals("The description values for the two survey item definitions do not match",
+        surveyItemDefinition1.getDescription(), surveyItemDefinition2.getDescription());
     assertEquals("The help values for the two survey item definitions do not match",
         surveyItemDefinition1.getHelp(), surveyItemDefinition2.getHelp());
 

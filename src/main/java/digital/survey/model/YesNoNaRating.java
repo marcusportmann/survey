@@ -26,8 +26,8 @@ public enum YesNoNaRating
 {
   NA(-1, "N/A"), NO(0, "No"), YES(1, "Yes");
 
-  private String description;
   private int code;
+  private String description;
 
   YesNoNaRating(int code, String description)
   {

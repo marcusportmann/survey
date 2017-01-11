@@ -35,12 +35,7 @@ import java.util.UUID;
 public class SurveyGroupRatingResult
   implements Serializable
 {
-  /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group rating
-   * result.
-   */
-  @JsonProperty
-  private UUID id;
+  private static final long serialVersionUID = 1000000;
 
   /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey group member
@@ -48,13 +43,6 @@ public class SurveyGroupRatingResult
    */
   @JsonProperty
   private UUID groupMemberDefinitionId;
-
-  /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group ratings
-   * definition this survey group rating result is associated with.
-   */
-  @JsonProperty
-  private UUID groupRatingsDefinitionId;
 
   /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey group rating
@@ -68,6 +56,20 @@ public class SurveyGroupRatingResult
    */
   @JsonProperty
   private SurveyGroupRatingType groupRatingDefinitionRatingType;
+
+  /**
+   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group ratings
+   * definition this survey group rating result is associated with.
+   */
+  @JsonProperty
+  private UUID groupRatingsDefinitionId;
+
+  /**
+   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group rating
+   * result.
+   */
+  @JsonProperty
+  private UUID id;
 
   /**
    * The ratings for the survey group rating result.

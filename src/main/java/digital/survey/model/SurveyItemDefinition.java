@@ -31,26 +31,29 @@ import java.util.UUID;
  * @author Marcus Portmann
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "typeId")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "7708438e-b114-43d4-8fe5-b08aa5567e3a",
-    value = SurveySectionDefinition.class) ,
-    @JsonSubTypes.Type(name = "aded36bd-bc3d-4157-99f6-b4d91825de5d",
-        value = SurveyGroupRatingsDefinition.class) })
-@JsonPropertyOrder({ "id", "typeId", "name", "label", "help" })
+@JsonSubTypes({ @JsonSubTypes.Type(name = "aded36bd-bc3d-4157-99f6-b4d91825de5d",
+    value = SurveyGroupRatingsDefinition.class) ,
+    @JsonSubTypes.Type(name = "7708438e-b114-43d4-8fe5-b08aa5567e3a",
+        value = SurveySectionDefinition.class) ,
+    @JsonSubTypes.Type(name = "491253d9-e6cf-4692-bcfd-39bcd8960a60",
+        value = SurveyTextDefinition.class) })
+@JsonPropertyOrder({ "id", "typeId", "name", "label", "description", "help" })
 public abstract class SurveyItemDefinition
   implements Serializable
 {
+  private static final long serialVersionUID = 1000000;
+
+  /**
+   * The description for the survey item definition.
+   */
+  @JsonProperty
+  private String description;
+
   /**
    * The HTML help for the survey item definition.
    */
   @JsonProperty
   private String help;
-
-  /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the type of survey item
-   * definition.
-   */
-  @JsonProperty
-  private UUID typeId;
 
   /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey item definition.
@@ -59,16 +62,23 @@ public abstract class SurveyItemDefinition
   private UUID id;
 
   /**
+   * The user-friendly label for the survey item definition.
+   */
+  @JsonProperty
+  private String label;
+
+  /**
    * The short, unique name for the survey item definition.
    */
   @JsonProperty
   private String name;
 
   /**
-   * The user-friendly label for the survey item definition.
+   * The Universally Unique Identifier (UUID) used to uniquely identify the type of survey item
+   * definition.
    */
   @JsonProperty
-  private String label;
+  private UUID typeId;
 
   /**
    * Constructs a new <code>SurveyGroupRatingsDefinition</code>.
@@ -79,20 +89,21 @@ public abstract class SurveyItemDefinition
   /**
    * Constructs a new <code>SurveyItemDefinition</code>.
    *
-   * @param id     the Universally Unique Identifier (UUID) used to uniquely identify the survey
-   *               item definition
-   * @param typeId the Universally Unique Identifier (UUID) used to uniquely identify the type of
-   *               survey item definition
-   * @param name   the short, unique name for the survey item definition
-   * @param label  the user-friendly label for the survey item definition
-   * @param help   the HTML help for the survey item definition
+   * @param typeId      the Universally Unique Identifier (UUID) used to uniquely identify the type
+   *                    of survey item definition
+   * @param name        the short, unique name for the survey item definition
+   * @param label       the user-friendly label for the survey item definition
+   * @param description the description for the survey item definition
+   * @param help        the HTML help for the survey item definition
    */
-  public SurveyItemDefinition(UUID id, UUID typeId, String name, String label, String help)
+  public SurveyItemDefinition(UUID typeId, String name, String label, String description,
+      String help)
   {
-    this.id = id;
+    this.id = UUID.randomUUID();
     this.typeId = typeId;
     this.name = name;
     this.label = label;
+    this.description = description;
     this.help = help;
   }
 
@@ -179,6 +190,16 @@ public abstract class SurveyItemDefinition
   }
 
   /**
+   * Returns the description for the survey item definition.
+   *
+   * @return the description for the survey item definition
+   */
+  public String getDescription()
+  {
+    return description;
+  }
+
+  /**
    * Returns the HTML help for the survey item definition.
    *
    * @return the HTML help for the survey item definition
@@ -233,6 +254,16 @@ public abstract class SurveyItemDefinition
   }
 
   /**
+   * Set the description for the survey item definition.
+   *
+   * @param description the description for the survey item definition
+   */
+  public void setDescription(String description)
+  {
+    this.description = description;
+  }
+
+  /**
    * Set the HTML help for the survey item definition.
    *
    * @param help the HTML help for the survey item definition
@@ -240,18 +271,6 @@ public abstract class SurveyItemDefinition
   public void setHelp(String help)
   {
     this.help = help;
-  }
-
-  /**
-   * Set the Universally Unique Identifier (UUID) used to uniquely identify the survey item
-   * definition.
-   *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey item
-   *           definition
-   */
-  public void setId(UUID id)
-  {
-    this.id = id;
   }
 
   /**
@@ -275,18 +294,6 @@ public abstract class SurveyItemDefinition
   }
 
   /**
-   * Set the Universally Unique Identifier (UUID) used to uniquely identify the type of survey item
-   * definition.
-   *
-   * @param typeId the Universally Unique Identifier (UUID) used to uniquely identify the type of
-   *               survey item definition
-   */
-  public void setTypeId(UUID typeId)
-  {
-    this.typeId = typeId;
-  }
-
-  /**
    * Returns the String representation of the survey item definition.
    *
    * @return the String representation of the survey item definition
@@ -294,15 +301,14 @@ public abstract class SurveyItemDefinition
   @Override
   public String toString()
   {
-    int count;
-
     StringBuilder buffer = new StringBuilder();
 
     buffer.append("SurveyItemDefinition {");
     buffer.append("id=\"").append(getId()).append("\", ");
     buffer.append("typeId=\"").append(getTypeId()).append("\", ");
     buffer.append("name=\"").append(getName()).append("\", ");
-    buffer.append("label=\"").append(getLabel()).append("\"}");
+    buffer.append("label=\"").append(getLabel()).append("\", ");
+    buffer.append("description=\"").append(getDescription()).append("\"}");
 
     return buffer.toString();
   }

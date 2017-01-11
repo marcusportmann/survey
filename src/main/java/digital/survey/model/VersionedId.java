@@ -25,6 +25,8 @@ import java.util.UUID;
 public class VersionedId
   implements Serializable
 {
+  private static final long serialVersionUID = 1000000;
+
   /**
    * The Universally Unique Identifier (UUID) used to, along with the version, uniquely identify the
    * entity.

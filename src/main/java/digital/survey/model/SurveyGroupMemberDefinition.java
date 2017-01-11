@@ -32,6 +32,8 @@ import java.util.UUID;
 public class SurveyGroupMemberDefinition
   implements Serializable
 {
+  private static final long serialVersionUID = 1000000;
+
   /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey group member
    * definition.
@@ -54,13 +56,11 @@ public class SurveyGroupMemberDefinition
   /**
    * Constructs a new <code>SurveyGroupMemberDefinition</code>.
    *
-   * @param id   the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   *             member definition
    * @param name the name of the survey group member definition
    */
-  public SurveyGroupMemberDefinition(UUID id, String name)
+  public SurveyGroupMemberDefinition(String name)
   {
-    this.id = id;
+    this.id = UUID.randomUUID();
     this.name = name;
   }
 

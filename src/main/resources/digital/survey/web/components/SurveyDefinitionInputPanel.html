@@ -25,37 +25,10 @@
         </div>
       </div>
 
-      <div wicket:id="itemDefinition" class="panel">
-
-        <section wicket:id="itemDefinitionHeader" class="panel-heading">
-          <div class="heading-table">
-            <div class="heading-first-row">
-              <div class="heading-icon-cell">
-                <i class="fa fa-table"></i>
-              </div>
-              <div class="heading-top-cell">
-                <div class="heading-name"><span wicket:id="name">[name_of_field]</span></div>
-                <div class="heading-actions">
-                  <div class="btn-group">
-                    <a wicket:id="editLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="#"><i class="fa fa-pencil-square-o"></i></a>
-                    <a wicket:id="helpLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="#"><i class="fa fa-question-circle"></i></a>
-                    <a wicket:id="copyLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Copy" href="#"><i class="fa fa-files-o"></i></a>
-                    <a wicket:id="moveUpLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Up" href="#"><i class="fa fa-arrow-circle-up"></i></a>
-                    <a wicket:id="moveDownLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Down" href="#"><i class="fa fa-arrow-circle-down"></i></a>
-                    <a wicket:id="removeLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="#"><i class="fa fa-trash-o"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="heading-second-row">
-              <div class="heading-padding-cell"></div>
-              <div class="heading-bottom-cell"><span wicket:id="label">[Label for Field]</span></div>
-            </div>
-          </div>
-        </section>
-
-        <div wicket:id="itemDefinitionPanel" class="panel-collapse collapse item-definition"></div>
-
+      <div wicket:id="itemDefinitionGroup" class="panel-group">
+        <div wicket:id="itemDefinition">
+          <div wicket:id="itemDefinitionPanel" class="panel"/>
+        </div>
       </div>
 
     </wicket:panel>

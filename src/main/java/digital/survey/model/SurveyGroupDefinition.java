@@ -34,17 +34,7 @@ import java.util.UUID;
 public class SurveyGroupDefinition
   implements Serializable
 {
-  /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group definition.
-   */
-  @JsonProperty
-  private UUID id;
-
-  /**
-   * The name of the survey group definition.
-   */
-  @JsonProperty
-  private String name;
+  private static final long serialVersionUID = 1000000;
 
   /**
    * The description for the survey group definition.
@@ -57,6 +47,18 @@ public class SurveyGroupDefinition
    */
   @JsonProperty
   private List<SurveyGroupMemberDefinition> groupMemberDefinitions;
+
+  /**
+   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group definition.
+   */
+  @JsonProperty
+  private UUID id;
+
+  /**
+   * The name of the survey group definition.
+   */
+  @JsonProperty
+  private String name;
 
   /**
    * Constructs a new <code>SurveyDefinitionGroup</code>.

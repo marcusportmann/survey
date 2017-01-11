@@ -41,6 +41,8 @@ import java.util.UUID;
 public class SurveyResponse
   implements Serializable
 {
+  private static final long serialVersionUID = 1000000;
+
   /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey response.
    */
@@ -59,6 +61,13 @@ public class SurveyResponse
   private SurveyInstance instance;
 
   /**
+   * The survey item responses that are associated with the survey response.
+   */
+  @JsonProperty
+  @Transient
+  private List<SurveyItemResponse> itemResponses;
+
+  /**
    * The optional survey request this survey response is associated with.
    */
   @SuppressWarnings("unused")
@@ -66,13 +75,6 @@ public class SurveyResponse
   @JoinColumn(name = "SURVEY_REQUEST_ID")
   @JsonIgnore
   private SurveyRequest request;
-
-  /**
-   * The survey group rating responses that are associated with the survey response.
-   */
-  @JsonProperty
-  @Transient
-  private List<SurveyGroupRatingResponse> groupRatingResponses;
 
   /**
    * The date and time the survey response was received.
@@ -107,36 +109,11 @@ public class SurveyResponse
    */
   public SurveyResponse(SurveyInstance instance, SurveyRequest request)
   {
-    this(UUID.randomUUID(), instance, request);
-  }
-
-  /**
-   * Constructs a new <code>SurveyResponse</code>.
-   *
-   * @param id       the Universally Unique Identifier (UUID) used to uniquely identify the survey
-   *                 response
-   * @param instance the survey instance this survey response is associated with
-   */
-  public SurveyResponse(UUID id, SurveyInstance instance)
-  {
-    this(id, instance, null);
-  }
-
-  /**
-   * Constructs a new <code>SurveyResponse</code>.
-   *
-   * @param id       the Universally Unique Identifier (UUID) used to uniquely identify the survey
-   *                 response
-   * @param instance the survey instance this survey response is associated with
-   * @param request  the optional survey request this survey response is associated with
-   */
-  public SurveyResponse(UUID id, SurveyInstance instance, SurveyRequest request)
-  {
-    this.id = id;
+    this.id = UUID.randomUUID();
     this.instance = instance;
     this.request = request;
     this.responded = new Date();
-    this.groupRatingResponses = new ArrayList<>();
+    this.itemResponses = new ArrayList<>();
 
     for (SurveyItemDefinition itemDefinition : instance.getDefinition().getItemDefinitions())
     {
@@ -154,10 +131,16 @@ public class SurveyResponse
           for (SurveyGroupMemberDefinition groupMemberDefinition :
               groupDefinition.getGroupMemberDefinitions())
           {
-            groupRatingResponses.add(new SurveyGroupRatingResponse(groupRatingsDefinition,
+            itemResponses.add(new SurveyGroupRatingResponse(groupRatingsDefinition,
                 groupRatingDefinition, groupMemberDefinition));
           }
         }
+      }
+      else if (itemDefinition instanceof SurveyTextDefinition)
+      {
+        SurveyTextDefinition textDefinition = (SurveyTextDefinition) itemDefinition;
+
+        itemResponses.add(new SurveyTextResponse(textDefinition));
       }
     }
   }
@@ -224,11 +207,16 @@ public class SurveyResponse
    */
   public SurveyGroupRatingResponse getGroupRatingResponse(UUID id)
   {
-    for (SurveyGroupRatingResponse groupRatingResponse : groupRatingResponses)
+    for (SurveyItemResponse itemResponse : itemResponses)
     {
-      if (groupRatingResponse.getId().equals(id))
+      if (itemResponse instanceof SurveyGroupRatingResponse)
       {
-        return groupRatingResponse;
+        SurveyGroupRatingResponse groupRatingResponse = (SurveyGroupRatingResponse) itemResponse;
+
+        if (groupRatingResponse.getId().equals(id))
+        {
+          return groupRatingResponse;
+        }
       }
     }
 
@@ -254,13 +242,18 @@ public class SurveyResponse
   public SurveyGroupRatingResponse getGroupRatingResponse(UUID groupRatingsDefinitionId,
       UUID groupRatingDefinitionId, UUID groupMemberDefinitionId)
   {
-    for (SurveyGroupRatingResponse groupRatingResponse : groupRatingResponses)
+    for (SurveyItemResponse itemResponse : itemResponses)
     {
-      if ((groupRatingResponse.getGroupRatingsDefinitionId().equals(groupRatingsDefinitionId))
-          && (groupRatingResponse.getGroupRatingDefinitionId().equals(groupRatingDefinitionId))
-          && (groupRatingResponse.getGroupMemberDefinitionId().equals(groupMemberDefinitionId)))
+      if (itemResponse instanceof SurveyGroupRatingResponse)
       {
-        return groupRatingResponse;
+        SurveyGroupRatingResponse groupRatingResponse = (SurveyGroupRatingResponse) itemResponse;
+
+        if ((groupRatingResponse.getGroupRatingsDefinitionId().equals(groupRatingsDefinitionId))
+            && (groupRatingResponse.getGroupRatingDefinitionId().equals(groupRatingDefinitionId))
+            && (groupRatingResponse.getGroupMemberDefinitionId().equals(groupMemberDefinitionId)))
+        {
+          return groupRatingResponse;
+        }
       }
     }
 
@@ -272,8 +265,19 @@ public class SurveyResponse
    *
    * @return the survey group rating responses that are associated with the survey response
    */
+  @JsonIgnore
   public List<SurveyGroupRatingResponse> getGroupRatingResponses()
   {
+    List<SurveyGroupRatingResponse> groupRatingResponses = new ArrayList<>();
+
+    for (SurveyItemResponse itemResponse : itemResponses)
+    {
+      if (itemResponse instanceof SurveyGroupRatingResponse)
+      {
+        groupRatingResponses.add(((SurveyGroupRatingResponse) itemResponse));
+      }
+    }
+
     return groupRatingResponses;
   }
 
@@ -295,6 +299,16 @@ public class SurveyResponse
   public SurveyInstance getInstance()
   {
     return instance;
+  }
+
+  /**
+   * Returns the survey item responses that are associated with the survey response.
+   *
+   * @return the survey item responses that are associated with the survey response
+   */
+  public List<SurveyItemResponse> getItemResponses()
+  {
+    return itemResponses;
   }
 
   /**

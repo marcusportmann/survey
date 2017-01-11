@@ -41,24 +41,7 @@ import java.util.UUID;
 public class SurveyRequest
   implements Serializable
 {
-  /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the survey request.
-   */
-  @Id
-  @Column(name = "ID", nullable = false)
-  private UUID id;
-
-  /**
-   * The first name(s) for the person who was requested to complete the survey.
-   */
-  @Column(name = "FIRST_NAME", nullable = false)
-  private String firstName;
-
-  /**
-   * The last name for the person who was requested to complete the survey.
-   */
-  @Column(name = "LAST_NAME", nullable = false)
-  private String lastName;
+  private static final long serialVersionUID = 1000000;
 
   /**
    * The e-mail address for the person who was requested to complete the survey.
@@ -67,10 +50,17 @@ public class SurveyRequest
   private String email;
 
   /**
-   * The date and time the request to complete the survey was last sent.
+   * The first name(s) for the person who was requested to complete the survey.
    */
-  @Column(name = "REQUESTED", nullable = false)
-  private Date requested;
+  @Column(name = "FIRST_NAME", nullable = false)
+  private String firstName;
+
+  /**
+   * The Universally Unique Identifier (UUID) used to uniquely identify the survey request.
+   */
+  @Id
+  @Column(name = "ID", nullable = false)
+  private UUID id;
 
   /**
    * The survey instance this survey request is associated with.
@@ -81,17 +71,16 @@ public class SurveyRequest
   private SurveyInstance instance;
 
   /**
-   * The status of the survey request.
+   * The last name for the person who was requested to complete the survey.
    */
-  @Column(name = "STATUS", nullable = false)
-  @Convert(converter = SurveyRequestStatusConverter.class)
-  private SurveyRequestStatus status;
+  @Column(name = "LAST_NAME", nullable = false)
+  private String lastName;
 
   /**
-   * The number of times that the sending of the survey request was attempted.
+   * The date and time the last attempt was made to send the survey request.
    */
-  @Column(name = "SEND_ATTEMPTS", nullable = false)
-  private int sendAttempts;
+  @Column(name = "LAST_PROCESSED")
+  private Date lastProcessed;
 
   /**
    * The name of the entity that has locked the survey request for sending.
@@ -100,10 +89,23 @@ public class SurveyRequest
   private String lockName;
 
   /**
-   * The date and time the last attempt was made to send the survey request.
+   * The date and time the request to complete the survey was last sent.
    */
-  @Column(name = "LAST_PROCESSED")
-  private Date lastProcessed;
+  @Column(name = "REQUESTED", nullable = false)
+  private Date requested;
+
+  /**
+   * The number of times that the sending of the survey request was attempted.
+   */
+  @Column(name = "SEND_ATTEMPTS", nullable = false)
+  private int sendAttempts;
+
+  /**
+   * The status of the survey request.
+   */
+  @Column(name = "STATUS", nullable = false)
+  @Convert(converter = SurveyRequestStatusConverter.class)
+  private SurveyRequestStatus status;
 
   /**
    * Constructs a new <code>SurveyRequest</code>.
@@ -123,23 +125,7 @@ public class SurveyRequest
    */
   public SurveyRequest(SurveyInstance instance, String firstName, String lastName, String email)
   {
-    this(UUID.randomUUID(), instance, firstName, lastName, email);
-  }
-
-  /**
-   * Constructs a new <code>SurveyRequest</code>.
-   *
-   * @param id        the Universally Unique Identifier (UUID) used to uniquely identify the survey
-   *                  request
-   * @param instance  the survey instance this survey request is associated with
-   * @param firstName the first name(s) for the person who was requested to complete the survey
-   * @param lastName  the last name for the person who was requested to complete the survey
-   * @param email     the e-mail address for the person who was requested to complete the survey
-   */
-  public SurveyRequest(UUID id, SurveyInstance instance, String firstName, String lastName,
-      String email)
-  {
-    this.id = id;
+    this.id = UUID.randomUUID();
     this.status = SurveyRequestStatus.QUEUED_FOR_SENDING;
     this.instance = instance;
     this.firstName = firstName;

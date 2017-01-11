@@ -48,8 +48,8 @@ public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinition
   {
     super(id, surveyDefinitionModel, groupRatingsDefinitionModel);
 
-    add(new ListView<SurveyGroupRatingDefinition>("groupRatingDefinition", new PropertyModel<>(
-        groupRatingsDefinitionModel, "groupRatingDefinitions"))
+    getBodyContainer().add(new ListView<SurveyGroupRatingDefinition>("groupRatingDefinition",
+        new PropertyModel<>(groupRatingsDefinitionModel, "groupRatingDefinitions"))
         {
           @Override
           protected void populateItem(ListItem<SurveyGroupRatingDefinition> item)
@@ -68,7 +68,7 @@ public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinition
 
                 surveyDefinition.moveGroupRatingDefinitionUp(item.getModelObject());
 
-                target.add(SurveyGroupRatingsDefinitionInputPanel.this);
+                target.add(getBodyContainer());
               }
             };
 
@@ -96,14 +96,14 @@ public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinition
 
             {
               @Override
-              public void onClick(AjaxRequestTarget ajaxRequestTarget)
+              public void onClick(AjaxRequestTarget target)
               {
                 SurveyDefinition surveyDefinition =
                     (SurveyDefinition) getForm().getDefaultModelObject();
 
                 surveyDefinition.moveGroupRatingDefinitionDown(item.getModelObject());
 
-                ajaxRequestTarget.add(SurveyGroupRatingsDefinitionInputPanel.this);
+                target.add(getBodyContainer());
               }
             };
 
@@ -117,7 +117,7 @@ public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinition
         });
 
     // The "addGroupRatingDefinitionLink" link
-    add(new AjaxLink("addGroupRatingDefinitionLink")
+    getBodyContainer().add(new AjaxLink("addGroupRatingDefinitionLink")
         {
           @Override
           public void onClick(AjaxRequestTarget target)
@@ -128,7 +128,7 @@ public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinition
         });
 
     // The "groupMemberDefinition" list view
-    add(new ListView<SurveyGroupMemberDefinition>("groupMemberDefinition", new PropertyModel<>(
+    getBodyContainer().add(new ListView<SurveyGroupMemberDefinition>("groupMemberDefinition", new PropertyModel<>(
         groupDefinitionModel, "groupMemberDefinitions"))
         {
           @Override
@@ -141,14 +141,14 @@ public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinition
 
             {
               @Override
-              public void onClick(AjaxRequestTarget ajaxRequestTarget)
+              public void onClick(AjaxRequestTarget target)
               {
                 SurveyDefinition surveyDefinition =
                     (SurveyDefinition) getForm().getDefaultModelObject();
 
                 surveyDefinition.moveGroupMemberDefinitionUp(item.getModelObject());
 
-                ajaxRequestTarget.add(SurveyGroupRatingsDefinitionInputPanel.this);
+                target.add(getBodyContainer());
               }
             };
 
@@ -176,14 +176,14 @@ public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinition
 
             {
               @Override
-              public void onClick(AjaxRequestTarget ajaxRequestTarget)
+              public void onClick(AjaxRequestTarget target)
               {
                 SurveyDefinition surveyDefinition =
                     (SurveyDefinition) getForm().getDefaultModelObject();
 
                 surveyDefinition.moveGroupMemberDefinitionDown(item.getModelObject());
 
-                ajaxRequestTarget.add(SurveyGroupRatingsDefinitionInputPanel.this);
+                target.add(getBodyContainer());
               }
             };
 
@@ -210,7 +210,7 @@ public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinition
           }
         });
 
-    add(new AjaxLink("addGroupMemberDefinitionLink")
+    getBodyContainer().add(new AjaxLink("addGroupMemberDefinitionLink")
         {
           @Override
           public void onClick(AjaxRequestTarget target)
@@ -260,7 +260,7 @@ public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinition
 
       surveyDefinition.removeGroupMemberDefinition(groupMemberDefinitionModel.getObject().getId());
 
-      target.add(SurveyGroupRatingsDefinitionInputPanel.this);
+      target.add(getBodyContainer());
 
       return true;
     }
@@ -309,7 +309,7 @@ public class SurveyGroupRatingsDefinitionInputPanel extends SurveyItemDefinition
 
       surveyDefinition.removeGroupRatingDefinition(groupRatingDefinitionModel.getObject().getId());
 
-      target.add(SurveyGroupRatingsDefinitionInputPanel.this);
+      target.add(getBodyContainer());
 
       return true;
     }

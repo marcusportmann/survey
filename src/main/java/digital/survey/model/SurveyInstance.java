@@ -30,6 +30,8 @@ import java.util.UUID;
 public class SurveyInstance
   implements Serializable
 {
+  private static final long serialVersionUID = 1000000;
+
   /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey instance.
    */
@@ -69,15 +71,13 @@ public class SurveyInstance
   /**
    * Constructs a new <code>SurveyInstance</code>.
    *
-   * @param id          the Universally Unique Identifier (UUID) used to uniquely identify the
-   *                    survey instance
    * @param name        the name of the survey instance
    * @param description the description for the survey instance
    * @param definition  the survey definition this survey instance is associated with
    */
-  public SurveyInstance(UUID id, String name, String description, SurveyDefinition definition)
+  public SurveyInstance(String name, String description, SurveyDefinition definition)
   {
-    this.id = id;
+    this.id = UUID.randomUUID();
     this.name = name;
     this.description = description;
     this.definition = definition;

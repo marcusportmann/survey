@@ -30,15 +30,16 @@ import java.util.UUID;
  */
 @JsonPropertyOrder({ "id", "groupRatingsDefinitionId", "groupRatingDefinitionId",
     "groupMemberDefinitionId", "rating" })
-public class SurveyGroupRatingResponse
+public class SurveyGroupRatingResponse extends SurveyItemResponse
   implements Serializable
 {
+  private static final long serialVersionUID = 1000000;
+
   /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group rating
-   * response.
+   * The Universally Unique Identifier (UUID) used to uniquely identify the type of survey item
+   * response for the survey group rating response.
    */
-  @JsonProperty
-  private UUID id;
+  public static final UUID TYPE_ID = UUID.fromString("be86b4b4-492b-403f-a015-41a6d7554222");
 
   /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey group member
@@ -48,18 +49,18 @@ public class SurveyGroupRatingResponse
   private UUID groupMemberDefinitionId;
 
   /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group ratings
-   * definition this survey group rating response is associated with.
-   */
-  @JsonProperty
-  private UUID groupRatingsDefinitionId;
-
-  /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey group rating
    * definition this survey group rating response is associated with.
    */
   @JsonProperty
   private UUID groupRatingDefinitionId;
+
+  /**
+   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group ratings
+   * definition this survey group rating response is associated with.
+   */
+  @JsonProperty
+  private UUID groupRatingsDefinitionId;
 
   /**
    * The rating for the survey group rating response e.g. 1=Yes, 0=No and -1=Not Applicable.
@@ -87,7 +88,8 @@ public class SurveyGroupRatingResponse
       SurveyGroupRatingDefinition groupRatingDefinition,
       SurveyGroupMemberDefinition groupMemberDefinition)
   {
-    this.id = UUID.randomUUID();
+    super(TYPE_ID);
+
     this.groupRatingsDefinitionId = groupRatingsDefinition.getId();
     this.groupRatingDefinitionId = groupRatingDefinition.getId();
     this.groupMemberDefinitionId = groupMemberDefinition.getId();
@@ -128,18 +130,6 @@ public class SurveyGroupRatingResponse
   public UUID getGroupRatingsDefinitionId()
   {
     return groupRatingsDefinitionId;
-  }
-
-  /**
-   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   * rating response.
-   *
-   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   *         rating response
-   */
-  public UUID getId()
-  {
-    return id;
   }
 
   /**

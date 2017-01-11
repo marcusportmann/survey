@@ -40,6 +40,8 @@ import java.util.stream.Collectors;
 public class SurveyResult
   implements Serializable
 {
+  private static final long serialVersionUID = 1000000;
+
   /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey result.
    */

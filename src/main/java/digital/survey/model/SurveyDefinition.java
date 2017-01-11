@@ -44,27 +44,7 @@ import java.util.UUID;
 public class SurveyDefinition
   implements Serializable
 {
-  /**
-   * The Universally Unique Identifier (UUID) used to, along with the version of the survey
-   * definition, uniquely identify the survey definition.
-   */
-  @Id
-  @JsonProperty
-  private UUID id;
-
-  /**
-   * The version of the survey definition
-   */
-  @Id
-  @JsonProperty
-  private int version;
-
-  /**
-   * The name of the survey definition.
-   */
-  @Column(name = "NAME", nullable = false)
-  @JsonProperty
-  private String name;
+  private static final long serialVersionUID = 1000000;
 
   /**
    * The description for the survey definition.
@@ -81,11 +61,34 @@ public class SurveyDefinition
   private List<SurveyGroupDefinition> groupDefinitions;
 
   /**
+   * The Universally Unique Identifier (UUID) used to, along with the version of the survey
+   * definition, uniquely identify the survey definition.
+   */
+  @Id
+  @Column(name = "ID", nullable = false)
+  @JsonProperty
+  private UUID id;
+
+  /**
+   * Is the survey definition anonymous?
+   */
+  @Column(name = "ANONYMOUS", nullable = false)
+  @JsonIgnore
+  private boolean isAnonymous;
+
+  /**
    * The survey item definitions that are associated with the survey definition.
    */
   @JsonProperty
   @Transient
   private List<SurveyItemDefinition> itemDefinitions;
+
+  /**
+   * The name of the survey definition.
+   */
+  @Column(name = "NAME", nullable = false)
+  @JsonProperty
+  private String name;
 
   /**
    * The organisation this survey definition is associated with.
@@ -94,14 +97,15 @@ public class SurveyDefinition
   @ManyToOne
   @JoinColumn(name = "ORGANISATION_ID", referencedColumnName = "ID")
   @JsonIgnore
-  protected Organisation organisation;
+  private Organisation organisation;
 
   /**
-   * Is the survey definition anonymous?
+   * The version of the survey definition
    */
-  @Column(name = "ANONYMOUS", nullable = false)
-  @JsonIgnore
-  private boolean isAnonymous;
+  @Id
+  @Column(name = "VERSION", nullable = false)
+  @JsonProperty
+  private int version;
 
   /**
    * Constructs a new <code>SurveyDefinition</code>.
@@ -285,7 +289,7 @@ public class SurveyDefinition
   {
     for (SurveyItemDefinition itemDefinition : itemDefinitions)
     {
-      if (itemDefinition.equals(id))
+      if (itemDefinition.getId().equals(id))
       {
         return itemDefinition;
       }

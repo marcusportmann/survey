@@ -225,9 +225,11 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
 
 .survey-definition .panel-heading .heading-table .heading-first-row .heading-collapse
 {
+  position: relative;
   display: inline-block;
   float: right;
   width: 35px;
+  height: 35px;
   line-height: 35px;
   margin-left: 10px;
   text-align: center;
@@ -237,24 +239,35 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
 
 .survey-definition .panel-heading .heading-table .heading-first-row .heading-collapse i
 {
-  font-size: 18px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  font-size: 13px;
   color: #444;
   line-height: 35px;
 }
 
-
-/*
-.survey-definition .panel-heading .heading-table .heading-first-row .heading-collapse-cell
+.survey-definition .panel-heading .heading-table .heading-first-row .heading-collapse i.collapsed
 {
-  display: table-cell;
-  text-align: center;
+  visibility: hidden;
 }
 
-.survey-definition .panel-heading .heading-table .heading-first-row .heading-collapse-cell a
+.survey-definition .panel-heading .heading-table .heading-first-row .heading-collapse.collapsed i.collapsed
 {
-
+  visibility: visible;
 }
-*/
+
+.survey-definition .panel-heading .heading-table .heading-first-row .heading-collapse i.expanded
+{
+  visibility: visible;
+}
+
+.survey-definition .panel-heading .heading-table .heading-first-row .heading-collapse.collapsed i.expanded
+{
+  visibility: hidden;
+}
 
 .survey-definition .panel-heading .heading-table .heading-second-row .heading-padding-cell
 {

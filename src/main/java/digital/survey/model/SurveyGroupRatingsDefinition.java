@@ -30,17 +30,26 @@ import java.util.UUID;
  *
  * @author Marcus Portmann
  */
-@JsonPropertyOrder({ "id", "typeId", "name", "label", "help", "groupDefinitionId",
+@JsonPropertyOrder({ "id", "typeId", "name", "label", "description", "help", "groupDefinitionId",
     "groupRatingDefinitions", "displayRatingsUsingGradient" })
 
 public class SurveyGroupRatingsDefinition extends SurveyItemDefinition
   implements Serializable
 {
+  private static final long serialVersionUID = 1000000;
+
   /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the type of survey item
    * definition for the survey group ratings definition.
    */
   private static final UUID TYPE_ID = UUID.fromString("aded36bd-bc3d-4157-99f6-b4d91825de5d");
+
+  /**
+   * Should the ratings for the survey group rating responses associated with this survey group
+   * ratings definition be displayed using a color gradient when viewing the survey result.
+   */
+  @JsonProperty
+  private boolean displayRatingsUsingGradient;
 
   /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey group definition
@@ -57,13 +66,6 @@ public class SurveyGroupRatingsDefinition extends SurveyItemDefinition
   private List<SurveyGroupRatingDefinition> groupRatingDefinitions;
 
   /**
-   * Should the ratings for the survey group rating responses associated with this survey group
-   * ratings definition be displayed using a color gradient when viewing the survey result.
-   */
-  @JsonProperty
-  private boolean displayRatingsUsingGradient;
-
-  /**
    * Constructs a new <code>SurveyGroupRatingsDefinition</code>.
    */
   @SuppressWarnings("unused")
@@ -72,13 +74,12 @@ public class SurveyGroupRatingsDefinition extends SurveyItemDefinition
   /**
    * Constructs a new <code>SurveyGroupRatingsDefinition</code>.
    *
-   * @param id                          the Universally Unique Identifier (UUID) used to uniquely
-   *                                    identify the survey group ratings definition
    * @param name                        the short, unique name for the survey group ratings
    *                                    definition
    * @param label                       the user-friendly label for the survey group ratings
    *                                    definition
-   * @param help                        the HTML help for the survey item definition
+   * @param description                 the description for the survey group ratings definition
+   * @param help                        the HTML help for the survey group ratings definition
    * @param groupDefinitionId           the Universally Unique Identifier (UUID) used to uniquely
    *                                    identify the survey group definition this survey group
    *                                    ratings definition is associated with
@@ -87,10 +88,10 @@ public class SurveyGroupRatingsDefinition extends SurveyItemDefinition
    *                                    displayed using a color gradient when viewing the survey
    *                                    result
    */
-  public SurveyGroupRatingsDefinition(UUID id, String name, String label, String help,
+  public SurveyGroupRatingsDefinition(String name, String label, String description, String help,
       UUID groupDefinitionId, boolean displayRatingsUsingGradient)
   {
-    super(id, TYPE_ID, name, label, help);
+    super(TYPE_ID, name, label, description, help);
 
     this.groupDefinitionId = groupDefinitionId;
     this.displayRatingsUsingGradient = displayRatingsUsingGradient;
@@ -242,6 +243,7 @@ public class SurveyGroupRatingsDefinition extends SurveyItemDefinition
     buffer.append("typeId=\"").append(getTypeId()).append("\", ");
     buffer.append("name=\"").append(getName()).append("\", ");
     buffer.append("label=\"").append(getLabel()).append("\", ");
+    buffer.append("description=\"").append(getDescription()).append("\", ");
 
     buffer.append("groupRatingDefinitions={");
 

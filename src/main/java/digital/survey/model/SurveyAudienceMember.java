@@ -30,30 +30,7 @@ import java.util.UUID;
 public class SurveyAudienceMember
   implements Serializable
 {
-  /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the survey audience member.
-   */
-  @Id
-  @Column(name = "ID", nullable = false)
-  private UUID id;
-
-  /**
-   * The first name(s) for the survey audience member.
-   */
-  @Column(name = "FIRST_NAME", nullable = false)
-  private String firstName;
-
-  /**
-   * The last name for the survey audience member.
-   */
-  @Column(name = "LAST_NAME", nullable = false)
-  private String lastName;
-
-  /**
-   * The e-mail address for the survey audience member.
-   */
-  @Column(name = "EMAIL", nullable = false)
-  private String email;
+  private static final long serialVersionUID = 1000000;
 
   /**
    * The survey audience this survey audience member is associated with.
@@ -62,6 +39,31 @@ public class SurveyAudienceMember
   @ManyToOne
   @JoinColumn(name = "SURVEY_AUDIENCE_ID", referencedColumnName = "ID")
   protected SurveyAudience audience;
+
+  /**
+   * The e-mail address for the survey audience member.
+   */
+  @Column(name = "EMAIL", nullable = false)
+  private String email;
+
+  /**
+   * The first name(s) for the survey audience member.
+   */
+  @Column(name = "FIRST_NAME", nullable = false)
+  private String firstName;
+
+  /**
+   * The Universally Unique Identifier (UUID) used to uniquely identify the survey audience member.
+   */
+  @Id
+  @Column(name = "ID", nullable = false)
+  private UUID id;
+
+  /**
+   * The last name for the survey audience member.
+   */
+  @Column(name = "LAST_NAME", nullable = false)
+  private String lastName;
 
   /**
    * Constructs a new <code>SurveyAudienceMember</code>.

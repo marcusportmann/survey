@@ -33,6 +33,8 @@ import java.util.UUID;
 public class SurveyGroupRatingDefinition
   implements Serializable
 {
+  private static final long serialVersionUID = 1000000;
+
   /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey group rating
    * definition.
@@ -61,14 +63,12 @@ public class SurveyGroupRatingDefinition
   /**
    * Constructs a new <code>SurveyDefinitionGroupRating</code>.
    *
-   * @param id         the Universally Unique Identifier (UUID) used to uniquely identify the survey
-   *                   group rating definition
    * @param name       the name of the survey group rating definition
    * @param ratingType the type of survey group rating
    */
-  public SurveyGroupRatingDefinition(UUID id, String name, SurveyGroupRatingType ratingType)
+  public SurveyGroupRatingDefinition(String name, SurveyGroupRatingType ratingType)
   {
-    this.id = id;
+    this.id = UUID.randomUUID();
     this.name = name;
     this.ratingType = ratingType;
   }

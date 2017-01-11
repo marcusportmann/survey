@@ -30,11 +30,13 @@ import java.util.UUID;
  *
  * @author Marcus Portmann
  */
-@JsonPropertyOrder({ "id", "typeId", "name", "label", "description", "itemDefinitions" })
+@JsonPropertyOrder({ "id", "typeId", "name", "label", "description", "help", "itemDefinitions" })
 @Vetoed
 public class SurveySectionDefinition extends SurveyItemDefinition
   implements Serializable
 {
+  private static final long serialVersionUID = 1000000;
+
   /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the type of survey item
    * definition for the survey section definition.
@@ -56,15 +58,14 @@ public class SurveySectionDefinition extends SurveyItemDefinition
   /**
    * Constructs a new <code>SurveySectionDefinition</code>.
    *
-   * @param id          the Universally Unique Identifier (UUID) used to uniquely identify the
-   *                    survey section definition
    * @param name        the short, unique name for the survey section definition
    * @param label       the user-friendly label for the section definition
    * @param description the description for the survey section definition
+   * @param help        the HTML help for the survey section definition
    */
-  public SurveySectionDefinition(UUID id, String name, String label, String description)
+  public SurveySectionDefinition(String name, String label, String description, String help)
   {
-    super(id, TYPE_ID, name, label, description);
+    super(TYPE_ID, name, label, description, help);
 
     this.itemDefinitions = new ArrayList<>();
   }

@@ -74,8 +74,8 @@ class AddSurveyInstancePage extends TemplateWebPage
       SurveyDefinition surveyDefinition = surveyService.getLatestVersionOfSurveyDefinition(
           surveyDefinitionId);
 
-      IModel<SurveyInstance> surveyInstanceModel = new Model<>(new SurveyInstance(
-          UUID.randomUUID(), "", "", surveyDefinition));
+      IModel<SurveyInstance> surveyInstanceModel = new Model<>(new SurveyInstance("", "",
+          surveyDefinition));
 
       Form<SurveyInstance> addForm = new Form<>("addForm", new CompoundPropertyModel<>(
           surveyInstanceModel));

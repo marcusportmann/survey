@@ -26,6 +26,8 @@ import java.util.UUID;
 public class SurveyRequestToSurveyResponseMapping
   implements Serializable
 {
+  private static final long serialVersionUID = 1000000;
+
   /**
    * The date and time the request to complete the survey was last sent.
    */

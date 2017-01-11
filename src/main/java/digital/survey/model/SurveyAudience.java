@@ -34,6 +34,14 @@ import java.util.UUID;
 public class SurveyAudience
   implements Serializable
 {
+  private static final long serialVersionUID = 1000000;
+
+  /**
+   * The description for the survey audience.
+   */
+  @Column(name = "DESCRIPTION", nullable = false)
+  private String description;
+
   /**
    * The Universally Unique Identifier (UUID) used to uniquely identify the survey audience.
    */
@@ -42,24 +50,18 @@ public class SurveyAudience
   private UUID id;
 
   /**
-   * The organisation this survey definition is associated with.
-   */
-  @SuppressWarnings("unused")
-  @ManyToOne
-  @JoinColumn(name = "ORGANISATION_ID", referencedColumnName = "ID")
-  protected Organisation organisation;
-
-  /**
    * The name of the survey audience.
    */
   @Column(name = "NAME", nullable = false)
   private String name;
 
   /**
-   * The description for the survey audience.
+   * The organisation this survey definition is associated with.
    */
-  @Column(name = "DESCRIPTION", nullable = false)
-  private String description;
+  @SuppressWarnings("unused")
+  @ManyToOne
+  @JoinColumn(name = "ORGANISATION_ID", referencedColumnName = "ID")
+  protected Organisation organisation;
 
   /**
    * Constructs a new <code>SurveyAudience</code>.

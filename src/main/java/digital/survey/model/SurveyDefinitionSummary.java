@@ -31,24 +31,28 @@ import java.util.UUID;
 public class SurveyDefinitionSummary
   implements Serializable
 {
+  private static final long serialVersionUID = 1000000;
+
   /**
    * The Universally Unique Identifier (UUID) used to, along with the version of the survey
    * definition, uniquely identify the survey definition.
    */
   @Id
+  @Column(name = "ID", nullable = false)
   private UUID id;
-
-  /**
-   * The version of the survey definition
-   */
-  @Id
-  private int version;
 
   /**
    * The name of the survey definition.
    */
   @Column(name = "NAME", nullable = false)
   private String name;
+
+  /**
+   * The version of the survey definition
+   */
+  @Id
+  @Column(name = "VERSION", nullable = false)
+  private int version;
 
   /**
    * Constructs a new <code>SurveyDefinitionSummary</code>.
