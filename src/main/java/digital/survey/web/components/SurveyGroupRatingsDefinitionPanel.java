@@ -36,20 +36,20 @@ public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
   /**
    * Constructs a new <code>SurveyGroupRatingsDefinitionPanel</code>.
    *
-   * @param id                          the non-null id of this component
-   * @param surveyDefinitionModel       the model for the survey definition
-   * @param groupRatingsDefinitionModel the model for the survey group ratings definition
-   * @param groupDefinitionModel        the model for the survey group definition
+   * @param id                                the non-null id of this component
+   * @param surveyDefinitionModel             the model for the survey definition
+   * @param surveyGroupRatingsDefinitionModel the model for the survey group ratings definition
+   * @param surveyGroupDefinitionModel        the model for the survey group definition
    */
   public SurveyGroupRatingsDefinitionPanel(String id,
       IModel<SurveyDefinition> surveyDefinitionModel,
-      IModel<SurveyGroupRatingsDefinition> groupRatingsDefinitionModel,
-      IModel<SurveyGroupDefinition> groupDefinitionModel)
+      IModel<SurveyGroupRatingsDefinition> surveyGroupRatingsDefinitionModel,
+      IModel<SurveyGroupDefinition> surveyGroupDefinitionModel)
   {
-    super(id, surveyDefinitionModel, groupRatingsDefinitionModel, "fa-table", true);
+    super(id, surveyDefinitionModel, surveyGroupRatingsDefinitionModel);
 
     getBodyContainer().add(new ListView<SurveyGroupRatingDefinition>("groupRatingDefinition",
-        new PropertyModel<>(groupRatingsDefinitionModel, "groupRatingDefinitions"))
+        new PropertyModel<>(surveyGroupRatingsDefinitionModel, "groupRatingDefinitions"))
         {
           @Override
           protected void populateItem(ListItem<SurveyGroupRatingDefinition> item)
@@ -127,7 +127,7 @@ public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
 
     // The "groupMemberDefinition" list view
     getBodyContainer().add(new ListView<SurveyGroupMemberDefinition>("groupMemberDefinition",
-        new PropertyModel<>(groupDefinitionModel, "groupMemberDefinitions"))
+        new PropertyModel<>(surveyGroupDefinitionModel, "groupMemberDefinitions"))
         {
           @Override
           protected void populateItem(ListItem<SurveyGroupMemberDefinition> item)
@@ -192,7 +192,7 @@ public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
 
             // The "groupRatingType" list view
             item.add(new ListView<SurveyGroupRatingDefinition>("groupRatingType",
-                new PropertyModel<>(groupRatingsDefinitionModel, "groupRatingDefinitions"))
+                new PropertyModel<>(surveyGroupRatingsDefinitionModel, "groupRatingDefinitions"))
             {
               @Override
               protected void populateItem(ListItem<SurveyGroupRatingDefinition> item)
@@ -215,6 +215,29 @@ public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
 
           }
         });
+  }
+
+  /**
+   * Returns the Font Awesome CSS class for the icon for the survey item definition.
+   *
+   * @return the Font Awesome CSS class for the icon for the survey item definition
+   */
+  @Override
+  protected String getIconClass()
+  {
+    return "fa-table";
+  }
+
+  /**
+   * Returns whether the survey item definition is collapsible.
+   *
+   * @return <code>true</code> if the survey item definition is collapsible or <code>false</code>
+   *         otherwise
+   */
+  @Override
+  protected boolean isCollapsible()
+  {
+    return false;
   }
 
   /**

@@ -37,10 +37,33 @@ public class SurveySectionDefinitionPanel extends SurveyItemDefinitionPanel
   public SurveySectionDefinitionPanel(String id, IModel<SurveyDefinition> surveyDefinitionModel,
       IModel<SurveySectionDefinition> surveySectionDefinitionModel)
   {
-    super(id, surveyDefinitionModel, surveySectionDefinitionModel, "fa-bars", true);
+    super(id, surveyDefinitionModel, surveySectionDefinitionModel);
 
     getBodyContainer().add(new SurveyItemDefinitionPanelGroup("itemDefinitionPanelGroup",
         surveyDefinitionModel, new PropertyModel<>(surveySectionDefinitionModel,
         "itemDefinitions")));
+  }
+
+  /**
+   * Returns the Font Awesome CSS class for the icon for the survey item definition.
+   *
+   * @return the Font Awesome CSS class for the icon for the survey item definition
+   */
+  @Override
+  protected String getIconClass()
+  {
+    return "fa-bars";
+  }
+
+  /**
+   * Returns whether the survey item definition is collapsible.
+   *
+   * @return <code>true</code> if the survey item definition is collapsible or <code>false</code>
+   *         otherwise
+   */
+  @Override
+  protected boolean isCollapsible()
+  {
+    return true;
   }
 }

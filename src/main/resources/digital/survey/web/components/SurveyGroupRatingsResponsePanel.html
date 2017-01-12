@@ -2,34 +2,38 @@
 <html xmlns:wicket="http://wicket.apache.org">
   <body>
     <wicket:panel>
-      <div class="box box-form">
-        <div class="box-body">
-          <div class="table-responsive">
-            <table class="table table-striped table-group-ratings">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th wicket:id="groupRating"><div><span wicket:id="name"></span></div></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr wicket:id="groupMember">
-                  <td><span wicket:id="name"></span></td>
-                  <td wicket:id="groupRatingResponse" class="center">
-                    <div>
-                      <div class="form-group">
-                        <div class="group-rating-response">
-                          <select wicket:id="rating"></select>
+
+      <div class="form-group">
+        <div class="col-xs-12">
+          <label><span wicket:id="label">[Label]</span>
+            <div class="table-responsive">
+              <table class="table table-striped table-group-ratings">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th wicket:id="groupRating"><div><span wicket:id="name"></span></div></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr wicket:id="groupMember">
+                    <td><span wicket:id="name"></span></td>
+                    <td wicket:id="groupRatingResponse" class="center">
+                      <div>
+                        <div class="form-group">
+                          <div class="select-wrapper">
+                            <select wicket:id="rating"></select>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </label>
         </div>
       </div>
+
     </wicket:panel>
   </body>
 </html>

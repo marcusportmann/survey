@@ -32,20 +32,20 @@ class SurveyGroupRatingsResponseReadOnlyPanel extends Panel
   /**
    * Constructs a new <code>SurveyGroupRatingsResponseReadOnlyPanel</code>.
    *
-   * @param id                          the non-null id of this component
-   * @param groupRatingsDefinitionModel the model for the survey group ratings definition
-   * @param groupDefinitionModel        the model for the survey group definition
-   * @param surveyResponseModel         the model for the survey response
+   * @param id                                the non-null id of this component
+   * @param surveyGroupRatingsDefinitionModel the model for the survey group ratings definition
+   * @param surveyGroupDefinitionModel        the model for the survey group definition
+   * @param surveyResponseModel               the model for the survey response
    */
   SurveyGroupRatingsResponseReadOnlyPanel(String id,
-      IModel<SurveyGroupRatingsDefinition> groupRatingsDefinitionModel,
-      IModel<SurveyGroupDefinition> groupDefinitionModel,
+      IModel<SurveyGroupRatingsDefinition> surveyGroupRatingsDefinitionModel,
+      IModel<SurveyGroupDefinition> surveyGroupDefinitionModel,
       IModel<SurveyResponse> surveyResponseModel)
   {
     super(id);
 
     add(new ListView<SurveyGroupRatingDefinition>("groupRating", new PropertyModel<>(
-        groupRatingsDefinitionModel, "groupRatingDefinitions"))
+        surveyGroupRatingsDefinitionModel, "groupRatingDefinitions"))
         {
           @Override
           protected void populateItem(ListItem<SurveyGroupRatingDefinition> item)
@@ -55,7 +55,7 @@ class SurveyGroupRatingsResponseReadOnlyPanel extends Panel
         });
 
     add(new ListView<SurveyGroupMemberDefinition>("groupMember", new PropertyModel<>(
-        groupDefinitionModel, "groupMemberDefinitions"))
+        surveyGroupDefinitionModel, "groupMemberDefinitions"))
         {
           @Override
           protected void populateItem(ListItem<SurveyGroupMemberDefinition> item)
@@ -65,7 +65,7 @@ class SurveyGroupRatingsResponseReadOnlyPanel extends Panel
             item.add(new Label("name", new PropertyModel<>(groupMemberDefinition, "name")));
 
             item.add(new ListView<SurveyGroupRatingDefinition>("groupRatingResponse",
-                new PropertyModel<>(groupRatingsDefinitionModel, "groupRatingDefinitions"))
+                new PropertyModel<>(surveyGroupRatingsDefinitionModel, "groupRatingDefinitions"))
             {
               @Override
               protected void populateItem(ListItem<SurveyGroupRatingDefinition> item)
@@ -73,14 +73,14 @@ class SurveyGroupRatingsResponseReadOnlyPanel extends Panel
                 SurveyGroupRatingDefinition groupRatingDefinition = item.getModelObject();
 
                 SurveyGroupRatingsDefinition groupRatingsDefinition =
-                    groupRatingsDefinitionModel.getObject();
+                    surveyGroupRatingsDefinitionModel.getObject();
 
                 SurveyResponse surveyResponse = surveyResponseModel.getObject();
 
                 if (groupRatingDefinition.getRatingType() == SurveyGroupRatingType.YES_NO_NA)
                 {
                   SurveyGroupRatingResponse groupRatingResponse =
-                      surveyResponse.getGroupRatingResponse(groupRatingsDefinition.getId(),
+                      surveyResponse.getGroupRatingResponseForDefinition(groupRatingsDefinition.getId(),
                       groupRatingDefinition.getId(), groupMemberDefinition.getId());
 
                   item.add(new YesNoNaRatingLabel("rating", new Model<>(YesNoNaRating.fromCode(

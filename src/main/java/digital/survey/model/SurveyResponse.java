@@ -115,34 +115,7 @@ public class SurveyResponse
     this.responded = new Date();
     this.itemResponses = new ArrayList<>();
 
-    for (SurveyItemDefinition itemDefinition : instance.getDefinition().getItemDefinitions())
-    {
-      if (itemDefinition instanceof SurveyGroupRatingsDefinition)
-      {
-        SurveyGroupRatingsDefinition groupRatingsDefinition =
-            (SurveyGroupRatingsDefinition) itemDefinition;
-
-        for (SurveyGroupRatingDefinition groupRatingDefinition :
-            groupRatingsDefinition.getGroupRatingDefinitions())
-        {
-          SurveyGroupDefinition groupDefinition = instance.getDefinition().getGroupDefinition(
-              groupRatingsDefinition.getGroupDefinitionId());
-
-          for (SurveyGroupMemberDefinition groupMemberDefinition :
-              groupDefinition.getGroupMemberDefinitions())
-          {
-            itemResponses.add(new SurveyGroupRatingResponse(groupRatingsDefinition,
-                groupRatingDefinition, groupMemberDefinition));
-          }
-        }
-      }
-      else if (itemDefinition instanceof SurveyTextDefinition)
-      {
-        SurveyTextDefinition textDefinition = (SurveyTextDefinition) itemDefinition;
-
-        itemResponses.add(new SurveyTextResponse(textDefinition));
-      }
-    }
+    initItemResponses(instance.getDefinition().getItemDefinitions());
   }
 
   /**
@@ -239,8 +212,8 @@ public class SurveyResponse
    * @return the survey group rating response or <code>null</code> if the survey group rating
    *         response could not be found
    */
-  public SurveyGroupRatingResponse getGroupRatingResponse(UUID groupRatingsDefinitionId,
-      UUID groupRatingDefinitionId, UUID groupMemberDefinitionId)
+  public SurveyGroupRatingResponse getGroupRatingResponseForDefinition(
+      UUID groupRatingsDefinitionId, UUID groupRatingDefinitionId, UUID groupMemberDefinitionId)
   {
     for (SurveyItemResponse itemResponse : itemResponses)
     {
@@ -351,6 +324,60 @@ public class SurveyResponse
   }
 
   /**
+   * Retrieve the survey text response.
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey text
+   *           response
+   *
+   * @return the survey text response or <code>null</code> if the survey text response could not be
+   *         found
+   */
+  public SurveyTextResponse getTextResponse(UUID id)
+  {
+    for (SurveyItemResponse itemResponse : itemResponses)
+    {
+      if (itemResponse instanceof SurveyTextResponse)
+      {
+        SurveyTextResponse textResponse = (SurveyTextResponse) itemResponse;
+
+        if (textResponse.getId().equals(id))
+        {
+          return textResponse;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Retrieve the survey text response.
+   *
+   * @param textDefinitionId the Universally Unique Identifier (UUID) used to uniquely identify the
+   *                         survey text definition this survey text response is associated with
+   *
+   * @return the survey text response or <code>null</code> if the survey text response could not be
+   *         found
+   */
+  public SurveyTextResponse getTextResponseForDefinition(UUID textDefinitionId)
+  {
+    for (SurveyItemResponse itemResponse : itemResponses)
+    {
+      if (itemResponse instanceof SurveyTextResponse)
+      {
+        SurveyTextResponse textResponse = (SurveyTextResponse) itemResponse;
+
+        if (textResponse.getDefinitionId().equals(textDefinitionId))
+        {
+          return textResponse;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  /**
    * Set the JSON data for the survey response.
    *
    * @param data the JSON data for the survey response
@@ -387,5 +414,43 @@ public class SurveyResponse
   {
     return String.format("SurveyResponse {id=\"%s\", responded=\"%s\"}", getId(),
         DateUtil.getYYYYMMDDWithTimeFormat().format(getResponded()));
+  }
+
+  private void initItemResponses(List<SurveyItemDefinition> itemDefinitions)
+  {
+    for (SurveyItemDefinition itemDefinition : itemDefinitions)
+    {
+      if (itemDefinition instanceof SurveyGroupRatingsDefinition)
+      {
+        SurveyGroupRatingsDefinition groupRatingsDefinition =
+            (SurveyGroupRatingsDefinition) itemDefinition;
+
+        for (SurveyGroupRatingDefinition groupRatingDefinition :
+            groupRatingsDefinition.getGroupRatingDefinitions())
+        {
+          SurveyGroupDefinition groupDefinition = instance.getDefinition().getGroupDefinition(
+              groupRatingsDefinition.getGroupDefinitionId());
+
+          for (SurveyGroupMemberDefinition groupMemberDefinition :
+              groupDefinition.getGroupMemberDefinitions())
+          {
+            itemResponses.add(new SurveyGroupRatingResponse(groupRatingsDefinition,
+                groupRatingDefinition, groupMemberDefinition));
+          }
+        }
+      }
+      else if (itemDefinition instanceof SurveySectionDefinition)
+      {
+        SurveySectionDefinition sectionDefinition = (SurveySectionDefinition) itemDefinition;
+
+        initItemResponses(sectionDefinition.getItemDefinitions());
+      }
+      else if (itemDefinition instanceof SurveyTextDefinition)
+      {
+        SurveyTextDefinition textDefinition = (SurveyTextDefinition) itemDefinition;
+
+        itemResponses.add(new SurveyTextResponse(textDefinition));
+      }
+    }
   }
 }

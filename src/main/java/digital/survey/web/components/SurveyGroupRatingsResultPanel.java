@@ -36,19 +36,20 @@ class SurveyGroupRatingsResultPanel extends Panel
   /**
    * Constructs a new <code>SurveyGroupRatingsResultPanel</code>.
    *
-   * @param id                          the non-null id of this component
-   * @param groupRatingsDefinitionModel the model for the survey group ratings definition
-   * @param groupDefinitionModel        the model for the survey group definition
-   * @param surveyResultModel           the model for the survey result
+   * @param id                                the non-null id of this component
+   * @param surveyGroupRatingsDefinitionModel the model for the survey group ratings definition
+   * @param surveyGroupDefinitionModel        the model for the survey group definition
+   * @param surveyResultModel                 the model for the survey result
    */
   SurveyGroupRatingsResultPanel(String id,
-      IModel<SurveyGroupRatingsDefinition> groupRatingsDefinitionModel,
-      IModel<SurveyGroupDefinition> groupDefinitionModel, IModel<SurveyResult> surveyResultModel)
+      IModel<SurveyGroupRatingsDefinition> surveyGroupRatingsDefinitionModel,
+      IModel<SurveyGroupDefinition> surveyGroupDefinitionModel,
+      IModel<SurveyResult> surveyResultModel)
   {
     super(id);
 
     add(new ListView<SurveyGroupRatingDefinition>("groupRating", new PropertyModel<>(
-        groupRatingsDefinitionModel, "groupRatingDefinitions"))
+        surveyGroupRatingsDefinitionModel, "groupRatingDefinitions"))
         {
           @Override
           protected void populateItem(ListItem<SurveyGroupRatingDefinition> item)
@@ -60,7 +61,7 @@ class SurveyGroupRatingsResultPanel extends Panel
         });
 
     add(new ListView<SurveyGroupMemberDefinition>("groupMember", new PropertyModel<>(
-        groupDefinitionModel, "groupMemberDefinitions"))
+        surveyGroupDefinitionModel, "groupMemberDefinitions"))
         {
           @Override
           protected void populateItem(ListItem<SurveyGroupMemberDefinition> item)
@@ -68,14 +69,14 @@ class SurveyGroupRatingsResultPanel extends Panel
             SurveyGroupMemberDefinition groupMemberDefinition = item.getModelObject();
 
             SurveyGroupRatingsDefinition groupRatingsDefinition =
-                groupRatingsDefinitionModel.getObject();
+                surveyGroupRatingsDefinitionModel.getObject();
 
             SurveyResult surveyResult = surveyResultModel.getObject();
 
             item.add(new Label("name", new PropertyModel<>(groupMemberDefinition, "name")));
 
             item.add(new ListView<SurveyGroupRatingDefinition>("groupRatingResult",
-                new PropertyModel<>(groupRatingsDefinitionModel, "groupRatingDefinitions"))
+                new PropertyModel<>(surveyGroupRatingsDefinitionModel, "groupRatingDefinitions"))
             {
               @Override
               protected void populateItem(ListItem<SurveyGroupRatingDefinition> item)

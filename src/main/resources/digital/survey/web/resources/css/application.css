@@ -171,17 +171,12 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
   width: 100%;
 }
 
-.survey-definition .panel-heading .heading-table .heading-first-row
+.survey-definition .panel-heading .heading-table .heading-row
 {
   display: table-row;
 }
 
-.survey-definition .panel-heading .heading-table .heading-second-row
-{
-  display: table-row;
-}
-
-.survey-definition .panel-heading .heading-table .heading-first-row .heading-icon-cell
+.survey-definition .panel-heading .heading-table .heading-row .heading-icon-cell
 {
   display: table-cell;
   position: absolute;
@@ -191,11 +186,11 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
   text-align: center;
   line-height: 70px;
   background-color: #ddd;
-  font-size: 13pt;
+  font-size: 18px;
   color: #444;
 }
 
-.survey-definition .panel-heading .heading-table .heading-first-row .heading-top-cell
+.survey-definition .panel-heading .heading-table .heading-row .heading-top-cell
 {
   display: table-cell;
   padding-left: 10px;
@@ -203,84 +198,82 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
   border-bottom: 1px solid #ddd;
 }
 
-.survey-definition .panel-heading .heading-table .heading-first-row .heading-name
+.survey-definition .panel-heading .heading-table .heading-row .heading-name
 {
   float: left;
   line-height: 35px;
 }
 
-.survey-definition .panel-heading .heading-table .heading-first-row .heading-actions
+.survey-definition .panel-heading .heading-table .heading-row .heading-actions
 {
   display: inline-block;
   float: right;
   line-height: 35px;
 }
 
-.survey-definition .panel-heading .heading-table .heading-first-row .heading-actions .btn-group
+.survey-definition .panel-heading .heading-table .heading-row .heading-actions .btn-group
 {
   margin: 0;
   margin-bottom: 2px;
+  margin-right: 10px;
   vertical-align: middle;
 }
 
-.survey-definition .panel-heading .heading-table .heading-first-row .heading-collapse
+.survey-definition .panel-heading .heading-table .heading-row .heading-collapse
 {
   position: relative;
-  display: inline-block;
   float: right;
   width: 35px;
   height: 35px;
   line-height: 35px;
-  margin-left: 10px;
   text-align: center;
   background-color: #f4f4f4;
   border-left: 1px solid #ddd;
 }
 
-.survey-definition .panel-heading .heading-table .heading-first-row .heading-collapse i
+.survey-definition .panel-heading .heading-table .heading-row .heading-collapse i
 {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  font-size: 13px;
-  color: #444;
+  color: #646464;
   line-height: 35px;
+  font-size: 12px;
 }
 
-.survey-definition .panel-heading .heading-table .heading-first-row .heading-collapse i.collapsed
+.survey-definition .panel-heading .heading-table .heading-row .heading-collapse i.collapsed
 {
   visibility: hidden;
 }
 
-.survey-definition .panel-heading .heading-table .heading-first-row .heading-collapse.collapsed i.collapsed
+.survey-definition .panel-heading .heading-table .heading-row .heading-collapse.collapsed i.collapsed
 {
   visibility: visible;
 }
 
-.survey-definition .panel-heading .heading-table .heading-first-row .heading-collapse i.expanded
+.survey-definition .panel-heading .heading-table .heading-row .heading-collapse i.expanded
 {
   visibility: visible;
 }
 
-.survey-definition .panel-heading .heading-table .heading-first-row .heading-collapse.collapsed i.expanded
+.survey-definition .panel-heading .heading-table .heading-row .heading-collapse.collapsed i.expanded
 {
   visibility: hidden;
 }
 
-.survey-definition .panel-heading .heading-table .heading-second-row .heading-padding-cell
+.survey-definition .panel-heading .heading-table .heading-row .heading-padding-cell
 {
   display: table-cell;
   width: 60px;
 }
 
-.survey-definition .panel-heading .heading-table .heading-second-row .heading-bottom-cell
+.survey-definition .panel-heading .heading-table .heading-row .heading-bottom-cell
 {
   display: table-cell;
   padding-left: 10px;
   line-height: 30px;
-  /*border-bottom: 1px solid #ddd;*/
 }
 
 .survey-definition .panel .first-item-definition
@@ -302,6 +295,110 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
   border-top: 1px solid #ddd;
 }
 
+.survey-definition .panel .section-definition .panel-group
+{
+  margin-bottom: 10px;
+}
+
+
+
+
+
+.survey-response .panel
+{
+  position: relative;
+  border-radius: 3px;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
+  width: 100%;
+  margin-top: 0px;
+  margin-bottom: 20px;
+  padding-top: 0;
+  padding-bottom: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.survey-response .panel .panel-heading
+{
+  position: relative;
+  padding: 0;
+  height: 35px;
+}
+
+.survey-response .panel .panel-heading .heading-icon
+{
+  float: left;
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  background-color: #ddd;
+}
+
+.survey-response .panel .panel-heading .heading-icon i
+{
+  color: #444;
+  line-height: 35px;
+  font-size: 12px;
+}
+
+.survey-response .panel .panel-heading .heading-label
+{
+  float: left;
+  line-height: 35px;
+  padding-left: 10px;
+}
+
+.survey-response .panel .panel-heading .heading-collapse
+{
+  position: relative;
+  float: right;
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
+  text-align: center;
+  background-color: #f4f4f4;
+  border-left: 1px solid #ddd;
+}
+
+.survey-response .panel .panel-heading .heading-collapse i
+{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  color: #646464;
+  line-height: 35px;
+  font-size: 12px;
+}
+
+.survey-response .panel .panel-heading .heading-collapse i.collapsed
+{
+  visibility: hidden;
+}
+
+.survey-response .panel .panel-heading .heading-collapse.collapsed i.collapsed
+{
+  visibility: visible;
+}
+
+.survey-response .panel .panel-heading .heading-collapse i.expanded
+{
+  visibility: visible;
+}
+
+.survey-response .panel .panel-heading .heading-collapse.collapsed i.expanded
+{
+  visibility: hidden;
+}
+
+.survey-response .panel .panel-collapse
+{
+  padding: 10px 10px 0;
+  border-top: 1px solid #ddd;
+}
 
 
 
@@ -327,9 +424,12 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
 
 
 
-
-
-
+table.table-group-ratings
+{
+  border: 1px solid #e6e6e6;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 
 
 
@@ -341,6 +441,7 @@ table.table-group-ratings > thead > tr > th
   vertical-align: middle;
   padding: 5px 5px;
   white-space: normal !important;
+  text-transform: none;
 }
 
 table.table-group-ratings > tbody > tr > td
@@ -368,9 +469,14 @@ table.table-group-ratings > tbody > tr > td > div
   vertical-align: middle;
 }
 
+table.table-group-ratings > thead > tr > th
+{
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 table.table-group-ratings > thead > tr > th > div > span, table.table-group-ratings > tbody > tr > td > span
 {
-  line-height: 30px;
   display: block;
 }
 
@@ -385,7 +491,7 @@ table.table-group-ratings .form-group
   display: inline-block;
 }
 
-table.table-group-ratings .form-group .form-material
+table.table-group-ratings .form-group
 {
   margin: 0;
 }
@@ -395,34 +501,19 @@ table.table-group-ratings .group-rating-response
   margin-bottom: 0px;
 }
 
-table.table-group-ratings .group-rating-response select
+table.table-group-ratings select
 {
-  -webkit-appearance:none;
-  -moz-appearance: none;
-  background: none;
-  border: transparent;
-  border-radius: 0;
-  width: 40px;
-  font-size: 11px;
-  height: auto;
-  padding-left: 0;
-  padding-top: 5px;
-  padding-bottom: 7px;
+  font-size: 12px;
+  min-width: 35px;
+  width: 35px;
 }
 
-table.table-group-ratings .group-rating-response select:focus
+table.table-group-ratings .select-wrapper:after
 {
-  -webkit-box-shadow:0 2px 0 #5c90d2;box-shadow:0 2px 0 #5c90d2;
-}
-
-table.table-group-ratings .has-error .form-material .group-rating-response select
-{
-  -webkit-box-shadow:0 2px 0 #d26a5c;box-shadow:0 1px 0 #d26a5c
-}
-
-table.table-group-ratings .has-error .form-material .group-rating-response select:focus
-{
-  -webkit-box-shadow:0 2px 0 #d26a5c;box-shadow:0 2px 0 #d26a5c
+  font-size: 12px;
+  width: 10px;
+  padding: 0;
+  right: 5px;
 }
 
 table.table-group-ratings .group-rating-response select option[disabled]:first-child

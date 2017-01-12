@@ -5,7 +5,7 @@
 
       <section wicket:id="headingContainer" class="panel-heading">
         <div class="heading-table">
-          <div class="heading-first-row">
+          <div class="heading-row">
             <div class="heading-icon-cell">
               <div wicket:id="icon"></div>
             </div>
@@ -24,14 +24,14 @@
               </div>
             </div>
           </div>
-          <div class="heading-second-row">
+          <div class="heading-row">
             <div class="heading-padding-cell"></div>
             <div class="heading-bottom-cell"><span wicket:id="label">[Label for Field]</span></div>
           </div>
         </div>
       </section>
 
-      <div wicket:id="bodyContainer" class="panel-collapse collapse in">
+      <div wicket:id="bodyContainer" class="panel-collapse collapse" data-toggle="false">
         <wicket:child/>
       </div>
 

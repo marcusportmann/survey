@@ -36,6 +36,29 @@ public class SurveyTextDefinitionPanel extends SurveyItemDefinitionPanel
   public SurveyTextDefinitionPanel(String id, IModel<SurveyDefinition> surveyDefinitionModel,
       IModel<SurveyTextDefinition> surveyTextDefinitionModel)
   {
-    super(id, surveyDefinitionModel, surveyTextDefinitionModel, "fa-font", false);
+    super(id, surveyDefinitionModel, surveyTextDefinitionModel);
+  }
+
+  /**
+   * Returns the Font Awesome CSS class for the icon for the survey item definition.
+   *
+   * @return the Font Awesome CSS class for the icon for the survey item definition
+   */
+  @Override
+  protected String getIconClass()
+  {
+    return "fa-font";
+  }
+
+  /**
+   * Returns whether the survey item definition is collapsible.
+   *
+   * @return <code>true</code> if the survey item definition is collapsible or <code>false</code>
+   *         otherwise
+   */
+  @Override
+  protected boolean isCollapsible()
+  {
+    return false;
   }
 }
