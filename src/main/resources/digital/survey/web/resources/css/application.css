@@ -480,6 +480,11 @@ table.table-group-ratings > thead > tr > th > div > span, table.table-group-rati
   display: block;
 }
 
+table.table-group-ratings > tbody > tr > td > span
+{
+  line-height: 30px;
+}
+
 table.table-group-ratings > tbody > tr > td > div > span.num-ratings
 {
   font-size: 8px;
