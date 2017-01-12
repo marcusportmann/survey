@@ -20,6 +20,7 @@ import guru.mmp.application.web.template.components.ExtensibleFormDialog;
 import guru.mmp.application.web.template.pages.TemplateDialogWebPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -151,6 +152,12 @@ public abstract class SurveyItemDefinitionPanel extends Panel
     // The "bodyContainer" web markup container
     bodyContainer = new WebMarkupContainer("bodyContainer");
     bodyContainer.setOutputMarkupId(true);
+
+    if (isCollapsible())
+    {
+      bodyContainer.add(new AttributeAppender("class", "panel-collapse collapse", " "));
+    }
+
     add(bodyContainer);
   }
 

@@ -22,6 +22,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
+//~--- JDK imports ------------------------------------------------------------
+
 /**
  * The <code>SurveyGroupRatingsResponseReadOnlyPanel</code> class.
  *
@@ -29,6 +31,8 @@ import org.apache.wicket.model.PropertyModel;
  */
 class SurveyGroupRatingsResponseReadOnlyPanel extends Panel
 {
+  private static final long serialVersionUID = 1000000;
+
   /**
    * Constructs a new <code>SurveyGroupRatingsResponseReadOnlyPanel</code>.
    *
@@ -43,6 +47,10 @@ class SurveyGroupRatingsResponseReadOnlyPanel extends Panel
       IModel<SurveyResponse> surveyResponseModel)
   {
     super(id);
+
+    setRenderBodyOnly(true);
+
+    add(new Label("label", new PropertyModel<>(surveyGroupRatingsDefinitionModel, "label")));
 
     add(new ListView<SurveyGroupRatingDefinition>("groupRating", new PropertyModel<>(
         surveyGroupRatingsDefinitionModel, "groupRatingDefinitions"))
@@ -80,8 +88,9 @@ class SurveyGroupRatingsResponseReadOnlyPanel extends Panel
                 if (groupRatingDefinition.getRatingType() == SurveyGroupRatingType.YES_NO_NA)
                 {
                   SurveyGroupRatingResponse groupRatingResponse =
-                      surveyResponse.getGroupRatingResponseForDefinition(groupRatingsDefinition.getId(),
-                      groupRatingDefinition.getId(), groupMemberDefinition.getId());
+                      surveyResponse.getGroupRatingResponseForDefinition(
+                      groupRatingsDefinition.getId(), groupRatingDefinition.getId(),
+                      groupMemberDefinition.getId());
 
                   item.add(new YesNoNaRatingLabel("rating", new Model<>(YesNoNaRating.fromCode(
                       groupRatingResponse.getRating()))));
