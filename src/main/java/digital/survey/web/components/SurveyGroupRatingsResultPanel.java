@@ -48,6 +48,10 @@ class SurveyGroupRatingsResultPanel extends Panel
   {
     super(id);
 
+    setRenderBodyOnly(true);
+
+    add(new Label("label", new PropertyModel<>(surveyGroupRatingsDefinitionModel, "label")));
+
     add(new ListView<SurveyGroupRatingDefinition>("groupRating", new PropertyModel<>(
         surveyGroupRatingsDefinitionModel, "groupRatingDefinitions"))
         {

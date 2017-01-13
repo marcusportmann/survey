@@ -14,14 +14,10 @@ package digital.survey.web.components;
 //~--- non-JDK imports --------------------------------------------------------
 
 import digital.survey.model.SurveyDefinition;
-import digital.survey.model.SurveyGroupRatingsDefinition;
-import digital.survey.model.SurveyItemDefinition;
+import digital.survey.model.SurveyResponse;
 import digital.survey.model.SurveyResult;
 import guru.mmp.application.web.template.components.InputPanel;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 /**
@@ -44,27 +40,9 @@ public class SurveyResultPanel extends InputPanel
     super(id, surveyResultModel);
 
     IModel<SurveyDefinition> surveyDefinitionModel = new PropertyModel<>(surveyResultModel,
-        "instance.definition");
+      "instance.definition");
 
-    add(new ListView<SurveyItemDefinition>("itemResult", new PropertyModel<>(surveyDefinitionModel,
-        "itemDefinitions"))
-        {
-          @Override
-          protected void populateItem(ListItem<SurveyItemDefinition> item)
-          {
-            SurveyItemDefinition itemDefinition = item.getModelObject();
-
-            if (itemDefinition instanceof SurveyGroupRatingsDefinition)
-            {
-              SurveyGroupRatingsDefinition groupRatingsDefinition =
-                  (SurveyGroupRatingsDefinition) itemDefinition;
-
-              item.add(new SurveyGroupRatingsResultPanel("itemResultPanel", new Model<>(
-                  groupRatingsDefinition), new Model<>(surveyDefinitionModel.getObject()
-                  .getGroupDefinition(groupRatingsDefinition.getGroupDefinitionId())),
-                  surveyResultModel));
-            }
-          }
-        });
+    add(new SurveyItemResultPanelGroup("itemResultPanelGroup", surveyDefinitionModel,
+      new PropertyModel<>(surveyDefinitionModel, "itemDefinitions"), surveyResultModel));
   }
 }
