@@ -339,6 +339,58 @@ public class SurveyDefinition
   }
 
   /**
+   * Is the survey group member definition with the specified ID associated with the survey
+   * definition?
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   *           member definition
+   *
+   * @return <code>true</code> if the survey group member definition with the specified ID is
+   *         associated with the survey definition or <code>false</code> otherwise
+   */
+  public boolean hasGroupMemberDefinition(UUID id)
+  {
+    for (SurveyGroupDefinition groupDefinition : groupDefinitions)
+    {
+      if (groupDefinition.getGroupMemberDefinition(id) != null)
+      {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Is the survey group rating definition with the specified ID associated with the survey
+   * definition?
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   *           rating definition
+   *
+   * @return <code>true</code> if the survey group rating definition with the specified ID is
+   *         associated with the survey definition or <code>false</code> otherwise
+   */
+  public boolean hasGroupRatingDefinition(UUID id)
+  {
+    for (SurveyItemDefinition itemDefinition : itemDefinitions)
+    {
+      if (itemDefinition instanceof SurveyGroupRatingsDefinition)
+      {
+        SurveyGroupRatingsDefinition surveyGroupRatingsDefinition =
+            (SurveyGroupRatingsDefinition) itemDefinition;
+
+        if (surveyGroupRatingsDefinition.getGroupRatingDefinition(id) != null)
+        {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /**
    * Is the survey definition anonymous?
    *
    * @return <code>true</code> if the survey definition is anonymous or <code>false</code> otherwise

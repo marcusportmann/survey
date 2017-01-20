@@ -127,6 +127,35 @@ public class SurveySectionDefinition extends SurveyItemDefinition
   }
 
   /**
+   * Is the survey group rating definition with the specified ID associated with the survey
+   * section definition?
+   *
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
+   *           rating definition
+   *
+   * @return <code>true</code> if the survey group rating definition with the specified ID is
+   *         associated with the survey section definition or <code>false</code> otherwise
+   */
+  public boolean hasGroupRatingDefinition(UUID id)
+  {
+    for (SurveyItemDefinition itemDefinition : itemDefinitions)
+    {
+      if (itemDefinition instanceof SurveyGroupRatingsDefinition)
+      {
+        SurveyGroupRatingsDefinition surveyGroupRatingsDefinition =
+            (SurveyGroupRatingsDefinition) itemDefinition;
+
+        if (surveyGroupRatingsDefinition.getGroupRatingDefinition(id) != null)
+        {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /**
    * Returns whether the survey item definition is the first survey item definition for the survey
    * section definition.
    *

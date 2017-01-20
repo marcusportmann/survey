@@ -17,14 +17,19 @@ import digital.survey.model.SurveyDefinition;
 import digital.survey.model.SurveyItemDefinition;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.template.components.ExtensibleFormDialog;
+import guru.mmp.application.web.template.components.ExtensibleFormDialogImplementation;
+import guru.mmp.application.web.template.components.TextFieldWithFeedback;
 import guru.mmp.application.web.template.pages.TemplateDialogWebPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
@@ -81,42 +86,47 @@ public abstract class SurveyItemDefinitionPanel extends Panel
         "label")));
 
     // The "editLink" link
-    Link<Void> editLink = new Link<Void>("editLink")
+    AjaxLink<Void> editLink = new AjaxLink<Void>("editLink")
     {
       private static final long serialVersionUID = 1000000;
 
       @Override
-      public void onClick() {}
+      public void onClick(AjaxRequestTarget target)
+      {
+        getDialog().show(target, new EditItemDefinitionDialogImplementation(
+            surveyItemDefinitionModel));
+
+      }
     };
     headingContainer.add(editLink);
 
     // The "helpLink" link
-    Link<Void> helpLink = new Link<Void>("helpLink")
+    AjaxLink<Void> helpLink = new AjaxLink<Void>("helpLink")
     {
       private static final long serialVersionUID = 1000000;
 
       @Override
-      public void onClick() {}
+      public void onClick(AjaxRequestTarget target) {}
     };
     headingContainer.add(helpLink);
 
     // The "copyLink" link
-    Link<Void> copyLink = new Link<Void>("copyLink")
+    AjaxLink<Void> copyLink = new AjaxLink<Void>("copyLink")
     {
       private static final long serialVersionUID = 1000000;
 
       @Override
-      public void onClick() {}
+      public void onClick(AjaxRequestTarget target) {}
     };
     headingContainer.add(copyLink);
 
     // The "moveUpLink" link
-    Link<Void> moveUpLink = new Link<Void>("moveUpLink")
+    AjaxLink<Void> moveUpLink = new AjaxLink<Void>("moveUpLink")
     {
       private static final long serialVersionUID = 1000000;
 
       @Override
-      public void onClick() {}
+      public void onClick(AjaxRequestTarget target) {}
     };
 
     moveUpLink.setVisible(!surveyDefinition.isFirstItemDefinition(surveyItemDefinition));
@@ -124,12 +134,12 @@ public abstract class SurveyItemDefinitionPanel extends Panel
     headingContainer.add(moveUpLink);
 
     // The "moveDownLink" link
-    Link<Void> moveDownLink = new Link<Void>("moveDownLink")
+    AjaxLink<Void> moveDownLink = new AjaxLink<Void>("moveDownLink")
     {
       private static final long serialVersionUID = 1000000;
 
       @Override
-      public void onClick() {}
+      public void onClick(AjaxRequestTarget target) {}
     };
 
     moveDownLink.setVisible(!surveyDefinition.isLastItemDefinition(surveyItemDefinition));
@@ -137,12 +147,12 @@ public abstract class SurveyItemDefinitionPanel extends Panel
     headingContainer.add(moveDownLink);
 
     // The "removeLink" link
-    Link<Void> removeLink = new Link<Void>("removeLink")
+    AjaxLink<Void> removeLink = new AjaxLink<Void>("removeLink")
     {
       private static final long serialVersionUID = 1000000;
 
       @Override
-      public void onClick() {}
+      public void onClick(AjaxRequestTarget target) {}
     };
     headingContainer.add(removeLink);
 
@@ -205,6 +215,81 @@ public abstract class SurveyItemDefinitionPanel extends Panel
    *         otherwise
    */
   protected abstract boolean isCollapsible();
+
+  /**
+   * The <code>EditItemDefinitionDialogImplementation</code> class.
+   *
+   * @author Marcus Portmann
+   */
+  public class EditItemDefinitionDialogImplementation extends ExtensibleFormDialogImplementation
+  {
+    IModel<? extends SurveyItemDefinition> surveyItemDefinitionModel;
+    String name;
+    String label;
+    String description;
+
+    /**
+     * Constructs a new <code>EditItemDefinitionDialogImplementation</code>.
+     *
+     *
+     * @param surveyItemDefinitionModel the model for the survey item definition
+     */
+    public EditItemDefinitionDialogImplementation(
+        IModel<? extends SurveyItemDefinition> surveyItemDefinitionModel)
+    {
+      super("Edit Item", "OK", "Cancel");
+
+      this.surveyItemDefinitionModel = surveyItemDefinitionModel;
+
+      SurveyItemDefinition surveyItemDefinition = surveyItemDefinitionModel.getObject();
+
+      name = surveyItemDefinition.getName();
+      label = surveyItemDefinition.getLabel();
+      description = surveyItemDefinition.getDescription();
+
+      // The "name" field
+      TextField nameField = new TextFieldWithFeedback<>("name", new PropertyModel<>(this, "name"));
+      nameField.setRequired(true);
+      add(nameField);
+
+      // The "label" field
+      TextField labelField = new TextFieldWithFeedback<>("label", new PropertyModel<>(this,
+          "label"));
+      labelField.setRequired(true);
+      add(labelField);
+
+      // The "description" field
+      TextField descriptionField = new TextFieldWithFeedback<>("description", new PropertyModel<>(
+          this, "description"));
+      descriptionField.setRequired(true);
+      add(descriptionField);
+    }
+
+    @Override
+    public void onCancel(AjaxRequestTarget target, Form form) {}
+
+    @Override
+    public void onError(AjaxRequestTarget target, Form form) {}
+
+    @Override
+    public boolean onSubmit(AjaxRequestTarget target, Form form)
+    {
+      SurveyItemDefinition surveyItemDefinition =
+          (SurveyItemDefinition) surveyItemDefinitionModel.getObject();
+
+      surveyItemDefinition.setName(name);
+      surveyItemDefinition.setLabel(label);
+      surveyItemDefinition.setDescription(description);
+
+      target.add(getHeadingContainer());
+
+      return true;
+    }
+
+    @Override
+    public void resetModel() {}
+  }
+
 
   /**
    * The <code>HeadingCollapse</code> class.

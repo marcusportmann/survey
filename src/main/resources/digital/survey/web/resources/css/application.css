@@ -304,7 +304,8 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
 
 
 
-.survey-response .panel
+.survey-response .panel,
+.survey-result .panel
 {
   position: relative;
   border-radius: 3px;
@@ -320,14 +321,16 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
   box-shadow: none;
 }
 
-.survey-response .panel .panel-heading
+.survey-response .panel .panel-heading,
+.survey-result .panel .panel-heading
 {
   position: relative;
   padding: 0;
   height: 35px;
 }
 
-.survey-response .panel .panel-heading .heading-icon
+.survey-response .panel .panel-heading .heading-icon,
+.survey-result .panel .panel-heading .heading-icon
 {
   float: left;
   width: 35px;
@@ -336,21 +339,24 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
   background-color: #ddd;
 }
 
-.survey-response .panel .panel-heading .heading-icon i
+.survey-response .panel .panel-heading .heading-icon i,
+.survey-result .panel .panel-heading .heading-icon i
 {
   color: #444;
   line-height: 35px;
   font-size: 12px;
 }
 
-.survey-response .panel .panel-heading .heading-label
+.survey-response .panel .panel-heading .heading-label,
+.survey-result .panel .panel-heading .heading-label
 {
   float: left;
   line-height: 35px;
   padding-left: 10px;
 }
 
-.survey-response .panel .panel-heading .heading-collapse
+.survey-response .panel .panel-heading .heading-collapse,
+.survey-result .panel .panel-heading .heading-collapse
 {
   position: relative;
   float: right;
@@ -362,7 +368,8 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
   border-left: 1px solid #ddd;
 }
 
-.survey-response .panel .panel-heading .heading-collapse i
+.survey-response .panel .panel-heading .heading-collapse i,
+.survey-result .panel .panel-heading .heading-collapse i
 {
   position: absolute;
   top: 0;
@@ -374,27 +381,32 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
   font-size: 12px;
 }
 
-.survey-response .panel .panel-heading .heading-collapse i.collapsed
+.survey-response .panel .panel-heading .heading-collapse i.collapsed,
+.survey-result .panel .panel-heading .heading-collapse i.collapsed
 {
   visibility: hidden;
 }
 
-.survey-response .panel .panel-heading .heading-collapse.collapsed i.collapsed
+.survey-response .panel .panel-heading .heading-collapse.collapsed i.collapsed,
+.survey-result .panel .panel-heading .heading-collapse.collapsed i.collapsed
 {
   visibility: visible;
 }
 
-.survey-response .panel .panel-heading .heading-collapse i.expanded
+.survey-response .panel .panel-heading .heading-collapse i.expanded,
+.survey-result .panel .panel-heading .heading-collapse i.expanded
 {
   visibility: visible;
 }
 
-.survey-response .panel .panel-heading .heading-collapse.collapsed i.expanded
+.survey-response .panel .panel-heading .heading-collapse.collapsed i.expanded,
+.survey-result .panel .panel-heading .heading-collapse.collapsed i.expanded
 {
   visibility: hidden;
 }
 
-.survey-response .panel .panel-collapse
+.survey-response .panel .panel-collapse,
+.survey-result .panel .panel-collapse
 {
   padding: 10px 10px 0;
   border-top: 1px solid #ddd;

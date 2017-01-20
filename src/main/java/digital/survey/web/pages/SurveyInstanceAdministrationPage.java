@@ -427,10 +427,9 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
       try
       {
         // The "name" field
-        nameField = new TextField<>("name", new PropertyModel<>(this, "name"));
+        nameField = new TextFieldWithFeedback<>("name", new PropertyModel<>(this, "name"));
         nameField.setRequired(false);
         nameField.setEnabled(false);
-        nameField.setOutputMarkupId(true);
         getForm().add(nameField);
 
         SendSurveyRequestTypeChoiceRenderer sendSurveyRequestTypeChoiceRenderer =
@@ -441,7 +440,6 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
             new PropertyModel<>(this, "sendSurveyRequestType"), getSendSurveyRequestTypeOptions(),
             sendSurveyRequestTypeChoiceRenderer);
         sendSurveyRequestTypeField.setRequired(true);
-        sendSurveyRequestTypeField.setOutputMarkupId(true);
         getForm().add(sendSurveyRequestTypeField);
 
         sendSurveyRequestTypeField.add(new AjaxFormComponentUpdatingBehavior("change")
@@ -645,7 +643,6 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
               sendSurveyRequestTypeField.getValue()));
         }
       };
-      audienceField.setOutputMarkupId(true);
       toAudienceContainer.add(audienceField);
     }
 
@@ -682,7 +679,6 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
               sendSurveyRequestTypeField.getValue()));
         }
       };
-      firstNameField.setOutputMarkupId(true);
       toPersonContainer.add(firstNameField);
 
       // The "lastName" field
@@ -698,7 +694,6 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
               sendSurveyRequestTypeField.getValue()));
         }
       };
-      lastNameField.setOutputMarkupId(true);
       toPersonContainer.add(lastNameField);
 
       // The "email" field
@@ -714,7 +709,6 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
         }
       };
       emailField.add(EmailAddressValidator.getInstance());
-      emailField.setOutputMarkupId(true);
       toPersonContainer.add(emailField);
     }
   }
