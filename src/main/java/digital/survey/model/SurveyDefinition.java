@@ -391,6 +391,19 @@ public class SurveyDefinition
   }
 
   /**
+   * Returns whether the survey item definition is associated with the survey definition.
+   *
+   * @param itemDefinition the survey item definition
+   *
+   * @return <code>true</code> if the survey item definition is associated with the survey
+   *         definition or <code>false</code> otherwise
+   */
+  public boolean hasItemDefinition(SurveyItemDefinition itemDefinition)
+  {
+    return SurveyItemDefinition.hasItemDefinition(itemDefinitions, itemDefinition);
+  }
+
+  /**
    * Is the survey definition anonymous?
    *
    * @return <code>true</code> if the survey definition is anonymous or <code>false</code> otherwise
@@ -403,12 +416,13 @@ public class SurveyDefinition
 
   /**
    * Returns whether the survey item definition is the first survey item definition for the survey
-   * definition.
+   * definition or one of the survey section definitions associated with the survey definition.
    *
    * @param itemDefinition the survey item definition
    *
    * @return <code>true</code> if the survey item definition is the first survey item definition for
-   *         the survey definition or <code>false</code> otherwise
+   *         the survey definition or one of the survey section definitions associated with the
+   *         survey definition or <code>false</code> otherwise
    */
   public boolean isFirstItemDefinition(SurveyItemDefinition itemDefinition)
   {
@@ -417,12 +431,13 @@ public class SurveyDefinition
 
   /**
    * Returns whether the survey item definition is the last survey item definition for the survey
-   * definition.
+   * definition or one of the survey section definitions associated with the survey definition.
    *
    * @param itemDefinition the survey item definition
    *
    * @return <code>true</code> if the survey item definition is the last survey item definition for
-   *         the survey definition or <code>false</code> otherwise
+   *         the survey definition or one of the survey section definitions associated with the
+   *         survey section definition <code>false</code> otherwise
    */
   public boolean isLastItemDefinition(SurveyItemDefinition itemDefinition)
   {
@@ -566,6 +581,32 @@ public class SurveyDefinition
   }
 
   /**
+   * Move the specified survey item definition one step down in the list of survey item definitions.
+   *
+   * @param itemDefinition the survey item definition
+   *
+   * @return <code>true</code> if the survey item definition was successfully moved down or
+   *         <code>false</code> otherwise
+   */
+  public boolean moveItemDefinitionDown(SurveyItemDefinition itemDefinition)
+  {
+    return SurveyItemDefinition.moveItemDefinitionDown(itemDefinitions, itemDefinition);
+  }
+
+  /**
+   * Move the specified survey item definition one step up in the list of survey item definitions.
+   *
+   * @param itemDefinition the survey item definition
+   *
+   * @return <code>true</code> if the survey item definition was successfully moved up
+   *         or <code>false</code> otherwise
+   */
+  public boolean moveItemDefinitionUp(SurveyItemDefinition itemDefinition)
+  {
+    return SurveyItemDefinition.moveItemDefinitionUp(itemDefinitions, itemDefinition);
+  }
+
+  /**
    * Remove the survey group definition from the survey definition.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
@@ -627,20 +668,14 @@ public class SurveyDefinition
   /**
    * Remove the survey item definition.
    *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey item
-   *           definition
+   * @param itemDefinition the survey item definition
+   *
+   * @return <code>true</code> if the survey item definition was removed or <code>false</code>
+   *         otherwise
    */
-  public void removeItemDefinition(UUID id)
+  public boolean removeItemDefinition(SurveyItemDefinition itemDefinition)
   {
-    for (SurveyItemDefinition itemDefinition : itemDefinitions)
-    {
-      if (itemDefinition.getId().equals(id))
-      {
-        itemDefinitions.remove(itemDefinition);
-
-        return;
-      }
-    }
+    return SurveyItemDefinition.removeItemDefinition(itemDefinitions, itemDefinition);
   }
 
   /**

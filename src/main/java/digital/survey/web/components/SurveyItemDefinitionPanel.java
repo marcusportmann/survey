@@ -22,10 +22,13 @@ import guru.mmp.application.web.template.components.TextFieldWithFeedback;
 import guru.mmp.application.web.template.pages.TemplateDialogWebPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.ajax.AjaxRequestHandler;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.MarkupStream;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -33,6 +36,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Response;
 
 /**
@@ -110,23 +114,20 @@ public abstract class SurveyItemDefinitionPanel extends Panel
     };
     headingContainer.add(helpLink);
 
-    // The "copyLink" link
-    AjaxLink<Void> copyLink = new AjaxLink<Void>("copyLink")
-    {
-      private static final long serialVersionUID = 1000000;
-
-      @Override
-      public void onClick(AjaxRequestTarget target) {}
-    };
-    headingContainer.add(copyLink);
-
     // The "moveUpLink" link
     AjaxLink<Void> moveUpLink = new AjaxLink<Void>("moveUpLink")
     {
       private static final long serialVersionUID = 1000000;
 
       @Override
-      public void onClick(AjaxRequestTarget target) {}
+      public void onClick(AjaxRequestTarget target)
+      {
+        SurveyDefinition surveyDefinition = surveyDefinitionModel.getObject();
+
+        surveyDefinition.moveItemDefinitionUp(surveyItemDefinition);
+
+        target.add(getParentSurveyItemDefinitionPanelGroup());
+      }
     };
 
     moveUpLink.setVisible(!surveyDefinition.isFirstItemDefinition(surveyItemDefinition));
@@ -139,7 +140,14 @@ public abstract class SurveyItemDefinitionPanel extends Panel
       private static final long serialVersionUID = 1000000;
 
       @Override
-      public void onClick(AjaxRequestTarget target) {}
+      public void onClick(AjaxRequestTarget target)
+      {
+        SurveyDefinition surveyDefinition = surveyDefinitionModel.getObject();
+
+        surveyDefinition.moveItemDefinitionDown(surveyItemDefinition);
+
+        target.add(getParentSurveyItemDefinitionPanelGroup());
+      }
     };
 
     moveDownLink.setVisible(!surveyDefinition.isLastItemDefinition(surveyItemDefinition));
@@ -182,6 +190,25 @@ public abstract class SurveyItemDefinitionPanel extends Panel
   }
 
   /**
+   * @param response the Wicket header response
+   *
+   * @see org.apache.wicket.markup.html.panel.Panel#renderHead(IHeaderResponse)
+   */
+  @Override
+  public void renderHead(IHeaderResponse response)
+  {
+    super.renderHead(response);
+
+    /*
+     * Add the JavaScript, which alters the behaviour of the Bootstrap Tooltip to ensure that
+     * tooltips are hidden when an element with a tooltip, associated with the survey item
+     * definition panel, is clicked.
+     */
+    response.render(JavaScriptHeaderItem.forScript(generateTooltipJavaScript(getMarkupId(), false),
+        null));
+  }
+
+  /**
    * Returns the web markup container that contains the body for the survey item definition.
    *
    * @return the web markup container that contains the body for the survey item definition
@@ -209,12 +236,74 @@ public abstract class SurveyItemDefinitionPanel extends Panel
   protected abstract String getIconClass();
 
   /**
+   * Return the parent survey item definition panel group for the survey item definition.
+   *
+   * @return the parent survey item definition panel group for the survey item definition or
+   *         <code>null</code> if the parent survey item definition panel group cannot be found
+   */
+  protected SurveyItemDefinitionPanelGroup getParentSurveyItemDefinitionPanelGroup()
+  {
+    MarkupContainer parent = getParent();
+
+    while (parent != null)
+    {
+      if (parent instanceof SurveyItemDefinitionPanelGroup)
+      {
+        return (SurveyItemDefinitionPanelGroup) parent;
+      }
+
+      parent = parent.getParent();
+    }
+
+    return null;
+  }
+
+  /**
    * Returns whether the survey item definition is collapsible.
    *
    * @return <code>true</code> if the survey item definition is collapsible or <code>false</code>
    *         otherwise
    */
   protected abstract boolean isCollapsible();
+
+  /**
+   * @see org.apache.wicket.markup.html.panel.Panel#onRender()
+   */
+  @Override
+  protected void onRender()
+  {
+    super.onRender();
+
+    /*
+     * Add the JavaScript, which alters the behaviour of the Bootstrap Tooltip to ensure that
+     * tooltips are hidden when an element with a tooltip, associated with the survey item
+     * definition panel, is clicked.
+     */
+    IRequestHandler requestHandler = getRequestCycle().getActiveRequestHandler();
+
+    if (requestHandler instanceof AjaxRequestHandler)
+    {
+      AjaxRequestHandler ajaxRequestHandler = (AjaxRequestHandler) requestHandler;
+
+      ajaxRequestHandler.appendJavaScript(generateTooltipJavaScript(getMarkupId(), false));
+    }
+  }
+
+  private String generateTooltipJavaScript(String id, boolean isAjaxRequest)
+  {
+    if (isAjaxRequest)
+    {
+      return String.format(
+          "$('#%1$s').find('[data-toggle=\"tooltip\"]').on('click', function () { $(this).tooltip('hide'); });",
+          id);
+    }
+    else
+    {
+      return String.format(
+          "$(function() {$('#%1$s').find('[data-toggle=\"tooltip\"]').on('click', function () { $(this).tooltip('hide'); });});",
+          id);
+    }
+  }
 
   /**
    * The <code>EditItemDefinitionDialogImplementation</code> class.

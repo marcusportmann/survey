@@ -108,8 +108,30 @@ public abstract class SurveyItemDefinition
   }
 
   /**
-   * Returns whether the survey item definition is the first survey item definition for the survey
-   * section definition.
+   * Returns whether the survey item definition is in the list of survey item definitions.
+   *
+   * @param itemDefinitions the survey item definitions
+   * @param itemDefinition  the survey item definition
+   *
+   * @return <code>true</code> if the survey item definition is in the list of survey item
+   *         definitions or <code>false</code> otherwise
+   */
+  public static boolean hasItemDefinition(List<SurveyItemDefinition> itemDefinitions,
+      SurveyItemDefinition itemDefinition)
+  {
+    for (SurveyItemDefinition tmpItemDefinition : itemDefinitions)
+    {
+      if (tmpItemDefinition.getId().equals(itemDefinition.getId()))
+      {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Recursively checks whether the survey item definition is the first survey item definition.
    *
    * @param itemDefinitions the survey item definitions
    * @param itemDefinition  the survey item definition
@@ -130,11 +152,24 @@ public abstract class SurveyItemDefinition
       }
     }
 
+    for (SurveyItemDefinition tmpItemDefinition : itemDefinitions)
+    {
+      if (tmpItemDefinition instanceof SurveySectionDefinition)
+      {
+        SurveySectionDefinition sectionDefinition = (SurveySectionDefinition) tmpItemDefinition;
+
+        if (sectionDefinition.isFirstItemDefinition(itemDefinition))
+        {
+          return true;
+        }
+      }
+    }
+
     return false;
   }
 
   /**
-   * Returns whether the survey item definition is the last survey item definition.
+   * Recursively checks whether the survey item definition is the last survey item definition.
    *
    * @param itemDefinitions the list of survey item definitions
    * @param itemDefinition  the survey item definition
@@ -152,6 +187,136 @@ public abstract class SurveyItemDefinition
       if (tmpItemDefinition.getId().equals(itemDefinition.getId()))
       {
         return i == (itemDefinitions.size() - 1);
+      }
+    }
+
+    for (SurveyItemDefinition tmpItemDefinition : itemDefinitions)
+    {
+      if (tmpItemDefinition instanceof SurveySectionDefinition)
+      {
+        SurveySectionDefinition sectionDefinition = (SurveySectionDefinition) tmpItemDefinition;
+
+        if (sectionDefinition.isLastItemDefinition(itemDefinition))
+        {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Move the specified survey item definition one step down in the list of survey item definitions.
+   *
+   * @param itemDefinitions the list of survey item definitions
+   * @param itemDefinition  the survey item definition
+   *
+   * @return <code>true</code> if the survey item definition was successfully moved down or
+   *         <code>false</code> otherwise
+   */
+  public static boolean moveItemDefinitionDown(List<SurveyItemDefinition> itemDefinitions,
+      SurveyItemDefinition itemDefinition)
+  {
+    int index = itemDefinitions.indexOf(itemDefinition);
+
+    if ((index >= 0) && (index < (itemDefinitions.size() - 1)))
+    {
+      itemDefinitions.remove(index);
+
+      itemDefinitions.add(index + 1, itemDefinition);
+
+      return true;
+    }
+
+    for (SurveyItemDefinition tmpItemDefiniton : itemDefinitions)
+    {
+      if (tmpItemDefiniton instanceof SurveySectionDefinition)
+      {
+        SurveySectionDefinition sectionDefinition = (SurveySectionDefinition) tmpItemDefiniton;
+
+        if (sectionDefinition.moveItemDefinitionDown(itemDefinition))
+        {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Move the specified survey item definition one step up in the list of survey item definitions.
+   *
+   * @param itemDefinitions the list of survey item definitions
+   * @param itemDefinition  the survey item definition
+   *
+   * @return <code>true</code> if the survey item definition was successfully moved up
+   *         or <code>false</code> otherwise
+   */
+  public static boolean moveItemDefinitionUp(List<SurveyItemDefinition> itemDefinitions,
+      SurveyItemDefinition itemDefinition)
+  {
+    int index = itemDefinitions.indexOf(itemDefinition);
+
+    if (index > 0)
+    {
+      itemDefinitions.remove(index);
+
+      itemDefinitions.add(index - 1, itemDefinition);
+
+      return true;
+    }
+
+    for (SurveyItemDefinition tmpItemDefiniton : itemDefinitions)
+    {
+      if (tmpItemDefiniton instanceof SurveySectionDefinition)
+      {
+        SurveySectionDefinition sectionDefinition = (SurveySectionDefinition) tmpItemDefiniton;
+
+        if (sectionDefinition.moveItemDefinitionUp(itemDefinition))
+        {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Remove the survey item definition with the specified ID from the list of survey item
+   * definitions
+   *
+   * @param itemDefinitions the list of survey item definitions
+   * @param itemDefinition  the survey item definition
+   *
+   * @return <code>true</code> if the survey item definition was removed or <code>false</code>
+   *         otherwise
+   */
+  public static boolean removeItemDefinition(List<SurveyItemDefinition> itemDefinitions,
+      SurveyItemDefinition itemDefinition)
+  {
+    for (SurveyItemDefinition tmpItemDefinition : itemDefinitions)
+    {
+      if (tmpItemDefinition.getId().equals(itemDefinition.getId()))
+      {
+        itemDefinitions.remove(itemDefinition);
+
+        return true;
+      }
+    }
+
+    for (SurveyItemDefinition tmpItemDefiniton : itemDefinitions)
+    {
+      if (tmpItemDefiniton instanceof SurveySectionDefinition)
+      {
+        SurveySectionDefinition sectionDefinition = (SurveySectionDefinition) tmpItemDefiniton;
+
+        if (sectionDefinition.removeItemDefinition(itemDefinition))
+        {
+          return true;
+        }
       }
     }
 

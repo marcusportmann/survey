@@ -78,7 +78,6 @@ public class SurveyItemDefinitionPanelGroup extends Panel
               item.add(new SurveyTextDefinitionPanel("itemDefinitionPanel", surveyDefinitionModel,
                   new Model<>(textDefinition)));
             }
-
           }
         });
   }

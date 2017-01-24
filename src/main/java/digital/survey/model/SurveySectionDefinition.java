@@ -156,6 +156,19 @@ public class SurveySectionDefinition extends SurveyItemDefinition
   }
 
   /**
+   * Returns whether the survey item definition is associated with the survey section definition.
+   *
+   * @param itemDefinition the survey item definition
+   *
+   * @return <code>true</code> if the survey item definition is associated with the survey section
+   *         definition or <code>false</code> otherwise
+   */
+  public boolean hasItemDefinition(SurveyItemDefinition itemDefinition)
+  {
+    return SurveyItemDefinition.hasItemDefinition(itemDefinitions, itemDefinition);
+  }
+
+  /**
    * Returns whether the survey item definition is the first survey item definition for the survey
    * section definition.
    *
@@ -181,6 +194,45 @@ public class SurveySectionDefinition extends SurveyItemDefinition
   public boolean isLastItemDefinition(SurveyItemDefinition itemDefinition)
   {
     return SurveyItemDefinition.isLastItemDefinition(itemDefinitions, itemDefinition);
+  }
+
+  /**
+   * Move the specified survey item definition one step down in the list of survey item definitions.
+   *
+   * @param itemDefinition the survey item definition
+   *
+   * @return <code>true</code> if the survey item definition was successfully moved down or
+   *         <code>false</code> otherwise
+   */
+  public boolean moveItemDefinitionDown(SurveyItemDefinition itemDefinition)
+  {
+    return SurveyItemDefinition.moveItemDefinitionDown(itemDefinitions, itemDefinition);
+  }
+
+  /**
+   * Move the specified survey item definition one step up in the list of survey item definitions.
+   *
+   * @param itemDefinition the survey item definition
+   *
+   * @return <code>true</code> if the survey item definition was successfully moved up
+   *         or <code>false</code> otherwise
+   */
+  public boolean moveItemDefinitionUp(SurveyItemDefinition itemDefinition)
+  {
+    return SurveyItemDefinition.moveItemDefinitionUp(itemDefinitions, itemDefinition);
+  }
+
+  /**
+   * Remove the survey item definition.
+   *
+   * @param itemDefinition the survey item definition
+   *
+   * @return <code>true</code> if the survey item definition was removed or <code>false</code>
+   *         otherwise
+   */
+  public boolean removeItemDefinition(SurveyItemDefinition itemDefinition)
+  {
+    return SurveyItemDefinition.removeItemDefinition(itemDefinitions, itemDefinition);
   }
 
   /**
