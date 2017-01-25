@@ -251,20 +251,6 @@ public class SurveyDefinition
   }
 
   /**
-   * Retrieve the survey group rating definition.
-   *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   *           rating definition
-   *
-   * @return the survey group rating definition or <code>null</code> if the survey group rating
-   *         definition could not be found
-   */
-  public SurveyGroupRatingDefinition getGroupRatingDefinition(UUID id)
-  {
-    return SurveyGroupRatingDefinition.getGroupRatingDefinition(itemDefinitions, id);
-  }
-
-  /**
    * Returns the Universally Unique Identifier (UUID) used to, along with the version of the survey
    * definition, uniquely identify the survey definition.
    *
@@ -339,58 +325,6 @@ public class SurveyDefinition
   }
 
   /**
-   * Is the survey group member definition with the specified ID associated with the survey
-   * definition?
-   *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   *           member definition
-   *
-   * @return <code>true</code> if the survey group member definition with the specified ID is
-   *         associated with the survey definition or <code>false</code> otherwise
-   */
-  public boolean hasGroupMemberDefinition(UUID id)
-  {
-    for (SurveyGroupDefinition groupDefinition : groupDefinitions)
-    {
-      if (groupDefinition.getGroupMemberDefinition(id) != null)
-      {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  /**
-   * Is the survey group rating definition with the specified ID associated with the survey
-   * definition?
-   *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   *           rating definition
-   *
-   * @return <code>true</code> if the survey group rating definition with the specified ID is
-   *         associated with the survey definition or <code>false</code> otherwise
-   */
-  public boolean hasGroupRatingDefinition(UUID id)
-  {
-    for (SurveyItemDefinition itemDefinition : itemDefinitions)
-    {
-      if (itemDefinition instanceof SurveyGroupRatingsDefinition)
-      {
-        SurveyGroupRatingsDefinition surveyGroupRatingsDefinition =
-            (SurveyGroupRatingsDefinition) itemDefinition;
-
-        if (surveyGroupRatingsDefinition.getGroupRatingDefinition(id) != null)
-        {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  }
-
-  /**
    * Returns whether the survey item definition is associated with the survey definition.
    *
    * @param itemDefinition the survey item definition
@@ -415,198 +349,6 @@ public class SurveyDefinition
   }
 
   /**
-   * Returns whether the survey item definition is the first survey item definition for the survey
-   * definition or one of the survey section definitions associated with the survey definition.
-   *
-   * @param itemDefinition the survey item definition
-   *
-   * @return <code>true</code> if the survey item definition is the first survey item definition for
-   *         the survey definition or one of the survey section definitions associated with the
-   *         survey definition or <code>false</code> otherwise
-   */
-  public boolean isFirstItemDefinition(SurveyItemDefinition itemDefinition)
-  {
-    return SurveyItemDefinition.isFirstItemDefinition(itemDefinitions, itemDefinition);
-  }
-
-  /**
-   * Returns whether the survey item definition is the last survey item definition for the survey
-   * definition or one of the survey section definitions associated with the survey definition.
-   *
-   * @param itemDefinition the survey item definition
-   *
-   * @return <code>true</code> if the survey item definition is the last survey item definition for
-   *         the survey definition or one of the survey section definitions associated with the
-   *         survey section definition <code>false</code> otherwise
-   */
-  public boolean isLastItemDefinition(SurveyItemDefinition itemDefinition)
-  {
-    return SurveyItemDefinition.isLastItemDefinition(itemDefinitions, itemDefinition);
-  }
-
-  /**
-   * Move the specified survey group member definition one step down in the list of survey group
-   * member definitions.
-   *
-   * @param groupMemberDefinition the survey group member definition
-   *
-   * @return <code>true</code> if the survey group member definition was successfully moved down
-   *         or <code>false</code> otherwise
-   */
-  public boolean moveGroupMemberDefinitionDown(SurveyGroupMemberDefinition groupMemberDefinition)
-  {
-    for (SurveyGroupDefinition groupDefinition : groupDefinitions)
-    {
-      List<SurveyGroupMemberDefinition> groupMemberDefinitions =
-          groupDefinition.getGroupMemberDefinitions();
-
-      int index = groupMemberDefinitions.indexOf(groupMemberDefinition);
-
-      if ((index >= 0) && (index < (groupMemberDefinitions.size() - 1)))
-      {
-        groupMemberDefinitions.remove(index);
-
-        groupMemberDefinitions.add(index + 1, groupMemberDefinition);
-
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  /**
-   * Move the specified survey group member definition one step up in the list of survey group
-   * member definitions.
-   *
-   * @param groupMemberDefinition the survey group member definition
-   *
-   * @return <code>true</code> if the survey group member definition was successfully moved up
-   *         or <code>false</code> otherwise
-   */
-  public boolean moveGroupMemberDefinitionUp(SurveyGroupMemberDefinition groupMemberDefinition)
-  {
-    for (SurveyGroupDefinition groupDefinition : groupDefinitions)
-    {
-      List<SurveyGroupMemberDefinition> groupMemberDefinitions =
-          groupDefinition.getGroupMemberDefinitions();
-
-      int index = groupMemberDefinitions.indexOf(groupMemberDefinition);
-
-      if (index > 0)
-      {
-        groupMemberDefinitions.remove(index);
-
-        groupMemberDefinitions.add(index - 1, groupMemberDefinition);
-
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  /**
-   * Move the specified survey group rating definition one step down in the list of survey group
-   * rating definitions.
-   *
-   * @param groupRatingDefinition the survey group rating definition
-   *
-   * @return <code>true</code> if the survey group rating definition was successfully moved down
-   *         or <code>false</code> otherwise
-   */
-  public boolean moveGroupRatingDefinitionDown(SurveyGroupRatingDefinition groupRatingDefinition)
-  {
-    for (SurveyItemDefinition itemDefinition : itemDefinitions)
-    {
-      if (itemDefinition instanceof SurveyGroupRatingsDefinition)
-      {
-        SurveyGroupRatingsDefinition surveyGroupRatingsDefinition =
-            (SurveyGroupRatingsDefinition) itemDefinition;
-
-        List<SurveyGroupRatingDefinition> groupRatingDefinitions =
-            surveyGroupRatingsDefinition.getGroupRatingDefinitions();
-
-        int index = groupRatingDefinitions.indexOf(groupRatingDefinition);
-
-        if ((index >= 0) && (index < (groupRatingDefinitions.size() - 1)))
-        {
-          groupRatingDefinitions.remove(index);
-
-          groupRatingDefinitions.add(index + 1, groupRatingDefinition);
-
-          return true;
-        }
-      }
-    }
-
-    return false;
-  }
-
-  /**
-   * Move the specified survey group rating definition up step down in the list of survey group
-   * rating definitions.
-   *
-   * @param groupRatingDefinition the survey group rating definition
-   *
-   * @return <code>true</code> if the survey group rating definition was successfully moved up
-   *         or <code>false</code> otherwise
-   */
-  public boolean moveGroupRatingDefinitionUp(SurveyGroupRatingDefinition groupRatingDefinition)
-  {
-    for (SurveyItemDefinition itemDefinition : itemDefinitions)
-    {
-      if (itemDefinition instanceof SurveyGroupRatingsDefinition)
-      {
-        SurveyGroupRatingsDefinition surveyGroupRatingsDefinition =
-            (SurveyGroupRatingsDefinition) itemDefinition;
-
-        List<SurveyGroupRatingDefinition> groupRatingDefinitions =
-            surveyGroupRatingsDefinition.getGroupRatingDefinitions();
-
-        int index = groupRatingDefinitions.indexOf(groupRatingDefinition);
-
-        if (index > 0)
-        {
-          groupRatingDefinitions.remove(index);
-
-          groupRatingDefinitions.add(index - 1, groupRatingDefinition);
-
-          return true;
-        }
-      }
-    }
-
-    return false;
-  }
-
-  /**
-   * Move the specified survey item definition one step down in the list of survey item definitions.
-   *
-   * @param itemDefinition the survey item definition
-   *
-   * @return <code>true</code> if the survey item definition was successfully moved down or
-   *         <code>false</code> otherwise
-   */
-  public boolean moveItemDefinitionDown(SurveyItemDefinition itemDefinition)
-  {
-    return SurveyItemDefinition.moveItemDefinitionDown(itemDefinitions, itemDefinition);
-  }
-
-  /**
-   * Move the specified survey item definition one step up in the list of survey item definitions.
-   *
-   * @param itemDefinition the survey item definition
-   *
-   * @return <code>true</code> if the survey item definition was successfully moved up
-   *         or <code>false</code> otherwise
-   */
-  public boolean moveItemDefinitionUp(SurveyItemDefinition itemDefinition)
-  {
-    return SurveyItemDefinition.moveItemDefinitionUp(itemDefinitions, itemDefinition);
-  }
-
-  /**
    * Remove the survey group definition from the survey definition.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
@@ -623,59 +365,6 @@ public class SurveyDefinition
         return;
       }
     }
-  }
-
-  /**
-   * Remove the survey group member definition with the specified ID.
-   *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   *           member definition
-   */
-  public void removeGroupMemberDefinition(UUID id)
-  {
-    for (SurveyGroupDefinition groupDefinition : groupDefinitions)
-    {
-      if (groupDefinition.getGroupMemberDefinition(id) != null)
-      {
-        groupDefinition.removeGroupMemberDefinition(id);
-      }
-    }
-  }
-
-  /**
-   * Remove the survey group rating definition with the specified ID.
-   *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   *           rating definition
-   */
-  public void removeGroupRatingDefinition(UUID id)
-  {
-    for (SurveyItemDefinition itemDefinition : itemDefinitions)
-    {
-      if (itemDefinition instanceof SurveyGroupRatingsDefinition)
-      {
-        SurveyGroupRatingsDefinition surveyGroupRatingsDefinition =
-            (SurveyGroupRatingsDefinition) itemDefinition;
-
-        if (surveyGroupRatingsDefinition.getGroupRatingDefinition(id) != null)
-        {
-          surveyGroupRatingsDefinition.removeGroupRatingDefinition(id);
-        }
-      }
-    }
-  }
-
-  /**
-   * Remove the survey item definition.
-   *
-   * @param itemDefinition the survey item definition
-   *
-   * @return <code>true</code> if the survey item definition was removed or <code>false</code>
-   *         otherwise
-   */
-  public boolean removeItemDefinition(SurveyItemDefinition itemDefinition)
-  {
-    return SurveyItemDefinition.removeItemDefinition(itemDefinitions, itemDefinition);
   }
 
   /**
@@ -836,5 +525,30 @@ public class SurveyDefinition
   void incrementVersion()
   {
     version++;
+  }
+
+  /**
+   * Returns all the survey item definitions associated with the survey definition.
+   *
+   * @return all the survey item definitions associated with the survey definition
+   */
+  @JsonIgnore
+  public List<SurveyItemDefinition> getAllItemDefinitions()
+  {
+    List<SurveyItemDefinition> allItemDefinitions = new ArrayList<>();
+
+    allItemDefinitions.addAll(itemDefinitions);
+
+    for (SurveyItemDefinition itemDefinition : itemDefinitions)
+    {
+      if (itemDefinition instanceof SurveySectionDefinition)
+      {
+        SurveySectionDefinition sectionDefinition = (SurveySectionDefinition)itemDefinition;
+
+        allItemDefinitions.addAll(sectionDefinition.getAllItemDefinitions());
+      }
+    }
+
+    return allItemDefinitions;
   }
 }

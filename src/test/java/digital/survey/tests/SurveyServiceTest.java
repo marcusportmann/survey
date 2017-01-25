@@ -226,7 +226,7 @@ public class SurveyServiceTest
    * Test the remove survey group ratings definition functionality.
    */
   @Test
-  public void removeSurveyGroupRatingsDefinition()
+  public void removeSurveyGroupRatingsDefinitionTest()
     throws Exception
   {
     Organisation organisation = getTestOrganisationDetails();
@@ -670,43 +670,12 @@ public class SurveyServiceTest
         "706fb4a4-8ba8-11e6-ae22-56b6b6499611"), 1, organisation, "CTO ELT Values",
         "CTO ELT Values");
 
-
     // Before Text
     surveyDefinition.addItemDefinition(new SurveyTextDefinition("before_text", "Before Text",
-      "Before Text Description", "Before Text Help"));
-
-
-
-    SurveyGroupDefinition surveyGroupDefinition = new SurveyGroupDefinition(UUID.fromString(
-        "d3cf5bf2-9226-429f-bbbf-126a298e0e57"), "CTO ELT", "CTO ELT");
-
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("CTO ELT"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Peter"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Adriaan"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Alapan"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Dan"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Daryl"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("David"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Francois"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("James"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Kersh"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Kevin"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Linde-Marie"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Manoj"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Marcus"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Mercia"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Nicole"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Lawrence"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Richard"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Sandra"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Tendai"));
-    surveyGroupDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Debbie"));
-
-    surveyDefinition.addGroupDefinition(surveyGroupDefinition);
+        "Before Text Description", "Before Text Help"));
 
     SurveyGroupRatingsDefinition surveyGroupRatingsDefinition = new SurveyGroupRatingsDefinition(
-        "cto_values", "CTO Values", "CTO Values", "CTO Values", surveyGroupDefinition.getId(),
-        true);
+        "cto_values", "CTO Values", "CTO Values", "CTO Values", true);
 
     surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
         "Accountability", SurveyGroupRatingType.YES_NO_NA));
@@ -729,105 +698,128 @@ public class SurveyServiceTest
     surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition("Trust",
         SurveyGroupRatingType.YES_NO_NA));
 
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
+        "CTO ELT"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Peter"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
+        "Adriaan"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
+        "Alapan"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Dan"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Daryl"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("David"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
+        "Francois"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("James"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Kersh"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Kevin"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
+        "Linde-Marie"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Manoj"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
+        "Marcus"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
+        "Mercia"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
+        "Nicole"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
+        "Lawrence"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
+        "Richard"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
+        "Sandra"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
+        "Tendai"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
+        "Debbie"));
+
     surveyDefinition.addItemDefinition(surveyGroupRatingsDefinition);
 
     // After Text
     surveyDefinition.addItemDefinition(new SurveyTextDefinition("after_text", "After Text",
-      "After Text Description", "After Text Help"));
-
-
+        "After Text Description", "After Text Help"));
 
     // Outer 1 Section
-    SurveySectionDefinition outer1SectionDefinition = new SurveySectionDefinition("outer_1_section",
-        "Outer 1 Section", "Outer 1 Section Description", "Outer 1 Section Help");
+    SurveySectionDefinition outer1SectionDefinition = new SurveySectionDefinition(
+        "outer_1_section", "Outer 1 Section", "Outer 1 Section Description",
+        "Outer 1 Section Help");
 
     surveyDefinition.addItemDefinition(outer1SectionDefinition);
 
     // Outer 1.1 Text
-    outer1SectionDefinition.addItemDefinition(new SurveyTextDefinition("outer_1_1_text", "Outer 1.1 Text",
-      "Outer 1.1 Text Description", "Outer 1.1 Text Help"));
-
-
+    outer1SectionDefinition.addItemDefinition(new SurveyTextDefinition("outer_1_1_text",
+        "Outer 1.1 Text", "Outer 1.1 Text Description", "Outer 1.1 Text Help"));
 
     // Inner 1.1 Section
-    SurveySectionDefinition inner11SectionDefinition = new SurveySectionDefinition("inner_1_1_section",
-        "Inner 1.1 Section", "Inner 1.1 Section Description", "Inner 1.1 Section Help");
+    SurveySectionDefinition inner11SectionDefinition = new SurveySectionDefinition(
+        "inner_1_1_section", "Inner 1.1 Section", "Inner 1.1 Section Description",
+        "Inner 1.1 Section Help");
 
     outer1SectionDefinition.addItemDefinition(inner11SectionDefinition);
 
     // Inner 1.1.1 Text
-    inner11SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_1_1_1_text", "Inner 1.1.1 Text",
-      "Inner 1.1.1 Text Description", "Inner 1.1.1 Text Help"));
+    inner11SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_1_1_1_text",
+        "Inner 1.1.1 Text", "Inner 1.1.1 Text Description", "Inner 1.1.1 Text Help"));
 
     // Inner 1.1.2 Text
-    inner11SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_1_1_2_text", "Inner 1.1.2 Text",
-      "Inner 1.1.2 Text Description", "Inner 1.1.2 Text Help"));
-
+    inner11SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_1_1_2_text",
+        "Inner 1.1.2 Text", "Inner 1.1.2 Text Description", "Inner 1.1.2 Text Help"));
 
     // Inner 1.2 Section
-    SurveySectionDefinition inner12SectionDefinition = new SurveySectionDefinition("inner_1_2_section",
-      "Inner 1.2 Section", "Inner 1.2 Section Description", "Inner 1.2 Section Help");
+    SurveySectionDefinition inner12SectionDefinition = new SurveySectionDefinition(
+        "inner_1_2_section", "Inner 1.2 Section", "Inner 1.2 Section Description",
+        "Inner 1.2 Section Help");
 
     outer1SectionDefinition.addItemDefinition(inner12SectionDefinition);
 
     // Inner 1.2.1 Text
-    inner12SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_1_2_1_text", "Inner 1.2.1 Text",
-      "Inner 1.2.1 Text Description", "Inner 1.2.1 Text Help"));
+    inner12SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_1_2_1_text",
+        "Inner 1.2.1 Text", "Inner 1.2.1 Text Description", "Inner 1.2.1 Text Help"));
 
     // Inner 1.2.2 Text
-    inner12SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_1_2_2_text", "Inner 1.2.2 Text",
-      "Inner 1.2.2 Text Description", "Inner 1.2.2 Text Help"));
-
-
-
-
-
+    inner12SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_1_2_2_text",
+        "Inner 1.2.2 Text", "Inner 1.2.2 Text Description", "Inner 1.2.2 Text Help"));
 
     // Outer 2 Section
-    SurveySectionDefinition outer2SectionDefinition = new SurveySectionDefinition("outer_2_section",
-      "Outer 2 Section", "Outer 2 Section Description", "Outer 2 Section Help");
+    SurveySectionDefinition outer2SectionDefinition = new SurveySectionDefinition(
+        "outer_2_section", "Outer 2 Section", "Outer 2 Section Description",
+        "Outer 2 Section Help");
 
     surveyDefinition.addItemDefinition(outer2SectionDefinition);
 
     // Outer 2.1 Text
-    outer2SectionDefinition.addItemDefinition(new SurveyTextDefinition("outer_2_1_text", "Outer 2.1 Text",
-      "Outer 2.1 Text Description", "Outer 2.1 Text Help"));
-
-
+    outer2SectionDefinition.addItemDefinition(new SurveyTextDefinition("outer_2_1_text",
+        "Outer 2.1 Text", "Outer 2.1 Text Description", "Outer 2.1 Text Help"));
 
     // Inner 2.1 Section
-    SurveySectionDefinition inner21SectionDefinition = new SurveySectionDefinition("inner_2_1_section",
-      "Inner 2.1 Section", "Inner 2.1 Section Description", "Inner 2.1 Section Help");
+    SurveySectionDefinition inner21SectionDefinition = new SurveySectionDefinition(
+        "inner_2_1_section", "Inner 2.1 Section", "Inner 2.1 Section Description",
+        "Inner 2.1 Section Help");
 
     outer2SectionDefinition.addItemDefinition(inner21SectionDefinition);
 
     // Inner 2.1.1 Text
-    inner21SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_2_1_1_text", "Inner 2.1.1 Text",
-      "Inner 2.1.1 Text Description", "Inner 2.1.1 Text Help"));
+    inner21SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_2_1_1_text",
+        "Inner 2.1.1 Text", "Inner 2.1.1 Text Description", "Inner 2.1.1 Text Help"));
 
     // Inner 2.1.2 Text
-    inner21SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_2_1_2_text", "Inner 2.1.2 Text",
-      "Inner 2.1.2 Text Description", "Inner 2.1.2 Text Help"));
-
+    inner21SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_2_1_2_text",
+        "Inner 2.1.2 Text", "Inner 2.1.2 Text Description", "Inner 2.1.2 Text Help"));
 
     // Inner 2.2 Section
-    SurveySectionDefinition inner22SectionDefinition = new SurveySectionDefinition("inner_2_2_section",
-      "Inner 2.2 Section", "Inner 2.2 Section Description", "Inner 2.2 Section Help");
+    SurveySectionDefinition inner22SectionDefinition = new SurveySectionDefinition(
+        "inner_2_2_section", "Inner 2.2 Section", "Inner 2.2 Section Description",
+        "Inner 2.2 Section Help");
 
     outer2SectionDefinition.addItemDefinition(inner22SectionDefinition);
 
     // Inner 2.2.1 Text
-    inner22SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_2_2_1_text", "Inner 2.2.1 Text",
-      "Inner 2.2.1 Text Description", "Inner 2.2.1 Text Help"));
+    inner22SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_2_2_1_text",
+        "Inner 2.2.1 Text", "Inner 2.2.1 Text Description", "Inner 2.2.1 Text Help"));
 
     // Inner 2.2.2 Text
-    inner22SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_2_2_2_text", "Inner 2.2.2 Text",
-      "Inner 2.2.2 Text Description", "Inner 2.2.2 Text Help"));
-
-
-
-
-
+    inner22SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_2_2_2_text",
+        "Inner 2.2.2 Text", "Inner 2.2.2 Text Description", "Inner 2.2.2 Text Help"));
 
     return surveyDefinition;
   }
@@ -903,7 +895,7 @@ public class SurveyServiceTest
     SurveyGroupRatingsDefinition surveyGroupRatingsDefinition = new SurveyGroupRatingsDefinition(
         "test_survey_group_ratings_definition", "Test Survey Group Ratings Definition",
         "Test Survey Group Ratings Definition Description",
-        "Test Survey Group Ratings Definition Help", surveyGroupDefinition.getId(), true);
+        "Test Survey Group Ratings Definition Help", true);
 
     surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
         "Test Survey Group Rating Definition 1", SurveyGroupRatingType.YES_NO_NA));
@@ -912,38 +904,54 @@ public class SurveyServiceTest
     surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
         "Test Survey Group Rating Definition 3", SurveyGroupRatingType.YES_NO_NA));
 
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
+        "Test Survey Group Member Definition Name 1"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
+        "Test Survey Group Member Definition Name 2"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
+        "Test Survey Group Member Definition Name 4"));
+
     surveyDefinition.addItemDefinition(surveyGroupRatingsDefinition);
 
     SurveyGroupRatingsDefinition surveyNestedGroupRatingsDefinition1 =
         new SurveyGroupRatingsDefinition("test_nested_survey_group_ratings_definition_1",
         "Test Nested Survey Group Ratings Definition 1",
         "Test Nested Survey Group Ratings Definition Description 1",
-        "Test Nested Survey Group Ratings Definition Help 1", surveyGroupDefinition.getId(), true);
+        "Test Nested Survey Group Ratings Definition Help 1", true);
 
     SurveyGroupRatingsDefinition surveyNestedGroupRatingsDefinition2 =
         new SurveyGroupRatingsDefinition("test_nested_survey_group_ratings_definition_2",
         "Test Nested Survey Group Ratings Definition 2",
         "Test Nested Survey Group Ratings Definition Description 2",
-        "Test Nested Survey Group Ratings Definition Help 2", surveyGroupDefinition.getId(), true);
+        "Test Nested Survey Group Ratings Definition Help 2", true);
 
     SurveyGroupRatingsDefinition surveyNestedGroupRatingsDefinition3 =
         new SurveyGroupRatingsDefinition("test_nested_survey_group_ratings_definition_3",
         "Test Nested Survey Group Ratings Definition 3",
         "Test Nested Survey Group Ratings Definition Description 3",
-        "Test Nested Survey Group Ratings Definition Help 3", surveyGroupDefinition.getId(), true);
+        "Test Nested Survey Group Ratings Definition Help 3", true);
 
     surveyNestedGroupRatingsDefinition1.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
         "Test Nested Survey Group Definition Rating Item 1", SurveyGroupRatingType.YES_NO_NA));
+
+    surveyNestedGroupRatingsDefinition1.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
+        "Test Nested Survey Group Member Definition Name 4"));
 
     surveySectionDefinition1.addItemDefinition(surveyNestedGroupRatingsDefinition1);
 
     surveyNestedGroupRatingsDefinition2.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
         "Test Nested Survey Group Definition Rating Item 2", SurveyGroupRatingType.YES_NO_NA));
 
+    surveyNestedGroupRatingsDefinition2.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
+        "Test Nested Survey Group Member Definition Name 4"));
+
     surveySectionDefinition2.addItemDefinition(surveyNestedGroupRatingsDefinition2);
 
     surveyNestedGroupRatingsDefinition3.addGroupRatingDefinition(new SurveyGroupRatingDefinition(
         "Test Nested Survey Group Definition Rating Item 3", SurveyGroupRatingType.YES_NO_NA));
+
+    surveyNestedGroupRatingsDefinition3.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
+        "Test Nested Survey Group Member Definition Name 4"));
 
     surveySectionDefinition3.addItemDefinition(surveyNestedGroupRatingsDefinition3);
 
@@ -1161,6 +1169,22 @@ public class SurveyServiceTest
         compareSurveyGroupRatingDefinitions(surveyGroupRatingDefinition1,
             surveyGroupRatingDefinition2);
       }
+
+
+      for (SurveyGroupMemberDefinition surveyGroupMemberDefinition1 :
+        surveyGroupRatingsDefinition1.getGroupMemberDefinitions())
+      {
+        SurveyGroupMemberDefinition surveyGroupMemberDefinition2 =
+          surveyGroupRatingsDefinition2.getGroupMemberDefinition(
+            surveyGroupMemberDefinition1.getId());
+
+        assertNotNull("The survey group member definition could not be found",
+          surveyGroupMemberDefinition2);
+
+        compareSurveyGroupMemberDefinitions(surveyGroupMemberDefinition1,
+          surveyGroupMemberDefinition2);
+      }
+
     }
   }
 
@@ -1230,19 +1254,38 @@ public class SurveyServiceTest
 
   private void randomizeSurveyResponse(SurveyResponse surveyResponse)
   {
-    for (SurveyGroupRatingResponse groupRatingResponse : surveyResponse.getGroupRatingResponses())
-    {
-      SurveyGroupRatingDefinition groupRatingDefinition = surveyResponse.getInstance()
-          .getDefinition().getGroupRatingDefinition(
-          groupRatingResponse.getGroupRatingDefinitionId());
+    SurveyDefinition surveyDefinition = surveyResponse.getInstance().getDefinition();
 
-      if (groupRatingDefinition.getRatingType() == SurveyGroupRatingType.ONE_TO_TEN)
+    for (SurveyItemDefinition itemDefinition : surveyDefinition.getAllItemDefinitions())
+    {
+      if (itemDefinition instanceof SurveyGroupRatingsDefinition)
       {
-        groupRatingResponse.setRating(ThreadLocalRandom.current().nextInt(1, 10 + 1));
-      }
-      else if (groupRatingDefinition.getRatingType() == SurveyGroupRatingType.YES_NO_NA)
-      {
-        groupRatingResponse.setRating(ThreadLocalRandom.current().nextInt(-1, 2));
+        SurveyGroupRatingsDefinition groupRatingsDefinition =
+            (SurveyGroupRatingsDefinition) itemDefinition;
+
+        for (SurveyGroupRatingDefinition groupRatingDefinition :
+            groupRatingsDefinition.getGroupRatingDefinitions())
+        {
+          for (SurveyGroupMemberDefinition groupMemberDefinition :
+              groupRatingsDefinition.getGroupMemberDefinitions())
+          {
+            SurveyGroupRatingResponse groupRatingResponse =
+                surveyResponse.getGroupRatingResponseForDefinition(groupRatingsDefinition.getId(),
+                groupRatingDefinition.getId(), groupMemberDefinition.getId());
+
+            if (groupRatingDefinition.getRatingType() == SurveyGroupRatingType.ONE_TO_TEN)
+            {
+              groupRatingResponse.setRating(ThreadLocalRandom.current().nextInt(1, 10 + 1));
+            }
+            else if (groupRatingDefinition.getRatingType() == SurveyGroupRatingType.YES_NO_NA)
+            {
+              groupRatingResponse.setRating(ThreadLocalRandom.current().nextInt(-1, 2));
+            }
+
+          }
+
+        }
+
       }
     }
   }

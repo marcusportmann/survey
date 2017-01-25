@@ -39,6 +39,10 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Response;
 
+import java.util.List;
+
+//~--- JDK imports ------------------------------------------------------------
+
 /**
  * The <code>SurveyItemDefinitionPanel</code> class provides the base class that all input
  * panels for the different types of survey item definitions should be derived from.
@@ -62,16 +66,16 @@ public abstract class SurveyItemDefinitionPanel extends Panel
   /**
    * Constructs a new <code>SurveyItemDefinitionPanel</code>.
    *
-   * @param id                        the non-null id of this component
-   * @param surveyDefinitionModel     the model for the survey definition
-   * @param surveyItemDefinitionModel the model for the survey item definition
+   * @param id                         the non-null id of this component
+   * @param surveyItemDefinitionsModel the model for the list of survey item definitions the
+   *                                   survey item definition is associated with
+   * @param surveyItemDefinitionModel  the model for the survey item definition
    */
-  SurveyItemDefinitionPanel(String id, IModel<SurveyDefinition> surveyDefinitionModel,
+  SurveyItemDefinitionPanel(String id,
+      IModel<List<SurveyItemDefinition>> surveyItemDefinitionsModel,
       IModel<? extends SurveyItemDefinition> surveyItemDefinitionModel)
   {
     super(id);
-
-    SurveyDefinition surveyDefinition = surveyDefinitionModel.getObject();
 
     SurveyItemDefinition surveyItemDefinition = surveyItemDefinitionModel.getObject();
 
@@ -122,15 +126,19 @@ public abstract class SurveyItemDefinitionPanel extends Panel
       @Override
       public void onClick(AjaxRequestTarget target)
       {
-        SurveyDefinition surveyDefinition = surveyDefinitionModel.getObject();
-
-        surveyDefinition.moveItemDefinitionUp(surveyItemDefinition);
+        SurveyItemDefinition.moveItemDefinitionUp(surveyItemDefinitionsModel.getObject(),
+            surveyItemDefinition);
 
         target.add(getParentSurveyItemDefinitionPanelGroup());
       }
-    };
 
-    moveUpLink.setVisible(!surveyDefinition.isFirstItemDefinition(surveyItemDefinition));
+      @Override
+      public boolean isVisible()
+      {
+        return !SurveyItemDefinition.isFirstItemDefinition(surveyItemDefinitionsModel.getObject(),
+            surveyItemDefinition);
+      }
+    };
 
     headingContainer.add(moveUpLink);
 
@@ -142,15 +150,19 @@ public abstract class SurveyItemDefinitionPanel extends Panel
       @Override
       public void onClick(AjaxRequestTarget target)
       {
-        SurveyDefinition surveyDefinition = surveyDefinitionModel.getObject();
-
-        surveyDefinition.moveItemDefinitionDown(surveyItemDefinition);
+        SurveyItemDefinition.moveItemDefinitionDown(surveyItemDefinitionsModel.getObject(),
+            surveyItemDefinition);
 
         target.add(getParentSurveyItemDefinitionPanelGroup());
       }
-    };
 
-    moveDownLink.setVisible(!surveyDefinition.isLastItemDefinition(surveyItemDefinition));
+      @Override
+      public boolean isVisible()
+      {
+        return !SurveyItemDefinition.isLastItemDefinition(surveyItemDefinitionsModel.getObject(),
+            surveyItemDefinition);
+      }
+    };
 
     headingContainer.add(moveDownLink);
 

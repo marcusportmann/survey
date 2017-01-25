@@ -13,7 +13,6 @@ package digital.survey.web.components;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import digital.survey.model.SurveyDefinition;
 import digital.survey.model.SurveyResult;
 import digital.survey.model.SurveySectionDefinition;
 import guru.mmp.application.web.WebApplicationException;
@@ -40,12 +39,10 @@ class SurveySectionResultPanel extends Panel
    * Constructs a new <code>SurveySectionResultPanel</code>.
    *
    * @param id                           the non-null id of this component
-   * @param surveyDefinitionModel        the model for the survey definition
    * @param surveySectionDefinitionModel the model for the survey section definition
    * @param surveyResultModel            the model for the survey result
    */
-  SurveySectionResultPanel(String id, IModel<SurveyDefinition> surveyDefinitionModel,
-      IModel<SurveySectionDefinition> surveySectionDefinitionModel,
+  SurveySectionResultPanel(String id, IModel<SurveySectionDefinition> surveySectionDefinitionModel,
       IModel<SurveyResult> surveyResultModel)
   {
     super(id);
@@ -57,8 +54,7 @@ class SurveySectionResultPanel extends Panel
     add(new HeadingCollapse("headingCollapse"));
 
     itemResultPanelGroup = new SurveyItemResultPanelGroup("itemResultPanelGroup",
-        surveyDefinitionModel, new PropertyModel<>(surveySectionDefinitionModel,
-        "itemDefinitions"), surveyResultModel);
+        new PropertyModel<>(surveySectionDefinitionModel, "itemDefinitions"), surveyResultModel);
 
     add(itemResultPanelGroup);
   }

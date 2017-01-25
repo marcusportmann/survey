@@ -13,7 +13,10 @@ package digital.survey.web.components;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import digital.survey.model.*;
+import digital.survey.model.SurveyGroupRatingsDefinition;
+import digital.survey.model.SurveyItemDefinition;
+import digital.survey.model.SurveySectionDefinition;
+import digital.survey.model.SurveyTextDefinition;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -35,10 +38,9 @@ public class SurveyItemDefinitionPanelGroup extends Panel
    * Constructs a new <code>SurveyItemDefinitionPanelGroup</code>.
    *
    * @param id                         the non-null id of this component
-   * @param surveyDefinitionModel      the model for the survey definition
    * @param surveyItemDefinitionsModel the model for the survey item definitions
    */
-  public SurveyItemDefinitionPanelGroup(String id, IModel<SurveyDefinition> surveyDefinitionModel,
+  public SurveyItemDefinitionPanelGroup(String id,
       IModel<List<SurveyItemDefinition>> surveyItemDefinitionsModel)
   {
     super(id);
@@ -60,23 +62,21 @@ public class SurveyItemDefinitionPanelGroup extends Panel
                   (SurveyGroupRatingsDefinition) itemDefinition;
 
               item.add(new SurveyGroupRatingsDefinitionPanel("itemDefinitionPanel",
-                  surveyDefinitionModel, new Model<>(groupRatingsDefinition), new Model<>(
-                  surveyDefinitionModel.getObject().getGroupDefinition(
-                  groupRatingsDefinition.getGroupDefinitionId()))));
+                  surveyItemDefinitionsModel, new Model<>(groupRatingsDefinition)));
             }
             else if (itemDefinition instanceof SurveySectionDefinition)
             {
               SurveySectionDefinition sectionDefinition = (SurveySectionDefinition) itemDefinition;
 
               item.add(new SurveySectionDefinitionPanel("itemDefinitionPanel",
-                  surveyDefinitionModel, new Model<>(sectionDefinition)));
+                  surveyItemDefinitionsModel, new Model<>(sectionDefinition)));
             }
             else if (itemDefinition instanceof SurveyTextDefinition)
             {
               SurveyTextDefinition textDefinition = (SurveyTextDefinition) itemDefinition;
 
-              item.add(new SurveyTextDefinitionPanel("itemDefinitionPanel", surveyDefinitionModel,
-                  new Model<>(textDefinition)));
+              item.add(new SurveyTextDefinitionPanel("itemDefinitionPanel",
+                  surveyItemDefinitionsModel, new Model<>(textDefinition)));
             }
           }
         });

@@ -39,9 +39,9 @@ public class SurveyResponseReadOnlyPanel extends InputPanel
     super(id, surveyResponseModel);
 
     IModel<SurveyDefinition> surveyDefinitionModel = new PropertyModel<>(surveyResponseModel,
-      "instance.definition");
+        "instance.definition");
 
-    add(new SurveyItemResponseReadOnlyPanelGroup("itemResponseReadOnlyPanelGroup", surveyDefinitionModel,
-      new PropertyModel<>(surveyDefinitionModel, "itemDefinitions"), surveyResponseModel));
+    add(new SurveyItemResponseReadOnlyPanelGroup("itemResponseReadOnlyPanelGroup",
+        new PropertyModel<>(surveyDefinitionModel, "itemDefinitions"), surveyResponseModel));
   }
 }

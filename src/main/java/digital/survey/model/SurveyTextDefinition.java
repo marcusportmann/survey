@@ -36,7 +36,13 @@ public class SurveyTextDefinition extends SurveyItemDefinition
    * The Universally Unique Identifier (UUID) used to uniquely identify the type of survey item
    * definition for the survey text definition.
    */
-  public static final UUID TYPE_ID = UUID.fromString("491253d9-e6cf-4692-bcfd-39bcd8960a60");
+  public static final String TYPE_ID = "491253d9-e6cf-4692-bcfd-39bcd8960a60";
+
+  /**
+   * The Universally Unique Identifier (UUID) used to uniquely identify the type of survey item
+   * definition for the survey text definition.
+   */
+  private static final UUID TYPE_UUID = UUID.fromString(TYPE_ID);
 
   /**
    * Constructs a new <code>SurveyTextDefinition</code>.
@@ -54,6 +60,6 @@ public class SurveyTextDefinition extends SurveyItemDefinition
    */
   public SurveyTextDefinition(String name, String label, String description, String help)
   {
-    super(TYPE_ID, name, label, description, help);
+    super(TYPE_UUID, name, label, description, help);
   }
 }

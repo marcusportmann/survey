@@ -38,12 +38,10 @@ class SurveyGroupRatingsResultPanel extends Panel
    *
    * @param id                                the non-null id of this component
    * @param surveyGroupRatingsDefinitionModel the model for the survey group ratings definition
-   * @param surveyGroupDefinitionModel        the model for the survey group definition
    * @param surveyResultModel                 the model for the survey result
    */
   SurveyGroupRatingsResultPanel(String id,
       IModel<SurveyGroupRatingsDefinition> surveyGroupRatingsDefinitionModel,
-      IModel<SurveyGroupDefinition> surveyGroupDefinitionModel,
       IModel<SurveyResult> surveyResultModel)
   {
     super(id);
@@ -65,7 +63,7 @@ class SurveyGroupRatingsResultPanel extends Panel
         });
 
     add(new ListView<SurveyGroupMemberDefinition>("groupMember", new PropertyModel<>(
-        surveyGroupDefinitionModel, "groupMemberDefinitions"))
+        surveyGroupRatingsDefinitionModel, "groupMemberDefinitions"))
         {
           @Override
           protected void populateItem(ListItem<SurveyGroupMemberDefinition> item)
@@ -147,8 +145,12 @@ class SurveyGroupRatingsResultPanel extends Panel
                   groupRatingResult.getNumberOfRatingsWithValidScore();
             }
 
-            float weightedTotalAverageRating = totalAverageRating
-                / totalNumberOfRatingsWithValidScore;
+            float weightedTotalAverageRating = 0;
+
+            if (totalNumberOfRatingsWithValidScore > 0)
+            {
+              weightedTotalAverageRating = totalAverageRating / totalNumberOfRatingsWithValidScore;
+            }
 
             int grad = ((int) (weightedTotalAverageRating / 5)) * 5;
 

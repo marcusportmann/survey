@@ -43,12 +43,10 @@ class SurveyGroupRatingsResponsePanel extends Panel
    *
    * @param id                                the non-null id of this component
    * @param surveyGroupRatingsDefinitionModel the model for the survey group ratings definition
-   * @param surveyGroupDefinitionModel        the model for the survey group definition
    * @param surveyResponseModel               the model for the survey response
    */
   SurveyGroupRatingsResponsePanel(String id,
       IModel<SurveyGroupRatingsDefinition> surveyGroupRatingsDefinitionModel,
-      IModel<SurveyGroupDefinition> surveyGroupDefinitionModel,
       IModel<SurveyResponse> surveyResponseModel)
   {
     super(id);
@@ -68,7 +66,7 @@ class SurveyGroupRatingsResponsePanel extends Panel
         });
 
     add(new ListView<SurveyGroupMemberDefinition>("groupMember", new PropertyModel<>(
-        surveyGroupDefinitionModel, "groupMemberDefinitions"))
+        surveyGroupRatingsDefinitionModel, "groupMemberDefinitions"))
         {
           @Override
           protected void populateItem(ListItem<SurveyGroupMemberDefinition> item)
@@ -93,8 +91,9 @@ class SurveyGroupRatingsResponsePanel extends Panel
                 if (groupRatingDefinition.getRatingType() == SurveyGroupRatingType.YES_NO_NA)
                 {
                   SurveyGroupRatingResponse groupRatingResponse =
-                      surveyResponse.getGroupRatingResponseForDefinition(groupRatingsDefinition.getId(),
-                      groupRatingDefinition.getId(), groupMemberDefinition.getId());
+                      surveyResponse.getGroupRatingResponseForDefinition(
+                      groupRatingsDefinition.getId(), groupRatingDefinition.getId(),
+                      groupMemberDefinition.getId());
 
                   ChoiceRenderer<StringSelectOption> choiceRenderer = new ChoiceRenderer<>("name",
                       "value");

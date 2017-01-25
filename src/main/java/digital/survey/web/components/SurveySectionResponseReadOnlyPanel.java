@@ -40,11 +40,10 @@ class SurveySectionResponseReadOnlyPanel extends Panel
    * Constructs a new <code>SurveySectionResponseReadOnlyPanel</code>.
    *
    * @param id                           the non-null id of this component
-   * @param surveyDefinitionModel        the model for the survey definition
    * @param surveySectionDefinitionModel the model for the survey section definition
    * @param surveyResponseModel          the model for the survey response
    */
-  SurveySectionResponseReadOnlyPanel(String id, IModel<SurveyDefinition> surveyDefinitionModel,
+  SurveySectionResponseReadOnlyPanel(String id,
       IModel<SurveySectionDefinition> surveySectionDefinitionModel,
       IModel<SurveyResponse> surveyResponseModel)
   {
@@ -57,8 +56,8 @@ class SurveySectionResponseReadOnlyPanel extends Panel
     add(new HeadingCollapse("headingCollapse"));
 
     itemResponseReadOnlyPanelGroup = new SurveyItemResponseReadOnlyPanelGroup(
-        "itemResponseReadOnlyPanelGroup", surveyDefinitionModel, new PropertyModel<>(
-        surveySectionDefinitionModel, "itemDefinitions"), surveyResponseModel);
+        "itemResponseReadOnlyPanelGroup", new PropertyModel<>(surveySectionDefinitionModel,
+        "itemDefinitions"), surveyResponseModel);
 
     add(itemResponseReadOnlyPanelGroup);
   }

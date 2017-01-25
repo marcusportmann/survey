@@ -30,8 +30,8 @@ import java.util.UUID;
  *
  * @author Marcus Portmann
  */
-@JsonPropertyOrder({ "id", "typeId", "name", "label", "description", "help", "groupDefinitionId",
-    "groupRatingDefinitions", "displayRatingsUsingGradient" })
+@JsonPropertyOrder({ "id", "typeId", "name", "label", "description", "help",
+    "groupRatingDefinitions", "groupMemberDefinitions", "displayRatingsUsingGradient" })
 
 public class SurveyGroupRatingsDefinition extends SurveyItemDefinition
   implements Serializable
@@ -42,7 +42,19 @@ public class SurveyGroupRatingsDefinition extends SurveyItemDefinition
    * The Universally Unique Identifier (UUID) used to uniquely identify the type of survey item
    * definition for the survey group ratings definition.
    */
-  private static final UUID TYPE_ID = UUID.fromString("aded36bd-bc3d-4157-99f6-b4d91825de5d");
+  public static final String TYPE_ID = "aded36bd-bc3d-4157-99f6-b4d91825de5d";
+
+  /**
+   * The Universally Unique Identifier (UUID) used to uniquely identify the type of survey item
+   * definition for the survey group ratings definition.
+   */
+  private static final UUID TYPE_UUID = UUID.fromString(TYPE_ID);
+
+  /**
+   * The survey group member definitions associated with the survey group ratings definition.
+   */
+  @JsonProperty
+  private List<SurveyGroupMemberDefinition> groupMemberDefinitions;
 
   /**
    * Should the ratings for the survey group rating responses associated with this survey group
@@ -50,13 +62,6 @@ public class SurveyGroupRatingsDefinition extends SurveyItemDefinition
    */
   @JsonProperty
   private boolean displayRatingsUsingGradient;
-
-  /**
-   * The Universally Unique Identifier (UUID) used to uniquely identify the survey group definition
-   * this survey group ratings definition is associated with.
-   */
-  @JsonProperty
-  private UUID groupDefinitionId;
 
   /**
    * The survey group rating definitions that are associated with the survey group ratings
@@ -80,22 +85,29 @@ public class SurveyGroupRatingsDefinition extends SurveyItemDefinition
    *                                    definition
    * @param description                 the description for the survey group ratings definition
    * @param help                        the HTML help for the survey group ratings definition
-   * @param groupDefinitionId           the Universally Unique Identifier (UUID) used to uniquely
-   *                                    identify the survey group definition this survey group
-   *                                    ratings definition is associated with
    * @param displayRatingsUsingGradient should the ratings for the survey group rating responses
    *                                    associated with this survey group ratings definition be
    *                                    displayed using a color gradient when viewing the survey
    *                                    result
    */
   public SurveyGroupRatingsDefinition(String name, String label, String description, String help,
-      UUID groupDefinitionId, boolean displayRatingsUsingGradient)
+      boolean displayRatingsUsingGradient)
   {
-    super(TYPE_ID, name, label, description, help);
+    super(TYPE_UUID, name, label, description, help);
 
-    this.groupDefinitionId = groupDefinitionId;
     this.displayRatingsUsingGradient = displayRatingsUsingGradient;
     this.groupRatingDefinitions = new ArrayList<>();
+    this.groupMemberDefinitions = new ArrayList<>();
+  }
+
+  /**
+   * Add the survey group member definition to the survey group ratings definition.
+   *
+   * @param groupMemberDefinition the survey group member definition
+   */
+  public void addGroupMemberDefinition(SurveyGroupMemberDefinition groupMemberDefinition)
+  {
+    groupMemberDefinitions.add(groupMemberDefinition);
   }
 
   /**
@@ -123,15 +135,35 @@ public class SurveyGroupRatingsDefinition extends SurveyItemDefinition
   }
 
   /**
-   * Returns the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   * definition this survey group ratings definition is associated with.
+   * Retrieve the survey group member definition.
    *
-   * @return the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   *         definition this survey group ratings definition is associated with
+   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey
+   *           group member definition
+   *
+   * @return the survey group member definition or <code>null</code> if the survey group member
+   *         definition could not be found
    */
-  public UUID getGroupDefinitionId()
+  public SurveyGroupMemberDefinition getGroupMemberDefinition(UUID id)
   {
-    return groupDefinitionId;
+    for (SurveyGroupMemberDefinition groupMemberDefinition : groupMemberDefinitions)
+    {
+      if (groupMemberDefinition.getId().equals(id))
+      {
+        return groupMemberDefinition;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Returns the survey group member definitions associated with the survey group definition.
+   *
+   * @return the survey group member definitions associated with the survey group definition
+   */
+  public List<SurveyGroupMemberDefinition> getGroupMemberDefinitions()
+  {
+    return groupMemberDefinitions;
   }
 
   /**
@@ -169,6 +201,161 @@ public class SurveyGroupRatingsDefinition extends SurveyItemDefinition
   }
 
   /**
+   * Move the specified survey group member definition one step down in the list of survey group
+   * member definitions.
+   *
+   * @param groupMemberDefinition the survey group member definition
+   *
+   * @return <code>true</code> if the survey group member definition was successfully moved down
+   *         or <code>false</code> otherwise
+   */
+  public boolean moveGroupMemberDefinitionDown(SurveyGroupMemberDefinition groupMemberDefinition)
+  {
+    int index = groupMemberDefinitions.indexOf(groupMemberDefinition);
+
+    if ((index >= 0) && (index < (groupMemberDefinitions.size() - 1)))
+    {
+      groupMemberDefinitions.remove(index);
+
+      groupMemberDefinitions.add(index + 1, groupMemberDefinition);
+
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Move the specified survey group member definition one step up in the list of survey group
+   * member definitions.
+   *
+   * @param groupMemberDefinition the survey group member definition
+   *
+   * @return <code>true</code> if the survey group member definition was successfully moved up
+   *         or <code>false</code> otherwise
+   */
+  public boolean moveGroupMemberDefinitionUp(SurveyGroupMemberDefinition groupMemberDefinition)
+  {
+    int index = groupMemberDefinitions.indexOf(groupMemberDefinition);
+
+    if (index > 0)
+    {
+      groupMemberDefinitions.remove(index);
+
+      groupMemberDefinitions.add(index - 1, groupMemberDefinition);
+
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Move the specified survey group rating definition one step down in the list of survey group
+   * rating definitions.
+   *
+   * @param groupRatingDefinition the survey group rating definition
+   *
+   * @return <code>true</code> if the survey group rating definition was successfully moved down
+   *         or <code>false</code> otherwise
+   */
+  public boolean moveGroupRatingDefinitionDown(SurveyGroupRatingDefinition groupRatingDefinition)
+  {
+    int index = groupRatingDefinitions.indexOf(groupRatingDefinition);
+
+    if ((index >= 0) && (index < (groupRatingDefinitions.size() - 1)))
+    {
+      groupRatingDefinitions.remove(index);
+
+      groupRatingDefinitions.add(index + 1, groupRatingDefinition);
+
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Move the specified survey group rating definition up step down in the list of survey group
+   * rating definitions.
+   *
+   * @param groupRatingDefinition the survey group rating definition
+   *
+   * @return <code>true</code> if the survey group rating definition was successfully moved up
+   *         or <code>false</code> otherwise
+   */
+  public boolean moveGroupRatingDefinitionUp(SurveyGroupRatingDefinition groupRatingDefinition)
+  {
+    int index = groupRatingDefinitions.indexOf(groupRatingDefinition);
+
+    if (index > 0)
+    {
+      groupRatingDefinitions.remove(index);
+
+      groupRatingDefinitions.add(index - 1, groupRatingDefinition);
+
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Remove the survey group member definition from the survey group ratings definition.
+   *
+   * @param groupMemberDefinition the survey group member definition
+   */
+  public void removeGroupMemberDefinition(SurveyGroupMemberDefinition groupMemberDefinition)
+  {
+    for (SurveyGroupMemberDefinition tmpGroupMemberDefinition : groupMemberDefinitions)
+    {
+      if (tmpGroupMemberDefinition.getId().equals(groupMemberDefinition.getId()))
+      {
+        groupMemberDefinitions.remove(tmpGroupMemberDefinition);
+
+        return;
+      }
+    }
+  }
+
+  /**
+   * Remove the survey group member definition from the survey group ratings definition.
+   *
+   * @param id the Universally Unique Identifier (UUID) used  to uniquely identify the survey
+   *           group member definition
+   */
+  public void removeGroupMemberDefinition(UUID id)
+  {
+    for (SurveyGroupMemberDefinition groupMemberDefinition : groupMemberDefinitions)
+    {
+      if (groupMemberDefinition.getId().equals(id))
+      {
+        groupMemberDefinitions.remove(groupMemberDefinition);
+
+        return;
+      }
+    }
+  }
+
+  /**
+   * Remove the survey group rating definition from the survey group ratings definition.
+   *
+   * @param groupRatingDefinition the survey group rating definition
+   */
+  public void removeGroupRatingDefinition(SurveyGroupRatingDefinition groupRatingDefinition)
+  {
+    for (SurveyGroupRatingDefinition tmpGroupRatingDefinition : groupRatingDefinitions)
+    {
+      if (tmpGroupRatingDefinition.getId().equals(groupRatingDefinition.getId()))
+      {
+        groupRatingDefinitions.remove(tmpGroupRatingDefinition);
+
+        return;
+      }
+    }
+  }
+
+  /**
    * Remove the survey group rating definition from the survey group ratings definition.
    *
    * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
@@ -199,19 +386,6 @@ public class SurveyGroupRatingsDefinition extends SurveyItemDefinition
   public void setDisplayRatingsUsingGradient(boolean displayRatingsUsingGradient)
   {
     this.displayRatingsUsingGradient = displayRatingsUsingGradient;
-  }
-
-  /**
-   * Set the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   * definition this survey group ratings definition is associated with.
-   *
-   * @param groupDefinitionId the Universally Unique Identifier (UUID) used to uniquely identify
-   *                          the survey group definition this survey group ratings definition is
-   *                          associated with
-   */
-  public void setGroupDefinitionId(UUID groupDefinitionId)
-  {
-    this.groupDefinitionId = groupDefinitionId;
   }
 
   /**
@@ -257,6 +431,24 @@ public class SurveyGroupRatingsDefinition extends SurveyItemDefinition
       }
 
       buffer.append(groupRatingDefinition);
+
+      count++;
+    }
+
+    buffer.append("}, ");
+
+    buffer.append("groupMemberDefinitions={");
+
+    count = 0;
+
+    for (SurveyGroupMemberDefinition groupMemberDefinition : groupMemberDefinitions)
+    {
+      if (count > 0)
+      {
+        buffer.append(", ");
+      }
+
+      buffer.append(groupMemberDefinition);
 
       count++;
     }

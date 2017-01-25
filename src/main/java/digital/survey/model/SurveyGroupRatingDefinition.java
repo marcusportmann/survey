@@ -74,52 +74,6 @@ public class SurveyGroupRatingDefinition
   }
 
   /**
-   * Retrieve the survey group rating definition from the list of survey item definitions.
-   *
-   * @param itemDefinitions the survey item definitions
-   * @param id              the Universally Unique Identifier (UUID) used to uniquely identify the
-   *                        survey group rating definition
-   *
-   * @return the survey group rating definition or <code>null</code> if the survey group rating
-   *         definition could not be found
-   */
-  public static SurveyGroupRatingDefinition getGroupRatingDefinition(
-      List<SurveyItemDefinition> itemDefinitions, UUID id)
-  {
-    for (SurveyItemDefinition itemDefinition : itemDefinitions)
-    {
-      if (itemDefinition instanceof SurveyGroupRatingsDefinition)
-      {
-        SurveyGroupRatingsDefinition groupRatingsDefinition =
-            (SurveyGroupRatingsDefinition) itemDefinition;
-
-        for (SurveyGroupRatingDefinition groupRatingDefinition :
-            groupRatingsDefinition.getGroupRatingDefinitions())
-        {
-          if (groupRatingDefinition.getId().equals(id))
-          {
-            return groupRatingDefinition;
-          }
-        }
-      }
-      else if (itemDefinition instanceof SurveySectionDefinition)
-      {
-        SurveySectionDefinition sectionDefinition = (SurveySectionDefinition) itemDefinition;
-
-        SurveyGroupRatingDefinition groupRatingDefinition =
-            sectionDefinition.getGroupRatingDefinition(id);
-
-        if (groupRatingDefinition != null)
-        {
-          return groupRatingDefinition;
-        }
-      }
-    }
-
-    return null;
-  }
-
-  /**
    * Indicates whether some other object is "equal to" this one.
    *
    * @param obj the reference object with which to compare

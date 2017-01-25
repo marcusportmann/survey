@@ -35,11 +35,10 @@ public class SurveyItemResultPanelGroup extends Panel
    * Constructs a new <code>SurveyItemResultPanelGroup</code>.
    *
    * @param id                         the non-null id of this component
-   * @param surveyDefinitionModel      the model for the survey definition
    * @param surveyItemDefinitionsModel the model for the survey item definitions
    * @param surveyResultModel          the model for the survey result
    */
-  public SurveyItemResultPanelGroup(String id, IModel<SurveyDefinition> surveyDefinitionModel,
+  public SurveyItemResultPanelGroup(String id,
     IModel<List<SurveyItemDefinition>> surveyItemDefinitionsModel,
     IModel<SurveyResult> surveyResultModel)
   {
@@ -62,15 +61,14 @@ public class SurveyItemResultPanelGroup extends Panel
             (SurveyGroupRatingsDefinition) itemDefinition;
 
           item.add(new SurveyGroupRatingsResultPanel("itemResultPanel", new Model<>(
-            groupRatingsDefinition), new Model<>(surveyDefinitionModel.getObject()
-            .getGroupDefinition(groupRatingsDefinition.getGroupDefinitionId())),
+            groupRatingsDefinition),
             surveyResultModel));
         }
         else if (itemDefinition instanceof SurveySectionDefinition)
         {
           SurveySectionDefinition sectionDefinition = (SurveySectionDefinition) itemDefinition;
 
-          item.add(new SurveySectionResultPanel("itemResultPanel", surveyDefinitionModel,
+          item.add(new SurveySectionResultPanel("itemResultPanel",
             new Model<>(sectionDefinition), surveyResultModel));
         }
         else if (itemDefinition instanceof SurveyTextDefinition)

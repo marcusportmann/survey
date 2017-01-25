@@ -41,7 +41,7 @@ public class SurveyResponseInputPanel extends InputPanel
     IModel<SurveyDefinition> surveyDefinitionModel = new PropertyModel<>(surveyResponseModel,
         "instance.definition");
 
-    add(new SurveyItemResponsePanelGroup("itemResponsePanelGroup", surveyDefinitionModel,
-        new PropertyModel<>(surveyDefinitionModel, "itemDefinitions"), surveyResponseModel));
+    add(new SurveyItemResponsePanelGroup("itemResponsePanelGroup", new PropertyModel<>(
+        surveyDefinitionModel, "itemDefinitions"), surveyResponseModel));
   }
 }

@@ -446,7 +446,8 @@ table.table-group-ratings
 
 
 
-table.table-group-ratings > thead > tr > th
+table.table-group-ratings > thead > tr > th,
+table.table-group-ratings-definition > thead > tr > th
 {
   font-size: 12px;
   text-align: center;

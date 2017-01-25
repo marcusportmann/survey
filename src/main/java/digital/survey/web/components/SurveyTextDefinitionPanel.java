@@ -13,9 +13,13 @@ package digital.survey.web.components;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import digital.survey.model.SurveyDefinition;
+import digital.survey.model.SurveyItemDefinition;
 import digital.survey.model.SurveyTextDefinition;
 import org.apache.wicket.model.IModel;
+
+import java.util.List;
+
+//~--- JDK imports ------------------------------------------------------------
 
 /**
  * The <code>SurveyTextDefinitionPanel</code> class.
@@ -29,14 +33,16 @@ public class SurveyTextDefinitionPanel extends SurveyItemDefinitionPanel
   /**
    * Constructs a new <code>SurveyTextDefinitionPanel</code>.
    *
-   * @param id                        the non-null id of this component
-   * @param surveyDefinitionModel     the model for the survey definition
-   * @param surveyTextDefinitionModel the model for the survey text definition
+   * @param id                         the non-null id of this component
+   * @param surveyItemDefinitionsModel the model for the list of survey item definitions the
+   *                                   survey text definition is associated with
+   * @param surveyTextDefinitionModel  the model for the survey text definition
    */
-  public SurveyTextDefinitionPanel(String id, IModel<SurveyDefinition> surveyDefinitionModel,
+  public SurveyTextDefinitionPanel(String id,
+      IModel<List<SurveyItemDefinition>> surveyItemDefinitionsModel,
       IModel<SurveyTextDefinition> surveyTextDefinitionModel)
   {
-    super(id, surveyDefinitionModel, surveyTextDefinitionModel);
+    super(id, surveyItemDefinitionsModel, surveyTextDefinitionModel);
   }
 
   /**

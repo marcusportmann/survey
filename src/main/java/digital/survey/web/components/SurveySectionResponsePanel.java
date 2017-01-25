@@ -26,8 +26,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.Response;
 
-//~--- JDK imports ------------------------------------------------------------
-
 /**
  * The <code>SurveySectionResponsePanel</code> class.
  *
@@ -42,11 +40,10 @@ class SurveySectionResponsePanel extends Panel
    * Constructs a new <code>SurveySectionResponsePanel</code>.
    *
    * @param id                           the non-null id of this component
-   * @param surveyDefinitionModel        the model for the survey definition
    * @param surveySectionDefinitionModel the model for the survey section definition
    * @param surveyResponseModel          the model for the survey response
    */
-  SurveySectionResponsePanel(String id, IModel<SurveyDefinition> surveyDefinitionModel,
+  SurveySectionResponsePanel(String id,
       IModel<SurveySectionDefinition> surveySectionDefinitionModel,
       IModel<SurveyResponse> surveyResponseModel)
   {
@@ -59,8 +56,7 @@ class SurveySectionResponsePanel extends Panel
     add(new HeadingCollapse("headingCollapse"));
 
     itemResponsePanelGroup = new SurveyItemResponsePanelGroup("itemResponsePanelGroup",
-        surveyDefinitionModel, new PropertyModel<>(surveySectionDefinitionModel,
-        "itemDefinitions"), surveyResponseModel);
+        new PropertyModel<>(surveySectionDefinitionModel, "itemDefinitions"), surveyResponseModel);
 
     add(itemResponsePanelGroup);
   }

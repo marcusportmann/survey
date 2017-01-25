@@ -14,7 +14,6 @@ package digital.survey.web.components;
 //~--- non-JDK imports --------------------------------------------------------
 
 import digital.survey.model.SurveyDefinition;
-import digital.survey.model.SurveyResponse;
 import digital.survey.model.SurveyResult;
 import guru.mmp.application.web.template.components.InputPanel;
 import org.apache.wicket.model.IModel;
@@ -40,9 +39,9 @@ public class SurveyResultPanel extends InputPanel
     super(id, surveyResultModel);
 
     IModel<SurveyDefinition> surveyDefinitionModel = new PropertyModel<>(surveyResultModel,
-      "instance.definition");
+        "instance.definition");
 
-    add(new SurveyItemResultPanelGroup("itemResultPanelGroup", surveyDefinitionModel,
-      new PropertyModel<>(surveyDefinitionModel, "itemDefinitions"), surveyResultModel));
+    add(new SurveyItemResultPanelGroup("itemResultPanelGroup", new PropertyModel<>(
+        surveyDefinitionModel, "itemDefinitions"), surveyResultModel));
   }
 }

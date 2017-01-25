@@ -428,11 +428,8 @@ public class SurveyResponse
         for (SurveyGroupRatingDefinition groupRatingDefinition :
             groupRatingsDefinition.getGroupRatingDefinitions())
         {
-          SurveyGroupDefinition groupDefinition = instance.getDefinition().getGroupDefinition(
-              groupRatingsDefinition.getGroupDefinitionId());
-
           for (SurveyGroupMemberDefinition groupMemberDefinition :
-              groupDefinition.getGroupMemberDefinitions())
+              groupRatingsDefinition.getGroupMemberDefinitions())
           {
             itemResponses.add(new SurveyGroupRatingResponse(groupRatingsDefinition,
                 groupRatingDefinition, groupMemberDefinition));

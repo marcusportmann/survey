@@ -31,12 +31,11 @@ import java.util.UUID;
  * @author Marcus Portmann
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "typeId")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "aded36bd-bc3d-4157-99f6-b4d91825de5d",
+@JsonSubTypes({ @JsonSubTypes.Type(name = SurveyGroupRatingsDefinition.TYPE_ID,
     value = SurveyGroupRatingsDefinition.class) ,
-    @JsonSubTypes.Type(name = "7708438e-b114-43d4-8fe5-b08aa5567e3a",
+    @JsonSubTypes.Type(name = SurveySectionDefinition.TYPE_ID,
         value = SurveySectionDefinition.class) ,
-    @JsonSubTypes.Type(name = "491253d9-e6cf-4692-bcfd-39bcd8960a60",
-        value = SurveyTextDefinition.class) })
+    @JsonSubTypes.Type(name = SurveyTextDefinition.TYPE_ID, value = SurveyTextDefinition.class) })
 @JsonPropertyOrder({ "id", "typeId", "name", "label", "description", "help" })
 public abstract class SurveyItemDefinition
   implements Serializable
@@ -152,19 +151,6 @@ public abstract class SurveyItemDefinition
       }
     }
 
-    for (SurveyItemDefinition tmpItemDefinition : itemDefinitions)
-    {
-      if (tmpItemDefinition instanceof SurveySectionDefinition)
-      {
-        SurveySectionDefinition sectionDefinition = (SurveySectionDefinition) tmpItemDefinition;
-
-        if (sectionDefinition.isFirstItemDefinition(itemDefinition))
-        {
-          return true;
-        }
-      }
-    }
-
     return false;
   }
 
@@ -187,19 +173,6 @@ public abstract class SurveyItemDefinition
       if (tmpItemDefinition.getId().equals(itemDefinition.getId()))
       {
         return i == (itemDefinitions.size() - 1);
-      }
-    }
-
-    for (SurveyItemDefinition tmpItemDefinition : itemDefinitions)
-    {
-      if (tmpItemDefinition instanceof SurveySectionDefinition)
-      {
-        SurveySectionDefinition sectionDefinition = (SurveySectionDefinition) tmpItemDefinition;
-
-        if (sectionDefinition.isLastItemDefinition(itemDefinition))
-        {
-          return true;
-        }
       }
     }
 
@@ -229,19 +202,6 @@ public abstract class SurveyItemDefinition
       return true;
     }
 
-    for (SurveyItemDefinition tmpItemDefiniton : itemDefinitions)
-    {
-      if (tmpItemDefiniton instanceof SurveySectionDefinition)
-      {
-        SurveySectionDefinition sectionDefinition = (SurveySectionDefinition) tmpItemDefiniton;
-
-        if (sectionDefinition.moveItemDefinitionDown(itemDefinition))
-        {
-          return true;
-        }
-      }
-    }
-
     return false;
   }
 
@@ -268,19 +228,6 @@ public abstract class SurveyItemDefinition
       return true;
     }
 
-    for (SurveyItemDefinition tmpItemDefiniton : itemDefinitions)
-    {
-      if (tmpItemDefiniton instanceof SurveySectionDefinition)
-      {
-        SurveySectionDefinition sectionDefinition = (SurveySectionDefinition) tmpItemDefiniton;
-
-        if (sectionDefinition.moveItemDefinitionUp(itemDefinition))
-        {
-          return true;
-        }
-      }
-    }
-
     return false;
   }
 
@@ -304,19 +251,6 @@ public abstract class SurveyItemDefinition
         itemDefinitions.remove(itemDefinition);
 
         return true;
-      }
-    }
-
-    for (SurveyItemDefinition tmpItemDefiniton : itemDefinitions)
-    {
-      if (tmpItemDefiniton instanceof SurveySectionDefinition)
-      {
-        SurveySectionDefinition sectionDefinition = (SurveySectionDefinition) tmpItemDefiniton;
-
-        if (sectionDefinition.removeItemDefinition(itemDefinition))
-        {
-          return true;
-        }
       }
     }
 

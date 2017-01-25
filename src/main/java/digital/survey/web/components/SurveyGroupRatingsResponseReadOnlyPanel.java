@@ -22,8 +22,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-//~--- JDK imports ------------------------------------------------------------
-
 /**
  * The <code>SurveyGroupRatingsResponseReadOnlyPanel</code> class.
  *
@@ -38,12 +36,10 @@ class SurveyGroupRatingsResponseReadOnlyPanel extends Panel
    *
    * @param id                                the non-null id of this component
    * @param surveyGroupRatingsDefinitionModel the model for the survey group ratings definition
-   * @param surveyGroupDefinitionModel        the model for the survey group definition
    * @param surveyResponseModel               the model for the survey response
    */
   SurveyGroupRatingsResponseReadOnlyPanel(String id,
       IModel<SurveyGroupRatingsDefinition> surveyGroupRatingsDefinitionModel,
-      IModel<SurveyGroupDefinition> surveyGroupDefinitionModel,
       IModel<SurveyResponse> surveyResponseModel)
   {
     super(id);
@@ -63,7 +59,7 @@ class SurveyGroupRatingsResponseReadOnlyPanel extends Panel
         });
 
     add(new ListView<SurveyGroupMemberDefinition>("groupMember", new PropertyModel<>(
-        surveyGroupDefinitionModel, "groupMemberDefinitions"))
+        surveyGroupRatingsDefinitionModel, "groupMemberDefinitions"))
         {
           @Override
           protected void populateItem(ListItem<SurveyGroupMemberDefinition> item)

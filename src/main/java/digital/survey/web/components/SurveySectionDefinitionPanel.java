@@ -13,10 +13,14 @@ package digital.survey.web.components;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import digital.survey.model.SurveyDefinition;
+import digital.survey.model.SurveyItemDefinition;
 import digital.survey.model.SurveySectionDefinition;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+
+import java.util.List;
+
+//~--- JDK imports ------------------------------------------------------------
 
 /**
  * The <code>SurveySectionDefinitionPanel</code> class.
@@ -31,17 +35,18 @@ public class SurveySectionDefinitionPanel extends SurveyItemDefinitionPanel
    * Constructs a new <code>SurveySectionDefinitionPanel</code>.
    *
    * @param id                           the non-null id of this component
-   * @param surveyDefinitionModel        the model for the survey definition
-   * @param surveySectionDefinitionModel the model for the survey group ratings definition
+   * @param surveyItemDefinitionsModel   the model for the list of survey item definitions the
+   *                                     survey section definition is associated with
+   * @param surveySectionDefinitionModel the model for the survey section definition
    */
-  public SurveySectionDefinitionPanel(String id, IModel<SurveyDefinition> surveyDefinitionModel,
+  public SurveySectionDefinitionPanel(String id,
+      IModel<List<SurveyItemDefinition>> surveyItemDefinitionsModel,
       IModel<SurveySectionDefinition> surveySectionDefinitionModel)
   {
-    super(id, surveyDefinitionModel, surveySectionDefinitionModel);
+    super(id, surveyItemDefinitionsModel, surveySectionDefinitionModel);
 
     getBodyContainer().add(new SurveyItemDefinitionPanelGroup("itemDefinitionPanelGroup",
-        surveyDefinitionModel, new PropertyModel<>(surveySectionDefinitionModel,
-        "itemDefinitions")));
+        new PropertyModel<>(surveySectionDefinitionModel, "itemDefinitions")));
   }
 
   /**

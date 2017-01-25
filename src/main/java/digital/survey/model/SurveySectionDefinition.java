@@ -13,6 +13,7 @@ package digital.survey.model;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -41,7 +42,13 @@ public class SurveySectionDefinition extends SurveyItemDefinition
    * The Universally Unique Identifier (UUID) used to uniquely identify the type of survey item
    * definition for the survey section definition.
    */
-  public static final UUID TYPE_ID = UUID.fromString("7708438e-b114-43d4-8fe5-b08aa5567e3a");
+  public static final String TYPE_ID = "7708438e-b114-43d4-8fe5-b08aa5567e3a";
+
+  /**
+   * The Universally Unique Identifier (UUID) used to uniquely identify the type of survey item
+   * definition for the survey section definition.
+   */
+  private static final UUID TYPE_UUID = UUID.fromString(TYPE_ID);
 
   /**
    * The survey item definitions that are associated with the survey section definition.
@@ -65,7 +72,7 @@ public class SurveySectionDefinition extends SurveyItemDefinition
    */
   public SurveySectionDefinition(String name, String label, String description, String help)
   {
-    super(TYPE_ID, name, label, description, help);
+    super(TYPE_UUID, name, label, description, help);
 
     this.itemDefinitions = new ArrayList<>();
   }
@@ -81,17 +88,28 @@ public class SurveySectionDefinition extends SurveyItemDefinition
   }
 
   /**
-   * Retrieve the survey group rating definition.
+   * Returns all the survey item definitions associated with the survey definition.
    *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey group
-   *           rating definition
-   *
-   * @return the survey group rating definition or <code>null</code> if the survey group rating
-   *         definition could not be found
+   * @return all the survey item definitions associated with the survey definition
    */
-  public SurveyGroupRatingDefinition getGroupRatingDefinition(UUID id)
+  @JsonIgnore
+  public List<SurveyItemDefinition> getAllItemDefinitions()
   {
-    return SurveyGroupRatingDefinition.getGroupRatingDefinition(itemDefinitions, id);
+    List<SurveyItemDefinition> allItemDefinitions = new ArrayList<>();
+
+    allItemDefinitions.addAll(itemDefinitions);
+
+    for (SurveyItemDefinition itemDefinition : itemDefinitions)
+    {
+      if (itemDefinition instanceof SurveySectionDefinition)
+      {
+        SurveySectionDefinition sectionDefinition = (SurveySectionDefinition) itemDefinition;
+
+        allItemDefinitions.addAll(sectionDefinition.getAllItemDefinitions());
+      }
+    }
+
+    return allItemDefinitions;
   }
 
   /**
@@ -156,73 +174,6 @@ public class SurveySectionDefinition extends SurveyItemDefinition
   }
 
   /**
-   * Returns whether the survey item definition is associated with the survey section definition.
-   *
-   * @param itemDefinition the survey item definition
-   *
-   * @return <code>true</code> if the survey item definition is associated with the survey section
-   *         definition or <code>false</code> otherwise
-   */
-  public boolean hasItemDefinition(SurveyItemDefinition itemDefinition)
-  {
-    return SurveyItemDefinition.hasItemDefinition(itemDefinitions, itemDefinition);
-  }
-
-  /**
-   * Returns whether the survey item definition is the first survey item definition for the survey
-   * section definition.
-   *
-   * @param itemDefinition the survey item definition
-   *
-   * @return <code>true</code> if the survey item definition is the first survey item definition for
-   *         the survey section definition or <code>false</code> otherwise
-   */
-  public boolean isFirstItemDefinition(SurveyItemDefinition itemDefinition)
-  {
-    return SurveyItemDefinition.isFirstItemDefinition(itemDefinitions, itemDefinition);
-  }
-
-  /**
-   * Returns whether the survey item definition is the first last item definition for the survey
-   * section definition.
-   *
-   * @param itemDefinition the survey item definition
-   *
-   * @return <code>true</code> if the survey item definition is the last survey item definition for
-   *         the survey section definition or <code>false</code> otherwise
-   */
-  public boolean isLastItemDefinition(SurveyItemDefinition itemDefinition)
-  {
-    return SurveyItemDefinition.isLastItemDefinition(itemDefinitions, itemDefinition);
-  }
-
-  /**
-   * Move the specified survey item definition one step down in the list of survey item definitions.
-   *
-   * @param itemDefinition the survey item definition
-   *
-   * @return <code>true</code> if the survey item definition was successfully moved down or
-   *         <code>false</code> otherwise
-   */
-  public boolean moveItemDefinitionDown(SurveyItemDefinition itemDefinition)
-  {
-    return SurveyItemDefinition.moveItemDefinitionDown(itemDefinitions, itemDefinition);
-  }
-
-  /**
-   * Move the specified survey item definition one step up in the list of survey item definitions.
-   *
-   * @param itemDefinition the survey item definition
-   *
-   * @return <code>true</code> if the survey item definition was successfully moved up
-   *         or <code>false</code> otherwise
-   */
-  public boolean moveItemDefinitionUp(SurveyItemDefinition itemDefinition)
-  {
-    return SurveyItemDefinition.moveItemDefinitionUp(itemDefinitions, itemDefinition);
-  }
-
-  /**
    * Remove the survey item definition.
    *
    * @param itemDefinition the survey item definition
@@ -233,25 +184,6 @@ public class SurveySectionDefinition extends SurveyItemDefinition
   public boolean removeItemDefinition(SurveyItemDefinition itemDefinition)
   {
     return SurveyItemDefinition.removeItemDefinition(itemDefinitions, itemDefinition);
-  }
-
-  /**
-   * Remove the survey item definition.
-   *
-   * @param id the Universally Unique Identifier (UUID) used to uniquely identify the survey item
-   *           definition
-   */
-  public void removeItemDefinition(UUID id)
-  {
-    for (SurveyItemDefinition itemDefinition : itemDefinitions)
-    {
-      if (itemDefinition.getId().equals(id))
-      {
-        itemDefinitions.remove(itemDefinition);
-
-        return;
-      }
-    }
   }
 
   /**
