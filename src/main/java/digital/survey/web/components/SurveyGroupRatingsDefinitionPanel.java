@@ -93,7 +93,7 @@ public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
               @Override
               public void onClick(AjaxRequestTarget target)
               {
-                getDialog().show(target, new RemoveGroupRatingDialogImplementation(
+                getDialog().show(target, new RemoveGroupRatingDefinitionDialogImplementation(
                     surveyGroupRatingsDefinitionModel, item.getModel()));
               }
             });
@@ -127,7 +127,7 @@ public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
           @Override
           public void onClick(AjaxRequestTarget target)
           {
-            getDialog().show(target, new AddGroupRatingDialogImplementation(
+            getDialog().show(target, new AddGroupRatingDefinitionDialogImplementation(
                 surveyGroupRatingsDefinitionModel));
           }
         });
@@ -169,7 +169,7 @@ public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
               @Override
               public void onClick(AjaxRequestTarget target)
               {
-                getDialog().show(target, new RemoveGroupMemberDialogImplementation(
+                getDialog().show(target, new RemoveGroupMemberDefinitionDialogImplementation(
                     surveyGroupRatingsDefinitionModel, item.getModel()));
               }
             });
@@ -216,7 +216,7 @@ public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
           @Override
           public void onClick(AjaxRequestTarget target)
           {
-            getDialog().show(target, new AddGroupMemberDialogImplementation(
+            getDialog().show(target, new AddGroupMemberDefinitionDialogImplementation(
                 surveyGroupRatingsDefinitionModel));
           }
         });
@@ -246,25 +246,26 @@ public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
   }
 
   /**
-   * The <code>AddGroupMemberDialogImplementation</code> class.
+   * The <code>AddGroupMemberDefinitionDialogImplementation</code> class.
    *
    * @author Marcus Portmann
    */
-  public class AddGroupMemberDialogImplementation extends ExtensibleFormDialogImplementation
+  public class AddGroupMemberDefinitionDialogImplementation
+      extends ExtensibleFormDialogImplementation
   {
     private IModel<SurveyGroupRatingsDefinition> groupRatingsDefinitionModel;
     private String name;
 
     /**
-     * Constructs a new <code>AddGroupMemberDialogImplementation</code>.
+     * Constructs a new <code>AddGroupMemberDefinitionDialogImplementation</code>.
      *
      * @param groupRatingsDefinitionModel the model for the survey group ratings definition the
      *                                    survey group member definition is being added to
      */
-    public AddGroupMemberDialogImplementation(
+    public AddGroupMemberDefinitionDialogImplementation(
         IModel<SurveyGroupRatingsDefinition> groupRatingsDefinitionModel)
     {
-      super("Add Survey Group Member", "OK", "Canel");
+      super("Add Survey Group Member Definition", "OK", "Canel");
 
       this.groupRatingsDefinitionModel = groupRatingsDefinitionModel;
 
@@ -297,26 +298,27 @@ public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
 
 
   /**
-   * The <code>AddGroupRatingDialogImplementation</code> class.
+   * The <code>AddGroupRatingDefinitionDialogImplementation</code> class.
    *
    * @author Marcus Portmann
    */
-  public class AddGroupRatingDialogImplementation extends ExtensibleFormDialogImplementation
+  public class AddGroupRatingDefinitionDialogImplementation
+      extends ExtensibleFormDialogImplementation
   {
     private IModel<SurveyGroupRatingsDefinition> groupRatingsDefinitionModel;
     private String name;
     private SurveyGroupRatingType groupRatingType;
 
     /**
-     * Constructs a new <code>AddGroupRatingDialogImplementation</code>.
+     * Constructs a new <code>AddGroupRatingDefinitionDialogImplementation</code>.
      *
      * @param groupRatingsDefinitionModel the model for the survey group ratings definition the
      *                                    survey group rating definition is being added to
      */
-    public AddGroupRatingDialogImplementation(
+    public AddGroupRatingDefinitionDialogImplementation(
         IModel<SurveyGroupRatingsDefinition> groupRatingsDefinitionModel)
     {
-      super("Add Survey Group Rating", "OK", "Cancel");
+      super("Add Survey Group Rating Definition", "OK", "Cancel");
 
       this.groupRatingsDefinitionModel = groupRatingsDefinitionModel;
 
@@ -369,27 +371,28 @@ public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
 
 
   /**
-   * The <code>RemoveGroupMemberDialogImplementation</code> class.
+   * The <code>RemoveGroupMemberDefinitionDialogImplementation</code> class.
    *
    * @author Marcus Portmann
    */
-  public class RemoveGroupMemberDialogImplementation extends ExtensibleFormDialogImplementation
+  public class RemoveGroupMemberDefinitionDialogImplementation
+      extends ExtensibleFormDialogImplementation
   {
     private IModel<SurveyGroupMemberDefinition> groupMemberDefinitionModel;
-    IModel<SurveyGroupRatingsDefinition> groupRatingsDefinitionModel;
+    private IModel<SurveyGroupRatingsDefinition> groupRatingsDefinitionModel;
 
     /**
-     * Constructs a new <code>RemoveGroupMemberDialogImplementation</code>.
+     * Constructs a new <code>RemoveGroupMemberDefinitionDialogImplementation</code>.
      *
      * @param groupRatingsDefinitionModel the model for the survey group ratings definition
      * @param groupMemberDefinitionModel  the model for the survey group member definition being
      *                                    removed
      */
-    public RemoveGroupMemberDialogImplementation(
+    public RemoveGroupMemberDefinitionDialogImplementation(
         IModel<SurveyGroupRatingsDefinition> groupRatingsDefinitionModel,
         IModel<SurveyGroupMemberDefinition> groupMemberDefinitionModel)
     {
-      super("Remove Survey Group Member", "Yes", "No");
+      super("Remove Survey Group Member Definition", "Yes", "No");
 
       this.groupRatingsDefinitionModel = groupRatingsDefinitionModel;
       this.groupMemberDefinitionModel = groupMemberDefinitionModel;
@@ -428,27 +431,28 @@ public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
 
 
   /**
-   * The <code>RemoveGroupRatingDialogImplementation</code> class.
+   * The <code>RemoveGroupRatingDefinitionDialogImplementation</code> class.
    *
    * @author Marcus Portmann
    */
-  public class RemoveGroupRatingDialogImplementation extends ExtensibleFormDialogImplementation
+  public class RemoveGroupRatingDefinitionDialogImplementation
+      extends ExtensibleFormDialogImplementation
   {
     private IModel<SurveyGroupRatingDefinition> groupRatingDefinitionModel;
     private IModel<SurveyGroupRatingsDefinition> groupRatingsDefinitionModel;
 
     /**
-     * Constructs a new <code>RemoveGroupRatingDialogImplementation</code>.
+     * Constructs a new <code>RemoveGroupRatingDefinitionDialogImplementation</code>.
      *
      * @param groupRatingsDefinitionModel the model for the survey group ratings definition
      * @param groupRatingDefinitionModel  the model for the survey group rating definition being
      *                                    removed
      */
-    public RemoveGroupRatingDialogImplementation(
+    public RemoveGroupRatingDefinitionDialogImplementation(
         IModel<SurveyGroupRatingsDefinition> groupRatingsDefinitionModel,
         IModel<SurveyGroupRatingDefinition> groupRatingDefinitionModel)
     {
-      super("Remove Survey Group Rating", "Yes", "No");
+      super("Remove Survey Group Rating Definition", "Yes", "No");
 
       this.groupRatingsDefinitionModel = groupRatingsDefinitionModel;
       this.groupRatingDefinitionModel = groupRatingDefinitionModel;

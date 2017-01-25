@@ -13,7 +13,6 @@ package digital.survey.web.components;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import digital.survey.model.SurveyDefinition;
 import digital.survey.model.SurveyItemDefinition;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.template.components.ExtensibleFormDialog;
@@ -35,6 +34,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Response;
@@ -172,7 +172,12 @@ public abstract class SurveyItemDefinitionPanel extends Panel
       private static final long serialVersionUID = 1000000;
 
       @Override
-      public void onClick(AjaxRequestTarget target) {}
+      public void onClick(AjaxRequestTarget target)
+      {
+        getDialog().show(target, new RemoveItemDefinitionDialogImplementation(
+            surveyItemDefinitionsModel, surveyItemDefinitionModel));
+
+      }
     };
     headingContainer.add(removeLink);
 
@@ -324,10 +329,10 @@ public abstract class SurveyItemDefinitionPanel extends Panel
    */
   public class EditItemDefinitionDialogImplementation extends ExtensibleFormDialogImplementation
   {
-    IModel<? extends SurveyItemDefinition> surveyItemDefinitionModel;
-    String name;
-    String label;
-    String description;
+    private IModel<? extends SurveyItemDefinition> surveyItemDefinitionModel;
+    private String name;
+    private String label;
+    private String description;
 
     /**
      * Constructs a new <code>EditItemDefinitionDialogImplementation</code>.
@@ -338,7 +343,7 @@ public abstract class SurveyItemDefinitionPanel extends Panel
     public EditItemDefinitionDialogImplementation(
         IModel<? extends SurveyItemDefinition> surveyItemDefinitionModel)
     {
-      super("Edit Item", "OK", "Cancel");
+      super("Edit Survey Item Definition", "OK", "Cancel");
 
       this.surveyItemDefinitionModel = surveyItemDefinitionModel;
 
@@ -494,5 +499,64 @@ public abstract class SurveyItemDefinitionPanel extends Panel
 
       markupStream.next();
     }
+  }
+
+
+  /**
+   * The <code>RemoveItemDefinitionDialogImplementation</code> class.
+   *
+   * @author Marcus Portmann
+   */
+  public class RemoveItemDefinitionDialogImplementation extends ExtensibleFormDialogImplementation
+  {
+    private IModel<List<SurveyItemDefinition>> surveyItemDefinitionsModel;
+    private IModel<? extends SurveyItemDefinition> surveyItemDefinitionModel;
+
+    /**
+     * Constructs a new <code>RemoveItemDefinitionDialogImplementation</code>.
+     *
+     * @param surveyItemDefinitionsModel the model for the list of survey item definitions the
+     *                                   survey item definition is associated with
+     * @param surveyItemDefinitionModel  the model for the survey item definition
+     */
+    public RemoveItemDefinitionDialogImplementation(
+        IModel<List<SurveyItemDefinition>> surveyItemDefinitionsModel,
+        IModel<? extends SurveyItemDefinition> surveyItemDefinitionModel)
+    {
+      super("Remove Survey Item Definition", "Yes", "No");
+
+      this.surveyItemDefinitionsModel = surveyItemDefinitionsModel;
+      this.surveyItemDefinitionModel = surveyItemDefinitionModel;
+
+      /*
+       * NOTE: We need to retrieve the label of the survey item definition here explicitly and not
+       *       use a PropertyModel on the surveyItemDefinitionModel object with the "label" field
+       *       because after removing the survey item definition the model will no longer be
+       *       valid and we will get an IndexOutOfBoundsException exception. This is as a result of
+       *       the surveyItemDefinitionModel being a ListItemModel, which references an item in
+       *       a list view that has been removed.
+       */
+      add(new Label("label", new Model<>(surveyItemDefinitionModel.getObject().getLabel())));
+    }
+
+    @Override
+    public void onCancel(AjaxRequestTarget target, Form form) {}
+
+    @Override
+    public void onError(AjaxRequestTarget target, Form form) {}
+
+    @Override
+    public boolean onSubmit(AjaxRequestTarget target, Form form)
+    {
+      SurveyItemDefinition.removeItemDefinition(surveyItemDefinitionsModel.getObject(),
+          surveyItemDefinitionModel.getObject());
+
+      target.add(getParentSurveyItemDefinitionPanelGroup());
+
+      return true;
+    }
+
+    @Override
+    public void resetModel() {}
   }
 }

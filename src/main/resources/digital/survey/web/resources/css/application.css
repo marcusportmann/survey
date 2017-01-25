@@ -65,10 +65,21 @@ table.table-group-ratings-definition > thead > tr > th, table.table-group-rating
 {
   font-size: 11px;
   text-align: center;
-  vertical-align: middle;
-  white-space: nowrap;
   padding: 0 5px 10px;
   min-width: 80px;
+}
+
+table.table-group-ratings-definition > thead > tr > th
+{
+  padding: 0 5px 5px;
+  vertical-align: bottom;
+}
+
+table.table-group-ratings-definition > tbody > tr > td
+{
+  white-space: nowrap;
+  padding: 0 5px 10px;
+  vertical-align: middle;
 }
 
 table.table-group-ratings-definition > thead > tr > th:last-child
@@ -77,11 +88,20 @@ table.table-group-ratings-definition > thead > tr > th:last-child
   width: 30px;
   border: none;
   text-align: right;
+  padding-bottom: 20px;
+}
+
+table.table-group-ratings-definition > tbody > tr > td:first-child
+{
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 table.table-group-ratings-definition > tbody > tr:last-child > td:first-child
 {
   padding-top: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
   text-align: center;
   border: none;
   background-color: #fff;
@@ -104,7 +124,12 @@ table.table-group-ratings-definition > thead > tr > th > div > span, table.table
 {
   display: block;
   padding-top: 5px;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
+}
+
+table.table-group-ratings-definition > thead > tr > th div.btn-group
+{
+  margin-bottom: 5px;
 }
 
 
@@ -446,33 +471,29 @@ table.table-group-ratings
 
 
 
-table.table-group-ratings > thead > tr > th,
-table.table-group-ratings-definition > thead > tr > th
+table.table-group-ratings > thead > tr > th
 {
-  font-size: 12px;
+  font-size: 11px;
   text-align: center;
-  vertical-align: middle;
+  vertical-align: bottom;
   padding: 5px 5px;
   white-space: normal !important;
-  text-transform: none;
 }
 
 table.table-group-ratings > tbody > tr > td
 {
-  font-size: 12px;
+  font-size: 11px;
   white-space: nowrap;
   text-align: center;
   padding: 1px;
   vertical-align: middle;
 }
 
-/*
 table.table-group-ratings > tbody > tr > td:first-child
 {
   padding-left: 5px;
-  text-align: left;
+  padding-right: 5px;
 }
-*/
 
 table.table-group-ratings > tbody > tr > td > div
 {
