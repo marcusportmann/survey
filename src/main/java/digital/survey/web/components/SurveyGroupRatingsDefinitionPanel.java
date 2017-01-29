@@ -272,7 +272,7 @@ public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
       // The "name" field
       TextField nameField = new TextFieldWithFeedback<>("name", new PropertyModel<>(this, "name"));
       nameField.setRequired(true);
-      add(nameField);
+      getForm().add(nameField);
     }
 
     @Override
@@ -325,7 +325,7 @@ public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
       // The "name" field
       TextField nameField = new TextFieldWithFeedback<>("name", new PropertyModel<>(this, "name"));
       nameField.setRequired(true);
-      add(nameField);
+      getForm().add(nameField);
 
       SurveyGroupRatingTypeChoiceRenderer surveyGroupRatingTypeChoiceRenderer =
           new SurveyGroupRatingTypeChoiceRenderer();
@@ -335,7 +335,7 @@ public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
           "groupRatingType", new PropertyModel<>(this, "groupRatingType"), getRatingTypeOptions(),
           surveyGroupRatingTypeChoiceRenderer);
       groupRatingTypeField.setRequired(true);
-      add(groupRatingTypeField);
+      getForm().add(groupRatingTypeField);
     }
 
     @Override
@@ -405,7 +405,8 @@ public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
        *       the groupMemberDefinitionModel being a ListItemModel, which references an item in
        *       a list view that has been removed.
        */
-      add(new Label("name", new Model<>(groupMemberDefinitionModel.getObject().getName())));
+      getForm().add(new Label("name", new Model<>(groupMemberDefinitionModel.getObject()
+          .getName())));
     }
 
     @Override
@@ -465,7 +466,8 @@ public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
        *       the groupRatingDefinitionModel being a ListItemModel, which references an item in
        *       a list view that has been removed.
        */
-      add(new Label("name", new Model<>(groupRatingDefinitionModel.getObject().getName())));
+      getForm().add(new Label("name", new Model<>(groupRatingDefinitionModel.getObject()
+          .getName())));
     }
 
     @Override

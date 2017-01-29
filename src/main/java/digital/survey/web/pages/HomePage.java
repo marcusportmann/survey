@@ -14,11 +14,13 @@ package digital.survey.web.pages;
 //~--- non-JDK imports --------------------------------------------------------
 
 import digital.survey.model.ISurveyService;
+import digital.survey.model.SurveyDefinition;
 import digital.survey.model.SurveyInstance;
 import guru.mmp.application.web.WebApplicationException;
 import guru.mmp.application.web.pages.AnonymousOnlyWebPage;
 import guru.mmp.application.web.template.pages.TemplateWebPage;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.Model;
 
 import javax.inject.Inject;
 import java.util.UUID;
@@ -59,11 +61,17 @@ public class HomePage extends TemplateWebPage
       {
         try
         {
-          SurveyInstance surveyInstance = surveyService.getSurveyInstance(UUID.fromString(
-              "b222aa15-715f-4752-923d-8f33ee8a1736"));
+          SurveyDefinition surveyDefinition = surveyService.getSurveyDefinition(UUID.fromString("706fb4a4-8ba8-11e6-ae22-56b6b6499611"), 1);
 
-          setResponsePage(new ViewSurveyResultPage(getPageReference(), surveyInstance.getId(),
-              surveyInstance.getName()));
+          setResponsePage(new UpdateSurveyDefinitionPage(getPageReference(), new Model
+            <>(surveyDefinition)));
+
+
+//          SurveyInstance surveyInstance = surveyService.getSurveyInstance(UUID.fromString(
+//              "43ba05e3-f6dd-40f2-9a63-9f201158e68c"));
+//
+//          setResponsePage(new ViewSurveyResultPage(getPageReference(), surveyInstance.getId(),
+//              surveyInstance.getName()));
         }
         catch (Throwable e)
         {
@@ -71,7 +79,7 @@ public class HomePage extends TemplateWebPage
         }
       }
     };
-    surveyResultLink.setVisible(false);
+    surveyResultLink.setVisible(true);
     add(surveyResultLink);
   }
 }

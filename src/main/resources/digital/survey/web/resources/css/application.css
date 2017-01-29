@@ -165,7 +165,23 @@ table.table-group-ratings-definition > thead > tr > th div.btn-group
 
 
 
+.survey-definition .add-item-definition
+{
+  width: 35px;
+  height: 35px;
+  background-color: #ddd;
+  text-align: center;
+  line-height: 35px;
+  margin-top: 0;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  border: 1px solid #ddd;
+}
 
+.survey-definition .add-item-definition i
+{
+  color: #444;
+}
 
 
 .survey-definition .panel

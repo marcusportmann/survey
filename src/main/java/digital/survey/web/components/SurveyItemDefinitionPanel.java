@@ -15,10 +15,10 @@ package digital.survey.web.components;
 
 import digital.survey.model.SurveyItemDefinition;
 import guru.mmp.application.web.WebApplicationException;
-import guru.mmp.application.web.template.components.ExtensibleFormDialog;
+import guru.mmp.application.web.template.components.ExtensibleDialog;
 import guru.mmp.application.web.template.components.ExtensibleFormDialogImplementation;
 import guru.mmp.application.web.template.components.TextFieldWithFeedback;
-import guru.mmp.application.web.template.pages.TemplateDialogWebPage;
+import guru.mmp.application.web.template.pages.TemplateExtensibleDialogWebPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestHandler;
@@ -80,7 +80,29 @@ public abstract class SurveyItemDefinitionPanel extends Panel
     SurveyItemDefinition surveyItemDefinition = surveyItemDefinitionModel.getObject();
 
     // The "headingContainer" web markup container
-    headingContainer = new WebMarkupContainer("headingContainer");
+    headingContainer = new WebMarkupContainer("headingContainer")
+    {
+      @Override
+      protected void onRender()
+      {
+        super.onRender();
+
+        /*
+         * Add the JavaScript, which alters the behaviour of the Bootstrap Tooltip to ensure that
+         * tooltips are hidden when an element with a tooltip, associated with the survey item
+         * definition panel, is clicked.
+         */
+        IRequestHandler requestHandler = getRequestCycle().getActiveRequestHandler();
+
+        if (requestHandler instanceof AjaxRequestHandler)
+        {
+          AjaxRequestHandler ajaxRequestHandler = (AjaxRequestHandler) requestHandler;
+
+          ajaxRequestHandler.appendJavaScript(generateTooltipJavaScript(getMarkupId(), false));
+        }
+      }
+    };
+
     headingContainer.setOutputMarkupId(true);
     add(headingContainer);
 
@@ -197,13 +219,13 @@ public abstract class SurveyItemDefinitionPanel extends Panel
   }
 
   /**
-   * Returns the extensible form dialog associated with the page.
+   * Returns the extensible dialog associated with the page.
    *
-   * @return the extensible form dialog associated with the page
+   * @return the extensible dialog associated with the page
    */
-  public ExtensibleFormDialog getDialog()
+  public ExtensibleDialog getDialog()
   {
-    return ((TemplateDialogWebPage) getPage()).getDialog();
+    return ((TemplateExtensibleDialogWebPage) getPage()).getDialog();
   }
 
   /**
@@ -283,29 +305,6 @@ public abstract class SurveyItemDefinitionPanel extends Panel
    */
   protected abstract boolean isCollapsible();
 
-  /**
-   * @see org.apache.wicket.markup.html.panel.Panel#onRender()
-   */
-  @Override
-  protected void onRender()
-  {
-    super.onRender();
-
-    /*
-     * Add the JavaScript, which alters the behaviour of the Bootstrap Tooltip to ensure that
-     * tooltips are hidden when an element with a tooltip, associated with the survey item
-     * definition panel, is clicked.
-     */
-    IRequestHandler requestHandler = getRequestCycle().getActiveRequestHandler();
-
-    if (requestHandler instanceof AjaxRequestHandler)
-    {
-      AjaxRequestHandler ajaxRequestHandler = (AjaxRequestHandler) requestHandler;
-
-      ajaxRequestHandler.appendJavaScript(generateTooltipJavaScript(getMarkupId(), false));
-    }
-  }
-
   private String generateTooltipJavaScript(String id, boolean isAjaxRequest)
   {
     if (isAjaxRequest)
@@ -356,19 +355,19 @@ public abstract class SurveyItemDefinitionPanel extends Panel
       // The "name" field
       TextField nameField = new TextFieldWithFeedback<>("name", new PropertyModel<>(this, "name"));
       nameField.setRequired(true);
-      add(nameField);
+      getForm().add(nameField);
 
       // The "label" field
       TextField labelField = new TextFieldWithFeedback<>("label", new PropertyModel<>(this,
           "label"));
       labelField.setRequired(true);
-      add(labelField);
+      getForm().add(labelField);
 
       // The "description" field
       TextField descriptionField = new TextFieldWithFeedback<>("description", new PropertyModel<>(
           this, "description"));
       descriptionField.setRequired(true);
-      add(descriptionField);
+      getForm().add(descriptionField);
     }
 
     @Override
@@ -536,7 +535,8 @@ public abstract class SurveyItemDefinitionPanel extends Panel
        *       the surveyItemDefinitionModel being a ListItemModel, which references an item in
        *       a list view that has been removed.
        */
-      add(new Label("label", new Model<>(surveyItemDefinitionModel.getObject().getLabel())));
+      getForm().add(new Label("label", new Model<>(surveyItemDefinitionModel.getObject()
+          .getLabel())));
     }
 
     @Override

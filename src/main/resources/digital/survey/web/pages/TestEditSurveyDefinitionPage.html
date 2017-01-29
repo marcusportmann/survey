@@ -73,462 +73,1621 @@
         <section class="content">
 
 
-          <wicket:extend>
 
-            <div wicket:id="dialog" class="modal fade" tabindex="-1" role="dialog" id="dialog7a">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">
-                      <span aria-hidden="true">×</span>
-                    </button>
-                    <h4 class="modal-title"></h4>
-                  </div>
-                  <div class="modal-body">
-                    <div id="alerts7b" class="alerts"></div>
-                    <form wicket:id="form" class="form-horizontal form-material" id="form1a" method="post" action="./page?7-1.IFormSubmitListener-dialog-form">
-                      <div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden">
-                        <input type="hidden" name="form1a_hf_0" id="form1a_hf_0"></div>
-                      <wicket:container wicket:id="implementation" id="implementation7c">
-                        <wicket:panel>
 
-                        </wicket:panel>
-                      </wicket:container>
-                    </form>
-                  </div>
-                  <div class="modal-footer">
-                    <a wicket:id="cancelLink" class="btn btn-default" id="cancelLink1c" href="javascript:;"></a>
-                    <button wicket:id="submitButton" type="submit" class="btn btn-primary pull-right" name="dialog:submitButton" id="submitButton1b"></button>
-                  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <div id="alerts" class="alerts"></div>
+
+
+          <div class="modal fade" tabindex="-1" role="dialog" id="dialoge5">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                  <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                  <div id="alertse6" class="alerts"></div>
+                  <form class="form-horizontal form-material" id="form20" method="post" action="./page?11-1.IFormSubmitListener-dialog-form"><div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden"><input type="hidden" name="form20_hf_0" id="form20_hf_0" /></div>
+
+
+
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary pull-right" name="dialog:submitButton" id="submitButton21"></button>
+                  <button class="btn btn-default" id="cancelLink22" href="javascript:;"></button>
+
                 </div>
               </div>
             </div>
-
-            <wicket:child>
-              <wicket:extend>
-
-                <form wicket:id="updateForm" id="updateForm" class="form-horizontal form-material" method="post" action="./page?7-1.IFormSubmitListener-updateForm">
-                  <div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden">
-                    <input type="hidden" name="updateForm_hf_0" id="updateForm_hf_0"></div>
-
-                  <div wicket:id="surveyDefinition" id="surveyDefinition1" class="survey-definition panel-group">
+          </div>
 
 
 
+          <form id="updateForm" class="form-horizontal form-material" method="post" action="./page?11-1.IFormSubmitListener-updateForm"><div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden"><input type="hidden" name="updateForm_hf_0" id="updateForm_hf_0" /></div>
 
+            <div class="survey-definition" id="surveyDefinitione8">
 
+              <div class="box box-form push-10">
+                <div class="box-body">
 
-
-                    <div class="box box-form push-10">
-                      <div class="box-body">
-
-                        <div class="form-group">
-                          <div class="col-xs-12">
-                            <label>Name
-                              <input wicket:id="name" name="surveyDefinition:name" type="text" placeholder="Enter a name" value="Test Survey Name" id="name1d">
-                            </label>
-                          </div>
-                        </div>
-
-                        <div class="form-group">
-                          <div class="col-xs-12">
-                            <label>Description
-                              <input wicket:id="description" name="surveyDefinition:description" type="text" placeholder="Enter a description" value="Test Survey Description" id="description1e">
-                            </label>
-                          </div>
-                        </div>
-
-                      </div>
+                  <div class="form-group">
+                    <div class="col-xs-12">
+                      <label>Name
+                        <input name="surveyDefinition:name" type="text" placeholder="Enter a name" value="CTO ELT Values" id="name23"/>
+                      </label>
                     </div>
+                  </div>
 
-
-
-
-
-
-                    <div class="panel">
-                      <div class="first-item-definition">
-                        <a href="" class="center-block"><i class="fa fa-plus-circle"></i> Add your first survey item or survey section.</a>
-                      </div>
+                  <div class="form-group">
+                    <div class="col-xs-12">
+                      <label>Description
+                        <input name="surveyDefinition:description" type="text" placeholder="Enter a description" value="CTO ELT Values" id="description24"/>
+                      </label>
                     </div>
+                  </div>
 
+                </div>
+              </div>
 
+              <div class="panel">
+                <div class="first-item-definition">
+                  <a href="" class="center-block"><i class="fa fa-plus-circle push-5-r"></i> Add your first survey item or survey section.</a>
+                </div>
+              </div>
 
-                    <div wicket:id="itemDefinition" class="panel">
+              <div class="panel-group" id="itemDefinitionPanelGroupe9">
 
-                      <section wicket:id="itemDefinitionHeader" class="panel-heading">
-                        <div class="heading-table">
-                          <div class="heading-row">
-                            <div class="heading-icon-cell">
-                              <i class="fa fa-question-circle-o"></i>
-                            </div>
-                            <div class="heading-top-cell">
-                              <div class="heading-name"><span wicket:id="name">[name_of_field]</span></div>
-                              <div class="heading-collapse collapsed" data-toggle="collapse" data-parent="#surveyDefinition1" href="#itemDefinitionPanel1">
-                                <i class="fa fa-plus collapsed"></i><i class="fa fa-minus expanded"></i>
-                              </div>
-                              <div class="heading-actions">
-                                <div class="btn-group">
-                                  <a wicket:id="editLink" style="z-index: 100;" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="#"><i class="fa fa-pencil-square-o"></i></a>
-                                  <a wicket:id="helpLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="#"><i class="fa fa-question-circle"></i></a>
-                                  <a wicket:id="copyLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Copy" href="#"><i class="fa fa-files-o"></i></a>
-                                  <a wicket:id="moveDownLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Down" href="#"><i class="fa fa-arrow-circle-down"></i></a>
-                                  <a wicket:id="removeLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="#"><i class="fa fa-trash-o"></i></a>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="heading-row">
-                            <div class="heading-padding-cell"></div>
-                            <div class="heading-bottom-cell"><span wicket:id="label">[Label for Field]</span></div>
-                          </div>
+                <div class="add-item-definition">
+                  <a href="#"><i class="fa fa-plus"></i></a>
+                </div>
+
+                <div class="panel" id="itemDefinitionPanel29">
+
+                  <section class="panel-heading" id="headingContainerea">
+                    <div class="heading-table">
+                      <div class="heading-row">
+                        <div class="heading-icon-cell">
+                          <i class="fa fa-font"></i>
                         </div>
-                      </section>
-                      <div wicket:id="itemDefinitionPanel" id="itemDefinitionPanel1" class="panel-collapse collapse">
-                        <div class="section-definition">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                          minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                          commodo consequat.
-                        </div>
-                      </div>
+                        <div class="heading-top-cell">
+                          <div class="heading-name"><span>before_text</span></div>
 
+                          <div class="heading-actions">
+                            <div class="btn-group">
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="javascript:;" id="editLink25"><i class="fa fa-pencil-square-o"></i></a>
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="javascript:;" id="helpLink26"><i class="fa fa-question-circle"></i></a>
 
-
-                    </div>
-
-<!--
-
-                    <div wicket:id="itemDefinition" class="panel">
-
-                      <section wicket:id="itemDefinitionHeader" class="panel-heading">
-                        <div class="heading-table">
-                          <div class="heading-row">
-                            <div class="heading-icon-cell">
-                              <i class="fa fa-table"></i>
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Down" href="javascript:;" id="moveDownLink27"><i class="fa fa-arrow-circle-down"></i></a>
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="javascript:;" id="removeLink28"><i class="fa fa-trash-o"></i></a>
                             </div>
-                            <div class="heading-top-cell">
-                              <div class="heading-name">
-                                <span wicket:id="name">team_values</span>
-                              </div>
-                              <div class="heading-collapse" data-toggle="collapse" data-parent="#surveyDefinition1" href="#itemDefinitionPanel2">
-                                <i data-toggle="tooltip" data-original-title="Expand" class="fa fa-plus collapsed"></i><i data-toggle="tooltip" data-original-title="Collapse" class="fa fa-minus expanded"></i>
-                              </div>
-                              <div class="heading-actions">
-                                <div class="btn-group">
-                                  <a wicket:id="editLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="#"><i class="fa fa-pencil-square-o"></i></a>
-                                  <a wicket:id="helpLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="#"><i class="fa fa-question-circle"></i></a>
-                                  <a wicket:id="copyLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Copy" href="#"><i class="fa fa-files-o"></i></a>
-                                  <a wicket:id="moveUpLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Up" href="#"><i class="fa fa-arrow-circle-up"></i></a>
-                                  <a wicket:id="removeLink" class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href=""><i class="fa fa-trash-o"></i></a>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="heading-row">
-                            <div class="heading-padding-cell"></div>
-                            <div class="heading-bottom-cell">
-                              <span wicket:id="label">Team Values</span>
-                            </div>
-                          </div>
-                        </div>
-                      </section>
-
-                      <div wicket:id="itemDefinitionPanel" id="itemDefinitionPanel2" class="panel-collapse collapse in">
-                        <div class="item-definition">
-                          <div class="table-responsive">
-                            <table class="table table-striped table-group-ratings-definition">
-                              <thead>
-                                <tr>
-                                  <th></th>
-                                  <th wicket:id="groupRatingDefinition">
-                                    <div>
-                                      <span wicket:id="name">Accountability</span>
-                                      <div class="btn-group">
-                                        <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink1f"><i class="fa fa-times-circle"></i></a>
-                                        <a wicket:id="moveRightLink" class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink20"><i class="fa fa-arrow-circle-right"></i></a>
-                                      </div>
-                                    </div>
-                                  </th>
-                                  <th wicket:id="groupRatingDefinition">
-                                    <div>
-                                      <span wicket:id="name">Competence</span>
-                                      <div class="btn-group">
-                                        <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink21"><i class="fa fa-arrow-circle-left"></i></a>
-                                        <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink22"><i class="fa fa-times-circle"></i></a>
-                                        <a wicket:id="moveRightLink" class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink23"><i class="fa fa-arrow-circle-right"></i></a>
-                                      </div>
-                                    </div>
-                                  </th>
-                                  <th wicket:id="groupRatingDefinition">
-                                    <div>
-                                      <span wicket:id="name">Courage</span>
-                                      <div class="btn-group">
-                                        <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink24"><i class="fa fa-arrow-circle-left"></i></a>
-                                        <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink25"><i class="fa fa-times-circle"></i></a>
-                                        <a wicket:id="moveRightLink" class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink26"><i class="fa fa-arrow-circle-right"></i></a>
-                                      </div>
-                                    </div>
-                                  </th>
-                                  <th wicket:id="groupRatingDefinition">
-                                    <div>
-                                      <span wicket:id="name">Fairness</span>
-                                      <div class="btn-group">
-                                        <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink27"><i class="fa fa-arrow-circle-left"></i></a>
-                                        <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink28"><i class="fa fa-times-circle"></i></a>
-                                        <a wicket:id="moveRightLink" class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink29"><i class="fa fa-arrow-circle-right"></i></a>
-                                      </div>
-                                    </div>
-                                  </th>
-                                  <th wicket:id="groupRatingDefinition">
-                                    <div>
-                                      <span wicket:id="name">Integrity</span>
-                                      <div class="btn-group">
-                                        <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink2a"><i class="fa fa-arrow-circle-left"></i></a>
-                                        <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink2b"><i class="fa fa-times-circle"></i></a>
-                                        <a wicket:id="moveRightLink" class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink2c"><i class="fa fa-arrow-circle-right"></i></a>
-                                      </div>
-                                    </div>
-                                  </th>
-                                  <th wicket:id="groupRatingDefinition">
-                                    <div>
-                                      <span wicket:id="name">Openness</span>
-                                      <div class="btn-group">
-                                        <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink2d"><i class="fa fa-arrow-circle-left"></i></a>
-                                        <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink2e"><i class="fa fa-times-circle"></i></a>
-                                        <a wicket:id="moveRightLink" class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink2f"><i class="fa fa-arrow-circle-right"></i></a>
-                                      </div>
-                                    </div>
-                                  </th>
-                                  <th wicket:id="groupRatingDefinition">
-                                    <div>
-                                      <span wicket:id="name">Positive Attitude</span>
-                                      <div class="btn-group">
-                                        <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink30"><i class="fa fa-arrow-circle-left"></i></a>
-                                        <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink31"><i class="fa fa-times-circle"></i></a>
-                                        <a wicket:id="moveRightLink" class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink32"><i class="fa fa-arrow-circle-right"></i></a>
-                                      </div>
-                                    </div>
-                                  </th>
-                                  <th wicket:id="groupRatingDefinition">
-                                    <div>
-                                      <span wicket:id="name">Teamwork</span>
-                                      <div class="btn-group">
-                                        <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink33"><i class="fa fa-arrow-circle-left"></i></a>
-                                        <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink34"><i class="fa fa-times-circle"></i></a>
-                                        <a wicket:id="moveRightLink" class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink35"><i class="fa fa-arrow-circle-right"></i></a>
-                                      </div>
-                                    </div>
-                                  </th>
-                                  <th wicket:id="groupRatingDefinition">
-                                    <div>
-                                      <span wicket:id="name">Making a difference</span>
-                                      <div class="btn-group">
-                                        <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink36"><i class="fa fa-arrow-circle-left"></i></a>
-                                        <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink37"><i class="fa fa-times-circle"></i></a>
-                                        <a wicket:id="moveRightLink" class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink38"><i class="fa fa-arrow-circle-right"></i></a>
-                                      </div>
-                                    </div>
-                                  </th>
-                                  <th wicket:id="groupRatingDefinition">
-                                    <div>
-                                      <span wicket:id="name">Trust</span>
-                                      <div class="btn-group">
-                                        <a wicket:id="moveLeftLink" class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink39"><i class="fa fa-arrow-circle-left"></i></a>
-                                        <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink3a"><i class="fa fa-times-circle"></i></a>
-
-                                      </div>
-                                    </div>
-                                  </th>
-                                  <th>
-                                    <div>
-                                      <a wicket:id="addGroupRatingDefinitionLink" class="btn btn-xs btn-default" href="javascript:;" id="addGroupRatingDefinitionLink3b"><i class="fa fa-plus-circle"></i></a>
-                                    </div>
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr wicket:id="groupMemberDefinition">
-                                  <td>
-                                    <span wicket:id="name">Group Member X</span>
-                                    <div class="btn-group">
-
-                                      <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink3c"><i class="fa fa-times-circle"></i></a>
-                                      <a wicket:id="moveDownLink" class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink3d"><i class="fa fa-arrow-circle-down"></i></a>
-                                    </div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                </tr>
-                                <tr wicket:id="groupMemberDefinition">
-                                  <td>
-                                    <span wicket:id="name">Group Member Y</span>
-                                    <div class="btn-group">
-                                      <a wicket:id="moveUpLink" class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink3e"><i class="fa fa-arrow-circle-up"></i></a>
-                                      <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink3f"><i class="fa fa-times-circle"></i></a>
-                                      <a wicket:id="moveDownLink" class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink40"><i class="fa fa-arrow-circle-down"></i></a>
-                                    </div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                </tr>
-                                <tr wicket:id="groupMemberDefinition">
-                                  <td>
-                                    <span wicket:id="name">Group Member Z</span>
-                                    <div class="btn-group">
-                                      <a wicket:id="moveUpLink" class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink41"><i class="fa fa-arrow-circle-up"></i></a>
-                                      <a wicket:id="removeLink" class="btn btn-xs btn-default" href="javascript:;" id="removeLink42"><i class="fa fa-times-circle"></i></a>
-                                      <a wicket:id="moveDownLink" class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink43"><i class="fa fa-arrow-circle-down"></i></a>
-                                    </div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                  <td wicket:id="groupRatingType" class="center">
-                                    <div wicket:id="ratingType">Yes,No,NA</div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <a wicket:id="addGroupMemberDefinitionLink" class="btn btn-xs btn-default" href="javascript:;" id="addGroupMemberDefinitionLink79"><i class="fa fa-plus-circle"></i></a>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
                           </div>
                         </div>
                       </div>
+                      <div class="heading-row">
+                        <div class="heading-padding-cell"></div>
+                        <div class="heading-bottom-cell"><span>Before Text</span></div>
+                      </div>
                     </div>
+                  </section>
 
+                  <div id="bodyContainereb">
 
+                    <!--
+                    <div class="item-definition">
+                    </div>
                     -->
 
-
-
-
-
-
-
                   </div>
-
-                  <div class="push-15-t">
-                    <button wicket:id="updateButton" type="submit" class="btn btn-primary pull-right push-10-l" name="updateButton" id="updateButton80">Update</button>
-                    <button wicket:id="cancelButton" type="submit" class="btn btn-white pull-right" name="cancelButton" id="cancelButton81">Cancel</button>
-                    <div class="clear-both"></div>
-                  </div>
-
-                </form>
-
-
-                <div wicket:id="surveyResponse" id="surveyResponse1" class="survey-response panel-group">
-
-
-                  <div wicket:id="itemResponse" class="panel">
-
-                    <section wicket:id="itemResponseHeader" class="panel-heading">
-                      <div class="heading-icon"><i class="fa fa-bars"></i></div>
-                      <div class="heading-label"><span wicket:id="name">[Name of Section]</span></div>
-                      <div class="heading-collapse collapsed" data-toggle="collapse" data-parent="#surveyResponse1" href="#itemResponsePanel1">
-                        <i class="fa fa-plus collapsed"></i><i class="fa fa-minus expanded"></i>
-                      </div>
-                    </section>
-                    <div wicket:id="itemResponsePanel" id="itemResponsePanel1" class="panel-collapse collapse">
-                      <div class="section-response">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                        minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                        commodo consequat.
-                      </div>
-                    </div>
-
-
-
-                  </div>
-
-
 
                 </div>
 
+                <div class="panel" id="itemDefinitionPanel8a">
+
+                  <section class="panel-heading" id="headingContainerec">
+                    <div class="heading-table">
+                      <div class="heading-row">
+                        <div class="heading-icon-cell">
+                          <i class="fa fa-table"></i>
+                        </div>
+                        <div class="heading-top-cell">
+                          <div class="heading-name"><span>cto_values</span></div>
+
+                          <div class="heading-actions">
+                            <div class="btn-group">
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="javascript:;" id="editLink2a"><i class="fa fa-pencil-square-o"></i></a>
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="javascript:;" id="helpLink2b"><i class="fa fa-question-circle"></i></a>
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Up" href="javascript:;" id="moveUpLink2c"><i class="fa fa-arrow-circle-up"></i></a>
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Down" href="javascript:;" id="moveDownLink2d"><i class="fa fa-arrow-circle-down"></i></a>
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="javascript:;" id="removeLink2e"><i class="fa fa-trash-o"></i></a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="heading-row">
+                        <div class="heading-padding-cell"></div>
+                        <div class="heading-bottom-cell"><span>CTO Values</span></div>
+                      </div>
+                    </div>
+                  </section>
+
+                  <div id="bodyContainered">
+
+                    <div class="item-definition">
+                      <div class="table-responsive">
+                        <table class="table table-striped table-group-ratings-definition">
+                          <thead>
+                            <tr>
+                              <th></th>
+                              <th>
+                                <div>
+                                  <span>Accountability</span>
+                                  <div class="btn-group">
+
+                                    <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink2f"><i class="fa fa-times-circle"></i></a>
+                                    <a class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink30"><i class="fa fa-arrow-circle-right"></i></a>
+                                  </div>
+                                </div>
+                              </th><th>
+                              <div>
+                                <span>Competence</span>
+                                <div class="btn-group">
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink31"><i class="fa fa-arrow-circle-left"></i></a>
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink32"><i class="fa fa-times-circle"></i></a>
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink33"><i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                              </div>
+                            </th><th>
+                              <div>
+                                <span>Courage</span>
+                                <div class="btn-group">
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink34"><i class="fa fa-arrow-circle-left"></i></a>
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink35"><i class="fa fa-times-circle"></i></a>
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink36"><i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                              </div>
+                            </th><th>
+                              <div>
+                                <span>Fairness</span>
+                                <div class="btn-group">
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink37"><i class="fa fa-arrow-circle-left"></i></a>
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink38"><i class="fa fa-times-circle"></i></a>
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink39"><i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                              </div>
+                            </th><th>
+                              <div>
+                                <span>Integrity</span>
+                                <div class="btn-group">
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink3a"><i class="fa fa-arrow-circle-left"></i></a>
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink3b"><i class="fa fa-times-circle"></i></a>
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink3c"><i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                              </div>
+                            </th><th>
+                              <div>
+                                <span>Openness</span>
+                                <div class="btn-group">
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink3d"><i class="fa fa-arrow-circle-left"></i></a>
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink3e"><i class="fa fa-times-circle"></i></a>
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink3f"><i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                              </div>
+                            </th><th>
+                              <div>
+                                <span>Positive Attitude</span>
+                                <div class="btn-group">
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink40"><i class="fa fa-arrow-circle-left"></i></a>
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink41"><i class="fa fa-times-circle"></i></a>
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink42"><i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                              </div>
+                            </th><th>
+                              <div>
+                                <span>Teamwork</span>
+                                <div class="btn-group">
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink43"><i class="fa fa-arrow-circle-left"></i></a>
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink44"><i class="fa fa-times-circle"></i></a>
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink45"><i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                              </div>
+                            </th><th>
+                              <div>
+                                <span>Making a Difference</span>
+                                <div class="btn-group">
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink46"><i class="fa fa-arrow-circle-left"></i></a>
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink47"><i class="fa fa-times-circle"></i></a>
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="moveRightLink48"><i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                              </div>
+                            </th><th>
+                              <div>
+                                <span>Trust</span>
+                                <div class="btn-group">
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="moveLeftLink49"><i class="fa fa-arrow-circle-left"></i></a>
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink4a"><i class="fa fa-times-circle"></i></a>
+
+                                </div>
+                              </div>
+                            </th>
+                              <th>
+                                <div>
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="addGroupRatingDefinitionLink4b"><i class="fa fa-plus-circle"></i></a>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <span>CTO ELT</span>
+                                <div class="btn-group">
+
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink4c"><i class="fa fa-times-circle"></i></a>
+                                  <a class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink4d"><i class="fa fa-arrow-circle-down"></i></a>
+                                </div>
+                              </td>
+                              <td class="center">
+                                <div>Yes,No,NA</div>
+                              </td><td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                              <div>Yes,No,NA</div>
+                            </td>
+                            </tr><tr>
+                            <td>
+                              <span>Peter</span>
+                              <div class="btn-group">
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink4e"><i class="fa fa-arrow-circle-up"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink4f"><i class="fa fa-times-circle"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink50"><i class="fa fa-arrow-circle-down"></i></a>
+                              </div>
+                            </td>
+                            <td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td>
+                          </tr><tr>
+                            <td>
+                              <span>Adriaan</span>
+                              <div class="btn-group">
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink51"><i class="fa fa-arrow-circle-up"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink52"><i class="fa fa-times-circle"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink53"><i class="fa fa-arrow-circle-down"></i></a>
+                              </div>
+                            </td>
+                            <td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td>
+                          </tr><tr>
+                            <td>
+                              <span>Alapan</span>
+                              <div class="btn-group">
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink54"><i class="fa fa-arrow-circle-up"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink55"><i class="fa fa-times-circle"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink56"><i class="fa fa-arrow-circle-down"></i></a>
+                              </div>
+                            </td>
+                            <td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td>
+                          </tr><tr>
+                            <td>
+                              <span>Dan</span>
+                              <div class="btn-group">
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink57"><i class="fa fa-arrow-circle-up"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink58"><i class="fa fa-times-circle"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink59"><i class="fa fa-arrow-circle-down"></i></a>
+                              </div>
+                            </td>
+                            <td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td>
+                          </tr><tr>
+                            <td>
+                              <span>Daryl</span>
+                              <div class="btn-group">
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink5a"><i class="fa fa-arrow-circle-up"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink5b"><i class="fa fa-times-circle"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink5c"><i class="fa fa-arrow-circle-down"></i></a>
+                              </div>
+                            </td>
+                            <td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td>
+                          </tr><tr>
+                            <td>
+                              <span>David</span>
+                              <div class="btn-group">
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink5d"><i class="fa fa-arrow-circle-up"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink5e"><i class="fa fa-times-circle"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink5f"><i class="fa fa-arrow-circle-down"></i></a>
+                              </div>
+                            </td>
+                            <td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td>
+                          </tr><tr>
+                            <td>
+                              <span>Francois</span>
+                              <div class="btn-group">
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink60"><i class="fa fa-arrow-circle-up"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink61"><i class="fa fa-times-circle"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink62"><i class="fa fa-arrow-circle-down"></i></a>
+                              </div>
+                            </td>
+                            <td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td>
+                          </tr><tr>
+                            <td>
+                              <span>James</span>
+                              <div class="btn-group">
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink63"><i class="fa fa-arrow-circle-up"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink64"><i class="fa fa-times-circle"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink65"><i class="fa fa-arrow-circle-down"></i></a>
+                              </div>
+                            </td>
+                            <td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td>
+                          </tr><tr>
+                            <td>
+                              <span>Kersh</span>
+                              <div class="btn-group">
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink66"><i class="fa fa-arrow-circle-up"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink67"><i class="fa fa-times-circle"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink68"><i class="fa fa-arrow-circle-down"></i></a>
+                              </div>
+                            </td>
+                            <td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td>
+                          </tr><tr>
+                            <td>
+                              <span>Kevin</span>
+                              <div class="btn-group">
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink69"><i class="fa fa-arrow-circle-up"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink6a"><i class="fa fa-times-circle"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink6b"><i class="fa fa-arrow-circle-down"></i></a>
+                              </div>
+                            </td>
+                            <td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td>
+                          </tr><tr>
+                            <td>
+                              <span>Linde-Marie</span>
+                              <div class="btn-group">
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink6c"><i class="fa fa-arrow-circle-up"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink6d"><i class="fa fa-times-circle"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink6e"><i class="fa fa-arrow-circle-down"></i></a>
+                              </div>
+                            </td>
+                            <td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td>
+                          </tr><tr>
+                            <td>
+                              <span>Manoj</span>
+                              <div class="btn-group">
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink6f"><i class="fa fa-arrow-circle-up"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink70"><i class="fa fa-times-circle"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink71"><i class="fa fa-arrow-circle-down"></i></a>
+                              </div>
+                            </td>
+                            <td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td>
+                          </tr><tr>
+                            <td>
+                              <span>Marcus</span>
+                              <div class="btn-group">
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink72"><i class="fa fa-arrow-circle-up"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink73"><i class="fa fa-times-circle"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink74"><i class="fa fa-arrow-circle-down"></i></a>
+                              </div>
+                            </td>
+                            <td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td>
+                          </tr><tr>
+                            <td>
+                              <span>Mercia</span>
+                              <div class="btn-group">
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink75"><i class="fa fa-arrow-circle-up"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink76"><i class="fa fa-times-circle"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink77"><i class="fa fa-arrow-circle-down"></i></a>
+                              </div>
+                            </td>
+                            <td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td>
+                          </tr><tr>
+                            <td>
+                              <span>Nicole</span>
+                              <div class="btn-group">
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink78"><i class="fa fa-arrow-circle-up"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink79"><i class="fa fa-times-circle"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink7a"><i class="fa fa-arrow-circle-down"></i></a>
+                              </div>
+                            </td>
+                            <td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td>
+                          </tr><tr>
+                            <td>
+                              <span>Lawrence</span>
+                              <div class="btn-group">
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink7b"><i class="fa fa-arrow-circle-up"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink7c"><i class="fa fa-times-circle"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink7d"><i class="fa fa-arrow-circle-down"></i></a>
+                              </div>
+                            </td>
+                            <td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td>
+                          </tr><tr>
+                            <td>
+                              <span>Richard</span>
+                              <div class="btn-group">
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink7e"><i class="fa fa-arrow-circle-up"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink7f"><i class="fa fa-times-circle"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink80"><i class="fa fa-arrow-circle-down"></i></a>
+                              </div>
+                            </td>
+                            <td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td>
+                          </tr><tr>
+                            <td>
+                              <span>Sandra</span>
+                              <div class="btn-group">
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink81"><i class="fa fa-arrow-circle-up"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink82"><i class="fa fa-times-circle"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink83"><i class="fa fa-arrow-circle-down"></i></a>
+                              </div>
+                            </td>
+                            <td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td>
+                          </tr><tr>
+                            <td>
+                              <span>Tendai</span>
+                              <div class="btn-group">
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink84"><i class="fa fa-arrow-circle-up"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink85"><i class="fa fa-times-circle"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveDownLink86"><i class="fa fa-arrow-circle-down"></i></a>
+                              </div>
+                            </td>
+                            <td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td>
+                          </tr><tr>
+                            <td>
+                              <span>Debbie</span>
+                              <div class="btn-group">
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="moveUpLink87"><i class="fa fa-arrow-circle-up"></i></a>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="removeLink88"><i class="fa fa-times-circle"></i></a>
+
+                              </div>
+                            </td>
+                            <td class="center">
+                              <div>Yes,No,NA</div>
+                            </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td><td class="center">
+                            <div>Yes,No,NA</div>
+                          </td>
+                          </tr>
+                            <tr>
+                              <td>
+                                <a class="btn btn-xs btn-default" href="javascript:;" id="addGroupMemberDefinitionLink89"><i class="fa fa-plus-circle"></i></a>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="panel" id="itemDefinitionPanel90">
+
+                  <section class="panel-heading" id="headingContaineree">
+                    <div class="heading-table">
+                      <div class="heading-row">
+                        <div class="heading-icon-cell">
+                          <i class="fa fa-font"></i>
+                        </div>
+                        <div class="heading-top-cell">
+                          <div class="heading-name"><span>after_text</span></div>
+
+                          <div class="heading-actions">
+                            <div class="btn-group">
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="javascript:;" id="editLink8b"><i class="fa fa-pencil-square-o"></i></a>
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="javascript:;" id="helpLink8c"><i class="fa fa-question-circle"></i></a>
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Up" href="javascript:;" id="moveUpLink8d"><i class="fa fa-arrow-circle-up"></i></a>
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Down" href="javascript:;" id="moveDownLink8e"><i class="fa fa-arrow-circle-down"></i></a>
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="javascript:;" id="removeLink8f"><i class="fa fa-trash-o"></i></a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="heading-row">
+                        <div class="heading-padding-cell"></div>
+                        <div class="heading-bottom-cell"><span>After Text</span></div>
+                      </div>
+                    </div>
+                  </section>
+
+                  <div id="bodyContaineref">
+
+                    <!--
+                    <div class="item-definition">
+                    </div>
+                    -->
+
+                  </div>
+
+                </div>
+
+                <div class="panel" id="itemDefinitionPanelbb">
+
+                  <section class="panel-heading" id="headingContainerf0">
+                    <div class="heading-table">
+                      <div class="heading-row">
+                        <div class="heading-icon-cell">
+                          <i class="fa fa-bars"></i>
+                        </div>
+                        <div class="heading-top-cell">
+                          <div class="heading-name"><span>outer_1_section</span></div>
+                          <div class="heading-collapse collapsed" data-toggle="collapse" data-parent="#itemDefinitionPanelGroupe9" href="#bodyContainerf1"><i data-toggle="tooltip" data-original-title="Expand" class="fa fa-plus collapsed"></i><i data-toggle="tooltip" data-original-title="Collapse" class="fa fa-minus expanded"></i></div>
+                          <div class="heading-actions">
+                            <div class="btn-group">
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="javascript:;" id="editLink91"><i class="fa fa-pencil-square-o"></i></a>
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="javascript:;" id="helpLink92"><i class="fa fa-question-circle"></i></a>
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Up" href="javascript:;" id="moveUpLink93"><i class="fa fa-arrow-circle-up"></i></a>
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Down" href="javascript:;" id="moveDownLink94"><i class="fa fa-arrow-circle-down"></i></a>
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="javascript:;" id="removeLink95"><i class="fa fa-trash-o"></i></a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="heading-row">
+                        <div class="heading-padding-cell"></div>
+                        <div class="heading-bottom-cell"><span>Outer 1 Section</span></div>
+                      </div>
+                    </div>
+                  </section>
+
+                  <div id="bodyContainerf1" class="panel-collapse collapse">
+
+                    <div class="section-definition">
+                      <div class="panel-group" id="itemDefinitionPanelGroupf2">
+
+                        <div class="panel" id="itemDefinitionPanel9a">
+
+                          <section class="panel-heading" id="headingContainerf3">
+                            <div class="heading-table">
+                              <div class="heading-row">
+                                <div class="heading-icon-cell">
+                                  <i class="fa fa-font"></i>
+                                </div>
+                                <div class="heading-top-cell">
+                                  <div class="heading-name"><span>outer_1_1_text</span></div>
+
+                                  <div class="heading-actions">
+                                    <div class="btn-group">
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="javascript:;" id="editLink96"><i class="fa fa-pencil-square-o"></i></a>
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="javascript:;" id="helpLink97"><i class="fa fa-question-circle"></i></a>
+
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Down" href="javascript:;" id="moveDownLink98"><i class="fa fa-arrow-circle-down"></i></a>
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="javascript:;" id="removeLink99"><i class="fa fa-trash-o"></i></a>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="heading-row">
+                                <div class="heading-padding-cell"></div>
+                                <div class="heading-bottom-cell"><span>Outer 1.1 Text</span></div>
+                              </div>
+                            </div>
+                          </section>
+
+                          <div id="bodyContainerf4">
+
+                            <!--
+                            <div class="item-definition">
+                            </div>
+                            -->
+
+                          </div>
+
+                        </div>
+
+                        <div class="panel" id="itemDefinitionPanelaa">
+
+                          <section class="panel-heading" id="headingContainerf5">
+                            <div class="heading-table">
+                              <div class="heading-row">
+                                <div class="heading-icon-cell">
+                                  <i class="fa fa-bars"></i>
+                                </div>
+                                <div class="heading-top-cell">
+                                  <div class="heading-name"><span>inner_1_1_section</span></div>
+                                  <div class="heading-collapse collapsed" data-toggle="collapse" data-parent="#itemDefinitionPanelGroupf2" href="#bodyContainerf6"><i data-toggle="tooltip" data-original-title="Expand" class="fa fa-plus collapsed"></i><i data-toggle="tooltip" data-original-title="Collapse" class="fa fa-minus expanded"></i></div>
+                                  <div class="heading-actions">
+                                    <div class="btn-group">
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="javascript:;" id="editLink9b"><i class="fa fa-pencil-square-o"></i></a>
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="javascript:;" id="helpLink9c"><i class="fa fa-question-circle"></i></a>
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Up" href="javascript:;" id="moveUpLink9d"><i class="fa fa-arrow-circle-up"></i></a>
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Down" href="javascript:;" id="moveDownLink9e"><i class="fa fa-arrow-circle-down"></i></a>
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="javascript:;" id="removeLink9f"><i class="fa fa-trash-o"></i></a>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="heading-row">
+                                <div class="heading-padding-cell"></div>
+                                <div class="heading-bottom-cell"><span>Inner 1.1 Section</span></div>
+                              </div>
+                            </div>
+                          </section>
+
+                          <div id="bodyContainerf6" class="panel-collapse collapse">
+
+                            <div class="section-definition">
+                              <div class="panel-group" id="itemDefinitionPanelGroupf7">
+
+                                <div class="panel" id="itemDefinitionPanela4">
+
+                                  <section class="panel-heading" id="headingContainerf8">
+                                    <div class="heading-table">
+                                      <div class="heading-row">
+                                        <div class="heading-icon-cell">
+                                          <i class="fa fa-font"></i>
+                                        </div>
+                                        <div class="heading-top-cell">
+                                          <div class="heading-name"><span>inner_1_1_1_text</span></div>
+
+                                          <div class="heading-actions">
+                                            <div class="btn-group">
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="javascript:;" id="editLinka0"><i class="fa fa-pencil-square-o"></i></a>
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="javascript:;" id="helpLinka1"><i class="fa fa-question-circle"></i></a>
+
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Down" href="javascript:;" id="moveDownLinka2"><i class="fa fa-arrow-circle-down"></i></a>
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="javascript:;" id="removeLinka3"><i class="fa fa-trash-o"></i></a>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="heading-row">
+                                        <div class="heading-padding-cell"></div>
+                                        <div class="heading-bottom-cell"><span>Inner 1.1.1 Text</span></div>
+                                      </div>
+                                    </div>
+                                  </section>
+
+                                  <div id="bodyContainerf9">
+
+                                    <!--
+                                    <div class="item-definition">
+                                    </div>
+                                    -->
+
+                                  </div>
+
+                                </div>
+
+                                <div class="panel" id="itemDefinitionPanela9">
+
+                                  <section class="panel-heading" id="headingContainerfa">
+                                    <div class="heading-table">
+                                      <div class="heading-row">
+                                        <div class="heading-icon-cell">
+                                          <i class="fa fa-font"></i>
+                                        </div>
+                                        <div class="heading-top-cell">
+                                          <div class="heading-name"><span>inner_1_1_2_text</span></div>
+
+                                          <div class="heading-actions">
+                                            <div class="btn-group">
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="javascript:;" id="editLinka5"><i class="fa fa-pencil-square-o"></i></a>
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="javascript:;" id="helpLinka6"><i class="fa fa-question-circle"></i></a>
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Up" href="javascript:;" id="moveUpLinka7"><i class="fa fa-arrow-circle-up"></i></a>
+
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="javascript:;" id="removeLinka8"><i class="fa fa-trash-o"></i></a>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="heading-row">
+                                        <div class="heading-padding-cell"></div>
+                                        <div class="heading-bottom-cell"><span>Inner 1.1.2 Text</span></div>
+                                      </div>
+                                    </div>
+                                  </section>
+
+                                  <div id="bodyContainerfb">
+
+                                    <!--
+                                    <div class="item-definition">
+                                    </div>
+                                    -->
+
+                                  </div>
+
+                                </div>
+
+                              </div>
+                            </div>
+
+                          </div>
+
+                        </div>
+
+                        <div class="panel" id="itemDefinitionPanelba">
+
+                          <section class="panel-heading" id="headingContainerfc">
+                            <div class="heading-table">
+                              <div class="heading-row">
+                                <div class="heading-icon-cell">
+                                  <i class="fa fa-bars"></i>
+                                </div>
+                                <div class="heading-top-cell">
+                                  <div class="heading-name"><span>inner_1_2_section</span></div>
+                                  <div class="heading-collapse collapsed" data-toggle="collapse" data-parent="#itemDefinitionPanelGroupf2" href="#bodyContainerfd"><i data-toggle="tooltip" data-original-title="Expand" class="fa fa-plus collapsed"></i><i data-toggle="tooltip" data-original-title="Collapse" class="fa fa-minus expanded"></i></div>
+                                  <div class="heading-actions">
+                                    <div class="btn-group">
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="javascript:;" id="editLinkab"><i class="fa fa-pencil-square-o"></i></a>
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="javascript:;" id="helpLinkac"><i class="fa fa-question-circle"></i></a>
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Up" href="javascript:;" id="moveUpLinkae"><i class="fa fa-arrow-circle-up"></i></a>
+
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="javascript:;" id="removeLinkaf"><i class="fa fa-trash-o"></i></a>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="heading-row">
+                                <div class="heading-padding-cell"></div>
+                                <div class="heading-bottom-cell"><span>Inner 1.2 Section</span></div>
+                              </div>
+                            </div>
+                          </section>
+
+                          <div id="bodyContainerfd" class="panel-collapse collapse">
+
+                            <div class="section-definition">
+                              <div class="panel-group" id="itemDefinitionPanelGroupfe">
+
+                                <div class="panel" id="itemDefinitionPanelb4">
+
+                                  <section class="panel-heading" id="headingContainerff">
+                                    <div class="heading-table">
+                                      <div class="heading-row">
+                                        <div class="heading-icon-cell">
+                                          <i class="fa fa-font"></i>
+                                        </div>
+                                        <div class="heading-top-cell">
+                                          <div class="heading-name"><span>inner_1_2_1_text</span></div>
+
+                                          <div class="heading-actions">
+                                            <div class="btn-group">
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="javascript:;" id="editLinkb0"><i class="fa fa-pencil-square-o"></i></a>
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="javascript:;" id="helpLinkb1"><i class="fa fa-question-circle"></i></a>
+
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Down" href="javascript:;" id="moveDownLinkb2"><i class="fa fa-arrow-circle-down"></i></a>
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="javascript:;" id="removeLinkb3"><i class="fa fa-trash-o"></i></a>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="heading-row">
+                                        <div class="heading-padding-cell"></div>
+                                        <div class="heading-bottom-cell"><span>Inner 1.2.1 Text</span></div>
+                                      </div>
+                                    </div>
+                                  </section>
+
+                                  <div id="bodyContainer100">
+
+                                    <!--
+                                    <div class="item-definition">
+                                    </div>
+                                    -->
+
+                                  </div>
+
+                                </div>
+
+                                <div class="panel" id="itemDefinitionPanelb9">
+
+                                  <section class="panel-heading" id="headingContainer101">
+                                    <div class="heading-table">
+                                      <div class="heading-row">
+                                        <div class="heading-icon-cell">
+                                          <i class="fa fa-font"></i>
+                                        </div>
+                                        <div class="heading-top-cell">
+                                          <div class="heading-name"><span>inner_1_2_2_text</span></div>
+
+                                          <div class="heading-actions">
+                                            <div class="btn-group">
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="javascript:;" id="editLinkb5"><i class="fa fa-pencil-square-o"></i></a>
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="javascript:;" id="helpLinkb6"><i class="fa fa-question-circle"></i></a>
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Up" href="javascript:;" id="moveUpLinkb7"><i class="fa fa-arrow-circle-up"></i></a>
+
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="javascript:;" id="removeLinkb8"><i class="fa fa-trash-o"></i></a>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="heading-row">
+                                        <div class="heading-padding-cell"></div>
+                                        <div class="heading-bottom-cell"><span>Inner 1.2.2 Text</span></div>
+                                      </div>
+                                    </div>
+                                  </section>
+
+                                  <div id="bodyContainer102">
+
+                                    <!--
+                                    <div class="item-definition">
+                                    </div>
+                                    -->
+
+                                  </div>
+
+                                </div>
+
+                              </div>
+                            </div>
+
+                          </div>
+
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="panel" id="itemDefinitionPanele4">
+
+                  <section class="panel-heading" id="headingContainer103">
+                    <div class="heading-table">
+                      <div class="heading-row">
+                        <div class="heading-icon-cell">
+                          <i class="fa fa-bars"></i>
+                        </div>
+                        <div class="heading-top-cell">
+                          <div class="heading-name"><span>outer_2_section</span></div>
+                          <div class="heading-collapse collapsed" data-toggle="collapse" data-parent="#itemDefinitionPanelGroupe9" href="#bodyContainer104"><i data-toggle="tooltip" data-original-title="Expand" class="fa fa-plus collapsed"></i><i data-toggle="tooltip" data-original-title="Collapse" class="fa fa-minus expanded"></i></div>
+                          <div class="heading-actions">
+                            <div class="btn-group">
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="javascript:;" id="editLinkbc"><i class="fa fa-pencil-square-o"></i></a>
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="javascript:;" id="helpLinkbd"><i class="fa fa-question-circle"></i></a>
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Up" href="javascript:;" id="moveUpLinkbe"><i class="fa fa-arrow-circle-up"></i></a>
+
+                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="javascript:;" id="removeLinkbf"><i class="fa fa-trash-o"></i></a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="heading-row">
+                        <div class="heading-padding-cell"></div>
+                        <div class="heading-bottom-cell"><span>Outer 2 Section</span></div>
+                      </div>
+                    </div>
+                  </section>
+
+                  <div id="bodyContainer104" class="panel-collapse collapse">
+
+                    <div class="section-definition">
+                      <div class="panel-group" id="itemDefinitionPanelGroup105">
+
+                        <div class="panel" id="itemDefinitionPanelc4">
+
+                          <section class="panel-heading" id="headingContainer106">
+                            <div class="heading-table">
+                              <div class="heading-row">
+                                <div class="heading-icon-cell">
+                                  <i class="fa fa-font"></i>
+                                </div>
+                                <div class="heading-top-cell">
+                                  <div class="heading-name"><span>outer_2_1_text</span></div>
+
+                                  <div class="heading-actions">
+                                    <div class="btn-group">
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="javascript:;" id="editLinkc0"><i class="fa fa-pencil-square-o"></i></a>
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="javascript:;" id="helpLinkc1"><i class="fa fa-question-circle"></i></a>
+
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Down" href="javascript:;" id="moveDownLinkc2"><i class="fa fa-arrow-circle-down"></i></a>
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="javascript:;" id="removeLinkc3"><i class="fa fa-trash-o"></i></a>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="heading-row">
+                                <div class="heading-padding-cell"></div>
+                                <div class="heading-bottom-cell"><span>Outer 2.1 Text</span></div>
+                              </div>
+                            </div>
+                          </section>
+
+                          <div id="bodyContainer107">
+
+                            <!--
+                            <div class="item-definition">
+                            </div>
+                            -->
+
+                          </div>
+
+                        </div>
+
+                        <div class="panel" id="itemDefinitionPaneld4">
+
+                          <section class="panel-heading" id="headingContainer108">
+                            <div class="heading-table">
+                              <div class="heading-row">
+                                <div class="heading-icon-cell">
+                                  <i class="fa fa-bars"></i>
+                                </div>
+                                <div class="heading-top-cell">
+                                  <div class="heading-name"><span>inner_2_1_section</span></div>
+                                  <div class="heading-collapse collapsed" data-toggle="collapse" data-parent="#itemDefinitionPanelGroup105" href="#bodyContainer109"><i data-toggle="tooltip" data-original-title="Expand" class="fa fa-plus collapsed"></i><i data-toggle="tooltip" data-original-title="Collapse" class="fa fa-minus expanded"></i></div>
+                                  <div class="heading-actions">
+                                    <div class="btn-group">
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="javascript:;" id="editLinkc5"><i class="fa fa-pencil-square-o"></i></a>
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="javascript:;" id="helpLinkc6"><i class="fa fa-question-circle"></i></a>
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Up" href="javascript:;" id="moveUpLinkc7"><i class="fa fa-arrow-circle-up"></i></a>
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Down" href="javascript:;" id="moveDownLinkc8"><i class="fa fa-arrow-circle-down"></i></a>
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="javascript:;" id="removeLinkc9"><i class="fa fa-trash-o"></i></a>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="heading-row">
+                                <div class="heading-padding-cell"></div>
+                                <div class="heading-bottom-cell"><span>Inner 2.1 Section</span></div>
+                              </div>
+                            </div>
+                          </section>
+
+                          <div id="bodyContainer109" class="panel-collapse collapse">
+
+                            <div class="section-definition">
+                              <div class="panel-group" id="itemDefinitionPanelGroup10a">
+
+                                <div class="panel" id="itemDefinitionPanelce">
+
+                                  <section class="panel-heading" id="headingContainer10b">
+                                    <div class="heading-table">
+                                      <div class="heading-row">
+                                        <div class="heading-icon-cell">
+                                          <i class="fa fa-font"></i>
+                                        </div>
+                                        <div class="heading-top-cell">
+                                          <div class="heading-name"><span>inner_2_1_1_text</span></div>
+
+                                          <div class="heading-actions">
+                                            <div class="btn-group">
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="javascript:;" id="editLinkca"><i class="fa fa-pencil-square-o"></i></a>
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="javascript:;" id="helpLinkcb"><i class="fa fa-question-circle"></i></a>
+
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Down" href="javascript:;" id="moveDownLinkcc"><i class="fa fa-arrow-circle-down"></i></a>
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="javascript:;" id="removeLinkcd"><i class="fa fa-trash-o"></i></a>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="heading-row">
+                                        <div class="heading-padding-cell"></div>
+                                        <div class="heading-bottom-cell"><span>Inner 2.1.1 Text</span></div>
+                                      </div>
+                                    </div>
+                                  </section>
+
+                                  <div id="bodyContainer10c">
+
+                                    <!--
+                                    <div class="item-definition">
+                                    </div>
+                                    -->
+
+                                  </div>
+
+                                </div>
+
+                                <div class="panel" id="itemDefinitionPaneld3">
+
+                                  <section class="panel-heading" id="headingContainer10d">
+                                    <div class="heading-table">
+                                      <div class="heading-row">
+                                        <div class="heading-icon-cell">
+                                          <i class="fa fa-font"></i>
+                                        </div>
+                                        <div class="heading-top-cell">
+                                          <div class="heading-name"><span>inner_2_1_2_text</span></div>
+
+                                          <div class="heading-actions">
+                                            <div class="btn-group">
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="javascript:;" id="editLinkcf"><i class="fa fa-pencil-square-o"></i></a>
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="javascript:;" id="helpLinkd0"><i class="fa fa-question-circle"></i></a>
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Up" href="javascript:;" id="moveUpLinkd1"><i class="fa fa-arrow-circle-up"></i></a>
+
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="javascript:;" id="removeLinkd2"><i class="fa fa-trash-o"></i></a>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="heading-row">
+                                        <div class="heading-padding-cell"></div>
+                                        <div class="heading-bottom-cell"><span>Inner 2.1.2 Text</span></div>
+                                      </div>
+                                    </div>
+                                  </section>
+
+                                  <div id="bodyContainer10e">
+
+                                    <!--
+                                    <div class="item-definition">
+                                    </div>
+                                    -->
+
+                                  </div>
+
+                                </div>
+
+                              </div>
+                            </div>
+
+                          </div>
+
+                        </div>
+
+                        <div class="panel" id="itemDefinitionPanele3">
+
+                          <section class="panel-heading" id="headingContainer10f">
+                            <div class="heading-table">
+                              <div class="heading-row">
+                                <div class="heading-icon-cell">
+                                  <i class="fa fa-bars"></i>
+                                </div>
+                                <div class="heading-top-cell">
+                                  <div class="heading-name"><span>inner_2_2_section</span></div>
+                                  <div class="heading-collapse collapsed" data-toggle="collapse" data-parent="#itemDefinitionPanelGroup105" href="#bodyContainer110"><i data-toggle="tooltip" data-original-title="Expand" class="fa fa-plus collapsed"></i><i data-toggle="tooltip" data-original-title="Collapse" class="fa fa-minus expanded"></i></div>
+                                  <div class="heading-actions">
+                                    <div class="btn-group">
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="javascript:;" id="editLinkd5"><i class="fa fa-pencil-square-o"></i></a>
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="javascript:;" id="helpLinkd6"><i class="fa fa-question-circle"></i></a>
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Up" href="javascript:;" id="moveUpLinkd7"><i class="fa fa-arrow-circle-up"></i></a>
+
+                                      <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="javascript:;" id="removeLinkd8"><i class="fa fa-trash-o"></i></a>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="heading-row">
+                                <div class="heading-padding-cell"></div>
+                                <div class="heading-bottom-cell"><span>Inner 2.2 Section</span></div>
+                              </div>
+                            </div>
+                          </section>
+
+                          <div id="bodyContainer110" class="panel-collapse collapse">
+
+                            <div class="section-definition">
+                              <div class="panel-group" id="itemDefinitionPanelGroup111">
+
+                                <div class="panel" id="itemDefinitionPaneldd">
+
+                                  <section class="panel-heading" id="headingContainer112">
+                                    <div class="heading-table">
+                                      <div class="heading-row">
+                                        <div class="heading-icon-cell">
+                                          <i class="fa fa-font"></i>
+                                        </div>
+                                        <div class="heading-top-cell">
+                                          <div class="heading-name"><span>inner_2_2_1_text</span></div>
+
+                                          <div class="heading-actions">
+                                            <div class="btn-group">
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="javascript:;" id="editLinkd9"><i class="fa fa-pencil-square-o"></i></a>
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="javascript:;" id="helpLinkda"><i class="fa fa-question-circle"></i></a>
+
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Down" href="javascript:;" id="moveDownLinkdb"><i class="fa fa-arrow-circle-down"></i></a>
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="javascript:;" id="removeLinkdc"><i class="fa fa-trash-o"></i></a>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="heading-row">
+                                        <div class="heading-padding-cell"></div>
+                                        <div class="heading-bottom-cell"><span>Inner 2.2.1 Text</span></div>
+                                      </div>
+                                    </div>
+                                  </section>
+
+                                  <div id="bodyContainer113">
+
+                                    <!--
+                                    <div class="item-definition">
+                                    </div>
+                                    -->
+
+                                  </div>
+
+                                </div>
+
+                                <div class="panel" id="itemDefinitionPanele2">
+
+                                  <section class="panel-heading" id="headingContainer114">
+                                    <div class="heading-table">
+                                      <div class="heading-row">
+                                        <div class="heading-icon-cell">
+                                          <i class="fa fa-font"></i>
+                                        </div>
+                                        <div class="heading-top-cell">
+                                          <div class="heading-name"><span>inner_2_2_2_text</span></div>
+
+                                          <div class="heading-actions">
+                                            <div class="btn-group">
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Edit" href="javascript:;" id="editLinkde"><i class="fa fa-pencil-square-o"></i></a>
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Help" href="javascript:;" id="helpLinkdf"><i class="fa fa-question-circle"></i></a>
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Move Up" href="javascript:;" id="moveUpLinke0"><i class="fa fa-arrow-circle-up"></i></a>
+
+                                              <a class="btn btn-xs btn-default" data-toggle="tooltip" title="" data-original-title="Remove" href="javascript:;" id="removeLinke1"><i class="fa fa-trash-o"></i></a>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="heading-row">
+                                        <div class="heading-padding-cell"></div>
+                                        <div class="heading-bottom-cell"><span>Inner 2.2.2 Text</span></div>
+                                      </div>
+                                    </div>
+                                  </section>
+
+                                  <div id="bodyContainer115">
+
+                                    <!--
+                                    <div class="item-definition">
+                                    </div>
+                                    -->
+
+                                  </div>
+
+                                </div>
+
+                              </div>
+                            </div>
+
+                          </div>
+
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="add-item-definition">
+                  <a href="#"><i class="fa fa-plus"></i></a>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="push-15-t">
+              <button type="submit" class="btn btn-primary pull-right push-10-l" name="updateButton" id="updateButton116">Update</button>
+              <button type="submit" class="btn btn-white pull-right" name="cancelButton" id="cancelButton117">Cancel</button>
+              <div class="clear-both"></div>
+            </div>
+
+          </form>
 
 
 
@@ -537,10 +1696,33 @@
 
 
 
-              </wicket:extend>
-            </wicket:child>
 
-          </wicket:extend>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         </section>
       </div>
