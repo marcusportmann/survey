@@ -481,6 +481,8 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
      */
     public void show(AjaxRequestTarget target, SurveyInstance surveyInstance)
     {
+      sendSurveyRequestType = null;
+
       id = surveyInstance.getId();
 
       name = surveyInstance.getName();
@@ -554,15 +556,6 @@ class SurveyInstanceAdministrationPage extends TemplateWebPage
 
         return false;
       }
-    }
-
-    /**
-     * Reset the model for the dialog.
-     */
-    @Override
-    protected void resetModel()
-    {
-      sendSurveyRequestType = null;
     }
 
     private List<SurveyAudience> getAudienceOptions()

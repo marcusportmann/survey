@@ -390,9 +390,6 @@ public abstract class SurveyItemDefinitionPanel extends Panel
 
       return true;
     }
-
-    @Override
-    public void resetModel() {}
   }
 
 
@@ -555,8 +552,5 @@ public abstract class SurveyItemDefinitionPanel extends Panel
 
       return true;
     }
-
-    @Override
-    public void resetModel() {}
   }
 }

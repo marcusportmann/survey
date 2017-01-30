@@ -155,8 +155,5 @@ public class SurveyItemDefinitionPanelGroup extends Panel
     {
       return true;
     }
-
-    @Override
-    public void resetModel() {}
   }
 }

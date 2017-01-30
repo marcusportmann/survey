@@ -72,8 +72,8 @@ public class SurveyServiceTest
 
     System.out.println();
 
-    SurveyInstance surveyInstance = new SurveyInstance("CTO ELT Values - September 2016",
-        "CTO ELT Values - September 2016", surveyDefinition);
+    SurveyInstance surveyInstance = new SurveyInstance("CTO ELT Values - January 2017",
+        "CTO ELT Values - January 2017", surveyDefinition);
 
     System.out.printf(
         "INSERT INTO SURVEY.SURVEY_INSTANCES(ID, SURVEY_DEFINITION_ID, SURVEY_DEFINITION_VERSION, NAME, DESCRIPTION) VALUES ('%s', '%s', %d, '%s', '%s');%n",
@@ -671,8 +671,8 @@ public class SurveyServiceTest
         "CTO ELT Values");
 
     // Before Text
-    surveyDefinition.addItemDefinition(new SurveyTextDefinition("before_text", "Before Text",
-        "Before Text Description", "Before Text Help"));
+    //surveyDefinition.addItemDefinition(new SurveyTextDefinition("before_text", "Before Text",
+    //    "Before Text Description", "Before Text Help"));
 
     SurveyGroupRatingsDefinition surveyGroupRatingsDefinition = new SurveyGroupRatingsDefinition(
         "cto_values", "CTO Values", "CTO Values", "CTO Values", true);
@@ -698,128 +698,117 @@ public class SurveyServiceTest
     surveyGroupRatingsDefinition.addGroupRatingDefinition(new SurveyGroupRatingDefinition("Trust",
         SurveyGroupRatingType.YES_NO_NA));
 
-    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
-        "CTO ELT"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("CTO ELT"));
     surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Peter"));
-    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
-        "Adriaan"));
-    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
-        "Alapan"));
-    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Dan"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Adriaan"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Alapan"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Claus"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Daniel"));
     surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Daryl"));
     surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("David"));
-    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
-        "Francois"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Duncan"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Francois"));
     surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("James"));
-    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Kersh"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Karen"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Kershnee"));
     surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Kevin"));
-    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
-        "Linde-Marie"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Lawrence"));
     surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Manoj"));
-    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
-        "Marcus"));
-    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
-        "Mercia"));
-    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
-        "Nicole"));
-    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
-        "Lawrence"));
-    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
-        "Richard"));
-    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
-        "Sandra"));
-    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
-        "Tendai"));
-    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition(
-        "Debbie"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Mercia"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Manish"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Nicole"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Richard"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Sandra"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Tendai"));
+    surveyGroupRatingsDefinition.addGroupMemberDefinition(new SurveyGroupMemberDefinition("Deborah"));
 
     surveyDefinition.addItemDefinition(surveyGroupRatingsDefinition);
 
     // After Text
-    surveyDefinition.addItemDefinition(new SurveyTextDefinition("after_text", "After Text",
-        "After Text Description", "After Text Help"));
+    //surveyDefinition.addItemDefinition(new SurveyTextDefinition("after_text", "After Text",
+    //    "After Text Description", "After Text Help"));
 
     // Outer 1 Section
-    SurveySectionDefinition outer1SectionDefinition = new SurveySectionDefinition(
-        "outer_1_section", "Outer 1 Section", "Outer 1 Section Description",
-        "Outer 1 Section Help");
+    //SurveySectionDefinition outer1SectionDefinition = new SurveySectionDefinition(
+    //    "outer_1_section", "Outer 1 Section", "Outer 1 Section Description",
+    //    "Outer 1 Section Help");
 
-    surveyDefinition.addItemDefinition(outer1SectionDefinition);
+    //surveyDefinition.addItemDefinition(outer1SectionDefinition);
 
     // Outer 1.1 Text
-    outer1SectionDefinition.addItemDefinition(new SurveyTextDefinition("outer_1_1_text",
-        "Outer 1.1 Text", "Outer 1.1 Text Description", "Outer 1.1 Text Help"));
+    //outer1SectionDefinition.addItemDefinition(new SurveyTextDefinition("outer_1_1_text",
+    //    "Outer 1.1 Text", "Outer 1.1 Text Description", "Outer 1.1 Text Help"));
 
     // Inner 1.1 Section
-    SurveySectionDefinition inner11SectionDefinition = new SurveySectionDefinition(
-        "inner_1_1_section", "Inner 1.1 Section", "Inner 1.1 Section Description",
-        "Inner 1.1 Section Help");
+    //SurveySectionDefinition inner11SectionDefinition = new SurveySectionDefinition(
+    //    "inner_1_1_section", "Inner 1.1 Section", "Inner 1.1 Section Description",
+    //    "Inner 1.1 Section Help");
 
-    outer1SectionDefinition.addItemDefinition(inner11SectionDefinition);
+    //outer1SectionDefinition.addItemDefinition(inner11SectionDefinition);
 
     // Inner 1.1.1 Text
-    inner11SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_1_1_1_text",
-        "Inner 1.1.1 Text", "Inner 1.1.1 Text Description", "Inner 1.1.1 Text Help"));
+    //inner11SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_1_1_1_text",
+    //    "Inner 1.1.1 Text", "Inner 1.1.1 Text Description", "Inner 1.1.1 Text Help"));
 
     // Inner 1.1.2 Text
-    inner11SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_1_1_2_text",
-        "Inner 1.1.2 Text", "Inner 1.1.2 Text Description", "Inner 1.1.2 Text Help"));
+    //inner11SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_1_1_2_text",
+    //    "Inner 1.1.2 Text", "Inner 1.1.2 Text Description", "Inner 1.1.2 Text Help"));
 
     // Inner 1.2 Section
-    SurveySectionDefinition inner12SectionDefinition = new SurveySectionDefinition(
-        "inner_1_2_section", "Inner 1.2 Section", "Inner 1.2 Section Description",
-        "Inner 1.2 Section Help");
+    //SurveySectionDefinition inner12SectionDefinition = new SurveySectionDefinition(
+    //    "inner_1_2_section", "Inner 1.2 Section", "Inner 1.2 Section Description",
+    //    "Inner 1.2 Section Help");
 
-    outer1SectionDefinition.addItemDefinition(inner12SectionDefinition);
+    //outer1SectionDefinition.addItemDefinition(inner12SectionDefinition);
 
     // Inner 1.2.1 Text
-    inner12SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_1_2_1_text",
-        "Inner 1.2.1 Text", "Inner 1.2.1 Text Description", "Inner 1.2.1 Text Help"));
+    //inner12SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_1_2_1_text",
+    //    "Inner 1.2.1 Text", "Inner 1.2.1 Text Description", "Inner 1.2.1 Text Help"));
 
     // Inner 1.2.2 Text
-    inner12SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_1_2_2_text",
-        "Inner 1.2.2 Text", "Inner 1.2.2 Text Description", "Inner 1.2.2 Text Help"));
+    //inner12SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_1_2_2_text",
+    //    "Inner 1.2.2 Text", "Inner 1.2.2 Text Description", "Inner 1.2.2 Text Help"));
 
     // Outer 2 Section
-    SurveySectionDefinition outer2SectionDefinition = new SurveySectionDefinition(
-        "outer_2_section", "Outer 2 Section", "Outer 2 Section Description",
-        "Outer 2 Section Help");
+    //SurveySectionDefinition outer2SectionDefinition = new SurveySectionDefinition(
+    //    "outer_2_section", "Outer 2 Section", "Outer 2 Section Description",
+    //    "Outer 2 Section Help");
 
-    surveyDefinition.addItemDefinition(outer2SectionDefinition);
+    //surveyDefinition.addItemDefinition(outer2SectionDefinition);
 
     // Outer 2.1 Text
-    outer2SectionDefinition.addItemDefinition(new SurveyTextDefinition("outer_2_1_text",
-        "Outer 2.1 Text", "Outer 2.1 Text Description", "Outer 2.1 Text Help"));
+    //outer2SectionDefinition.addItemDefinition(new SurveyTextDefinition("outer_2_1_text",
+    //    "Outer 2.1 Text", "Outer 2.1 Text Description", "Outer 2.1 Text Help"));
 
     // Inner 2.1 Section
-    SurveySectionDefinition inner21SectionDefinition = new SurveySectionDefinition(
-        "inner_2_1_section", "Inner 2.1 Section", "Inner 2.1 Section Description",
-        "Inner 2.1 Section Help");
+    //SurveySectionDefinition inner21SectionDefinition = new SurveySectionDefinition(
+    //    "inner_2_1_section", "Inner 2.1 Section", "Inner 2.1 Section Description",
+    //    "Inner 2.1 Section Help");
 
-    outer2SectionDefinition.addItemDefinition(inner21SectionDefinition);
+    //outer2SectionDefinition.addItemDefinition(inner21SectionDefinition);
 
     // Inner 2.1.1 Text
-    inner21SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_2_1_1_text",
-        "Inner 2.1.1 Text", "Inner 2.1.1 Text Description", "Inner 2.1.1 Text Help"));
+    //inner21SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_2_1_1_text",
+    //    "Inner 2.1.1 Text", "Inner 2.1.1 Text Description", "Inner 2.1.1 Text Help"));
 
     // Inner 2.1.2 Text
-    inner21SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_2_1_2_text",
-        "Inner 2.1.2 Text", "Inner 2.1.2 Text Description", "Inner 2.1.2 Text Help"));
+    //inner21SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_2_1_2_text",
+    //    "Inner 2.1.2 Text", "Inner 2.1.2 Text Description", "Inner 2.1.2 Text Help"));
 
     // Inner 2.2 Section
-    SurveySectionDefinition inner22SectionDefinition = new SurveySectionDefinition(
-        "inner_2_2_section", "Inner 2.2 Section", "Inner 2.2 Section Description",
-        "Inner 2.2 Section Help");
+    //SurveySectionDefinition inner22SectionDefinition = new SurveySectionDefinition(
+    //    "inner_2_2_section", "Inner 2.2 Section", "Inner 2.2 Section Description",
+    //    "Inner 2.2 Section Help");
 
-    outer2SectionDefinition.addItemDefinition(inner22SectionDefinition);
+    //outer2SectionDefinition.addItemDefinition(inner22SectionDefinition);
 
     // Inner 2.2.1 Text
-    inner22SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_2_2_1_text",
-        "Inner 2.2.1 Text", "Inner 2.2.1 Text Description", "Inner 2.2.1 Text Help"));
+    //inner22SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_2_2_1_text",
+    //    "Inner 2.2.1 Text", "Inner 2.2.1 Text Description", "Inner 2.2.1 Text Help"));
 
     // Inner 2.2.2 Text
-    inner22SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_2_2_2_text",
-        "Inner 2.2.2 Text", "Inner 2.2.2 Text Description", "Inner 2.2.2 Text Help"));
+    //inner22SectionDefinition.addItemDefinition(new SurveyTextDefinition("inner_2_2_2_text",
+    //    "Inner 2.2.2 Text", "Inner 2.2.2 Text Description", "Inner 2.2.2 Text Help"));
 
     return surveyDefinition;
   }
@@ -827,7 +816,7 @@ public class SurveyServiceTest
   private static synchronized SurveyInstance getCTOValuesSurveyInstanceDetails(
       SurveyDefinition surveyDefinition)
   {
-    return new SurveyInstance("CTO ELT Values - September 2016", "CTO ELT Values - September 2016",
+    return new SurveyInstance("CTO ELT Values - Test", "CTO ELT Values - Test",
         surveyDefinition);
   }
 

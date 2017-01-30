@@ -13,12 +13,15 @@ package digital.survey;
 
 //~--- non-JDK imports --------------------------------------------------------
 
+import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wildfly.swarm.Swarm;
 import org.wildfly.swarm.config.undertow.FilterConfiguration;
 import org.wildfly.swarm.datasources.DatasourcesFraction;
 import org.wildfly.swarm.undertow.UndertowFraction;
+
+//~--- JDK imports ------------------------------------------------------------
 
 /**
  * The <code>Survey</code> class initialises the WildFly Swarm container.
@@ -49,18 +52,67 @@ public class Survey
   {
     try
     {
+      Options options = new Options();
+
+      Option portOption = new Option("p", "port", true, "the HTTP port");
+      portOption.setRequired(false);
+      options.addOption(portOption);
+
+      Option dbConnectionUrlOption = new Option("c", "dbConnectionUrl", true,
+          "the database connection URL");
+      dbConnectionUrlOption.setRequired(true);
+      options.addOption(dbConnectionUrlOption);
+
+      Option dbUsernameOption = new Option("u", "dbUsername", true,
+          "the username for the database user");
+      dbUsernameOption.setRequired(true);
+      options.addOption(dbUsernameOption);
+
+      Option dbPasswordOption = new Option("p", "dbPassword", true,
+          "the password for the database user");
+      dbPasswordOption.setRequired(true);
+      options.addOption(dbPasswordOption);
+
+      CommandLineParser parser = new DefaultParser();
+      HelpFormatter formatter = new HelpFormatter();
+      CommandLine commandLine;
+
+      try
+      {
+        commandLine = parser.parse(options, args);
+      }
+      catch (ParseException e)
+      {
+        System.out.println(e.getMessage());
+        formatter.printHelp("survey-swarm", options);
+
+        System.exit(1);
+
+        return;
+      }
+
+      // Set the WildFly Swarm configuration properties
+      // System.setProperty("swarm.http.port", "80");
+      System.setProperty("swarm.context.path", "/");
+
       // Instantiate the container
       Swarm swarm = new Swarm();
 
       // Initialise the application data source
-      swarm.fraction(new DatasourcesFraction().dataSource("SurveyDS",
-          (ds) ->
+      swarm.fraction(new DatasourcesFraction().jdbcDriver("org.postgresql",
+          (d) ->
           {
-            ds.driverName("h2");
-            ds.connectionUrl(
-                "jdbc:h2:mem:survey;MVCC=true;MODE=DB2;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
-            ds.userName("sa");
-            ds.password("sa");
+            d.driverClassName("org.postgresql.Driver");
+            d.xaDatasourceClass("org.postgresql.xa.PGXADataSource");
+            d.driverModuleName("org.postgresql");
+          }
+          ).dataSource("SurveyDS",
+              (ds) ->
+          {
+            ds.driverName("org.postgresql");
+            ds.connectionUrl(commandLine.getOptionValue("dbConnectionUrl"));
+            ds.userName(commandLine.getOptionValue("dbUsername"));
+            ds.password(commandLine.getOptionValue("dbPassword"));
             ds.jndiName("java:jboss/datasources/SurveyDS");
             ds.useJavaContext(true);
             ds.trackStatements("true");

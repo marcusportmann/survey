@@ -291,9 +291,6 @@ public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
 
       return true;
     }
-
-    @Override
-    public void resetModel() {}
   }
 
 
@@ -354,9 +351,6 @@ public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
 
       return true;
     }
-
-    @Override
-    public void resetModel() {}
 
     private List<SurveyGroupRatingType> getRatingTypeOptions()
     {
@@ -425,9 +419,6 @@ public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
 
       return true;
     }
-
-    @Override
-    public void resetModel() {}
   }
 
 
@@ -486,8 +477,5 @@ public class SurveyGroupRatingsDefinitionPanel extends SurveyItemDefinitionPanel
 
       return true;
     }
-
-    @Override
-    public void resetModel() {}
   }
 }
