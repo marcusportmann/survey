@@ -92,7 +92,24 @@ public class Survey
       }
 
       // Set the WildFly Swarm configuration properties
-      // System.setProperty("swarm.http.port", "80");
+      if (commandLine.hasOption(portOption.getOpt()))
+      {
+        try
+        {
+          int port = Integer.parseInt(commandLine.getOptionValue(portOption.getOpt()));
+
+          System.setProperty("swarm.http.port", String.valueOf(port));
+        }
+        catch (Throwable e)
+        {
+          System.out.println("Invalid port number");
+
+          System.exit(1);
+
+          return;
+        }
+      }
+
       System.setProperty("swarm.context.path", "/");
 
       // Instantiate the container

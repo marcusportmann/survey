@@ -79,7 +79,7 @@ public class HomePage extends TemplateWebPage
         }
       }
     };
-    surveyResultLink.setVisible(true);
+    surveyResultLink.setVisible(false);
     add(surveyResultLink);
   }
 }

@@ -151,6 +151,10 @@ class SurveyGroupRatingsResultPanel extends Panel
             {
               weightedTotalAverageRating = totalAverageRating / totalNumberOfRatingsWithValidScore;
             }
+            else
+            {
+              weightedTotalAverageRating = 50;
+            }
 
             int grad = ((int) (weightedTotalAverageRating / 5)) * 5;
 

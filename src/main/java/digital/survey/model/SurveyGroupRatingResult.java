@@ -137,7 +137,14 @@ public class SurveyGroupRatingResult
         total += rating;
       }
 
-      return ((float) total / (float) ratings.size());
+      if (ratings.size() > 0)
+      {
+        return ((float) total / (float) ratings.size());
+      }
+      else
+      {
+        return 0;
+      }
     }
     else if (groupRatingDefinitionRatingType == SurveyGroupRatingType.YES_NO_NA)
     {
@@ -155,7 +162,14 @@ public class SurveyGroupRatingResult
         }
       }
 
-      return (((float) total / (float) ratings.size()) * 100);
+      if (ratings.size() > 0)
+      {
+        return (((float) total / (float) ratings.size()) * 100);
+      }
+      else
+      {
+        return 50;
+      }
     }
     else
     {
