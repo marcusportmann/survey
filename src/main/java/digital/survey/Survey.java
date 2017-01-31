@@ -58,6 +58,11 @@ public class Survey
       portOption.setRequired(false);
       options.addOption(portOption);
 
+//      Option dbTypeOption = new Option("t", "dbType", true,
+//        "the database type");
+//      dbTypeOption.setRequired(true);
+//      options.addOption(dbTypeOption);
+
       Option dbConnectionUrlOption = new Option("c", "dbConnectionUrl", true,
           "the database connection URL");
       dbConnectionUrlOption.setRequired(true);
