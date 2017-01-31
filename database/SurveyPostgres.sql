@@ -86,7 +86,7 @@ DROP ROLE IF EXISTS survey;
 -- -------------------------------------------------------------------------------------------------
 -- CREATE ROLES
 -- -------------------------------------------------------------------------------------------------
-CREATE ROLE survey WITH LOGIN PASSWORD 'Password1';
+CREATE ROLE survey WITH LOGIN PASSWORD 'GSPQzQ3EL95JCnaz';
 ALTER ROLE survey WITH LOGIN;
 
 
