@@ -19,6 +19,7 @@ package digital.survey.web.pages;
 //~--- non-JDK imports --------------------------------------------------------
 
 import digital.survey.model.ISurveyService;
+import digital.survey.model.Organisation;
 import digital.survey.model.SurveyDefinition;
 import digital.survey.web.SurveySecurity;
 import digital.survey.web.components.SurveyDefinitionInputPanel;
@@ -71,8 +72,10 @@ class AddSurveyDefinitionPage extends TemplateExtensibleDialogWebPage
     {
       WebSession webSession = getWebApplicationSession();
 
+      Organisation organisation = new Organisation(webSession.getOrganisation().getId(), webSession.getOrganisation().getName(), webSession.getOrganisation().getStatus());
+
       IModel<SurveyDefinition> surveyDefinitionModel = new Model<>(new SurveyDefinition(
-          UUID.randomUUID(), 1, webSession.getOrganisation(), "", ""));
+          UUID.randomUUID(), 1, organisation, "", ""));
 
       Form<SurveyDefinition> addForm = new Form<>("addForm", new CompoundPropertyModel<>(
           surveyDefinitionModel));

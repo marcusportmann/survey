@@ -17,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import javax.enterprise.inject.Vetoed;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,6 @@ import java.util.UUID;
  * @author Marcus Portmann
  */
 @JsonPropertyOrder({ "id", "typeId", "name", "label", "description", "help", "itemDefinitions" })
-@Vetoed
 public class SurveySectionDefinition extends SurveyItemDefinition
   implements Serializable
 {

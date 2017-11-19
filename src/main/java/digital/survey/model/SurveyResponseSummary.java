@@ -15,7 +15,6 @@ package digital.survey.model;
 
 import guru.mmp.common.util.DateUtil;
 
-import javax.enterprise.inject.Vetoed;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -31,7 +30,6 @@ import java.util.UUID;
  */
 @Entity
 @Table(schema = "SURVEY", name = "SURVEY_RESPONSES")
-@Vetoed
 public class SurveyResponseSummary
   implements Serializable
 {

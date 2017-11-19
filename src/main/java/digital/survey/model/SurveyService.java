@@ -16,19 +16,20 @@ package digital.survey.model;
 import digital.survey.web.SurveyApplication;
 import guru.mmp.application.configuration.IConfigurationService;
 import guru.mmp.application.util.ServiceUtil;
-import guru.mmp.common.persistence.TransactionManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.ejb.AsyncResult;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
+
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -42,9 +43,8 @@ import java.util.concurrent.Future;
  *
  * @author Marcus Portmann
  */
+@Service
 @SuppressWarnings("JpaQlInspection")
-@ApplicationScoped
-@Default
 public class SurveyService
   implements ISurveyService
 {
@@ -61,26 +61,25 @@ public class SurveyService
   private long SEND_SURVEY_REQUEST_RETRY_DELAY = 60L * 5L * 1000L;
 
   /* Entity Manager */
-  @PersistenceContext(unitName = "Application")
+  @PersistenceContext(unitName = "applicationPersistenceUnit")
   private EntityManager entityManager;
 
   /* Configuration Service */
   @Inject
   private IConfigurationService configurationService;
 
-  /* The result of sending the survey requests. */
-  private Future<Boolean> sendSurveyRequestsResult;
-
-  /* Background Survey Request Sender */
+  /**
+   * The Spring application context.
+   */
   @Inject
-  BackgroundSurveyRequestSender backgroundSurveyRequestSender;
+  private ApplicationContext applicationContext;
 
   /**
    * Constructs a new <code>SurveyService</code>.
    */
   public SurveyService()
   {
-    sendSurveyRequestsResult = new AsyncResult<>(false);
+
   }
 
   /**
@@ -482,6 +481,7 @@ public class SurveyService
    *
    * @throws SurveyServiceException
    */
+  @Transactional
   public boolean deleteSurveyResponseForSurveyRequest(UUID id)
     throws SurveyServiceException
   {
@@ -511,6 +511,7 @@ public class SurveyService
    *
    * @return the filtered survey audiences members for the survey audience
    */
+  @Transactional
   public List<SurveyAudienceMember> getFilteredMembersForSurveyAudience(UUID id, String filter)
     throws SurveyServiceException
   {
@@ -545,6 +546,7 @@ public class SurveyService
    *
    * @return the filtered survey audiences for the organisation
    */
+  @Transactional
   public List<SurveyAudience> getFilteredSurveyAudiencesForOrganisation(UUID id, String filter)
     throws SurveyServiceException
   {
@@ -579,6 +581,7 @@ public class SurveyService
    * @return the summaries for the latest versions of the filtered survey definitions for the
    *         organisation
    */
+  @Transactional
   @SuppressWarnings("unchecked")
   public List<SurveyDefinitionSummary> getFilteredSurveyDefinitionSummariesForOrganisation(UUID id,
       String filter)
@@ -615,6 +618,7 @@ public class SurveyService
    *
    * @return the filtered survey instances for all versions of the survey definition
    */
+  @Transactional
   public List<SurveyInstance> getFilteredSurveyInstancesForSurveyDefinition(UUID id, String filter)
     throws SurveyServiceException
   {
@@ -647,6 +651,7 @@ public class SurveyService
    *
    * @return the filtered survey requests for the survey instance
    */
+  @Transactional
   public List<SurveyRequest> getFilteredSurveyRequestsForSurveyInstance(UUID id, String filter)
     throws SurveyServiceException
   {
@@ -680,6 +685,7 @@ public class SurveyService
    *
    * @return the summaries for the filtered survey responses for the survey instance
    */
+  @Transactional
   public List<SurveyResponseSummary> getFilteredSurveyResponseSummariesForSurveyInstance(UUID id,
       String filter)
     throws SurveyServiceException
@@ -713,6 +719,7 @@ public class SurveyService
    * @return the latest version number for the survey definition or 0 if the survey definition
    *         could not be found
    */
+  @Transactional
   public int getLatestVersionNumberForSurveyDefinition(UUID id)
     throws SurveyServiceException
   {
@@ -742,6 +749,7 @@ public class SurveyService
    *
    * @return the latest version of the survey definition identified by the specified ID
    */
+  @Transactional
   public SurveyDefinition getLatestVersionOfSurveyDefinition(UUID id)
     throws SurveyServiceException
   {
@@ -777,6 +785,7 @@ public class SurveyService
    *
    * @return the maximum number of times that sending of a survey request will be attempted
    */
+  @Transactional
   public int getMaximumSurveyRequestSendAttempts()
     throws SurveyServiceException
   {
@@ -801,6 +810,7 @@ public class SurveyService
    *
    * @return the survey audiences members for the survey audience
    */
+  @Transactional
   public List<SurveyAudienceMember> getMembersForSurveyAudience(UUID id)
     throws SurveyServiceException
   {
@@ -832,24 +842,12 @@ public class SurveyService
    *         survey requests are currently queued for sending
    */
   @SuppressWarnings("unchecked")
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public SurveyRequest getNextSurveyRequestQueuedForSending()
     throws SurveyServiceException
   {
-    // Retrieve the Transaction Manager
-    TransactionManager transactionManager = TransactionManager.getTransactionManager();
-    javax.transaction.Transaction existingTransaction = null;
-
     try
     {
-      if (transactionManager.isTransactionActive())
-      {
-        existingTransaction = transactionManager.beginNew();
-      }
-      else
-      {
-        transactionManager.begin();
-      }
-
       String selectSQL =
           "SELECT ID, SURVEY_INSTANCE_ID, FIRST_NAME, LAST_NAME, EMAIL, REQUESTED, STATUS, SEND_ATTEMPTS, LOCK_NAME, LAST_PROCESSED FROM SURVEY.SURVEY_REQUESTS WHERE STATUS=?1 AND (LAST_PROCESSED<?2 OR LAST_PROCESSED IS NULL) FETCH FIRST 1 ROWS ONLY FOR UPDATE";
 
@@ -888,39 +886,12 @@ public class SurveyService
         }
       }
 
-      transactionManager.commit();
-
       return surveyRequest;
     }
     catch (Throwable e)
     {
-      try
-      {
-        transactionManager.rollback();
-      }
-      catch (Throwable f)
-      {
-        logger.error("Failed to rollback the transaction while retrieving the next survey request"
-            + " that has been queued for sending from the database", f);
-      }
-
       throw new SurveyServiceException(
           "Failed to retrieve the next survey request that has been queued for sending", e);
-    }
-    finally
-    {
-      try
-      {
-        if (existingTransaction != null)
-        {
-          transactionManager.resume(existingTransaction);
-        }
-      }
-      catch (Throwable e)
-      {
-        logger.error("Failed to resume the original transaction while retrieving the next survey"
-            + " request that has been queued for sending from the database", e);
-      }
     }
   }
 
@@ -933,6 +904,7 @@ public class SurveyService
    *
    * @return the number of filtered survey audience members for the survey audience
    */
+  @Transactional
   public int getNumberOfFilteredMembersForSurveyAudience(UUID id, String filter)
     throws SurveyServiceException
   {
@@ -964,6 +936,7 @@ public class SurveyService
    *
    * @return the number of filtered survey audiences for the organisation
    */
+  @Transactional
   public int getNumberOfFilteredSurveyAudiencesForOrganisation(UUID id, String filter)
     throws SurveyServiceException
   {
@@ -994,6 +967,7 @@ public class SurveyService
    *
    * @return the number of filtered survey definitions for the organisation
    */
+  @Transactional
   public int getNumberOfFilteredSurveyDefinitionsForOrganisation(UUID id, String filter)
     throws SurveyServiceException
   {
@@ -1025,6 +999,7 @@ public class SurveyService
    *
    * @return the number of filtered survey instances for all versions of the survey definition
    */
+  @Transactional
   public int getNumberOfFilteredSurveyInstancesForSurveyDefinition(UUID id, String filter)
     throws SurveyServiceException
   {
@@ -1057,6 +1032,7 @@ public class SurveyService
    *
    * @return the number of filtered survey requests for the survey instance
    */
+  @Transactional
   public int getNumberOfFilteredSurveyRequestsForSurveyInstance(UUID id, String filter)
     throws SurveyServiceException
   {
@@ -1091,6 +1067,7 @@ public class SurveyService
    *
    * @return the number of filtered survey responses for the survey instance
    */
+  @Transactional
   public int getNumberOfFilteredSurveyResponsesForSurveyInstance(UUID id, String filter)
     throws SurveyServiceException
   {
@@ -1123,6 +1100,7 @@ public class SurveyService
    *
    * @return the number of members for the survey audience
    */
+  @Transactional
   public int getNumberOfMembersForSurveyAudience(UUID id)
     throws SurveyServiceException
   {
@@ -1150,6 +1128,7 @@ public class SurveyService
    *
    * @return the number of survey audiences for the organisation
    */
+  @Transactional
   public int getNumberOfSurveyAudiencesForOrganisation(UUID id)
     throws SurveyServiceException
   {
@@ -1177,6 +1156,7 @@ public class SurveyService
    *
    * @return the number of survey definitions for the organisation
    */
+  @Transactional
   public int getNumberOfSurveyDefinitionsForOrganisation(UUID id)
     throws SurveyServiceException
   {
@@ -1206,6 +1186,7 @@ public class SurveyService
    *
    * @return the number of survey instances for all versions of the survey definition
    */
+  @Transactional
   public int getNumberOfSurveyInstancesForSurveyDefinition(UUID id)
     throws SurveyServiceException
   {
@@ -1236,6 +1217,7 @@ public class SurveyService
    *
    * @return the number of survey requests for the survey instance
    */
+  @Transactional
   public int getNumberOfSurveyRequestsForSurveyInstance(UUID id)
     throws SurveyServiceException
   {
@@ -1266,6 +1248,7 @@ public class SurveyService
    *
    * @return the number of survey responses for the survey instance
    */
+  @Transactional
   public int getNumberOfSurveyResponsesForSurveyInstance(UUID id)
     throws SurveyServiceException
   {
@@ -1296,6 +1279,7 @@ public class SurveyService
    *
    * @return the the survey request to survey response mappings for the survey instance
    */
+  @Transactional
   @SuppressWarnings("unchecked")
   public List<SurveyRequestToSurveyResponseMapping> getRequestToResponseMappingsForSurveyInstance(
       UUID id)
@@ -1332,6 +1316,7 @@ public class SurveyService
    * @return the survey audience identified by the specified ID or <code>null</code> if the survey
    *         audience could not be found
    */
+  @Transactional
   public SurveyAudience getSurveyAudience(UUID id)
     throws SurveyServiceException
   {
@@ -1369,6 +1354,7 @@ public class SurveyService
    * @return the survey audience member identified by the specified ID or <code>null</code> if the
    *         survey audience member could not be found
    */
+  @Transactional
   public SurveyAudienceMember getSurveyAudienceMember(UUID id)
     throws SurveyServiceException
   {
@@ -1406,6 +1392,7 @@ public class SurveyService
    *
    * @return the survey audiences for the organisation
    */
+  @Transactional
   public List<SurveyAudience> getSurveyAudiencesForOrganisation(UUID id)
     throws SurveyServiceException
   {
@@ -1436,6 +1423,7 @@ public class SurveyService
    * @return the survey definition identified by the specified ID and version or <code>null</code>
    *         if the survey definition could not be found
    */
+  @Transactional
   public SurveyDefinition getSurveyDefinition(UUID id, int version)
     throws SurveyServiceException
   {
@@ -1473,6 +1461,7 @@ public class SurveyService
    *
    * @return the summaries for the latest versions of the survey definitions for the organisation
    */
+  @Transactional
   @SuppressWarnings("unchecked")
   public List<SurveyDefinitionSummary> getSurveyDefinitionSummariesForOrganisation(UUID id)
     throws SurveyServiceException
@@ -1508,6 +1497,7 @@ public class SurveyService
    * @return the summary for the survey definition identified by the specified ID and version or
    *         <code>null</code> if the survey definition could not be found
    */
+  @Transactional
   public SurveyDefinitionSummary getSurveyDefinitionSummary(UUID id, int version)
     throws SurveyServiceException
   {
@@ -1549,6 +1539,7 @@ public class SurveyService
    * @return the survey instance identified by the specified ID or <code>null</code> if the survey
    *         instance could not be found
    */
+  @Transactional
   public SurveyInstance getSurveyInstance(UUID id)
     throws SurveyServiceException
   {
@@ -1585,6 +1576,7 @@ public class SurveyService
    *
    * @return the survey instances for all versions of the survey definition
    */
+  @Transactional
   public List<SurveyInstance> getSurveyInstancesForSurveyDefinition(UUID id)
     throws SurveyServiceException
   {
@@ -1614,6 +1606,7 @@ public class SurveyService
    * @return the survey request identified by the specified ID or <code>null</code> if the survey
    *         request could not be found
    */
+  @Transactional
   public SurveyRequest getSurveyRequest(UUID id)
     throws SurveyServiceException
   {
@@ -1653,6 +1646,7 @@ public class SurveyService
    * @return the survey request with the specified e-mail address for the survey instance with
    *         the specified ID or <code>null</code> if no matching service request could be found
    */
+  @Transactional
   public SurveyRequest getSurveyRequestForSurveyInstanceByEmail(UUID id, String email)
     throws SurveyServiceException
   {
@@ -1692,6 +1686,7 @@ public class SurveyService
    *
    * @return the survey requests for the survey instance
    */
+  @Transactional
   public List<SurveyRequest> getSurveyRequestsForSurveyInstance(UUID id)
     throws SurveyServiceException
   {
@@ -1721,6 +1716,7 @@ public class SurveyService
    * @return the survey response identified by the specified ID or <code>null</code> if the survey
    *         response could not be found
    */
+  @Transactional
   public SurveyResponse getSurveyResponse(UUID id)
     throws SurveyServiceException
   {
@@ -1758,6 +1754,7 @@ public class SurveyService
    * @return the survey response associated with the survey request or <code>nul</code> if an
    *         associated survey response could not be found
    */
+  @Transactional
   public SurveyResponse getSurveyResponseForSurveyRequest(UUID id)
     throws SurveyServiceException
   {
@@ -1795,6 +1792,7 @@ public class SurveyService
    *
    * @return the summaries for the survey responses for the survey instance
    */
+  @Transactional
   public List<SurveyResponseSummary> getSurveyResponseSummariesForSurveyInstance(UUID id)
     throws SurveyServiceException
   {
@@ -1826,6 +1824,7 @@ public class SurveyService
    * @return the summary for the survey response identified by the specified ID or <code>null</code>
    *         if the survey response could not be found
    */
+  @Transactional
   public SurveyResponseSummary getSurveyResponseSummary(UUID id)
     throws SurveyServiceException
   {
@@ -1867,6 +1866,7 @@ public class SurveyService
    *
    * @return the survey responses for the survey instance
    */
+  @Transactional
   public List<SurveyResponse> getSurveyResponsesForSurveyInstance(UUID id)
     throws SurveyServiceException
   {
@@ -1894,9 +1894,8 @@ public class SurveyService
    *           instance
    *
    * @return the survey result for the survey instance with the specified ID
-   *
-   * @throws SurveyServiceException
    */
+  @Transactional
   public SurveyResult getSurveyResultForSurveyInstance(UUID id)
     throws SurveyServiceException
   {
@@ -2357,22 +2356,7 @@ public class SurveyService
    */
   public synchronized void sendSurveyRequests()
   {
-    if (sendSurveyRequestsResult.isDone())
-    {
-      /*
-       * Asynchronously inform the Background Survey Request Sender that all pending survey requests
-       * should be sent.
-       */
-      try
-      {
-        sendSurveyRequestsResult = backgroundSurveyRequestSender.send();
-      }
-      catch (Throwable e)
-      {
-        logger.error("Failed to invoke the Background Survey Request Sender to asynchronously send"
-            + " all the survey requests queued for sending", e);
-      }
-    }
+    applicationContext.getBean(BackgroundSurveyRequestSender.class).sendSurveyRequests();
   }
 
   /**

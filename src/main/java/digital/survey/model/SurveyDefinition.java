@@ -17,9 +17,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import guru.mmp.application.security.Organisation;
 
-import javax.enterprise.inject.Vetoed;
+
 import javax.persistence.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -40,7 +39,6 @@ import java.util.UUID;
 @Access(AccessType.FIELD)
 @JsonPropertyOrder({ "id", "version", "organisationId", "name", "description", "groupDefinitions",
     "itemDefinitions" })
-@Vetoed
 public class SurveyDefinition
   implements Serializable
 {
@@ -186,6 +184,31 @@ public class SurveyDefinition
     SurveyDefinition other = (SurveyDefinition) obj;
 
     return id.equals(other.id);
+  }
+
+  /**
+   * Returns all the survey item definitions associated with the survey definition.
+   *
+   * @return all the survey item definitions associated with the survey definition
+   */
+  @JsonIgnore
+  public List<SurveyItemDefinition> getAllItemDefinitions()
+  {
+    List<SurveyItemDefinition> allItemDefinitions = new ArrayList<>();
+
+    allItemDefinitions.addAll(itemDefinitions);
+
+    for (SurveyItemDefinition itemDefinition : itemDefinitions)
+    {
+      if (itemDefinition instanceof SurveySectionDefinition)
+      {
+        SurveySectionDefinition sectionDefinition = (SurveySectionDefinition) itemDefinition;
+
+        allItemDefinitions.addAll(sectionDefinition.getAllItemDefinitions());
+      }
+    }
+
+    return allItemDefinitions;
   }
 
   /**
@@ -525,30 +548,5 @@ public class SurveyDefinition
   void incrementVersion()
   {
     version++;
-  }
-
-  /**
-   * Returns all the survey item definitions associated with the survey definition.
-   *
-   * @return all the survey item definitions associated with the survey definition
-   */
-  @JsonIgnore
-  public List<SurveyItemDefinition> getAllItemDefinitions()
-  {
-    List<SurveyItemDefinition> allItemDefinitions = new ArrayList<>();
-
-    allItemDefinitions.addAll(itemDefinitions);
-
-    for (SurveyItemDefinition itemDefinition : itemDefinitions)
-    {
-      if (itemDefinition instanceof SurveySectionDefinition)
-      {
-        SurveySectionDefinition sectionDefinition = (SurveySectionDefinition)itemDefinition;
-
-        allItemDefinitions.addAll(sectionDefinition.getAllItemDefinitions());
-      }
-    }
-
-    return allItemDefinitions;
   }
 }

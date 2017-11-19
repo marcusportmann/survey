@@ -23,6 +23,11 @@ import guru.mmp.application.web.template.navigation.NavigationGroup;
 import guru.mmp.application.web.template.navigation.NavigationLink;
 import org.apache.wicket.Page;
 import org.apache.wicket.request.resource.CssResourceReference;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * The <code>SurveyApplication</code> provides the implementation of the Wicket Web
@@ -30,6 +35,8 @@ import org.apache.wicket.request.resource.CssResourceReference;
  *
  * @author Marcus Portmann
  */
+@Component("webApplication")
+@ComponentScan(basePackages = { "digital.survey" }, lazyInit = true)
 public class SurveyApplication extends TemplateWebApplication
 {
   /**
@@ -78,9 +85,16 @@ public class SurveyApplication extends TemplateWebApplication
   /**
    * Constructs a new <code>SurveyApplication</code>.
    */
-  public SurveyApplication()
+  public SurveyApplication() {}
+
+  /**
+   * The main method.
+   *
+   * @param args the command-line arguments
+   */
+  public static void main(String[] args)
   {
-    super("Survey");
+    SpringApplication.run(SurveyApplication.class, args);
   }
 
   /**
@@ -92,6 +106,17 @@ public class SurveyApplication extends TemplateWebApplication
   public CssResourceReference getApplicationCssResourceReference()
   {
     return new CssResourceReference(SurveyApplication.class, "resources/css/application.css");
+  }
+
+  /**
+   * Returns the user-friendly name that should be displayed for the application.
+   *
+   * @return the user-friendly name that should be displayed for the application
+   */
+  @Override
+  public String getDisplayName()
+  {
+    return "Survey";
   }
 
   /**
@@ -146,5 +171,35 @@ public class SurveyApplication extends TemplateWebApplication
         SurveyDefinitionAdministrationPage.class));
 
     super.initNavigation(root);
+  }
+
+
+  /**
+   * Returns the paths to the resources on the classpath that contain the SQL statements used to
+   * initialise the in-memory application database.
+   */
+  @Override
+  protected List<String> getInMemoryDatabaseInitResources()
+  {
+    List<String> resources = super.getInMemoryDatabaseInitResources();
+
+    resources.add("digital/survey/persistence/SurveyH2.sql");
+
+    return resources;
+  }
+
+  /**
+   * Returns the names of the packages to scan for JPA classes.
+   *
+   * @return the names of the packages to scan for JPA classes
+   */
+  @Override
+  protected List<String> getJpaPackagesToScan()
+  {
+    List<String> packagesToScan = super.getJpaPackagesToScan();
+
+    packagesToScan.add("digital.survey");
+
+    return packagesToScan;
   }
 }

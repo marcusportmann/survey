@@ -13,7 +13,6 @@ package digital.survey.model;
 
 //~--- JDK imports ------------------------------------------------------------
 
-import javax.enterprise.inject.Vetoed;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.UUID;
@@ -26,7 +25,6 @@ import java.util.UUID;
  */
 @Entity
 @Table(schema = "SURVEY", name = "SURVEY_AUDIENCE_MEMBERS")
-@Vetoed
 public class SurveyAudienceMember
   implements Serializable
 {

@@ -3,12 +3,14 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <!--
   <repositories>
     <repository>
       <id>jaspersoft-third-party</id>
       <url>http://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/</url>
     </repository>
   </repositories>
+  -->
 
   <groupId>guru.mmp</groupId>
   <artifactId>survey</artifactId>
@@ -16,6 +18,13 @@
   <name>survey</name>
   <packaging>war</packaging>
 
+  <parent>
+    <groupId>guru.mmp</groupId>
+    <artifactId>mmp-java</artifactId>
+    <version>3.0.0-RELEASE</version>
+  </parent>
+
+  <!--
   <properties>
     <wildfly.swarm.version>2016.11.0</wildfly.swarm.version>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -23,25 +32,26 @@
     <failOnMissingWebXml>false</failOnMissingWebXml>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  -->
 
   <dependencies>
     <!-- Dependencies -->
     <dependency>
       <groupId>guru.mmp</groupId>
       <artifactId>mmp-application-wicket</artifactId>
-      <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>guru.mmp</groupId>
       <artifactId>mmp-application-reporting-wicket</artifactId>
-      <version>2.0.0-SNAPSHOT</version>
     </dependency>
 
+    <!--
     <dependency>
       <groupId>org.apache.wicket</groupId>
       <artifactId>wicket-extensions</artifactId>
       <version>7.6.0</version>
     </dependency>
+    -->
 
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -59,11 +69,21 @@
       <version>2.8.4</version>
     </dependency>
 
+
+
+
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <version>9.4.1212.jre7</version>
     </dependency>
+
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>commons-cli</groupId>
       <artifactId>commons-cli</artifactId>
@@ -71,6 +91,7 @@
     </dependency>
 
     <!-- Provided Dependencies -->
+    <!--
     <dependency>
       <groupId>javax.ejb</groupId>
       <artifactId>javax.ejb-api</artifactId>
@@ -113,8 +134,10 @@
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
+    -->
 
     <!-- WildFly Swarm Dependencies -->
+    <!--
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>datasources-api</artifactId>
@@ -129,34 +152,21 @@
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
+    -->
 
     <!-- Test Dependencies -->
     <dependency>
       <groupId>guru.mmp</groupId>
-      <artifactId>mmp-application-test</artifactId>
-      <version>2.0.0-SNAPSHOT</version>
+      <artifactId>mmp-test</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
 
   <build>
-    <finalName>survey</finalName>
     <plugins>
       <plugin>
-        <groupId>org.wildfly.swarm</groupId>
-        <artifactId>wildfly-swarm-plugin</artifactId>
-        <version>${wildfly.swarm.version}</version>
-        <configuration>
-          <mainClass>digital.survey.Survey</mainClass>
-          <fractionDetectMode>force</fractionDetectMode>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>package</goal>
-            </goals>
-          </execution>
-        </executions>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>

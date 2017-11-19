@@ -17,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.enterprise.inject.Vetoed;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,7 +35,6 @@ import java.util.stream.Collectors;
 @Entity
 @Table(schema = "SURVEY", name = "SURVEY_RESULTS")
 @Access(AccessType.FIELD)
-@Vetoed
 public class SurveyResult
   implements Serializable
 {

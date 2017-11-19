@@ -15,13 +15,12 @@ package digital.survey.model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.*;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Default;
 import javax.inject.Inject;
-import java.util.concurrent.Future;
 
 //~--- JDK imports ------------------------------------------------------------
 
@@ -31,10 +30,8 @@ import java.util.concurrent.Future;
  *
  * @author Marcus Portmann
  */
-@ApplicationScoped
-@Default
-@ConcurrencyManagement(ConcurrencyManagementType.BEAN)
-@TransactionManagement(TransactionManagementType.BEAN)
+@Service
+@SuppressWarnings("unused")
 public class BackgroundSurveyRequestSender
 {
   /* Logger */
@@ -76,38 +73,11 @@ public class BackgroundSurveyRequestSender
   }
 
   /**
-   * Send all survey requests that are queued for sending.
-   *
-   * @return <code>true</code> if the survey requests were sent successfully or
-   *         <code>false</code> otherwise
+   * Send the survey requests.
    */
-  @Asynchronous
-  public Future<Boolean> send()
-  {
-    // If CDI injection was not completed successfully for the bean then stop here
-    if (surveyService == null)
-    {
-      logger.error("Failed to send the survey requests queued for sending:"
-          + " The SurveyService was NOT injected");
-
-      return new AsyncResult<>(false);
-    }
-
-    try
-    {
-      sendSurveyRequests();
-
-      return new AsyncResult<>(true);
-    }
-    catch (Throwable e)
-    {
-      logger.error("Failed to send the survey requests queued for sending", e);
-
-      return new AsyncResult<>(false);
-    }
-  }
-
-  private void sendSurveyRequests()
+  @Scheduled(cron = "0 * * * * *")
+  @Async
+  public void sendSurveyRequests()
   {
     SurveyRequest surveyRequest;
 

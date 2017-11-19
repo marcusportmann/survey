@@ -19,6 +19,7 @@ package digital.survey.web.pages;
 //~--- non-JDK imports --------------------------------------------------------
 
 import digital.survey.model.ISurveyService;
+import digital.survey.model.Organisation;
 import digital.survey.model.SurveyAudience;
 import digital.survey.web.SurveySecurity;
 import digital.survey.web.components.SurveyAudienceInputPanel;
@@ -70,8 +71,10 @@ class AddSurveyAudiencePage extends TemplateWebPage
     {
       WebSession webSession = getWebApplicationSession();
 
+      Organisation organisation = new Organisation(webSession.getOrganisation().getId(), webSession.getOrganisation().getName(), webSession.getOrganisation().getStatus());
+
       Form<SurveyAudience> addForm = new Form<>("addForm", new CompoundPropertyModel<>(new Model<>(
-          new SurveyAudience(UUID.randomUUID(), webSession.getOrganisation(), "", ""))));
+          new SurveyAudience(UUID.randomUUID(), organisation, "", ""))));
 
       addForm.add(new SurveyAudienceInputPanel("surveyAudience"));
 
