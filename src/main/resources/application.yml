@@ -1,0 +1,14 @@
+application:
+
+  database:
+    dataSource: org.h2.jdbcx.JdbcDataSource
+    url: jdbc:h2:mem:application;MODE=DB2;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    minPoolSize: 5
+    maxPoolSize: 10
+
+---
+spring:
+    profiles: development
+---
+spring:
+    profiles: production
